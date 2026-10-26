@@ -29,35 +29,35 @@ dotnet run
 
 ---
 
-## 2. Running the Experiment with Different Models
+## 2. Running the Experiment Locally from CLI
 
-The runner script `run_experiment.py` supports any model provider or local runtime:
+The runner script `run_experiment.py` uses the **local GitHub Copilot CLI** directly (zero API keys required, 100% local CLI execution):
 
-### A. Run with OpenAI (e.g., GPT-4o, GPT-4o-mini)
+### A. Run with GitHub Copilot CLI (Default / Recommended)
 ```powershell
-$env:OPENAI_API_KEY = "your-api-key"
-python run_experiment.py --model gpt-4o
+# Run full 50-query benchmark using local GitHub Copilot CLI
+python run_experiment.py
+
+# Run a quick 5 or 10-query test
+python run_experiment.py --limit 10
+
+# Override model under Copilot CLI (e.g. gpt-4o, claude-3.5-sonnet, auto)
+python run_experiment.py --model gpt-4o --limit 10
 ```
 
-### B. Run with Azure OpenAI
-```powershell
-python run_experiment.py `
-  --model my-gpt4o-deployment `
-  --endpoint "https://<your-resource>.openai.azure.com/openai/deployments/my-gpt4o-deployment" `
-  --api-key "your-azure-key"
-```
-
-### C. Run with Local LLM via Ollama (e.g. Llama 3, DeepSeek)
-```powershell
-# Ensure Ollama is running (`ollama run llama3`)
-python run_experiment.py `
-  --model llama3 `
-  --endpoint "http://localhost:11434/v1"
-```
-
-### D. Run Simulation Benchmark (Offline, No API Key Required)
+### B. Run Fast Simulation (Instant Benchmark, Zero Latency)
 ```powershell
 python run_experiment.py --simulate
+```
+
+### C. Run with Custom Model Endpoint (OpenAI / Azure / Ollama)
+```powershell
+# Local Ollama
+python run_experiment.py --engine openai --model llama3 --endpoint http://localhost:11434/v1
+
+# OpenAI API
+$env:OPENAI_API_KEY = "your-api-key"
+python run_experiment.py --engine openai --model gpt-4o
 ```
 
 ---
