@@ -1,0 +1,1745 @@
+{
+  "id": "report_simulate_gpt-4o_20261026_113920",
+  "timestamp": "2026-10-26T11:39:20.456817",
+  "engine": "simulate",
+  "model": "gpt-4o",
+  "elapsed_seconds": 0.01,
+  "total_queries": 50,
+  "is_full_run": true,
+  "metrics": {
+    "server_a_success_rate": 100.0,
+    "server_b_success_rate": 57.99999999999999,
+    "delta": 42.00000000000001,
+    "intent_accuracy_a": 100.0,
+    "intent_accuracy_b": 68.0,
+    "odata_validity_a": 100.0,
+    "odata_validity_b": 68.0
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 7,
+      "succ_a": 7,
+      "succ_b": 7,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    },
+    "paraphrased": {
+      "count": 19,
+      "succ_a": 19,
+      "succ_b": 14,
+      "rate_a": 100.0,
+      "rate_b": 73.68421052631578
+    },
+    "complex": {
+      "count": 16,
+      "succ_a": 16,
+      "succ_b": 0,
+      "rate_a": 100.0,
+      "rate_b": 0.0
+    },
+    "ambiguous": {
+      "count": 3,
+      "succ_a": 3,
+      "succ_b": 3,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    },
+    "edge_case": {
+      "count": 5,
+      "succ_a": 5,
+      "succ_b": 5,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "category": "canonical",
+      "query": "Whom Olga reports to?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 2,
+      "category": "paraphrased",
+      "query": "Who is Olga's manager?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 3,
+      "category": "paraphrased",
+      "query": "Who is Olga's direct boss?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 4,
+      "category": "paraphrased",
+      "query": "Show me the reporting line for Olga Podolyako",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 5,
+      "category": "paraphrased",
+      "query": "Who approves Olga's expenses and time off?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 6,
+      "category": "complex",
+      "query": "Who is the manager of Megan Bowen?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "meganb@contoso.com"
+        },
+        "odata_request": "users('meganb@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who is the manager of Megan Bowen?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who is the manager of Megan Bowen?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 7,
+      "category": "complex",
+      "query": "Whom does Diego Siciliani report to?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "diegos@contoso.com"
+        },
+        "odata_request": "users('diegos@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Whom does Diego Siciliani report to?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Whom does Diego Siciliani report to?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 8,
+      "category": "complex",
+      "query": "Who manages Adele Vance?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who manages Adele Vance?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who manages Adele Vance?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 9,
+      "category": "complex",
+      "query": "Find the supervisor of Patti Fernandez",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "pattif@contoso.com"
+        },
+        "odata_request": "users('pattif@contoso.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find the supervisor of Patti Fernandez"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find the supervisor of Patti Fernandez')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 10,
+      "category": "canonical",
+      "query": "Who is my manager?",
+      "pred_a": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 11,
+      "category": "canonical",
+      "query": "Who are Olga's peers?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 12,
+      "category": "paraphrased",
+      "query": "Who works on the same team as Olga?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "team"
+        },
+        "odata_request": "users?$filter=department eq 'team'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 13,
+      "category": "paraphrased",
+      "query": "Find teammates who share a manager with Olga",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 14,
+      "category": "canonical",
+      "query": "Who are my peers?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 15,
+      "category": "paraphrased",
+      "query": "List all colleagues reporting to the same director as Olga",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 16,
+      "category": "complex",
+      "query": "Who are Megan Bowen's peer architects?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "meganb@contoso.com"
+        },
+        "odata_request": "users('meganb@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are Megan Bowen's peer architects?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are Megan Bowen's peer architects?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 17,
+      "category": "complex",
+      "query": "Show everyone on Adele Vance's peer team",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Show everyone on Adele Vance's peer team"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Show everyone on Adele Vance's peer team')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 18,
+      "category": "complex",
+      "query": "Who are the other leads working under Alex alongside Diego?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "diegos@contoso.com"
+        },
+        "odata_request": "users('diegos@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are the other leads working under Alex alongside Diego?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are the other leads working under Alex alongside Diego?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 19,
+      "category": "paraphrased",
+      "query": "Who shares an organization level with Olga Podolyako?",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 20,
+      "category": "complex",
+      "query": "Find peer colleagues for Lynne Robbins",
+      "pred_a": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "lynner@contoso.com"
+        },
+        "odata_request": "users('lynner@contoso.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find peer colleagues for Lynne Robbins"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find peer colleagues for Lynne Robbins')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 21,
+      "category": "canonical",
+      "query": "Direct reports of a manager",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 22,
+      "category": "paraphrased",
+      "query": "Who reports to Alex?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 23,
+      "category": "paraphrased",
+      "query": "List everyone reporting to Alex Wilbur",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 24,
+      "category": "paraphrased",
+      "query": "Show the direct team of Alex Wilbur",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "find_user",
+        "parameters": {
+          "query": "team"
+        },
+        "odata_request": "users?$filter=department eq 'team'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 25,
+      "category": "complex",
+      "query": "Does Olga have any direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Olga Podolyako"
+        },
+        "odata_request": "users('olga@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Does Olga have any direct reports?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Does Olga have any direct reports?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 26,
+      "category": "complex",
+      "query": "Who are Diego Siciliani's direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Diego Siciliani"
+        },
+        "odata_request": "users('diegos@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are Diego Siciliani's direct reports?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are Diego Siciliani's direct reports?')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 27,
+      "category": "complex",
+      "query": "List members of Lynne Robbins' group",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Lynne Robbins"
+        },
+        "odata_request": "users('lynner@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "List members of Lynne Robbins' group"
+        },
+        "odata_request": "users?$filter=contains(notes, 'List members of Lynne Robbins' group')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 28,
+      "category": "paraphrased",
+      "query": "Who is currently supervised by Alex?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 29,
+      "category": "complex",
+      "query": "Find all people managed by Joni Sherman",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Joni Sherman"
+        },
+        "odata_request": "users('jonis@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find all people managed by Joni Sherman"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find all people managed by Joni Sherman')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 30,
+      "category": "paraphrased",
+      "query": "Enumerate staff under partner director Alex Wilbur",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 31,
+      "category": "canonical",
+      "query": "Search users by department and title",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 32,
+      "category": "paraphrased",
+      "query": "Find architects in Identity",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 33,
+      "category": "complex",
+      "query": "Find all Principal Architects in Architecture & Standards",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Architecture & Standards",
+          "jobTitle": "Principal"
+        },
+        "odata_request": "users?$filter=department eq 'Architecture & Standards' and startswith(jobTitle,'Principal')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find all Principal Architects in Architecture & Standards"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find all Principal Architects in Architecture & Standards')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 34,
+      "category": "complex",
+      "query": "Show me product managers in the Product department",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Product",
+          "jobTitle": "Product Manager"
+        },
+        "odata_request": "users?$filter=department eq 'Product' and startswith(jobTitle,'Product Manager')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Show me product managers in the Product department"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Show me product managers in the Product department')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 35,
+      "category": "complex",
+      "query": "List all business administrators located in Prague",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Operations",
+          "jobTitle": "Business Administrator"
+        },
+        "odata_request": "users?$filter=department eq 'Operations' and startswith(jobTitle,'Business Administrator')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "List all business administrators located in Prague"
+        },
+        "odata_request": "users?$filter=contains(notes, 'List all business administrators located in Prague')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 36,
+      "category": "complex",
+      "query": "Search for engineering managers in Engineering",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Engineering",
+          "jobTitle": "Manager"
+        },
+        "odata_request": "users?$filter=department eq 'Engineering' and startswith(jobTitle,'Manager')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Search for engineering managers in Engineering"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Search for engineering managers in Engineering')"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 37,
+      "category": "paraphrased",
+      "query": "Look up all software architects across the company",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Software Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Software Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Software Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Software Architect')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 38,
+      "category": "paraphrased",
+      "query": "Find staff members with Architect in their title",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Architect')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 39,
+      "category": "ambiguous",
+      "query": "Find all employees named Alex",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Alex"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Alex')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 40,
+      "category": "ambiguous",
+      "query": "Search for Megan in the directory",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Megan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Megan')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 41,
+      "category": "ambiguous",
+      "query": "Find user with email olga@contoso.com",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "olga@contoso.com"
+        },
+        "odata_request": "users?$filter=mail eq 'olga@contoso.com'"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 42,
+      "category": "canonical",
+      "query": "User quick lookup",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "me"
+        },
+        "odata_request": "users://me"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "me"
+        },
+        "odata_request": "users://me"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 43,
+      "category": "paraphrased",
+      "query": "Get full profile card for Olga Podolyako",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 44,
+      "category": "paraphrased",
+      "query": "Show contact card and office location for Alex Wilbur",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "alexw@contoso.com"
+        },
+        "odata_request": "users('alexw@contoso.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "alexw@contoso.com"
+        },
+        "odata_request": "users('alexw@contoso.com')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 45,
+      "category": "paraphrased",
+      "query": "Look up user profile for Adele Vance",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 46,
+      "category": "edge_case",
+      "query": "What projects is Olga currently leading?",
+      "pred_a": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 47,
+      "category": "edge_case",
+      "query": "Check Olga's calendar for open slots tomorrow",
+      "pred_a": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 48,
+      "category": "edge_case",
+      "query": "Which Contoso invoices are past due?",
+      "pred_a": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 49,
+      "category": "edge_case",
+      "query": "List all security groups that Megan Bowen is a member of",
+      "pred_a": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    },
+    {
+      "query_id": 50,
+      "category": "edge_case",
+      "query": "Send an email to Alex Wilbur regarding API guidelines",
+      "pred_a": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 0.0
+    }
+  ]
+}

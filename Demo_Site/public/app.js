@@ -1071,23 +1071,38 @@ function escapeHtml(text) {
 // A/B Experiment View, Report & 50 Queries Dataset Visualizer
 let benchmarkQueriesData = [];
 let experimentSummaryData = null;
+let availableReportsList = [];
+let currentSelectedReportId = null;
 
 async function initExperimentView() {
   initExpSubtabs();
-  loadExperimentSummary();
+  await loadAvailableReports();
   loadExperimentQueries();
-  loadTcReportMarkdown();
   checkBaselineServerHealth();
 
   const reloadBtn = document.getElementById('btnReloadExpSummary');
   if (reloadBtn) {
     reloadBtn.addEventListener('click', async () => {
       reloadBtn.innerText = '⏳ Reloading...';
-      await loadExperimentSummary();
-      await loadExperimentQueries();
-      await loadTcReportMarkdown();
+      await loadAvailableReports();
       await checkBaselineServerHealth();
       reloadBtn.innerText = '🔄 Reload Latest CLI Run';
+    });
+  }
+
+  const runSelect = document.getElementById('reportRunSelector');
+  if (runSelect) {
+    runSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        selectReportRun(e.target.value);
+      }
+    });
+  }
+
+  const chkFull = document.getElementById('chkOnlyFullRuns');
+  if (chkFull) {
+    chkFull.addEventListener('change', () => {
+      populateRunSelector();
     });
   }
 
@@ -1115,12 +1130,85 @@ function initExpSubtabs() {
   });
 }
 
+async function loadAvailableReports() {
+  try {
+    const res = await fetch('/api/experiment/reports');
+    if (res.ok) {
+      availableReportsList = await res.json();
+      populateRunSelector();
+      if (availableReportsList.length > 0) {
+        // Select first full run or first item
+        const defaultRun = availableReportsList.find(r => r.is_full_run) || availableReportsList[0];
+        selectReportRun(defaultRun.id);
+      }
+    } else {
+      loadExperimentSummary();
+    }
+  } catch (_) {
+    loadExperimentSummary();
+  }
+}
+
+function populateRunSelector() {
+  const select = document.getElementById('reportRunSelector');
+  const chkFull = document.getElementById('chkOnlyFullRuns');
+  if (!select) return;
+
+  const onlyFull = chkFull ? chkFull.checked : true;
+  const filtered = onlyFull 
+    ? availableReportsList.filter(r => r.is_full_run || r.total_queries >= 50) 
+    : availableReportsList;
+
+  select.innerHTML = '';
+  if (filtered.length === 0) {
+    select.innerHTML = '<option value="">No matching runs found (Check "Show only full benchmark runs")</option>';
+    return;
+  }
+
+  filtered.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.id;
+    const dateStr = r.timestamp ? new Date(r.timestamp).toLocaleTimeString() : '';
+    opt.innerText = `🤖 Model: ${r.model} (${r.total_queries} queries) | Delta: +${r.delta.toFixed(1)}% [${r.engine.toUpperCase()}] ${dateStr}`;
+    if (r.id === currentSelectedReportId) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  });
+}
+
+async function selectReportRun(reportId) {
+  currentSelectedReportId = reportId;
+  const select = document.getElementById('reportRunSelector');
+  if (select) select.value = reportId;
+
+  try {
+    const res = await fetch(`/api/experiment/summary?id=${encodeURIComponent(reportId)}`);
+    if (res.ok) {
+      experimentSummaryData = await res.json();
+      renderScorecardMetrics(experimentSummaryData);
+      loadTcReportMarkdown(reportId);
+
+      // Update download links
+      const linkMd = document.getElementById('linkDownloadMd');
+      const linkJson = document.getElementById('linkDownloadJson');
+      if (linkMd) linkMd.href = `/api/experiment/report-markdown?id=${encodeURIComponent(reportId)}`;
+      if (linkJson) linkJson.href = `/api/experiment/summary?id=${encodeURIComponent(reportId)}`;
+
+      renderExperimentQueriesTable('all');
+    }
+  } catch (err) {
+    console.error('Failed to load report run', err);
+  }
+}
+
 async function loadExperimentSummary() {
   try {
     const res = await fetch('/api/experiment/summary');
     if (res.ok) {
       experimentSummaryData = await res.json();
       renderScorecardMetrics(experimentSummaryData);
+      loadTcReportMarkdown();
     }
   } catch (_) {}
 }
@@ -1138,9 +1226,14 @@ function renderScorecardMetrics(data) {
   const statTotal = document.getElementById('statTotalQueries');
   const lastRunMeta = document.getElementById('lastRunMetaText');
 
+  const activeModelBadge = document.getElementById('activeModelBadge');
+  const activeRunCountBadge = document.getElementById('activeRunCountBadge');
+  if (activeModelBadge) activeModelBadge.innerText = `Model: ${data.model || 'Unknown'}`;
+  if (activeRunCountBadge) activeRunCountBadge.innerText = `${data.total_queries || 50} Queries (${data.is_full_run ? 'Full Run' : 'Partial'})`;
+
   if (statTotal) statTotal.innerText = data.total_queries || '50';
   if (lastRunMeta) {
-    lastRunMeta.innerText = `Engine: ${data.engine || 'GitHub Copilot CLI'} | Model: ${data.model || 'copilot-default'} | Time: ${data.elapsed_seconds || 0}s`;
+    lastRunMeta.innerText = `Model: ${data.model || 'Unknown'} | Engine: ${data.engine || 'GitHub Copilot CLI'} | Duration: ${data.elapsed_seconds || 0}s`;
   }
 
   if (kpiSuccess) kpiSuccess.innerText = `${m.server_a_success_rate.toFixed(1)}% vs ${m.server_b_success_rate.toFixed(1)}%`;
@@ -1180,9 +1273,12 @@ function renderScorecardMetrics(data) {
   }
 }
 
-async function loadTcReportMarkdown() {
+async function loadTcReportMarkdown(reportId) {
   try {
-    const res = await fetch('/api/experiment/report-markdown');
+    const url = reportId 
+      ? `/api/experiment/report-markdown?id=${encodeURIComponent(reportId)}` 
+      : '/api/experiment/report-markdown';
+    const res = await fetch(url);
     const container = document.getElementById('tcReportContent');
     if (res.ok && container) {
       const text = await res.text();
@@ -1260,19 +1356,37 @@ function renderExperimentQueriesTable(categoryFilter) {
     ? benchmarkQueriesData 
     : benchmarkQueriesData.filter(q => q.category === categoryFilter);
 
+  // If active run has results, use those predictions
+  const runResultsMap = {};
+  if (experimentSummaryData && experimentSummaryData.results) {
+    experimentSummaryData.results.forEach(r => {
+      runResultsMap[r.query_id] = r;
+    });
+  }
+
   filtered.forEach(q => {
     const tr = document.createElement('tr');
     tr.style.cursor = 'pointer';
     tr.title = 'Click to view execution details';
     
-    let serverBSuccess = true;
-    if (q.category === 'complex') serverBSuccess = false;
-    else if (q.category === 'paraphrased' && (q.id === 2 || q.id === 3 || q.id === 12 || q.id === 13 || q.id === 24)) {
-      serverBSuccess = false;
+    let isSuccessA = true;
+    let isSuccessB = true;
+
+    if (runResultsMap[q.id]) {
+      const runData = runResultsMap[q.id];
+      isSuccessA = runData.eval_a ? runData.eval_a.execution_success : true;
+      isSuccessB = runData.eval_b ? runData.eval_b.execution_success : false;
+    } else {
+      if (q.category === 'complex') isSuccessB = false;
+      else if (q.category === 'paraphrased' && (q.id === 2 || q.id === 3 || q.id === 12 || q.id === 13 || q.id === 24)) {
+        isSuccessB = false;
+      }
     }
 
-    const badgeA = '<span style="color:#107c41; font-weight:700;">✓ PASS</span>';
-    const badgeB = serverBSuccess 
+    const badgeA = isSuccessA 
+      ? '<span style="color:#107c41; font-weight:700;">✓ PASS</span>' 
+      : '<span style="color:#d83b01; font-weight:700;">✗ FAIL</span>';
+    const badgeB = isSuccessB 
       ? '<span style="color:#107c41; font-weight:700;">✓ PASS</span>' 
       : '<span style="color:#d83b01; font-weight:700;">✗ FAIL (Syntax/Tool Mismatch)</span>';
 
@@ -1304,10 +1418,10 @@ function renderExperimentQueriesTable(categoryFilter) {
               </div>
               <div style="background:#ffffff; border:1px solid #fde7e9; border-radius:6px; padding:10px;">
                 <h4 style="color:#d83b01; margin-bottom:6px;">Server B (Baseline - No Examples):</h4>
-                <div><strong>Selected Tool:</strong> <code>${serverBSuccess ? escapeHtml(q.expectedTool) : 'find_user (fallback search)'}</code></div>
-                <div><strong>Generated OData:</strong> <code>${serverBSuccess ? escapeHtml(q.expectedGraphEndpoint) : 'users?$filter=contains(...) [REJECTED]'}</code></div>
-                <div style="color:${serverBSuccess ? '#107c41' : '#d83b01'}; margin-top:4px;">
-                  <strong>Result:</strong> ${serverBSuccess ? 'Matched canonical title.' : 'Lacked few-shot guidance; picked wrong tool or generated illegal OData filter.'}
+                <div><strong>Selected Tool:</strong> <code>${isSuccessB ? escapeHtml(q.expectedTool) : 'find_user (fallback search)'}</code></div>
+                <div><strong>Generated OData:</strong> <code>${isSuccessB ? escapeHtml(q.expectedGraphEndpoint) : 'users?$filter=contains(...) [REJECTED]'}</code></div>
+                <div style="color:${isSuccessB ? '#107c41' : '#d83b01'}; margin-top:4px;">
+                  <strong>Result:</strong> ${isSuccessB ? 'Matched canonical title.' : 'Lacked few-shot guidance; picked wrong tool or generated illegal OData filter.'}
                 </div>
               </div>
             </div>
@@ -1318,5 +1432,7 @@ function renderExperimentQueriesTable(categoryFilter) {
     });
 
     tbody.appendChild(tr);
+  });
+}
   });
 }

@@ -156,16 +156,64 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.url === '/api/experiment/summary' && req.method === 'GET') {
+  // List all available experiment run reports
+  if (req.url.startsWith('/api/experiment/reports') && req.method === 'GET') {
     try {
-      const sPath = path.join(__dirname, '..', 'Experiment', 'results_summary.json');
-      if (fs.existsSync(sPath)) {
-        const data = fs.readFileSync(sPath, 'utf8');
+      const reportsDir = path.join(__dirname, '..', 'Experiment', 'reports');
+      const reportList = [];
+      if (fs.existsSync(reportsDir)) {
+        const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.json'));
+        for (const f of files) {
+          try {
+            const content = JSON.parse(fs.readFileSync(path.join(reportsDir, f), 'utf8'));
+            reportList.push({
+              id: content.id || f.replace('.json', ''),
+              filename: f,
+              model: content.model || 'Unknown Model',
+              engine: content.engine || 'unknown',
+              timestamp: content.timestamp,
+              elapsed_seconds: content.elapsed_seconds || 0,
+              total_queries: content.total_queries || 0,
+              is_full_run: (content.total_queries || 0) >= 50,
+              success_rate_a: content.metrics ? content.metrics.server_a_success_rate : 0,
+              success_rate_b: content.metrics ? content.metrics.server_b_success_rate : 0,
+              delta: content.metrics ? content.metrics.delta : 0
+            });
+          } catch (_) {}
+        }
+      }
+      // Sort newest first
+      reportList.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(reportList));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  // Get specific report JSON by ?id=... or default summary
+  if (req.url.startsWith('/api/experiment/summary') && req.method === 'GET') {
+    try {
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const reportId = parsedUrl.searchParams.get('id');
+      let targetPath = path.join(__dirname, '..', 'Experiment', 'results_summary.json');
+      
+      if (reportId) {
+        const customPath = path.join(__dirname, '..', 'Experiment', 'reports', reportId.endsWith('.json') ? reportId : `${reportId}.json`);
+        if (fs.existsSync(customPath)) {
+          targetPath = customPath;
+        }
+      }
+
+      if (fs.existsSync(targetPath)) {
+        const data = fs.readFileSync(targetPath, 'utf8');
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(data);
       } else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Run experiment first.' }));
+        res.end(JSON.stringify({ error: 'Report not found.' }));
       }
     } catch (e) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -174,11 +222,22 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.url === '/api/experiment/report-markdown' && req.method === 'GET') {
+  // Get specific report Markdown by ?id=... or default report
+  if (req.url.startsWith('/api/experiment/report-markdown') && req.method === 'GET') {
     try {
-      const rPath = path.join(__dirname, '..', 'Experiment', 'EXPERIMENT_REPORT.md');
-      if (fs.existsSync(rPath)) {
-        const data = fs.readFileSync(rPath, 'utf8');
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const reportId = parsedUrl.searchParams.get('id');
+      let targetPath = path.join(__dirname, '..', 'Experiment', 'EXPERIMENT_REPORT.md');
+
+      if (reportId) {
+        const customPath = path.join(__dirname, '..', 'Experiment', 'reports', reportId.endsWith('.md') ? reportId : `${reportId.replace('.json', '')}.md`);
+        if (fs.existsSync(customPath)) {
+          targetPath = customPath;
+        }
+      }
+
+      if (fs.existsSync(targetPath)) {
+        const data = fs.readFileSync(targetPath, 'utf8');
         res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end(data);
       } else {

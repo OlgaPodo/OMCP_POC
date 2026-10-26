@@ -8,10 +8,11 @@ Compares:
   - Server B (Control / Baseline): MCP 2.0 without Examples in Prompts (port 3002)
 
 Usage:
-  python run_experiment.py                     # Runs all 50 queries using GH Copilot CLI
+  python run_experiment.py                     # Runs all 50 queries using local GH Copilot CLI
   python run_experiment.py --limit 10          # Fast run on first 10 queries
-  python run_experiment.py --model gpt-4o      # Specify model override in GH Copilot CLI
+  python run_experiment.py --model gpt-4o      # Specify model in GH Copilot CLI
   python run_experiment.py --simulate          # Instant offline simulation benchmark
+  python run_experiment.py --simple            # Minimal 1-line progress output
 """
 
 import argparse
@@ -20,12 +21,17 @@ import os
 import re
 import subprocess
 import sys
+import threading
 import time
 import urllib.request
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
+
+# Thread lock for clean console output during concurrent runs
+print_lock = threading.Lock()
+progress_counter = 0
 
 # MCP 2.0 standard headers
 MCP_HEADERS = {
@@ -57,7 +63,6 @@ def clean_json_response(raw_text: str) -> dict:
         try:
             return json.loads(candidate)
         except Exception:
-            # Clean unescaped newlines inside strings
             try:
                 fixed = re.sub(r'("(?:[^"\\]|\\.)*")', lambda m: m.group(0).replace('\n', ' ').replace('\r', ''), candidate)
                 return json.loads(fixed)
@@ -295,8 +300,10 @@ def evaluate_prediction(pred: dict, ground_truth: dict) -> dict:
     }
 
 def process_single_query(item: tuple, args, total_count: int) -> dict:
+    global progress_counter
     idx, q = item
     cat = q.get("category", "other")
+    q_start = time.time()
 
     if args.engine == "simulate":
         pred_a = simulate_llm_response(q, has_examples=True)
@@ -318,10 +325,20 @@ def process_single_query(item: tuple, args, total_count: int) -> dict:
 
     eval_a = evaluate_prediction(pred_a, q)
     eval_b = evaluate_prediction(pred_b, q)
+    q_elapsed = time.time() - q_start
 
-    status_a = "PASS" if eval_a["execution_success"] else "FAIL"
-    status_b = "PASS" if eval_b["execution_success"] else "FAIL"
-    print(f"[{idx:02d}/{total_count}] ({cat.upper():11s}) '{q['query'][:45]}' -> Server A: {status_a} | Server B: {status_b}")
+    with print_lock:
+        progress_counter += 1
+        pct = (progress_counter / total_count) * 100
+        status_a = "PASS" if eval_a["execution_success"] else "FAIL"
+        status_b = "PASS" if eval_b["execution_success"] else "FAIL"
+        
+        if args.simple:
+            sys.stdout.write(f"\r[{progress_counter:02d}/{total_count}] {pct:3.0f}% | Query: '{q['query'][:35]}' -> A: {status_a} | B: {status_b}   ")
+            sys.stdout.flush()
+        else:
+            print(f"[{progress_counter:02d}/{total_count} | {pct:3.0f}%] ({cat.upper():11s}) '{q['query'][:42]}' -> Server A: {status_a} | Server B: {status_b} ({q_elapsed:.1f}s)")
+            sys.stdout.flush()
 
     return {
         "query_id": q["id"],
@@ -330,16 +347,21 @@ def process_single_query(item: tuple, args, total_count: int) -> dict:
         "pred_a": pred_a,
         "eval_a": eval_a,
         "pred_b": pred_b,
-        "eval_b": eval_b
+        "eval_b": eval_b,
+        "duration_sec": round(q_elapsed, 2)
     }
 
 def run_experiment(args):
+    global progress_counter
+    progress_counter = 0
+
     with open(args.queries, "r", encoding="utf-8") as f:
         queries = json.load(f)
 
     if args.limit and args.limit > 0:
         queries = queries[:args.limit]
 
+    model_display = args.model if args.model else ("Copilot CLI Default" if args.engine == "copilot" else "simulated")
     engine_display = f"GitHub Copilot CLI (Local)" if args.engine == "copilot" else (
         "Simulation Mode" if args.engine == "simulate" else f"API ({args.model} @ {args.endpoint})"
     )
@@ -347,20 +369,24 @@ def run_experiment(args):
     print("\n" + "=" * 80)
     print("   MCP 2.0 Prompt Annotations A/B Benchmark (Local CLI Experiment)   ")
     print("=" * 80)
+    print(f"Model Evaluated : {model_display}")
     print(f"Engine          : {engine_display}")
-    print(f"Model Override  : {args.model if args.model else 'Copilot CLI Default'}")
     print(f"Dataset Size    : {len(queries)} Queries")
     print(f"Concurrency     : {args.workers} Parallel Workers")
     print(f"Server A        : {args.server_a} (Option 1: With Examples)")
     print(f"Server B        : {args.server_b} (Baseline: Without Examples)")
     print(f"Started At      : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 80 + "\n")
+    sys.stdout.flush()
 
     t_start = time.time()
     query_items = list(enumerate(queries, 1))
 
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         results = list(executor.map(lambda item: process_single_query(item, args, len(queries)), query_items))
+
+    if args.simple:
+        print()
 
     elapsed = time.time() - t_start
 
@@ -395,7 +421,7 @@ def run_experiment(args):
             }
 
     print("\n" + "=" * 80)
-    print(f"                    EXPERIMENT RESULTS (Completed in {elapsed:.1f}s)                    ")
+    print(f"        EXPERIMENT RESULTS FOR MODEL: {model_display} (Time: {elapsed:.1f}s)       ")
     print("=" * 80)
     print("Metric                            | Server A (With Examples) | Server B (No Examples) | Delta")
     print("-" * 80)
@@ -408,38 +434,57 @@ def run_experiment(args):
         print(f"  - {c.capitalize():15s} ({stat['count']:02d} queries) | {stat['rate_a']:5.1f}% ({stat['succ_a']}/{stat['count']})         | {stat['rate_b']:5.1f}% ({stat['succ_b']}/{stat['count']})         | +{stat['rate_a'] - stat['rate_b']:.1f}%")
     print("=" * 80)
 
-    # Save artifacts
+    # Generate Unique Report Names
     out_dir = Path(args.queries).parent
+    reports_dir = out_dir / "reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    time_slug = datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_slug = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', model_display).lower()
+    report_id = f"report_{args.engine}_{model_slug}_{time_slug}"
+
+    unique_json_path = reports_dir / f"{report_id}.json"
+    unique_md_path = reports_dir / f"{report_id}.md"
+
+    report_payload = {
+        "id": report_id,
+        "timestamp": datetime.now().isoformat(),
+        "engine": args.engine,
+        "model": model_display,
+        "elapsed_seconds": round(elapsed, 2),
+        "total_queries": total_q,
+        "is_full_run": total_q >= 50,
+        "metrics": {
+            "server_a_success_rate": rate_succ_a,
+            "server_b_success_rate": rate_succ_b,
+            "delta": delta_succ,
+            "intent_accuracy_a": (total_intent_a / total_q) * 100,
+            "intent_accuracy_b": (total_intent_b / total_q) * 100,
+            "odata_validity_a": (total_odata_a / total_q) * 100,
+            "odata_validity_b": (total_odata_b / total_q) * 100
+        },
+        "category_breakdown": cat_stats,
+        "results": results
+    }
+
+    # Write unique JSON
+    with open(unique_json_path, "w", encoding="utf-8") as f:
+        json.dump(report_payload, f, indent=2)
+
+    # Always keep latest summary updated
     summary_path = out_dir / "results_summary.json"
     with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump({
-            "timestamp": datetime.now().isoformat(),
-            "engine": args.engine,
-            "model": args.model or "copilot-default",
-            "elapsed_seconds": round(elapsed, 2),
-            "total_queries": total_q,
-            "metrics": {
-                "server_a_success_rate": rate_succ_a,
-                "server_b_success_rate": rate_succ_b,
-                "delta": delta_succ,
-                "intent_accuracy_a": (total_intent_a / total_q) * 100,
-                "intent_accuracy_b": (total_intent_b / total_q) * 100,
-                "odata_validity_a": (total_odata_a / total_q) * 100,
-                "odata_validity_b": (total_odata_b / total_q) * 100
-            },
-            "category_breakdown": cat_stats,
-            "results": results
-        }, f, indent=2)
+        json.dump(report_payload, f, indent=2)
 
-    report_path = out_dir / "EXPERIMENT_REPORT.md"
-    with open(report_path, "w", encoding="utf-8") as f:
-        f.write(f"""# MCP 2.0 Prompt Annotations A/B Experiment Report
+    # Write unique Markdown Report
+    md_content = f"""# MCP 2.0 Prompt Annotations A/B Experiment Report
 
-**Test Subject:** Value of embedding few-shot `Examples` (utterance–query pairs) in CSDL `@Agent.Prompts` (Option 1) vs. baseline without examples.
-**Protocol Version:** MCP 2.0 (`2026-07-28` Specification)
-**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-**Evaluator Engine:** {engine_display}
-**Elapsed Execution Time:** {elapsed:.1f}s
+* **Model Evaluated:** `{model_display}`
+* **Evaluation Engine:** `{engine_display}`
+* **Total Queries:** `{total_q}` {'(Full Benchmark Suite)' if total_q >= 50 else '(Partial Run)'}
+* **Protocol Version:** MCP 2.0 (`2026-07-28` Specification)
+* **Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+* **Elapsed Execution Time:** {elapsed:.1f}s
 
 ---
 
@@ -457,14 +502,14 @@ def run_experiment(args):
 
 | Category | Queries | Server A (Option 1) | Server B (Baseline) | Delta |
 |---|---|---|---|---|
-""")
-        for c, stat in cat_stats.items():
-            f.write(f"| **{c.capitalize()}** | {stat['count']} | {stat['rate_a']:.1f}% ({stat['succ_a']}/{stat['count']}) | {stat['rate_b']:.1f}% ({stat['succ_b']}/{stat['count']}) | **+{stat['rate_a'] - stat['rate_b']:.1f}%** |\n")
+"""
+    for c, stat in cat_stats.items():
+        md_content += f"| **{c.capitalize()}** | {stat['count']} | {stat['rate_a']:.1f}% ({stat['succ_a']}/{stat['count']}) | {stat['rate_b']:.1f}% ({stat['succ_b']}/{stat['count']}) | **+{stat['rate_a'] - stat['rate_b']:.1f}%** |\n"
 
-        f.write(f"""
+    md_content += f"""
 ---
 
-## 3. Key Findings
+## 3. Key Findings for Model `{model_display}`
 
 1. **Paraphrase Resilience:**
    - Under real natural language queries, Server A achieved consistently higher accuracy because few-shot examples anchored prompt selection.
@@ -476,11 +521,19 @@ def run_experiment(args):
 
 3. **Conclusion for OData TC:**
    - Embedding few-shot utterance–query pairs inside `@Agent.Prompts` delivers a **+{delta_succ:.1f}% increase** in end-to-end task completion and directly satisfies the OData TC success metric: *"the share of AI-generated OData requests that run successfully against the target service."*
-""")
+"""
+
+    with open(unique_md_path, "w", encoding="utf-8") as f:
+        f.write(md_content)
+
+    report_path = out_dir / "EXPERIMENT_REPORT.md"
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write(md_content)
 
     print(f"\nArtifacts saved successfully:")
-    print(f"  - Summary JSON: {summary_path}")
-    print(f"  - Markdown Report: {report_path}\n")
+    print(f"  - Unique JSON: {unique_json_path}")
+    print(f"  - Unique Markdown: {unique_md_path}")
+    print(f"  - Latest Summary: {summary_path}\n")
 
 def main():
     parser = argparse.ArgumentParser(description="Run MCP 2.0 Prompt Annotations A/B Experiment via GitHub Copilot CLI")
@@ -488,6 +541,7 @@ def main():
     parser.add_argument("--model", default=None, help="Model override for copilot CLI (e.g. gpt-4o, claude-3.5-sonnet, auto)")
     parser.add_argument("--limit", type=int, default=50, help="Number of queries to run (default: 50)")
     parser.add_argument("--workers", type=int, default=2, help="Number of concurrent workers (default: 2)")
+    parser.add_argument("--simple", action="store_true", help="Display minimal single-line progress output")
     parser.add_argument("--queries", default="C:\\MCP\\Experiment\\benchmark_queries.json", help="Path to benchmark queries JSON")
     parser.add_argument("--server-a", default="http://localhost:3001", help="Server A URL (With Examples)")
     parser.add_argument("--server-b", default="http://localhost:3002", help="Server B URL (Baseline)")

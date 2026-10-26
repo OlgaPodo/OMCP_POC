@@ -611,12 +611,30 @@
           <button id="btnReloadExpSummary" class="copy-btn" style="padding: 6px 12px; font-weight: 600; background: var(--primary-light); color: var(--primary); border-color: #b3d6f4;">
             🔄 Reload Latest CLI Run
           </button>
-          <a href="/api/experiment/report-markdown" download="EXPERIMENT_REPORT.md" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
+          <a id="linkDownloadMd" href="/api/experiment/report-markdown" download="EXPERIMENT_REPORT.md" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
             📥 Download Report (.md)
           </a>
-          <a href="/api/experiment/summary" download="results_summary.json" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
+          <a id="linkDownloadJson" href="/api/experiment/summary" download="results_summary.json" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
             📥 Raw JSON
           </a>
+        </div>
+      </div>
+
+      <!-- Multiple Run Selector Bar (Supports filtering runs >= 50 queries) -->
+      <div class="mapping-selector-bar" style="justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #ffffff; border: 1px solid var(--border-color); padding: 12px 18px; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span class="selector-title">Select Model &amp; Run Report:</span>
+          <select id="reportRunSelector" class="args-field-input" style="min-width: 380px; height: 34px; font-weight: 600; border-color: var(--primary);">
+            <option value="">Loading full runs (>= 50 queries)...</option>
+          </select>
+          <label style="font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-secondary); font-weight: 500;">
+            <input type="checkbox" id="chkOnlyFullRuns" checked>
+            Show only full benchmark runs (&ge; 50 queries)
+          </label>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="card-badge" id="activeModelBadge" style="margin: 0; font-size: 12px; background: var(--primary-light); color: var(--primary); font-weight: 700;">Model: Loading...</span>
+          <span class="card-badge neutral" id="activeRunCountBadge" style="margin: 0; font-size: 12px; font-weight: 600;">50 Queries</span>
         </div>
       </div>
 

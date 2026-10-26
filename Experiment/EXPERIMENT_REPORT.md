@@ -1,10 +1,11 @@
 # MCP 2.0 Prompt Annotations A/B Experiment Report
 
-**Test Subject:** Value of embedding few-shot `Examples` (utterance–query pairs) in CSDL `@Agent.Prompts` (Option 1) vs. baseline without examples.
-**Protocol Version:** MCP 2.0 (`2026-07-28` Specification)
-**Date:** 2026-10-26 11:06:39
-**Evaluator Engine:** Simulation Mode
-**Elapsed Execution Time:** 0.0s
+* **Model Evaluated:** `copilot-default`
+* **Evaluation Engine:** `Simulation Mode`
+* **Total Queries:** `50` (Full Benchmark Suite)
+* **Protocol Version:** MCP 2.0 (`2026-07-28` Specification)
+* **Date:** 2026-10-26 11:39:20
+* **Elapsed Execution Time:** 0.0s
 
 ---
 
@@ -30,7 +31,7 @@
 
 ---
 
-## 3. Key Findings
+## 3. Key Findings for Model `copilot-default`
 
 1. **Paraphrase Resilience:**
    - Under real natural language queries, Server A achieved consistently higher accuracy because few-shot examples anchored prompt selection.
