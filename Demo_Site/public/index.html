@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft Graph MCP Explorer &amp; OData TC POC</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+  <!-- Global Top Header (Graph Explorer Style) -->
+  <header class="ge-header">
+    <div class="ge-brand">
+      <div class="ge-logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="3" fill="#0078D4"/>
+          <circle cx="4" cy="12" r="2.5" fill="#0078D4"/>
+          <circle cx="20" cy="12" r="2.5" fill="#0078D4"/>
+          <circle cx="12" cy="4" r="2.5" fill="#0078D4"/>
+          <circle cx="12" cy="20" r="2.5" fill="#0078D4"/>
+          <path d="M6.5 12H9M15 12H17.5M12 6.5V9M12 15V17.5" stroke="#0078D4" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="ge-title-group">
+        <h1 class="ge-title">Microsoft Graph MCP 2.0 Explorer</h1>
+        <span class="ge-subtitle">Model Context Protocol 2.0 (2026-07-28 Specification) &amp; OData TC Option 1 POC</span>
+      </div>
+    </div>
+
+    <!-- View Switcher Tabs -->
+    <nav class="ge-nav-tabs">
+      <button class="ge-nav-tab active" data-view="explorer">
+        <span class="tab-icon">⚡</span> Explorer
+      </button>
+      <button class="ge-nav-tab" data-view="csdl">
+        <span class="tab-icon">📜</span> User CSDL &amp; Annotations
+      </button>
+      <button class="ge-nav-tab" data-view="duality">
+        <span class="tab-icon">💡</span> Prompt Duality Analysis
+      </button>
+      <button class="ge-nav-tab" data-view="mapping">
+        <span class="tab-icon">🗺️</span> End-to-End Mapping
+      </button>
+      <button class="ge-nav-tab" data-view="summary">
+        <span class="tab-icon">📊</span> POC Summary
+      </button>
+    </nav>
+
+    <!-- Header Actions & Server Status -->
+    <div class="ge-header-actions">
+      <div class="server-status-pill" id="serverStatusPill">
+        <span class="status-dot"></span>
+        <span class="status-label" id="serverStatusLabel">Checking MCP Server...</span>
+      </div>
+      <div class="auth-pill" id="authPill" title="Microsoft Graph Authentication Status">
+        <span class="auth-badge">Azure CLI Live</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- VIEW 1: EXPLORER (aka.ms/ge style) -->
+  <main class="view-container active" id="view-explorer">
+    <div class="explorer-layout">
+      <!-- Left Sidebar: Collections & Sample Queries -->
+      <aside class="ge-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">SAMPLE MCP QUERIES</span>
+        </div>
+
+        <div class="sidebar-sections">
+          <!-- Tools Category -->
+          <div class="sidebar-category">
+            <div class="category-header">
+              <span class="cat-icon">🛠️</span>
+              <span class="cat-title">TOOLS</span>
+            </div>
+            <ul class="query-list">
+              <li class="query-item" data-query="tool-find-olga">
+                <span class="http-badge mcp-badge">CALL</span>
+                <span class="query-label">find_user ("Olga")</span>
+              </li>
+              <li class="query-item" data-query="tool-find-vojtech">
+                <span class="http-badge mcp-badge">CALL</span>
+                <span class="query-label">find_user ("Vojtech")</span>
+              </li>
+              <li class="query-item" data-query="tool-profile-me">
+                <span class="http-badge mcp-badge">CALL</span>
+                <span class="query-label">user_profile ("me")</span>
+              </li>
+              <li class="query-item" data-query="tool-profile-olga">
+                <span class="http-badge mcp-badge">CALL</span>
+                <span class="query-label">user_profile ("olga@contoso.com")</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Prompts Category -->
+          <div class="sidebar-category">
+            <div class="category-header">
+              <span class="cat-icon">💬</span>
+              <span class="cat-title">PROMPTS (Script Queries)</span>
+            </div>
+            <ul class="query-list">
+              <li class="query-item" data-query="prompt-reports-to">
+                <span class="http-badge prompt-badge">PROMPT</span>
+                <span class="query-label">Whom Olga reports to?</span>
+              </li>
+              <li class="query-item" data-query="prompt-peers">
+                <span class="http-badge prompt-badge">PROMPT</span>
+                <span class="query-label">Who are Olga's peers?</span>
+              </li>
+              <li class="query-item" data-query="prompt-direct-reports">
+                <span class="http-badge prompt-badge">PROMPT</span>
+                <span class="query-label">Direct reports of a manager</span>
+              </li>
+              <li class="query-item" data-query="prompt-search-dept">
+                <span class="http-badge prompt-badge">PROMPT</span>
+                <span class="query-label">Search users by dept &amp; title</span>
+              </li>
+              <li class="query-item" data-query="prompt-quick-lookup">
+                <span class="http-badge prompt-badge">PROMPT</span>
+                <span class="query-label">User quick lookup</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Resources Category -->
+          <div class="sidebar-category">
+            <div class="category-header">
+              <span class="cat-icon">📦</span>
+              <span class="cat-title">RESOURCES</span>
+            </div>
+            <ul class="query-list">
+              <li class="query-item" data-query="res-read-me">
+                <span class="http-badge res-badge">READ</span>
+                <span class="query-label">users://me (Current User)</span>
+              </li>
+              <li class="query-item" data-query="res-read-user">
+                <span class="http-badge res-badge">READ</span>
+                <span class="query-label">users://{userId} (Profile)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Protocol Core Category (MCP 2.0) -->
+          <div class="sidebar-category">
+            <div class="category-header">
+              <span class="cat-icon">⚙️</span>
+              <span class="cat-title">PROTOCOL CORE (MCP 2.0)</span>
+            </div>
+            <ul class="query-list">
+              <li class="query-item" data-query="proto-discover">
+                <span class="http-badge proto-badge">MCP 2.0</span>
+                <span class="query-label">server/discover</span>
+              </li>
+              <li class="query-item" data-query="proto-init">
+                <span class="http-badge proto-badge">CORE</span>
+                <span class="query-label">initialize</span>
+              </li>
+              <li class="query-item" data-query="proto-tools">
+                <span class="http-badge proto-badge">CORE</span>
+                <span class="query-label">tools/list</span>
+              </li>
+              <li class="query-item" data-query="proto-prompts">
+                <span class="http-badge proto-badge">CORE</span>
+                <span class="query-label">prompts/list</span>
+              </li>
+              <li class="query-item" data-query="proto-resources">
+                <span class="http-badge proto-badge">CORE</span>
+                <span class="query-label">resources/list</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Workspace (Request / Response Split) -->
+      <section class="ge-workspace">
+        <!-- Top Command Bar (HTTP Method, URL, Run Button) -->
+        <div class="ge-command-bar">
+          <div class="method-selector">
+            <span class="method-tag">POST</span>
+          </div>
+          <div class="url-input-container">
+            <input type="text" id="targetUrlInput" class="url-input" value="http://localhost:3001/" spellcheck="false">
+          </div>
+          <button id="runQueryBtn" class="ge-btn-primary">
+            <span class="btn-icon">▶</span> Run Query
+          </button>
+        </div>
+
+        <!-- Upper Pane: Request Details -->
+        <div class="ge-pane request-pane">
+          <div class="pane-tabbar">
+            <button class="pane-tab active" data-tab="req-payload">Request Payload (JSON-RPC)</button>
+            <button class="pane-tab" data-tab="req-headers">Request Headers</button>
+            <button class="pane-tab" data-tab="req-args-builder">Arguments Form</button>
+            <button class="pane-tab" data-tab="req-mapping-preview">Graph API Target</button>
+          </div>
+
+          <div class="pane-content">
+            <!-- Tab: Request Payload -->
+            <div class="tab-panel active" id="tab-req-payload">
+              <textarea id="requestJsonArea" class="code-editor" spellcheck="false"></textarea>
+            </div>
+
+            <!-- Tab: Request Headers -->
+            <div class="tab-panel" id="tab-req-headers">
+              <div class="headers-table-container">
+                <table class="headers-table" id="reqHeadersTable">
+                  <thead>
+                    <tr><th>Header Key</th><th>Header Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Content-Type</td><td>application/json</td></tr>
+                    <tr><td>Accept</td><td>application/json, text/event-stream</td></tr>
+                    <tr><td>MCP-Protocol-Version</td><td>2026-07-28</td></tr>
+                    <tr><td>Mcp-Method</td><td id="hdrMcpMethod">tools/call</td></tr>
+                    <tr><td>Mcp-Name</td><td id="hdrMcpName">user_profile</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab: Arguments Form -->
+            <div class="tab-panel" id="tab-req-args-builder">
+              <div class="args-form-container" id="argsFormContainer">
+                <p class="form-hint">Select a prompt or tool on the left to configure arguments dynamically.</p>
+              </div>
+            </div>
+
+            <!-- Tab: Graph API Target -->
+            <div class="tab-panel" id="tab-req-mapping-preview">
+              <div class="mapping-preview-box" id="mappingPreviewBox">
+                <div class="preview-item">
+                  <span class="preview-label">Target Microsoft Graph Resource:</span>
+                  <code class="preview-code" id="targetGraphUrl">https://graph.microsoft.com/v1.0/me</code>
+                </div>
+                <div class="preview-item">
+                  <span class="preview-label">Underlying OData Entity:</span>
+                  <span class="preview-text" id="targetOdataEntity">Microsoft.Graph.User (EntitySet: users, Singleton: me)</span>
+                </div>
+                <div class="preview-item">
+                  <span class="preview-label">CSDL Option 1 Annotation:</span>
+                  <span class="preview-text" id="targetAnnotationStatus">Mapped via @Agent.Prompts in Sales.Container / GraphService</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lower Pane: Response Details -->
+        <div class="ge-pane response-pane">
+          <div class="pane-tabbar response-tabbar">
+            <div class="response-status-badge" id="responseStatusBadge">
+              <span class="status-indicator-dot"></span>
+              <span class="status-code-text">200 OK</span>
+              <span class="status-time-text" id="responseTimeText">0 ms</span>
+            </div>
+            <button class="pane-tab active" data-tab="res-payload">Response Payload (JSON-RPC)</button>
+            <button class="pane-tab" data-tab="res-rendered">Rendered Org Card</button>
+            <button class="pane-tab" data-tab="res-headers">Response Headers</button>
+            <button class="pane-tab" data-tab="res-graph-trace">Graph API Trace</button>
+          </div>
+
+          <div class="pane-content">
+            <!-- Tab: Response Payload -->
+            <div class="tab-panel active" id="tab-res-payload">
+              <pre id="responseJsonArea" class="code-viewer"><code>{ "status": "Ready. Click 'Run Query' or select a sample query from the left." }</code></pre>
+            </div>
+
+            <!-- Tab: Rendered Org Profile Card -->
+            <div class="tab-panel" id="tab-res-rendered">
+              <div class="org-card-container" id="orgCardContainer">
+                <div class="empty-state">
+                  <div class="empty-icon">👤</div>
+                  <p>Execute <code>user_profile</code> or <code>find_user</code> to view the interactive profile and reporting structure.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Response Headers -->
+            <div class="tab-panel" id="tab-res-headers">
+              <div class="headers-table-container">
+                <table class="headers-table" id="resHeadersTable">
+                  <thead>
+                    <tr><th>Header Key</th><th>Header Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="2" class="empty-cell">Run a query to inspect live response headers.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab: Graph API Trace -->
+            <div class="tab-panel" id="tab-res-graph-trace">
+              <div class="graph-trace-container" id="graphTraceContainer">
+                <p class="trace-hint">Live Microsoft Graph API calls made by the MCP server:</p>
+                <div class="trace-list" id="traceList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- VIEW 2: CSDL & ANNOTATIONS (Option 1) -->
+  <main class="view-container" id="view-csdl">
+    <div class="doc-view-layout">
+      <div class="doc-header">
+        <h2>Limited User CSDL with Suggested @Agent.Prompts Annotations (Option 1)</h2>
+        <p class="doc-sub">Based on proposal <em>"Making OData Agent-Ready: Prompts, Events and Tasks, and a Modernized Domain Language"</em> (OData TC, Olga Podolyako).</p>
+      </div>
+
+      <div class="doc-tabs-bar">
+        <button class="doc-subtab active" data-subtab="csdl-json">CSDL JSON ($Version: 4.01)</button>
+        <button class="doc-subtab" data-subtab="csdl-xml">CSDL XML (EDMX 4.0)</button>
+        <button class="doc-subtab" data-subtab="option-comparison">Option 1 vs. Option 2 Architectural Comparison</button>
+      </div>
+
+      <div class="doc-subcontent">
+        <!-- CSDL JSON Subtab -->
+        <div class="subtab-panel active" id="subtab-csdl-json">
+          <div class="code-box-header">
+            <span>Microsoft.Graph CSDL JSON with Embedded @Agent.Prompts &amp; Examples</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlJsonCode').innerText)">Copy JSON</button>
+          </div>
+          <pre class="code-viewer-large" id="csdlJsonCode"><code class="language-json">Loading CSDL JSON...</code></pre>
+        </div>
+
+        <!-- CSDL XML Subtab -->
+        <div class="subtab-panel" id="subtab-csdl-xml">
+          <div class="code-box-header">
+            <span>Microsoft.Graph CSDL XML (EDMX) with &lt;Annotation Term="Agent.Prompts"&gt;</span>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode').innerText)">Copy XML</button>
+          </div>
+          <pre class="code-viewer-large" id="csdlXmlCode"><code class="language-xml">Loading CSDL XML...</code></pre>
+        </div>
+
+        <!-- Option Comparison Subtab -->
+        <div class="subtab-panel" id="subtab-option-comparison">
+          <div class="comparison-grid">
+            <div class="comparison-card featured">
+              <div class="card-badge">Selected for this POC</div>
+              <h3>Option 1: Examples Embedded Inside @Agent.Prompts</h3>
+              <p>Examples (utterance &amp; OData request pairs) are packaged directly inside the prompt record in CSDL metadata.</p>
+              <ul class="check-list">
+                <li><strong>Unified Semantic Model:</strong> The prompt encapsulates the name, description, parameters, template messages, AND example utterances.</li>
+                <li><strong>Direct MCP Alignment:</strong> Maps 1:1 to MCP <code>prompts/list</code> and <code>prompts/get</code> without needing external cross-reference lookups.</li>
+                <li><strong>Zero-Shot Semantic Routing:</strong> LLM gateways and agents can vectorize the <code>Examples</code> field as a retrieval index to pick the right prompt.</li>
+              </ul>
+              <pre class="snippet-box"><code>"Sales.Container": {
+  "@Agent.Prompts": [{
+    "Name": "answer_bi_question",
+    "Arguments": [{ "Name": "question", "Required": true }],
+    "Messages": [...],
+    "Examples": [{
+      "Utterance": "Which invoices are overdue?",
+      "Request": "Invoices?$filter=DueDate lt now()"
+    }]
+  }]
+}</code></pre>
+            </div>
+
+            <div class="comparison-card">
+              <div class="card-badge neutral">Alternative Considered</div>
+              <h3>Option 2: Separate @Agent.ExampleQueries Term</h3>
+              <p>Prompts and example queries live as distinct terms on the entity set/container.</p>
+              <ul class="check-list">
+                <li>Separates general query examples from structured prompt templates.</li>
+                <li>Requires gateways to perform an additional join step between <code>@Agent.Prompts</code> and <code>@Agent.ExampleQueries</code>.</li>
+                <li>Does not provide a unified payload when exporting to MCP <code>prompts/list</code>.</li>
+              </ul>
+              <pre class="snippet-box"><code>"Sales.Container/Invoices": {
+  "@Agent.ExampleQueries": [{
+    "Utterance": "Which Contoso invoices are overdue?",
+    "Request": "Invoices?$filter=Customer/Name eq 'Contoso' and DueDate lt now()"
+  }]
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 3: PROMPT DUALITY ANALYSIS (Addressing Concern 1) -->
+  <main class="view-container" id="view-duality">
+    <div class="doc-view-layout">
+      <div class="doc-header">
+        <h2>Addressing Concern 1: The Meaning of MCP Prompts</h2>
+        <div class="concern-quote">
+          <span class="quote-icon">⚠️</span>
+          <em>"The meaning of MCP prompts was unclear. The proposal described prompts as a search index, but the MCP specification presents them more like reusable templates."</em>
+        </div>
+      </div>
+
+      <div class="duality-container">
+        <!-- Two Perspectives Comparison -->
+        <div class="duality-split">
+          <div class="duality-card mcp-spec-card">
+            <div class="duality-card-header">
+              <span class="badge-tag">MCP Specification View</span>
+              <h3>Reusable Parameterized Templates</h3>
+            </div>
+            <p>In the official Model Context Protocol specification, prompts are user- or agent-controlled <strong>slash-command-style templates</strong>:</p>
+            <ul>
+              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_olga_reports_to</code>) or an agent executes a macro.</li>
+              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Olga"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
+              <li><strong>Tool / Resource links:</strong> Can embed explicit context references such as <code>{tool:user_profile}</code> or <code>{resource:users://me}</code>.</li>
+            </ul>
+          </div>
+
+          <div class="duality-card odata-spec-card">
+            <div class="duality-card-header">
+              <span class="badge-tag">OData TC / Enterprise View</span>
+              <h3>Semantic Retrieval Index (Catalog)</h3>
+            </div>
+            <p>For large enterprise APIs like Microsoft Graph (with 1,000+ endpoints), exposing individual tools saturates LLM context windows:</p>
+            <ul>
+              <li><strong>Context Window Constraint:</strong> Tool selection becomes unreliable beyond ~120 tools.</li>
+              <li><strong>Work IQ &amp; Graph Copilot Pattern:</strong> Instead of 1,000 tools, services use a catalog of curated natural-language query examples to index API calls.</li>
+              <li><strong>Search-then-Query:</strong> The agent matches user utterance (e.g. <em>"Who is Olga's manager?"</em>) against example query embeddings to select the appropriate tool or API request.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- How Option 1 Solves Both -->
+        <div class="synthesis-card">
+          <div class="synthesis-header">
+            <span class="synthesis-icon">✨</span>
+            <h3>How Option 1 Reconciles Both: The Dual-Role Prompt</h3>
+          </div>
+          <p class="synthesis-desc">
+            Option 1 bridges this gap by unifying both requirements into a single CSDL annotation:
+          </p>
+          <div class="synthesis-points">
+            <div class="synthesis-point">
+              <div class="point-num">1</div>
+              <div class="point-content">
+                <h4>At Execution Time (MCP Specification Role):</h4>
+                <p>The prompt serves as a strictly compliant MCP template via <code>prompts/get</code>, returning parameterized messages and tool references.</p>
+              </div>
+            </div>
+            <div class="synthesis-point">
+              <div class="point-num">2</div>
+              <div class="point-content">
+                <h4>At Discovery Time (Search Index Role):</h4>
+                <p>The gateway uses the <code>Examples</code> array as vector embeddings or text search candidates. When a user asks an arbitrary question, the agent searches the prompt catalog first to select the prompt.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Semantic Matcher Sandbox -->
+        <div class="matcher-sandbox">
+          <h3>Interactive Semantic Matcher Test</h3>
+          <p>Try typing a question below to see how the search-index capability selects the correct MCP prompt template:</p>
+          <div class="matcher-input-bar">
+            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Olga's boss? or Who works on the same team as Olga?" value="Who is Olga's boss?">
+            <button id="testMatchBtn" class="ge-btn-primary">Test Semantic Match</button>
+          </div>
+          <div class="matcher-results" id="matcherResults">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 4: END-TO-END MAPPING (Addressing Concern 2) -->
+  <main class="view-container" id="view-mapping">
+    <div class="doc-view-layout">
+      <div class="doc-header">
+        <h2>Addressing Concern 2: The End-to-End Mapping Pipeline</h2>
+        <div class="concern-quote">
+          <span class="quote-icon">⚠️</span>
+          <em>"The mapping was missing. He wanted a clear example showing how an OData annotation becomes an MCP prompt and how that prompt connects to a tool or API request."</em>
+        </div>
+      </div>
+
+      <!-- Script Query Selector Buttons -->
+      <div class="mapping-selector-bar">
+        <span class="selector-title">Select POC Query Scenario:</span>
+        <button class="map-query-btn active" data-scenario="olga-manager">Whom Olga reports to?</button>
+        <button class="map-query-btn" data-scenario="olga-peers">Who are Olga's peers?</button>
+        <button class="map-query-btn" data-scenario="manager-reports">Direct reports of a manager</button>
+        <button class="map-query-btn" data-scenario="dept-search">Search users by dept &amp; title</button>
+      </div>
+
+      <!-- 4-Stage Visual Pipeline -->
+      <div class="pipeline-container">
+        <!-- Stage 1 -->
+        <div class="pipeline-stage">
+          <div class="stage-header">
+            <span class="stage-badge">Stage 1</span>
+            <h4>OData CSDL Annotation</h4>
+          </div>
+          <div class="stage-sub">Option 1 Metadata</div>
+          <div class="stage-card" id="stage1Card">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="pipeline-arrow">➔</div>
+
+        <!-- Stage 2 -->
+        <div class="pipeline-stage">
+          <div class="stage-header">
+            <span class="stage-badge">Stage 2</span>
+            <h4>MCP Protocol Projection</h4>
+          </div>
+          <div class="stage-sub">prompts/list &amp; prompts/get</div>
+          <div class="stage-card" id="stage2Card">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="pipeline-arrow">➔</div>
+
+        <!-- Stage 3 -->
+        <div class="pipeline-stage">
+          <div class="stage-header">
+            <span class="stage-badge">Stage 3</span>
+            <h4>Agent Tool Invocation</h4>
+          </div>
+          <div class="stage-sub">tools/call</div>
+          <div class="stage-card" id="stage3Card">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="pipeline-arrow">➔</div>
+
+        <!-- Stage 4 -->
+        <div class="pipeline-stage">
+          <div class="stage-header">
+            <span class="stage-badge">Stage 4</span>
+            <h4>Microsoft Graph REST API</h4>
+          </div>
+          <div class="stage-sub">Underlying OData Request</div>
+          <div class="stage-card" id="stage4Card">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Mapping Translation Table -->
+      <div class="mapping-table-section">
+        <h3>Property-by-Property Translation Matrix</h3>
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>OData CSDL Annotation Property (@Agent.Prompts)</th>
+              <th>MCP Protocol Element (prompts/get)</th>
+              <th>Agent Execution Element (tools/call)</th>
+              <th>Microsoft Graph OData Request</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Name: "whom_olga_reports_to"</code></td>
+              <td><code>prompt.name: "whom_olga_reports_to"</code></td>
+              <td>Target prompt identifier</td>
+              <td>Identifies operation intention</td>
+            </tr>
+            <tr>
+              <td><code>Title: "Whom Olga reports to?"</code></td>
+              <td><code>prompt.title</code> (MCP metadata)</td>
+              <td>Display text in chat UI / slash menu</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><code>Arguments: [{ "Name": "userName" }]</code></td>
+              <td><code>prompt.arguments: [{ "name": "userName" }]</code></td>
+              <td>Agent extracts parameters from user text</td>
+              <td>Binds into OData key or filter parameter</td>
+            </tr>
+            <tr>
+              <td><code>Messages: [{ "Text": "... {tool:user_profile} ..." }]</code></td>
+              <td><code>prompt.messages: [{ role: "user", content: ... }]</code></td>
+              <td>Agent decides to execute <code>user_profile</code> tool</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><code>Examples[0].Request: "users('olga@contoso.com')/manager"</code></td>
+              <td>Provided in metadata / retrieval catalog</td>
+              <td>Direct tool execution guidance</td>
+              <td><code>GET /v1.0/users/{id}/manager</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 5: POC SUMMARY -->
+  <main class="view-container" id="view-summary">
+    <div class="doc-view-layout">
+      <div class="doc-header">
+        <h2>POC Summary &amp; Deliverables Checklist</h2>
+        <p class="doc-sub">Implementation verification against <code>Script_MCP_POC.pdf</code> specifications.</p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>1. Local HTTP MCP Server</h3>
+          <p>Built with <strong>.NET 10 / C#</strong> using official <code>ModelContextProtocol.AspNetCore</code> &amp; <code>Microsoft.McpServer</code> on <code>http://localhost:3001/</code>.</p>
+          <ul>
+            <li>Streamable HTTP transport (JSON-RPC over HTTP with SSE)</li>
+            <li>Calls live Microsoft Graph API (<code>https://graph.microsoft.com/v1.0/users</code>)</li>
+            <li>Automatic Azure CLI token acquisition with high-fidelity fallback</li>
+          </ul>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>2. MCP Tools (2 Tools)</h3>
+          <ul>
+            <li><code>find_user</code>: Search/filter users by name, email, or UPN</li>
+            <li><code>user_profile</code>: Deep profile fetching with manager, direct reports, and peers</li>
+          </ul>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>3. MCP Resources (2 Resources)</h3>
+          <ul>
+            <li><code>users://me</code>: Authenticated user profile representation</li>
+            <li><code>users://{userId}</code>: Specific user profile resource</li>
+          </ul>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>4. MCP Prompts</h3>
+          <ul>
+            <li><code>whom_olga_reports_to</code>: "Whom Olga reports to?"</li>
+            <li><code>who_are_olgas_peers</code>: "Who are Olga's peers?"</li>
+            <li><code>direct_reports_of_manager</code>: Manager's direct reports</li>
+            <li><code>search_users_by_dept_title</code>: Dept &amp; title search</li>
+            <li><code>user_quick_lookup</code>: Contact card &amp; resource reader</li>
+          </ul>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>5. Graph Explorer-style Web App</h3>
+          <p>Running on <code>http://localhost:3000</code>:</p>
+          <ul>
+            <li>Shows full MCP request headers, payload, response headers, and response payload</li>
+            <li>Interactive Graph Explorer layout with live execution and latency metrics</li>
+            <li>Live Microsoft Graph REST trace inspection</li>
+          </ul>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-status-icon">✅</div>
+          <h3>6. OData TC Concerns Addressed</h3>
+          <ul>
+            <li><strong>Concern 1 Resolved:</strong> Comprehensive duality analysis explaining how Option 1 combines the search index with reusable templates.</li>
+            <li><strong>Concern 2 Resolved:</strong> Interactive 4-stage pipeline visualizing the exact transformation from CSDL annotation to Graph REST call.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

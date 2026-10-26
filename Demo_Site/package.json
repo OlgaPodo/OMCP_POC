@@ -1,0 +1,17 @@
+{
+  "name": "graph-mcp-demo-site",
+  "version": "1.0.0",
+  "description": "Microsoft Graph MCP Explorer and OData TC Prompt Annotations POC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "mcp",
+    "microsoft-graph",
+    "odata",
+    "model-context-protocol"
+  ],
+  "author": "Olga Podolyako",
+  "license": "MIT"
+}
