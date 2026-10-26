@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "query": "Whom Olga reports to?",
+    "category": "canonical",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 2,
+    "query": "Who is Olga's manager?",
+    "category": "paraphrased",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 3,
+    "query": "Who is Olga's direct boss?",
+    "category": "paraphrased",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 4,
+    "query": "Show me the reporting line for Olga Podolyako",
+    "category": "paraphrased",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 5,
+    "query": "Who approves Olga's expenses and time off?",
+    "category": "paraphrased",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 6,
+    "query": "Who is the manager of Megan Bowen?",
+    "category": "complex",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('meganb@contoso.com')/manager",
+    "expectedParams": { "userId": "meganb@contoso.com" }
+  },
+  {
+    "id": 7,
+    "query": "Whom does Diego Siciliani report to?",
+    "category": "complex",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('diegos@contoso.com')/manager",
+    "expectedParams": { "userId": "diegos@contoso.com" }
+  },
+  {
+    "id": 8,
+    "query": "Who manages Adele Vance?",
+    "category": "complex",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('adelev@contoso.com')/manager",
+    "expectedParams": { "userId": "adelev@contoso.com" }
+  },
+  {
+    "id": 9,
+    "query": "Find the supervisor of Patti Fernandez",
+    "category": "complex",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('pattif@contoso.com')/manager",
+    "expectedParams": { "userId": "pattif@contoso.com" }
+  },
+  {
+    "id": 10,
+    "query": "Who is my manager?",
+    "category": "canonical",
+    "targetIntent": "whom_olga_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "me/manager",
+    "expectedParams": { "userId": "me" }
+  },
+  {
+    "id": 11,
+    "query": "Who are Olga's peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 12,
+    "query": "Who works on the same team as Olga?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 13,
+    "query": "Find teammates who share a manager with Olga",
+    "category": "paraphrased",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 14,
+    "query": "Who are my peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "me/manager/directReports",
+    "expectedParams": { "userId": "me" }
+  },
+  {
+    "id": 15,
+    "query": "List all colleagues reporting to the same director as Olga",
+    "category": "paraphrased",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 16,
+    "query": "Who are Megan Bowen's peer architects?",
+    "category": "complex",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('meganb@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "meganb@contoso.com" }
+  },
+  {
+    "id": 17,
+    "query": "Show everyone on Adele Vance's peer team",
+    "category": "complex",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('adelev@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "adelev@contoso.com" }
+  },
+  {
+    "id": 18,
+    "query": "Who are the other leads working under Alex alongside Diego?",
+    "category": "complex",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('diegos@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "diegos@contoso.com" }
+  },
+  {
+    "id": 19,
+    "query": "Who shares an organization level with Olga Podolyako?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "olga@contoso.com" }
+  },
+  {
+    "id": 20,
+    "query": "Find peer colleagues for Lynne Robbins",
+    "category": "complex",
+    "targetIntent": "who_are_olgas_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('lynner@contoso.com')/manager/directReports",
+    "expectedParams": { "userId": "lynner@contoso.com" }
+  },
+  {
+    "id": 21,
+    "query": "Direct reports of a manager",
+    "category": "canonical",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 22,
+    "query": "Who reports to Alex?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 23,
+    "query": "List everyone reporting to Alex Wilbur",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 24,
+    "query": "Show the direct team of Alex Wilbur",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 25,
+    "query": "Does Olga have any direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Olga Podolyako" }
+  },
+  {
+    "id": 26,
+    "query": "Who are Diego Siciliani's direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('diegos@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Diego Siciliani" }
+  },
+  {
+    "id": 27,
+    "query": "List members of Lynne Robbins' group",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('lynner@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Lynne Robbins" }
+  },
+  {
+    "id": 28,
+    "query": "Who is currently supervised by Alex?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 29,
+    "query": "Find all people managed by Joni Sherman",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('jonis@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Joni Sherman" }
+  },
+  {
+    "id": 30,
+    "query": "Enumerate staff under partner director Alex Wilbur",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')/directReports",
+    "expectedParams": { "managerNameOrId": "Alex Wilbur" }
+  },
+  {
+    "id": 31,
+    "query": "Search users by department and title",
+    "category": "canonical",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": { "department": "Identity", "jobTitle": "Architect" }
+  },
+  {
+    "id": 32,
+    "query": "Find architects in Identity",
+    "category": "paraphrased",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": { "department": "Identity", "jobTitle": "Architect" }
+  },
+  {
+    "id": 33,
+    "query": "Find all Principal Architects in Architecture & Standards",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Architecture & Standards' and startswith(jobTitle,'Principal')",
+    "expectedParams": { "department": "Architecture & Standards", "jobTitle": "Principal" }
+  },
+  {
+    "id": 34,
+    "query": "Show me product managers in the Product department",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Product' and startswith(jobTitle,'Product Manager')",
+    "expectedParams": { "department": "Product", "jobTitle": "Product Manager" }
+  },
+  {
+    "id": 35,
+    "query": "List all business administrators located in Prague",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Operations' and startswith(jobTitle,'Business Administrator')",
+    "expectedParams": { "department": "Operations", "jobTitle": "Business Administrator" }
+  },
+  {
+    "id": 36,
+    "query": "Search for engineering managers in Engineering",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Engineering' and startswith(jobTitle,'Manager')",
+    "expectedParams": { "department": "Engineering", "jobTitle": "Manager" }
+  },
+  {
+    "id": 37,
+    "query": "Look up all software architects across the company",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Software Architect')",
+    "expectedParams": { "query": "Software Architect" }
+  },
+  {
+    "id": 38,
+    "query": "Find staff members with Architect in their title",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Architect')",
+    "expectedParams": { "query": "Architect" }
+  },
+  {
+    "id": 39,
+    "query": "Find all employees named Alex",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Alex')",
+    "expectedParams": { "query": "Alex" }
+  },
+  {
+    "id": 40,
+    "query": "Search for Megan in the directory",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Megan')",
+    "expectedParams": { "query": "Megan" }
+  },
+  {
+    "id": 41,
+    "query": "Find user with email olga@contoso.com",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=mail eq 'olga@contoso.com'",
+    "expectedParams": { "query": "olga@contoso.com" }
+  },
+  {
+    "id": 42,
+    "query": "User quick lookup",
+    "category": "canonical",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users://me",
+    "expectedParams": { "identifier": "me" }
+  },
+  {
+    "id": 43,
+    "query": "Get full profile card for Olga Podolyako",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('olga@contoso.com')",
+    "expectedParams": { "identifier": "olga@contoso.com" }
+  },
+  {
+    "id": 44,
+    "query": "Show contact card and office location for Alex Wilbur",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('alexw@contoso.com')",
+    "expectedParams": { "identifier": "alexw@contoso.com" }
+  },
+  {
+    "id": 45,
+    "query": "Look up user profile for Adele Vance",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('adelev@contoso.com')",
+    "expectedParams": { "identifier": "adelev@contoso.com" }
+  },
+  {
+    "id": 46,
+    "query": "What projects is Olga currently leading?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 47,
+    "query": "Check Olga's calendar for open slots tomorrow",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 48,
+    "query": "Which Contoso invoices are past due?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 49,
+    "query": "List all security groups that Megan Bowen is a member of",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 50,
+    "query": "Send an email to Alex Wilbur regarding API guidelines",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  }
+]

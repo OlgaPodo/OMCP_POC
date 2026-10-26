@@ -1,0 +1,1831 @@
+{
+  "timestamp": "2026-10-26T10:10:55.973164",
+  "model": "simulated",
+  "total_queries": 50,
+  "metrics": {
+    "server_a_success_rate": 100.0,
+    "server_b_success_rate": 57.99999999999999,
+    "delta": 42.00000000000001,
+    "intent_accuracy_a": 100.0,
+    "intent_accuracy_b": 68.0
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 7,
+      "server_a": 7,
+      "server_b": 7
+    },
+    "paraphrased": {
+      "count": 19,
+      "server_a": 19,
+      "server_b": 14
+    },
+    "complex": {
+      "count": 16,
+      "server_a": 16,
+      "server_b": 0
+    },
+    "ambiguous": {
+      "count": 3,
+      "server_a": 3,
+      "server_b": 3
+    },
+    "edge_case": {
+      "count": 5,
+      "server_a": 5,
+      "server_b": 5
+    }
+  },
+  "server_a_results": [
+    {
+      "query_id": 1,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 2,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 3,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 4,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 5,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 6,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "meganb@contoso.com"
+        },
+        "odata_request": "users('meganb@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 7,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "diegos@contoso.com"
+        },
+        "odata_request": "users('diegos@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 8,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 9,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "pattif@contoso.com"
+        },
+        "odata_request": "users('pattif@contoso.com')/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 10,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for whom_olga_reports_to."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 11,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 12,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 13,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 14,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 15,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 16,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "meganb@contoso.com"
+        },
+        "odata_request": "users('meganb@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 17,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 18,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "diegos@contoso.com"
+        },
+        "odata_request": "users('diegos@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 19,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 20,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "lynner@contoso.com"
+        },
+        "odata_request": "users('lynner@contoso.com')/manager/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for who_are_olgas_peers."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 21,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 22,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 23,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 24,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 25,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Olga Podolyako"
+        },
+        "odata_request": "users('olga@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 26,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Diego Siciliani"
+        },
+        "odata_request": "users('diegos@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 27,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Lynne Robbins"
+        },
+        "odata_request": "users('lynner@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 28,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 29,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Joni Sherman"
+        },
+        "odata_request": "users('jonis@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 30,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for direct_reports_of_manager."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 31,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 32,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 33,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Architecture & Standards",
+          "jobTitle": "Principal"
+        },
+        "odata_request": "users?$filter=department eq 'Architecture & Standards' and startswith(jobTitle,'Principal')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 34,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Product",
+          "jobTitle": "Product Manager"
+        },
+        "odata_request": "users?$filter=department eq 'Product' and startswith(jobTitle,'Product Manager')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 35,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Operations",
+          "jobTitle": "Business Administrator"
+        },
+        "odata_request": "users?$filter=department eq 'Operations' and startswith(jobTitle,'Business Administrator')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 36,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Engineering",
+          "jobTitle": "Manager"
+        },
+        "odata_request": "users?$filter=department eq 'Engineering' and startswith(jobTitle,'Manager')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for search_users_by_dept_title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 37,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Software Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Software Architect')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for find_user."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 38,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Architect')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for find_user."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 39,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Alex"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Alex')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for find_user."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 40,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Megan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Megan')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for find_user."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 41,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "olga@contoso.com"
+        },
+        "odata_request": "users?$filter=mail eq 'olga@contoso.com'",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for find_user."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 42,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "me"
+        },
+        "odata_request": "users://me",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for user_quick_lookup."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 43,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for user_quick_lookup."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 44,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "alexw@contoso.com"
+        },
+        "odata_request": "users('alexw@contoso.com')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for user_quick_lookup."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 45,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')",
+        "reasoning": "Matched pattern from @Agent.Prompts Examples for user_quick_lookup."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 46,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 47,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 48,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 49,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 50,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    }
+  ],
+  "server_b_results": [
+    {
+      "query_id": 1,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 2,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'",
+        "reasoning": "No examples provided; searched for 'Manager' title keyword."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 3,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'",
+        "reasoning": "No examples provided; searched for 'Manager' title keyword."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 4,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 5,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 6,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who is the manager of Megan Bowen?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who is the manager of Megan Bowen?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 7,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Whom does Diego Siciliani report to?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Whom does Diego Siciliani report to?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 8,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who manages Adele Vance?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who manages Adele Vance?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 9,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find the supervisor of Patti Fernandez"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find the supervisor of Patti Fernandez')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 10,
+      "prediction": {
+        "intent": "whom_olga_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 11,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 12,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "team"
+        },
+        "odata_request": "users?$filter=department eq 'team'",
+        "reasoning": "Attempted to find team members without manager traversal knowledge."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 13,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "manager"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Manager'",
+        "reasoning": "No examples provided; searched for 'Manager' title keyword."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 14,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 15,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 16,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are Megan Bowen's peer architects?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are Megan Bowen's peer architects?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 17,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Show everyone on Adele Vance's peer team"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Show everyone on Adele Vance's peer team')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 18,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are the other leads working under Alex alongside Diego?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are the other leads working under Alex alongside Diego?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 19,
+      "prediction": {
+        "intent": "who_are_olgas_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')/manager/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 20,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find peer colleagues for Lynne Robbins"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find peer colleagues for Lynne Robbins')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 21,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 22,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 23,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 24,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "find_user",
+        "parameters": {
+          "query": "team"
+        },
+        "odata_request": "users?$filter=department eq 'team'",
+        "reasoning": "Attempted to find team members without manager traversal knowledge."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 25,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Does Olga have any direct reports?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Does Olga have any direct reports?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 26,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Who are Diego Siciliani's direct reports?"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Who are Diego Siciliani's direct reports?')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 27,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "List members of Lynne Robbins' group"
+        },
+        "odata_request": "users?$filter=contains(notes, 'List members of Lynne Robbins' group')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 28,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 29,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find all people managed by Joni Sherman"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find all people managed by Joni Sherman')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 30,
+      "prediction": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "managerNameOrId": "Alex Wilbur"
+        },
+        "odata_request": "users('alexw@contoso.com')/directReports",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 31,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 32,
+      "prediction": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "department": "Identity",
+          "jobTitle": "Architect"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 33,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find all Principal Architects in Architecture & Standards"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Find all Principal Architects in Architecture & Standards')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 34,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Show me product managers in the Product department"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Show me product managers in the Product department')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 35,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "List all business administrators located in Prague"
+        },
+        "odata_request": "users?$filter=contains(notes, 'List all business administrators located in Prague')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 36,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Search for engineering managers in Engineering"
+        },
+        "odata_request": "users?$filter=contains(notes, 'Search for engineering managers in Engineering')",
+        "reasoning": "Lacked few-shot pattern; attempted generic string contains."
+      },
+      "evaluation": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      }
+    },
+    {
+      "query_id": 37,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Software Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Software Architect')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 38,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Architect')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 39,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\"",
+        "reasoning": "Fallback search."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 40,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\"",
+        "reasoning": "Fallback search."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 41,
+      "prediction": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "search"
+        },
+        "odata_request": "users?$search=\"name\"",
+        "reasoning": "Fallback search."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 42,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "me"
+        },
+        "odata_request": "users://me",
+        "reasoning": "Matched standard prompt title."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 43,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "olga@contoso.com"
+        },
+        "odata_request": "users('olga@contoso.com')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 44,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "alexw@contoso.com"
+        },
+        "odata_request": "users('alexw@contoso.com')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 45,
+      "prediction": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "identifier": "adelev@contoso.com"
+        },
+        "odata_request": "users('adelev@contoso.com')",
+        "reasoning": "Partial parameter match."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 46,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 47,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 48,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 49,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    },
+    {
+      "query_id": 50,
+      "prediction": {
+        "intent": "none",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": "unsupported",
+        "reasoning": "Query is outside the scope of user profile and organizational hierarchy."
+      },
+      "evaluation": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      }
+    }
+  ]
+}

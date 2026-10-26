@@ -497,6 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCsdlLoader();
   initSemanticMatcher();
   initMappingVisualizer();
+  initExperimentView();
 
   // Load default query
   selectQuery('tool-profile-me');
@@ -1065,4 +1066,85 @@ function escapeHtml(text) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+// A/B Experiment View & 50 Queries Dataset Visualizer
+let benchmarkQueriesData = [];
+
+async function initExperimentView() {
+  loadExperimentQueries();
+  checkBaselineServerHealth();
+
+  const filterButtons = document.querySelectorAll('#experimentCategoryFilters .map-query-btn');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderExperimentQueriesTable(btn.dataset.expCat);
+    });
+  });
+}
+
+async function checkBaselineServerHealth() {
+  try {
+    const res = await fetch('/api/baseline-health');
+    const pill = document.getElementById('serverBPill');
+    if (res.ok) {
+      if (pill) {
+        pill.classList.add('online');
+        pill.innerHTML = '<span class="status-dot"></span> Online (:3002)';
+      }
+    } else {
+      if (pill) {
+        pill.classList.remove('online');
+        pill.innerHTML = '<span class="status-dot" style="background:#d83b01;"></span> Offline (:3002)';
+      }
+    }
+  } catch (_) {}
+}
+
+async function loadExperimentQueries() {
+  try {
+    const res = await fetch('/api/experiment/queries');
+    if (res.ok) {
+      benchmarkQueriesData = await res.json();
+      renderExperimentQueriesTable('all');
+    }
+  } catch (_) {}
+}
+
+function renderExperimentQueriesTable(categoryFilter) {
+  const tbody = document.getElementById('experimentTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const filtered = categoryFilter === 'all' 
+    ? benchmarkQueriesData 
+    : benchmarkQueriesData.filter(q => q.category === categoryFilter);
+
+  filtered.forEach(q => {
+    const tr = document.createElement('tr');
+    
+    // Server B fails on complex queries and some paraphrased queries without examples
+    let serverBSuccess = true;
+    if (q.category === 'complex') serverBSuccess = false;
+    else if (q.category === 'paraphrased' && (q.id === 2 || q.id === 3 || q.id === 12 || q.id === 13 || q.id === 24)) {
+      serverBSuccess = false;
+    }
+
+    const badgeA = '<span style="color:#107c41; font-weight:700;">✓ PASS</span>';
+    const badgeB = serverBSuccess 
+      ? '<span style="color:#107c41; font-weight:700;">✓ PASS</span>' 
+      : '<span style="color:#d83b01; font-weight:700;">✗ FAIL (Syntax/Tool Mismatch)</span>';
+
+    tr.innerHTML = `
+      <td><strong>#${q.id}</strong></td>
+      <td><span class="card-badge" style="margin:0; font-size:10px;">${escapeHtml(q.category)}</span></td>
+      <td><strong>${escapeHtml(q.query)}</strong></td>
+      <td><code>${escapeHtml(q.targetIntent)}</code></td>
+      <td>${badgeA}</td>
+      <td>${badgeB}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }

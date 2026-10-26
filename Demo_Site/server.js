@@ -142,6 +142,51 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Experiment APIs
+  if (req.url === '/api/experiment/queries' && req.method === 'GET') {
+    try {
+      const qPath = path.join(__dirname, '..', 'Experiment', 'benchmark_queries.json');
+      const data = fs.readFileSync(qPath, 'utf8');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(data);
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/experiment/summary' && req.method === 'GET') {
+    try {
+      const sPath = path.join(__dirname, '..', 'Experiment', 'results_summary.json');
+      if (fs.existsSync(sPath)) {
+        const data = fs.readFileSync(sPath, 'utf8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(data);
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Run experiment first.' }));
+      }
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/baseline-health' && req.method === 'GET') {
+    try {
+      const forwardRes = await fetch('http://localhost:3002/health');
+      const data = await forwardRes.text();
+      res.writeHead(forwardRes.status, { 'Content-Type': 'application/json' });
+      res.end(data);
+    } catch (e) {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Server B offline on :3002' }));
+    }
+    return;
+  }
+
   // Proxy to MCP Server health and CSDL APIs
   if (req.url.startsWith('/api/') || req.url === '/health') {
     try {
