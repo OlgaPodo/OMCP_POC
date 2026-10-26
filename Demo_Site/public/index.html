@@ -599,116 +599,163 @@
     </div>
   </main>
 
-  <!-- VIEW 5: A/B BENCHMARK EXPERIMENT -->
+  <!-- VIEW 5: A/B BENCHMARK EXPERIMENT & REPORT -->
   <main class="view-container" id="view-experiment">
     <div class="doc-view-layout">
-      <div class="doc-header">
-        <h2>MCP 2.0 Prompt Annotations A/B Experiment: With Examples vs. Without Examples</h2>
-        <p class="doc-sub">Benchmarking 50 real-world queries across Server A (Option 1 with few-shot Examples) and Server B (Baseline Control without Examples).</p>
-      </div>
-
-      <!-- Server Status Cards -->
-      <div class="comparison-grid" style="margin-bottom: 24px;">
-        <div class="comparison-card featured">
-          <div class="card-badge">Variant Group</div>
-          <h3>Server A: Option 1 (With Examples)</h3>
-          <p><strong>Port:</strong> <code>http://localhost:3001</code></p>
-          <p>Exposes <code>@Agent.Prompts</code> with embedded <code>Examples</code> (utterance &rarr; OData query pairs).</p>
-          <span class="server-status-pill online" style="display:inline-flex; margin-top:8px;">
-            <span class="status-dot"></span> Online (:3001)
-          </span>
+      <div class="doc-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
+        <div>
+          <h2>MCP 2.0 Prompt Annotations A/B Experiment &amp; Evaluation Report</h2>
+          <p class="doc-sub">Empirical benchmarking of 50 real-world queries across Server A (Option 1 with few-shot Examples) and Server B (Baseline Control without Examples).</p>
         </div>
-
-        <div class="comparison-card">
-          <div class="card-badge neutral">Control / Baseline Group</div>
-          <h3>Server B: Baseline (Without Examples)</h3>
-          <p><strong>Port:</strong> <code>http://localhost:3002</code></p>
-          <p>Exposes standard <code>@Agent.Prompts</code> containing names, descriptions, and parameters only.</p>
-          <span class="server-status-pill online" id="serverBPill" style="display:inline-flex; margin-top:8px;">
-            <span class="status-dot"></span> Online (:3002)
-          </span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="btnReloadExpSummary" class="copy-btn" style="padding: 6px 12px; font-weight: 600; background: var(--primary-light); color: var(--primary); border-color: #b3d6f4;">
+            🔄 Reload Latest CLI Run
+          </button>
+          <a href="/api/experiment/report-markdown" download="EXPERIMENT_REPORT.md" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
+            📥 Download Report (.md)
+          </a>
+          <a href="/api/experiment/summary" download="results_summary.json" class="copy-btn" style="padding: 6px 12px; text-decoration: none; color: inherit;">
+            📥 Raw JSON
+          </a>
         </div>
       </div>
 
-      <!-- Scorecard Summary -->
-      <div class="synthesis-card" style="margin-bottom: 24px;">
-        <div class="synthesis-header">
-          <span class="synthesis-icon">📈</span>
-          <h3>Benchmark Results Scorecard (50 Natural Language Queries)</h3>
+      <!-- Sub-Tabs: Scorecard / Official Report / Query Inspector -->
+      <div class="doc-tabs-bar" style="margin-bottom: 20px;">
+        <button class="doc-subtab exp-subtab active" data-exptab="scorecard">📊 Executive Scorecard &amp; Metrics</button>
+        <button class="doc-subtab exp-subtab" data-exptab="report">📋 Official OASIS OData TC Report</button>
+        <button class="doc-subtab exp-subtab" data-exptab="inspector">🔍 Query Inspector &amp; Details (50 Queries)</button>
+      </div>
+
+      <!-- SUBTAB 1: Scorecard & Metrics -->
+      <div class="exp-subtab-panel active" id="exp-panel-scorecard">
+        <!-- Server Status Cards -->
+        <div class="comparison-grid" style="margin-bottom: 20px;">
+          <div class="comparison-card featured">
+            <div class="card-badge">Variant Group</div>
+            <h3>Server A: Option 1 (With Examples)</h3>
+            <p><strong>Port:</strong> <code>http://localhost:3001</code></p>
+            <p>Exposes <code>@Agent.Prompts</code> with embedded <code>Examples</code> (utterance &rarr; OData query pairs).</p>
+            <span class="server-status-pill online" style="display:inline-flex; margin-top:8px;">
+              <span class="status-dot"></span> Online (:3001)
+            </span>
+          </div>
+
+          <div class="comparison-card">
+            <div class="card-badge neutral">Control / Baseline Group</div>
+            <h3>Server B: Baseline (Without Examples)</h3>
+            <p><strong>Port:</strong> <code>http://localhost:3002</code></p>
+            <p>Exposes standard <code>@Agent.Prompts</code> containing names, descriptions, and parameters only.</p>
+            <span class="server-status-pill online" id="serverBPill" style="display:inline-flex; margin-top:8px;">
+              <span class="status-dot"></span> Online (:3002)
+            </span>
+          </div>
         </div>
-        <div class="synthesis-points" style="grid-template-columns: repeat(3, 1fr);">
-          <div class="synthesis-point">
-            <div class="point-num" style="background:#107c41;">✓</div>
-            <div class="point-content">
-              <h4>OData Execution Success</h4>
-              <p style="font-size:18px; font-weight:700; color:#107c41;">100% vs 58%</p>
-              <p style="font-size:11px; color:var(--text-secondary);">+42.0% advantage for Option 1</p>
+
+        <!-- Scorecard Summary -->
+        <div class="synthesis-card" style="margin-bottom: 24px;">
+          <div class="synthesis-header" style="justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="synthesis-icon">📈</span>
+              <h3>Benchmark Results Scorecard (<span id="statTotalQueries">50</span> Natural Language Queries)</h3>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary);" id="lastRunMetaText">
+              Engine: GitHub Copilot CLI | Completed in 0.0s
             </div>
           </div>
-          <div class="synthesis-point">
-            <div class="point-num" style="background:#0078d4;">🎯</div>
-            <div class="point-content">
-              <h4>Intent Routing Accuracy</h4>
-              <p style="font-size:18px; font-weight:700; color:#0078d4;">100% vs 68%</p>
-              <p style="font-size:11px; color:var(--text-secondary);">+32.0% routing precision</p>
+          <div class="synthesis-points" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="synthesis-point">
+              <div class="point-num" style="background:#107c41;">✓</div>
+              <div class="point-content">
+                <h4>OData Execution Success</h4>
+                <p style="font-size:20px; font-weight:700; color:#107c41;" id="kpiSuccessText">100.0% vs 58.0%</p>
+                <p style="font-size:11px; color:var(--text-secondary);" id="kpiSuccessDelta">+42.0% advantage for Option 1</p>
+              </div>
+            </div>
+            <div class="synthesis-point">
+              <div class="point-num" style="background:#0078d4;">🎯</div>
+              <div class="point-content">
+                <h4>Intent Routing Accuracy</h4>
+                <p style="font-size:20px; font-weight:700; color:#0078d4;" id="kpiIntentText">100.0% vs 68.0%</p>
+                <p style="font-size:11px; color:var(--text-secondary);" id="kpiIntentDelta">+32.0% routing precision</p>
+              </div>
+            </div>
+            <div class="synthesis-point">
+              <div class="point-num" style="background:#5c2d91;">🛡️</div>
+              <div class="point-content">
+                <h4>Hallucination Prevention</h4>
+                <p style="font-size:20px; font-weight:700; color:#5c2d91;" id="kpiOdataText">0% vs 32.0% errors</p>
+                <p style="font-size:11px; color:var(--text-secondary);" id="kpiOdataDelta">Eliminates invalid OData filters</p>
+              </div>
             </div>
           </div>
-          <div class="synthesis-point">
-            <div class="point-num" style="background:#5c2d91;">🛡️</div>
-            <div class="point-content">
-              <h4>Hallucination Prevention</h4>
-              <p style="font-size:18px; font-weight:700; color:#5c2d91;">0% vs 32% errors</p>
-              <p style="font-size:11px; color:var(--text-secondary);">Eliminates invalid OData filters</p>
-            </div>
+        </div>
+
+        <!-- Category Progress Matrix -->
+        <div class="mapping-table-section" style="margin-bottom: 24px;">
+          <h3>Category Success Comparison</h3>
+          <div id="categoryBarsContainer" style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px;">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+
+        <!-- How to Run with GitHub Copilot CLI Box -->
+        <div class="matcher-sandbox">
+          <h3>Running the Experiment Locally from CLI</h3>
+          <p>Run the evaluation locally using your authenticated GitHub Copilot CLI without external API keys:</p>
+          <div style="background:#1e1e1e; color:#d4d4d4; padding:14px; border-radius:6px; font-family:var(--font-mono); font-size:12px; line-height:1.6; overflow-x:auto;">
+            <span style="color:#6a9955;"># 1. Run all 50 queries via GitHub Copilot CLI:</span><br>
+            <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py<br><br>
+            <span style="color:#6a9955;"># 2. Run quick test on first 10 queries:</span><br>
+            <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --limit 10<br><br>
+            <span style="color:#6a9955;"># 3. Fast offline simulation benchmark (0 latency):</span><br>
+            <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --simulate<br><br>
+            <span style="color:#6a9955;"># 4. Run with OpenAI / Azure OpenAI / Ollama:</span><br>
+            <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --engine openai --model llama3 --endpoint http://localhost:11434/v1
           </div>
         </div>
       </div>
 
-      <!-- How to Run with Different Models Box -->
-      <div class="matcher-sandbox" style="margin-bottom: 24px;">
-        <h3>Run Experiment with Your Own Model</h3>
-        <p>The experiment runner is pre-configured to test any model via OpenAI, Azure OpenAI, or local Ollama:</p>
-        <div style="background:#1e1e1e; color:#d4d4d4; padding:14px; border-radius:6px; font-family:var(--font-mono); font-size:12px; line-height:1.6; overflow-x:auto;">
-          <span style="color:#6a9955;"># 1. Run simulation benchmark (immediate):</span><br>
-          <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --simulate<br><br>
-          <span style="color:#6a9955;"># 2. Run with OpenAI (GPT-4o / GPT-4o-mini):</span><br>
-          <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --model gpt-4o --api-key &lt;OPENAI_KEY&gt;<br><br>
-          <span style="color:#6a9955;"># 3. Run with Azure OpenAI:</span><br>
-          <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --model &lt;deployment&gt; --endpoint &lt;azure_endpoint&gt; --api-key &lt;key&gt;<br><br>
-          <span style="color:#6a9955;"># 4. Run with local Ollama (Llama 3, DeepSeek):</span><br>
-          <span style="color:#9cdcfe;">python</span> C:\MCP\Experiment\run_experiment.py --model llama3 --endpoint http://localhost:11434/v1
+      <!-- SUBTAB 2: Official OASIS OData TC Report View -->
+      <div class="exp-subtab-panel" id="exp-panel-report" style="display: none;">
+        <div class="doc-card" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; box-shadow: var(--shadow-sm);">
+          <div id="tcReportContent" style="font-size: 13px; line-height: 1.6; color: var(--text-primary);">
+            <p>Loading official report...</p>
+          </div>
         </div>
       </div>
 
-      <!-- 50 Queries Table -->
-      <div class="mapping-table-section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3>50 Benchmark Queries Dataset</h3>
-          <div style="display:flex; gap:6px;" id="experimentCategoryFilters">
-            <button class="map-query-btn active" data-exp-cat="all">All (50)</button>
-            <button class="map-query-btn" data-exp-cat="canonical">Canonical (7)</button>
-            <button class="map-query-btn" data-exp-cat="paraphrased">Paraphrased (19)</button>
-            <button class="map-query-btn" data-exp-cat="complex">Complex (16)</button>
-            <button class="map-query-btn" data-exp-cat="ambiguous">Ambiguous (3)</button>
-            <button class="map-query-btn" data-exp-cat="edge_case">Edge Cases (5)</button>
+      <!-- SUBTAB 3: Query Inspector & Details -->
+      <div class="exp-subtab-panel" id="exp-panel-inspector" style="display: none;">
+        <div class="mapping-table-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+            <h3>50 Benchmark Queries Detailed Comparison</h3>
+            <div style="display:flex; gap:6px;" id="experimentCategoryFilters">
+              <button class="map-query-btn active" data-exp-cat="all">All (50)</button>
+              <button class="map-query-btn" data-exp-cat="canonical">Canonical (7)</button>
+              <button class="map-query-btn" data-exp-cat="paraphrased">Paraphrased (19)</button>
+              <button class="map-query-btn" data-exp-cat="complex">Complex (16)</button>
+              <button class="map-query-btn" data-exp-cat="ambiguous">Ambiguous (3)</button>
+              <button class="map-query-btn" data-exp-cat="edge_case">Edge Cases (5)</button>
+            </div>
           </div>
-        </div>
 
-        <table class="matrix-table" id="experimentQueriesTable">
-          <thead>
-            <tr>
-              <th style="width:50px;">ID</th>
-              <th style="width:110px;">Category</th>
-              <th>Natural Language Query</th>
-              <th>Expected Intent</th>
-              <th>Server A (With Examples)</th>
-              <th>Server B (Baseline)</th>
-            </tr>
-          </thead>
-          <tbody id="experimentTableBody">
-            <!-- Rendered by JS -->
-          </tbody>
-        </table>
+          <table class="matrix-table" id="experimentQueriesTable">
+            <thead>
+              <tr>
+                <th style="width:40px;">#</th>
+                <th style="width:100px;">Category</th>
+                <th>User Query</th>
+                <th>Expected Intent</th>
+                <th>Server A (Option 1)</th>
+                <th>Server B (Baseline)</th>
+              </tr>
+            </thead>
+            <tbody id="experimentTableBody">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </main>

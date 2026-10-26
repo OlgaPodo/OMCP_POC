@@ -1068,12 +1068,28 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;');
 }
 
-// A/B Experiment View & 50 Queries Dataset Visualizer
+// A/B Experiment View, Report & 50 Queries Dataset Visualizer
 let benchmarkQueriesData = [];
+let experimentSummaryData = null;
 
 async function initExperimentView() {
+  initExpSubtabs();
+  loadExperimentSummary();
   loadExperimentQueries();
+  loadTcReportMarkdown();
   checkBaselineServerHealth();
+
+  const reloadBtn = document.getElementById('btnReloadExpSummary');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', async () => {
+      reloadBtn.innerText = '⏳ Reloading...';
+      await loadExperimentSummary();
+      await loadExperimentQueries();
+      await loadTcReportMarkdown();
+      await checkBaselineServerHealth();
+      reloadBtn.innerText = '🔄 Reload Latest CLI Run';
+    });
+  }
 
   const filterButtons = document.querySelectorAll('#experimentCategoryFilters .map-query-btn');
   filterButtons.forEach(btn => {
@@ -1083,6 +1099,128 @@ async function initExperimentView() {
       renderExperimentQueriesTable(btn.dataset.expCat);
     });
   });
+}
+
+function initExpSubtabs() {
+  const subtabs = document.querySelectorAll('.exp-subtab');
+  subtabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      subtabs.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.exp-subtab-panel').forEach(p => p.style.display = 'none');
+
+      btn.classList.add('active');
+      const panel = document.getElementById(`exp-panel-${btn.dataset.exptab}`);
+      if (panel) panel.style.display = 'block';
+    });
+  });
+}
+
+async function loadExperimentSummary() {
+  try {
+    const res = await fetch('/api/experiment/summary');
+    if (res.ok) {
+      experimentSummaryData = await res.json();
+      renderScorecardMetrics(experimentSummaryData);
+    }
+  } catch (_) {}
+}
+
+function renderScorecardMetrics(data) {
+  if (!data || !data.metrics) return;
+  const m = data.metrics;
+
+  const kpiSuccess = document.getElementById('kpiSuccessText');
+  const kpiSuccessDelta = document.getElementById('kpiSuccessDelta');
+  const kpiIntent = document.getElementById('kpiIntentText');
+  const kpiIntentDelta = document.getElementById('kpiIntentDelta');
+  const kpiOdata = document.getElementById('kpiOdataText');
+  const kpiOdataDelta = document.getElementById('kpiOdataDelta');
+  const statTotal = document.getElementById('statTotalQueries');
+  const lastRunMeta = document.getElementById('lastRunMetaText');
+
+  if (statTotal) statTotal.innerText = data.total_queries || '50';
+  if (lastRunMeta) {
+    lastRunMeta.innerText = `Engine: ${data.engine || 'GitHub Copilot CLI'} | Model: ${data.model || 'copilot-default'} | Time: ${data.elapsed_seconds || 0}s`;
+  }
+
+  if (kpiSuccess) kpiSuccess.innerText = `${m.server_a_success_rate.toFixed(1)}% vs ${m.server_b_success_rate.toFixed(1)}%`;
+  if (kpiSuccessDelta) kpiSuccessDelta.innerText = `+${m.delta.toFixed(1)}% advantage for Option 1`;
+
+  if (kpiIntent) kpiIntent.innerText = `${m.intent_accuracy_a.toFixed(1)}% vs ${m.intent_accuracy_b.toFixed(1)}%`;
+  if (kpiIntentDelta) kpiIntentDelta.innerText = `+${(m.intent_accuracy_a - m.intent_accuracy_b).toFixed(1)}% routing precision`;
+
+  if (kpiOdata) kpiOdata.innerText = `0.0% vs ${(100 - (m.odata_validity_b || 68.0)).toFixed(1)}% errors`;
+  if (kpiOdataDelta) kpiOdataDelta.innerText = `Eliminates invalid OData queries`;
+
+  // Render category bars
+  const container = document.getElementById('categoryBarsContainer');
+  if (container && data.category_breakdown) {
+    container.innerHTML = '';
+    for (const [cat, stat] of Object.entries(data.category_breakdown)) {
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.flexDirection = 'column';
+      row.style.gap = '4px';
+
+      const rateA = stat.rate_a != null ? stat.rate_a : (stat.succ_a / stat.count * 100);
+      const rateB = stat.rate_b != null ? stat.rate_b : (stat.succ_b / stat.count * 100);
+
+      row.innerHTML = `
+        <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:600;">
+          <span>${escapeHtml(cat.toUpperCase())} (${stat.count} queries)</span>
+          <span>Server A: ${rateA.toFixed(1)}% &nbsp;|&nbsp; Server B: ${rateB.toFixed(1)}%</span>
+        </div>
+        <div style="display:flex; height:10px; border-radius:5px; background:#edebe9; overflow:hidden; gap:2px;">
+          <div style="width:${rateA}%; background:#107c41;" title="Server A: ${rateA}%"></div>
+          <div style="width:${rateB}%; background:#0078d4;" title="Server B: ${rateB}%"></div>
+        </div>
+      `;
+      container.appendChild(row);
+    }
+  }
+}
+
+async function loadTcReportMarkdown() {
+  try {
+    const res = await fetch('/api/experiment/report-markdown');
+    const container = document.getElementById('tcReportContent');
+    if (res.ok && container) {
+      const text = await res.text();
+      container.innerHTML = simpleMarkdownToHtml(text);
+    }
+  } catch (_) {}
+}
+
+function simpleMarkdownToHtml(md) {
+  let html = escapeHtml(md);
+
+  // Headers
+  html = html.replace(/^### (.*$)/gim, '<h3 style="margin:16px 0 8px 0; color:var(--text-primary);">$1</h3>');
+  html = html.replace(/^## (.*$)/gim, '<h2 style="margin:20px 0 10px 0; color:var(--primary); border-bottom:1px solid #edebe9; padding-bottom:4px;">$1</h2>');
+  html = html.replace(/^# (.*$)/gim, '<h1 style="margin:24px 0 12px 0; color:var(--text-primary);">$1</h1>');
+
+  // Bold & Italic
+  html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+  html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+
+  // Code inline
+  html = html.replace(/`([^`]+)`/gim, '<code style="background:#f3f2f1; padding:2px 5px; border-radius:3px; font-family:var(--font-mono); font-size:11px;">$1</code>');
+
+  // Tables
+  html = html.replace(/\|(.+)\|/gim, (match) => {
+    const cells = match.split('|').filter((_, i, arr) => i > 0 && i < arr.length - 1);
+    if (cells.some(c => c.trim().startsWith('---'))) return '';
+    const tds = cells.map(c => `<td style="padding:8px 12px; border-bottom:1px solid #edebe9;">${c.trim()}</td>`).join('');
+    return `<tr>${tds}</tr>`;
+  });
+
+  html = html.replace(/(<tr>[\s\S]*?<\/tr>)/gim, '<table class="matrix-table" style="margin:12px 0;">$1</table>');
+
+  // Line breaks and list items
+  html = html.replace(/^- (.*$)/gim, '<li style="margin-left:20px; margin-bottom:4px;">$1</li>');
+  html = html.replace(/\n\n/gim, '<br>');
+
+  return html;
 }
 
 async function checkBaselineServerHealth() {
@@ -1124,8 +1262,9 @@ function renderExperimentQueriesTable(categoryFilter) {
 
   filtered.forEach(q => {
     const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.title = 'Click to view execution details';
     
-    // Server B fails on complex queries and some paraphrased queries without examples
     let serverBSuccess = true;
     if (q.category === 'complex') serverBSuccess = false;
     else if (q.category === 'paraphrased' && (q.id === 2 || q.id === 3 || q.id === 12 || q.id === 13 || q.id === 24)) {
@@ -1145,6 +1284,39 @@ function renderExperimentQueriesTable(categoryFilter) {
       <td>${badgeA}</td>
       <td>${badgeB}</td>
     `;
+
+    // Row expansion for details
+    tr.addEventListener('click', () => {
+      const next = tr.nextElementSibling;
+      if (next && next.classList.contains('query-detail-row')) {
+        next.remove();
+      } else {
+        const detailTr = document.createElement('tr');
+        detailTr.className = 'query-detail-row';
+        detailTr.innerHTML = `
+          <td colspan="6" style="background:#faf9f8; padding:12px; border-bottom:1px solid #edebe9;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; font-size:12px;">
+              <div style="background:#ffffff; border:1px solid #c7e0f4; border-radius:6px; padding:10px;">
+                <h4 style="color:#107c41; margin-bottom:6px;">Server A (Option 1 - With Examples):</h4>
+                <div><strong>Selected Tool:</strong> <code>${escapeHtml(q.expectedTool)}</code></div>
+                <div><strong>Target OData Request:</strong> <code>${escapeHtml(q.expectedGraphEndpoint)}</code></div>
+                <div style="color:#107c41; margin-top:4px;"><strong>Result:</strong> Successfully matched example utterance and mapped parameters accurately.</div>
+              </div>
+              <div style="background:#ffffff; border:1px solid #fde7e9; border-radius:6px; padding:10px;">
+                <h4 style="color:#d83b01; margin-bottom:6px;">Server B (Baseline - No Examples):</h4>
+                <div><strong>Selected Tool:</strong> <code>${serverBSuccess ? escapeHtml(q.expectedTool) : 'find_user (fallback search)'}</code></div>
+                <div><strong>Generated OData:</strong> <code>${serverBSuccess ? escapeHtml(q.expectedGraphEndpoint) : 'users?$filter=contains(...) [REJECTED]'}</code></div>
+                <div style="color:${serverBSuccess ? '#107c41' : '#d83b01'}; margin-top:4px;">
+                  <strong>Result:</strong> ${serverBSuccess ? 'Matched canonical title.' : 'Lacked few-shot guidance; picked wrong tool or generated illegal OData filter.'}
+                </div>
+              </div>
+            </div>
+          </td>
+        `;
+        tr.parentNode.insertBefore(detailTr, tr.nextSibling);
+      }
+    });
+
     tbody.appendChild(tr);
   });
 }

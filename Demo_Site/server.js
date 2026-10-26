@@ -174,6 +174,24 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (req.url === '/api/experiment/report-markdown' && req.method === 'GET') {
+    try {
+      const rPath = path.join(__dirname, '..', 'Experiment', 'EXPERIMENT_REPORT.md');
+      if (fs.existsSync(rPath)) {
+        const data = fs.readFileSync(rPath, 'utf8');
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end(data);
+      } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Report file not found.');
+      }
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Error loading report: ' + e.message);
+    }
+    return;
+  }
+
   if (req.url === '/api/baseline-health' && req.method === 'GET') {
     try {
       const forwardRes = await fetch('http://localhost:3002/health');
