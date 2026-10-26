@@ -521,6 +521,10 @@ function initViewSwitcher() {
       if (tab.dataset.view === 'csdl') {
         loadCsdlData();
       }
+      if (tab.dataset.view === 'experiment') {
+        loadAvailableReports();
+        loadExperimentQueries();
+      }
     });
   });
 }
@@ -1432,7 +1436,5 @@ function renderExperimentQueriesTable(categoryFilter) {
     });
 
     tbody.appendChild(tr);
-  });
-}
   });
 }
