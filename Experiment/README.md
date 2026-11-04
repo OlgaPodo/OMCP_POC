@@ -1,21 +1,18 @@
-# MCP prompt annotations A/B experiment
+# MCP `@Agent.Prompts` CSDL A/B Experiment
 
-Option 1 is **Server B, baseline** (`http://localhost:3002`).
-Option 2 is **Server A, with examples** (`http://localhost:3001`).
+Option 1 is **Server B, Baseline — CSDL without Prompts** (`http://localhost:3002`).
+Option 2 is **Server A, Variant — CSDL with `@Agent.Prompts`** (`http://localhost:3001`).
 
 ## OASIS OData TC Proposal Scope & CSDL Model Principles
 
-This experiment evaluates the **OASIS OData TC Agent-Ready API proposal**, which focuses strictly on **`Agent.Prompts` annotations only**:
-- **No inlined `<Schema Namespace="Agent">`**: Vocabulary terms should be defined in external vocabulary documents, never inlined directly in the domain service CSDL.
-- **No annotations for tools (`Agent.Tools`)**: OData already provides first-class operations (Actions and Functions) and EntitySets. Agent tools (such as MCP tools) are client/agent projections/adapters over those native operations, NOT CSDL schema metadata.
-- **Prompts-First**: Agent capabilities, instructions, and workflows are modeled exclusively through `Agent.Prompts` annotations on the `EntityContainer` (along with optional `Agent.ExampleQueries` on `EntitySet`s).
+This experiment evaluates the **OASIS OData TC Agent-Ready API proposal** (`@Agent.Prompts` on `EntityContainer`):
+- **No annotations for tools or resources (`Agent.Tools` / `Agent.Resources`)**: Standard OData `EntitySet` and `Singleton` declarations (`users`, `groups`, `me`) deterministically project into MCP tools and resources.
+- **No example annotations (`Agent.ExampleQueries`)**: Phase 1 evaluates CSDL with `@Agent.Prompts` only.
+- **OData v4.01 Queries in `@Agent.Prompts`**: Container prompts express single-resource and cross-resource workflows using canonical OData v4.01 query paths (`GET users?$filter=...`, `GET users('{userId}')/manager`, `GET groups('{groupId}')/members`, etc.).
 
-Both servers project identical tools, resources and container-level `Agent.Prompts` from canonical CSDL.
-Only Server A declares `Agent.ExampleQueries` on entity sets (`users`, `groups`).
-An explicit `Prompt` reference associates each query example with a container prompt.
-Prompt schemas, catalogs and MCP responses contain no examples. The harness reads
-entity-set query annotations separately as `exampleQueries`; it never inserts them
-into prompt definitions or responses.
+Both servers project identical MCP tools (`find_user`, `user_profile`, `find_group`, `group_details`, `read_resource`) and resources (`users://me`, `users://{userId}`, `groups://all`, `groups://{groupId}`).
+- **Server A (`Csdl/Server_WithExamples.csdl`)** exposes 12 `@Agent.Prompts` on `GraphService`.
+- **Server B (`Csdl/Server_Baseline.csdl`)** exposes 0 prompts (`prompts/list` returns `[]`).
 
 ## Run
 

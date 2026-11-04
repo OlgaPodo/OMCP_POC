@@ -1,142 +1,110 @@
 # Microsoft Graph HTTP MCP 2.0 Server & Demo Site POC
 
-Proof-of-Concept updated to **MCP 2.0 (`2026-07-28` Specification)** ([specification reference](https://modelcontextprotocol.io/specification/2026-07-28)) and the OASIS OData TC proposal *"Making OData Agent-Ready: Prompts, Events and Tasks, and a Modernized Domain Language"*. The `Agent` vocabulary is experimental; prompt schemas and responses contain no examples.
+Proof-of-Concept aligned with the **MCP 2.0 (`2026-07-28` Specification)** ([specification reference](https://modelcontextprotocol.io/specification/2026-07-28)), **OASIS OData v4.01 OS** ([specification reference](https://www.oasis-open.org/standard/odata-v4-01-os/)), and the OASIS OData TC proposal *"Making OData Agent-Ready: Prompts, Events and Tasks, and a Modernized Domain Language"*.
 
 ---
 
-## 1. Quick Start
+## 1. Prerequisites
 
-### Start MCP 2.0 Server (`http://localhost:3001`)
+### A. Microsoft Graph API Access & Authentication (Any Tenant)
+To execute live queries against `https://graph.microsoft.com/v1.0`:
+1. **Microsoft Entra ID / M365 Tenant Access**: Access to Microsoft Graph APIs on any tenant (for example, a [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program) sandbox tenant or test directory) containing users, reporting hierarchies (`manager`, `directReports`), and groups (`members`, `owners`).
+2. **Graph Permissions**: Directory read permissions on the signed-in account:
+   - `User.Read.All` (or `Directory.Read.All`) for `/v1.0/me`, `/v1.0/users`, `/v1.0/users('{id}')/manager`, and `/v1.0/users('{id}')/directReports`
+   - `Group.Read.All` (or `Directory.Read.All`) for `/v1.0/groups`, `/v1.0/groups('{id}')/members`, and `/v1.0/groups('{id}')/owners`
+3. **Ability to Sign In (Azure CLI or Bearer Token)**:
+   - Sign in interactively with **Azure CLI**:
+     ```powershell
+     az login
+     az account get-access-token --resource-type ms-graph
+     ```
+   - Or supply a bearer token directly via environment variable before starting the servers:
+     ```powershell
+     $env:GRAPH_ACCESS_TOKEN = "<your-ms-graph-bearer-token>"
+     ```
+4. **Offline / Unauthenticated Fallback**: If Azure CLI is not signed in and `GRAPH_ACCESS_TOKEN` is not set, the MCP servers automatically fall back to a deterministic `@contoso.com` sample directory dataset so the Demo Site and Explorer remain runnable offline.
+
+### B. Required SDKs & CLI Tools
+- **.NET 10.0 SDK** (`dotnet --version`) — required to build and run the C# ASP.NET Core MCP 2.0 servers (`Server` and `Server_Baseline`).
+- **Node.js 18+ & npm** (`node --version`) — required to run the presentation site (`Demo_Site`).
+- **Azure CLI** (`az --version`) — required for interactive Microsoft Graph token acquisition.
+- **Python 3.10+** & **GitHub Copilot CLI** (`copilot` signed in to GitHub) — required only if running the live A/B routing experiment (`Experiment/run_experiment.py`).
+
+---
+
+## 2. Quick Start
+
+### Start Server A — CSDL with `@Agent.Prompts` (`http://localhost:3001`)
 ```powershell
 cd C:\MCP\Server
+dotnet run
+```
+
+### Start Server B — Baseline CSDL without Prompts (`http://localhost:3002`)
+```powershell
+cd C:\MCP\Server_Baseline
 dotnet run
 ```
 
 ### Start Demo Site (`http://localhost:3000`)
 ```powershell
 cd C:\MCP\Demo_Site
+npm install
 npm start  # or: node server.js
 ```
 Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## 2. MCP 2.0 (`2026-07-28`) Specification Upgrades
+## 3. MCP 2.0 (`2026-07-28`) & OData v4.01 Architecture
 
-The implementation adheres to the **Model Context Protocol 2.0 (2026-07-28)** standard:
-
-1. **Protocol Versioning:**
-   - Protocol version identifier: `"2026-07-28"`.
+1. **MCP 2.0 Protocol (`2026-07-28`)**:
    - Mandatory HTTP header: `MCP-Protocol-Version: 2026-07-28`.
-   - Per-request metadata `_meta`:
-     ```json
-     "_meta": {
-       "io.modelcontextprotocol/protocolVersion": "2026-07-28",
-       "io.modelcontextprotocol/clientInfo": { "name": "GraphMcpExplorer", "version": "2.0.0" },
-       "io.modelcontextprotocol/clientCapabilities": {}
-     }
-     ```
-   - Per-response server identity in `_meta`:
-     ```json
-     "_meta": {
-       "io.modelcontextprotocol/serverInfo": { "name": "GraphMcpServer", "version": "2.0.0" }
-     }
-     ```
-
-2. **Streamable HTTP Transport (Stateless, Single Endpoint):**
-   - Single POST endpoint at `http://localhost:3001/`.
-   - Dedicated standard HTTP metadata headers:
-     - `Mcp-Method`: mirrors JSON-RPC `method` (e.g. `server/discover`, `tools/call`, `prompts/get`, `resources/read`).
-     - `Mcp-Name`: mirrors targeted name/URI (e.g. `find_user`, `whom_olga_reports_to`, `users://me`).
-   - Accept header supports `application/json` and `text/event-stream`.
-
-3. **Mandatory `server/discover` RPC:**
-   - Supports up-front server capability discovery, supported version negotiation (`["2026-07-28"]`), and identity introspection without needing prior handshake sessions.
-
-4. **Polymorphic Responses (`resultType`):**
-   - Standardized `result.resultType = "complete"`.
+   - Streamable HTTP single endpoint (`POST /`) with `Mcp-Method` and `Mcp-Name` metadata headers.
+   - Stateless `server/discover` capability and version negotiation (`["2026-07-28"]`) without deprecated stateful `initialize` handshakes.
+   - Standardized `_meta` envelopes and `result.resultType = "complete"`.
+2. **Standard OData v4.01 Metadata (`/$metadata`) & Pure CSDL**:
+   - Exposes `GET /$metadata` with `OData-Version: 4.01` (`application/xml` and `application/json`).
+   - Standard OData `EntitySet` (`users`, `groups`) and `Singleton` (`me`) declarations deterministically project into MCP tools and resources — no custom `Agent.Tools` or `Agent.Resources` annotations are added to CSDL.
+   - **Server A (`Csdl/Server_WithExamples.csdl`)** adds `<Annotation Term="Agent.Prompts">` on `GraphService`, expressing single-resource and cross-resource workflows via canonical OData v4.01 queries.
+   - **Server B (`Csdl/Server_Baseline.csdl`)** contains pure OData CSDL without `@Agent.Prompts`.
 
 ---
 
-## 3. Server Primitives (`C:\MCP\Server`)
+## 4. Server Primitives (`C:\MCP\Server`)
 
-- **Tech Stack:** .NET 10 / C# with `ModelContextProtocol.AspNetCore` 2.1.0 and `Azure.Identity`.
-- **Live Graph Auth:** Azure CLI access token (`az account get-access-token --resource-type ms-graph`) with seamless automatic high-fidelity fallback dataset (Olga Podolyako & team) for offline reliability.
+- **Tech Stack:** .NET 10 / C# with `ModelContextProtocol.AspNetCore` and `Azure.Identity`.
+- **Live Graph Auth:** `GRAPH_ACCESS_TOKEN` or Azure CLI (`az account get-access-token --resource-type ms-graph`) with automatic `@contoso.com` fallback dataset when offline.
 
-| Type | Name / URI | Description | Underlying Graph API |
+| Type | Name / URI | Description | Underlying Graph API (OData v4.01) |
 |---|---|---|---|
 | **Discovery** | `server/discover` | MCP 2.0 capability & version negotiation | Protocol Core |
 | **Tool** | `find_user` | Search/filter users by name, email, or UPN prefix | `GET /v1.0/users?$filter=startswith(...)` |
-| **Tool** | `user_profile` | Detailed profile with manager, peers, and direct reports | `GET /v1.0/users/{id}`, `/manager`, `/directReports` |
-| **Tool** | `find_group`, `group_details` | Group search, membership and ownership | `GET /v1.0/groups`, `/members`, `/owners` |
+| **Tool** | `user_profile` | Detailed profile with manager, peers, and direct reports | `GET /v1.0/users('{id}')`, `/manager`, `/directReports` |
+| **Tool** | `find_group`, `group_details` | Group search, membership and ownership | `GET /v1.0/groups`, `/groups('{id}')/members`, `/owners` |
 | **Tool** | `read_resource` | CLI adapter using the same projected resource dispatcher as `resources/read` | Determined by the declared resource URI binding |
 | **Resource** | `users://me` | Authenticated user profile representation | `GET /v1.0/me` |
-| **Resource** | `users://{userId}` | Individual user profile representation | `GET /v1.0/users/{id}` |
-| **Resource** | `groups://all`, `groups://{groupId}` | Group catalog and group membership/ownership data | `GET /v1.0/groups`, `/groups/{id}` |
-| **Prompt** | `whom_olga_reports_to` | "Whom Olga reports to?" | Resolves manager via `user_profile` |
-| **Prompt** | `who_are_olgas_peers` | "Who are Olga's peers?" | Resolves manager's direct reports via `user_profile` |
-| **Prompt** | `direct_reports_of_manager` | "Direct reports of a manager" | Queries direct reports for any manager |
-| **Prompt** | `search_users_by_dept_title` | "Search users by dept & title" | Queries users filtered by department & title |
-| **Prompt** | `user_quick_lookup` | "User quick lookup" | Resource reader template (`users://{id}`) |
-| **Prompt** | `find_group_by_name`, `list_group_members`, `who_owns_group`, `group_quick_lookup` | Group workflows | Projected group tools and resources |
-| **Composed prompt** | `user_peers_in_group` | Intersect reporting peers with group members | Requires both user and group resources |
-| **Composed prompt** | `group_members_reporting_to_manager` | Filter group members by reporting manager | Requires membership plus user reporting profiles |
-| **Composed prompt** | `user_and_group_owners_common_manager` | Compare user and owner managers | Requires ownership plus separate user reporting profiles |
+| **Resource** | `users://{userId}` | Individual user profile representation | `GET /v1.0/users('{id}')` |
+| **Resource** | `groups://all`, `groups://{groupId}` | Group catalog and group membership/ownership data | `GET /v1.0/groups`, `/groups('{id}')` |
+| **Prompts (Server A)** | 12 `@Agent.Prompts` templates | User, group, and cross-resource (`users` + `groups`) workflows | Expressed with canonical OData v4.01 queries |
 
 ---
 
-## 4. Demo Web Application (`C:\MCP\Demo_Site`)
+## 5. Demo Web Application (`C:\MCP\Demo_Site`)
 
-Modeled directly after **Microsoft Graph Explorer (`aka.ms/ge`)**:
+Modeled after **Microsoft Graph Explorer (`aka.ms/ge`)**:
 
 1. **Interactive MCP 2.0 Explorer**:
-   - Inspects exact **HTTP Request Headers** (`MCP-Protocol-Version: 2026-07-28`, `Mcp-Method`, `Mcp-Name`), **Request Payload (JSON-RPC)**, **Response Headers**, and **Response Payload** (`resultType: complete`).
-   - Interactive Org Profile Card rendering (Avatar, Details, Manager Card, Peers Grid, Direct Reports).
-   - Live Microsoft Graph REST trace inspection (`https://graph.microsoft.com/v1.0/...`).
-2. **CSDL and annotations**:
-   - Full CSDL JSON ($Version 4.01) and CSDL XML (EDMX 4.0) viewers.
-   - Canonical XML declares `Agent.Prompts` on `GraphService` and `Agent.ExampleQueries` only on entity sets (`users`, `groups`).
-   - JSON, tool schemas, resource URIs/dispatch and MCP prompts are deterministic projections of the same XML, with explicit example-to-prompt references.
-   - POC `Agent.Tools` and `Agent.Resources` bindings select supported read-only Graph operations. Container prompt `Tools`/`Resources` collections reference these generated primitives, including cross-resource workflows.
-3. **Addressing Concern 1 (Prompts as Search Index vs. Reusable Templates)**:
-   - Architectural analysis separates core MCP from POC/client behavior:
-     - *MCP role:* Formal parameterized templates (`Messages`, `Arguments`) for execution.
-     - *Retrieval role:* Entity-set example queries remain independent CSDL metadata, never fields on prompt schemas or responses.
-   - The sandbox is explicitly illustrative word-overlap search, not embeddings or LLM execution.
-4. **Addressing Concern 2 (The End-to-End Mapping Pipeline)**:
-   - Six expanded, unclipped tiles show canonical CSDL bindings, generated tools/resources, prompt invocation, rendered messages, resource reads and joins. The mapping contains no examples.
-   - A separate **Runtime Sequence with Discovery** subtab captures read-only `server/discover`, tool/resource/template/prompt listings from the selected MCP. Later prompt, tool, resource and synthesis steps are explicitly illustrative; refresh does not execute Graph operations.
-   - The default joins a user's reporting peers with group members; selecting another Explorer prompt changes the mapping.
-   - CSDL selects operations from an explicit C# Graph operation registry; no unrestricted REST compiler is claimed.
-5. **Interactive A/B Experiment View**:
-   - Inspect live status of Server A (:3001) vs Server B (:3002).
-   - Filter benchmark entries and inspect actual recorded outcomes; absent results are labeled Not run.
+   - Inspects HTTP Request Headers (`MCP-Protocol-Version: 2026-07-28`, `Mcp-Method`, `Mcp-Name`), JSON-RPC payloads, Response Headers, and Response Payloads (`resultType: complete`).
+   - Interactive Org Profile Card rendering and Microsoft Graph REST trace inspection (`https://graph.microsoft.com/v1.0/...`).
+2. **CSDL & Annotations (`GET /$metadata`)**:
+   - Side-by-side CSDL JSON (`$Version: "4.01"`) and CSDL XML (`Version="4.0"`) viewers with toggle between Server A (with `@Agent.Prompts`) and Server B (without prompts).
+3. **Architectural Comparison**:
+   - Contrasts prompts as a retrieval index vs. parameterized MCP workflow templates.
+4. **End-to-End Mapping & Runtime Sequence with Discovery**:
+   - Collapsible request/response sequence tiles with color-coded legend (**Blue = MCP Standard**, **Purple = Suggested `@Agent.Prompts` Annotations Standard**).
+5. **A/B Experiment (CSDL with Prompts vs. CSDL without Prompts)**:
+   - Compares Server A (`:3001`) against Baseline Server B (`:3002`), highlighting category success deltas and the 5 primary failure modes observed when `@Agent.Prompts` are absent.
 6. **POC Summary**:
-   - Inventories and counts are loaded from the selected CSDL projection, including all container prompts.
-   - Tiles distinguish deterministic annotated-schema conversion from the supported C# operation registry, probabilistic client orchestration, changing Graph data and mock fallback.
-   - Protected PDF requirements and production / full standards conformance are not claimed as verified.
+   - Highlights the phased CSDL roadmap: **Phase 1 (`@Agent.Prompts`)** delivered in this POC, followed by **Phase 2 (Additional Example Annotations)** to further simplify CSDL consumption by AI agents.
 
----
-
-## 5. A/B Benchmark Experiment (`C:\MCP\Experiment`)
-
-Compare actual Copilot CLI routing with and without entity-set example queries:
-
-* **Server A (Variant):** `http://localhost:3001` (Independent entity-set example annotations)
-* **Server B (Control):** `http://localhost:3002` in `Server_Baseline/` (No entity-set example annotations)
-* Both expose identical, standard MCP prompt messages without examples. The harness supplies entity-set query guidance separately.
-* **Dataset:** 61 user/group, cross-resource and unsupported-request queries (`benchmark_queries.json`).
-
-### Run with any model:
-```powershell
-# Use your authenticated Copilot CLI; baseline completes first
-python C:\MCP\Experiment\run_experiment.py
-python C:\MCP\Experiment\run_experiment.py --limit 3
-```
-
-Every query gets a unique CLI home/work directory and only the assigned MCP.
-Option 1 is baseline Server B; Option 2 is examples Server A.
-New reports verify actual MCP calls, parameters and errors, and distinguish mock
-fallback from live provenance. Generated OData strings are not executed or syntax
-validated. Historical heuristic reports are retained and labeled unverified.
-See `Experiment\README.md` for methodology and commands.
