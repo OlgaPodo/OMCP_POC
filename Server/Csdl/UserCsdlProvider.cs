@@ -1,9 +1,9 @@
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Csdl;
 using Microsoft.OData.Edm.Validation;
@@ -14,21 +14,152 @@ namespace GraphMcpServer.Csdl;
 public static class UserCsdlProvider
 {
     private static readonly XNamespace Edm = "http://docs.oasis-open.org/odata/ns/edm";
-    private static readonly string CsdlText = LoadCsdl();
-    private static readonly XDocument Document = XDocument.Parse(CsdlText);
-    private static readonly IEdmModel EdmModelInstance = ParseEdmModel(CsdlText);
-    private static readonly JsonObject Model = CreateModel();
-    private static readonly JsonObject Container = Model["Microsoft.Graph"]!["GraphService"]!.AsObject();
-    private static readonly JsonArray Prompts = Container["@Agent.Prompts"] as JsonArray ?? [];
 
-    private static string LoadCsdl()
+    private sealed class CsdlState
     {
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("GraphMcpServer.Metadata.csdl")
-            ?? Assembly.GetExecutingAssembly().GetManifestResourceStream("GraphMcpServer.Metadata.xml")
-            ?? throw new InvalidOperationException("The canonical CSDL resource is missing.");
-        using var reader = new StreamReader(stream);
-        return reader.ReadToEnd();
+        public string FilePath { get; }
+        public string Text { get; }
+        public XDocument Document { get; }
+        public IEdmModel EdmModel { get; }
+        public JsonObject Model { get; }
+        public JsonObject Container { get; }
+        public JsonArray Prompts { get; }
+
+        public CsdlState(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("CSDL file path must be specified.", nameof(filePath));
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"CSDL file not found at: {filePath}", filePath);
+
+            FilePath = Path.GetFullPath(filePath);
+            Text = File.ReadAllText(FilePath);
+            Document = XDocument.Parse(Text);
+            EdmModel = ParseEdmModel(Text);
+            Model = CreateModel(Document);
+            Container = Model["Microsoft.Graph"]!["GraphService"]!.AsObject();
+            Prompts = Container["@Agent.Prompts"] as JsonArray ?? [];
+        }
     }
+
+    private static CsdlState? _state;
+    private static readonly object SyncRoot = new();
+
+    private static CsdlState State
+    {
+        get
+        {
+            if (_state != null) return _state;
+            lock (SyncRoot)
+            {
+                _state ??= new CsdlState(ResolveCsdlPath());
+                return _state;
+            }
+        }
+    }
+
+    public static void Initialize(IConfiguration configuration)
+    {
+        var path = ResolveCsdlPath(configuration);
+        Initialize(path);
+    }
+
+    public static void Initialize(string filePath)
+    {
+        lock (SyncRoot)
+        {
+            _state = new CsdlState(filePath);
+        }
+    }
+
+    public static void Initialize(string directory, string fileName)
+    {
+        Initialize(Path.Combine(directory, fileName));
+    }
+
+    public static string ResolveCsdlPath(IConfiguration? config = null)
+    {
+        config ??= GetDefaultConfiguration();
+
+        // 1. Direct FilePath from configuration or environment
+        var filePath = config["Csdl:FilePath"]
+            ?? config["Csdl:Path"]
+            ?? config["CsdlPath"]
+            ?? Environment.GetEnvironmentVariable("CSDL_FILEPATH")
+            ?? Environment.GetEnvironmentVariable("CSDL_PATH")
+            ?? Environment.GetEnvironmentVariable("CsdlPath")
+            ?? Environment.GetEnvironmentVariable("Csdl__FilePath");
+
+        if (!string.IsNullOrWhiteSpace(filePath))
+        {
+            return Path.GetFullPath(filePath);
+        }
+
+        // 2. Directory and FileName from configuration or environment
+        var directory = config["Csdl:Directory"]
+            ?? config["Csdl:FolderPath"]
+            ?? config["Csdl:Dir"]
+            ?? Environment.GetEnvironmentVariable("CSDL_DIRECTORY")
+            ?? Environment.GetEnvironmentVariable("Csdl__Directory");
+
+        var fileName = config["Csdl:FileName"]
+            ?? config["Csdl:File"]
+            ?? Environment.GetEnvironmentVariable("CSDL_FILENAME")
+            ?? Environment.GetEnvironmentVariable("Csdl__FileName")
+            ?? "Server_WithPrompts.csdl";
+
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            return Path.GetFullPath(Path.Combine(directory, fileName));
+        }
+
+        // 3. Fallback default locations
+        var defaultDirs = new[]
+        {
+            @"C:\MCP\Csdl",
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "Csdl")),
+            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "Csdl"))
+        };
+
+        foreach (var dir in defaultDirs)
+        {
+            var candidate = Path.Combine(dir, fileName);
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return Path.Combine(@"C:\MCP\Csdl", fileName);
+    }
+
+    private static IConfiguration GetDefaultConfiguration()
+    {
+        return new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
+    }
+
+    private static string CsdlText => State.Text;
+    private static XDocument Document => State.Document;
+    private static IEdmModel EdmModelInstance => State.EdmModel;
+    private static JsonObject Model => State.Model;
+    private static JsonObject Container => State.Container;
+    private static JsonArray Prompts => State.Prompts;
+
+    public static string CsdlFilePath => State.FilePath;
+    public static string GetCsdlFilePath() => State.FilePath;
+
+    public static IEdmModel EdmModel => EdmModelInstance;
+
+    public static string GetCsdlXml() => CsdlText;
+    public static string GetCsdl() => CsdlText;
+
+    public static string GetCsdlJson() => Model.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
 
     private static IEdmModel ParseEdmModel(string csdl)
     {
@@ -41,21 +172,14 @@ public static class UserCsdlProvider
         return model;
     }
 
-    public static IEdmModel EdmModel => EdmModelInstance;
-
-    public static string GetCsdlXml() => CsdlText;
-    public static string GetCsdl() => CsdlText;
-
-    public static string GetCsdlJson() => Model.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
-
-    private static JsonObject CreateModel()
+    private static JsonObject CreateModel(XDocument document)
     {
         var result = new JsonObject
         {
             ["$Version"] = "4.01",
             ["$EntityContainer"] = "Microsoft.Graph.GraphService"
         };
-        foreach (var schema in Document.Descendants(Edm + "Schema"))
+        foreach (var schema in document.Descendants(Edm + "Schema"))
         {
             var members = new JsonObject();
             foreach (var member in schema.Elements())

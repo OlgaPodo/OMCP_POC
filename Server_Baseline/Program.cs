@@ -3,6 +3,9 @@ using GraphMcpServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Initialize CSDL Provider from configuration
+UserCsdlProvider.Initialize(builder.Configuration);
+
 // Configure port 3002
 builder.WebHost.UseUrls("http://localhost:3002");
 
@@ -61,6 +64,7 @@ app.MapGet("/health", (GraphClientService graphService) =>
         odataLibrary = "Microsoft.OData.Edm 9.0.0",
         port = 3002,
         mcpEndpoint = "http://localhost:3002/",
+        csdlPath = UserCsdlProvider.CsdlFilePath,
         hasCsdlPrompts = UserCsdlProvider.ListPrompts().Prompts.Count > 0,
         hasEntitySetExamples = UserCsdlProvider.GetExampleQueries().Count > 0,
         capabilities = new
@@ -81,6 +85,7 @@ app.MapGet("/api/csdl", () =>
 {
     return Results.Ok(new
     {
+        csdlPath = UserCsdlProvider.CsdlFilePath,
         csdl = UserCsdlProvider.GetCsdl(),
         csdlJson = UserCsdlProvider.GetCsdlJson(),
         csdlXml = UserCsdlProvider.GetCsdlXml(),

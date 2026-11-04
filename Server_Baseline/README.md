@@ -17,6 +17,24 @@ If you require more platforms to be supported, update the list of runtime identi
 
 ## Developing locally
 
+The CSDL directory and file name are configurable via `appsettings.json`, environment variables, or command-line arguments:
+
+```json
+{
+  "Csdl": {
+    "Directory": "C:\\MCP\\Csdl",
+    "FileName": "Server_Baseline.csdl"
+  }
+}
+```
+
+Supported configuration options:
+* **Directory & File:** `"Csdl:Directory"` and `"Csdl:FileName"` (or env vars `CSDL_DIRECTORY` and `CSDL_FILENAME`)
+* **Explicit FilePath:** `"Csdl:FilePath"` (or env var `CSDL_PATH` / `CSDL_FILEPATH`)
+* **CLI Arguments:** e.g. `--Csdl:FileName Server_WithPrompts.csdl` or `--Csdl:FilePath <path>`
+
+Restart the server after changing the configuration or CSDL file.
+
 To test this MCP server from source code locally, configure your MCP client or IDE:
 
 ```json

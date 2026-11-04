@@ -66,7 +66,7 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 2. **Standard OData v4.01 Metadata (`/$metadata`) & Pure CSDL**:
    - Exposes `GET /$metadata` with `OData-Version: 4.01` (`application/xml` and `application/json`).
    - Standard OData `EntitySet` (`users`, `groups`) and `Singleton` (`me`) declarations deterministically project into MCP tools and resources — no custom `Agent.Tools` or `Agent.Resources` annotations are added to CSDL.
-   - **Server A (`Csdl/Server_WithExamples.csdl`)** adds `<Annotation Term="Agent.Prompts">` on `GraphService`, expressing single-resource and cross-resource workflows via canonical OData v4.01 queries.
+   - **Server A (`Csdl/Server_WithPrompts.csdl`)** adds `<Annotation Term="Agent.Prompts">` on `GraphService`, expressing single-resource and cross-resource workflows via canonical OData v4.01 queries.
    - **Server B (`Csdl/Server_Baseline.csdl`)** contains pure OData CSDL without `@Agent.Prompts`.
 
 ---
