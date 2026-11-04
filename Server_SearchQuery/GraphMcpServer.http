@@ -1,0 +1,136 @@
+# Microsoft Graph MCP 2.0 HTTP Server Testing (2026-07-28 Specification)
+
+@HostAddress = http://localhost:3001
+
+### 1. Server Discovery (MCP 2.0 Mandatory RPC)
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: server/discover
+
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "server/discover",
+    "params": {
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientInfo": {
+                "name": "VsCodeRestClient",
+                "version": "2.0.0"
+            },
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}
+
+### 2. Tools List
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/list
+
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list",
+    "params": {
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}
+
+### 3. Call find_user
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/call
+Mcp-Name: find_user
+
+{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+        "name": "find_user",
+        "arguments": {
+            "query": "Olga"
+        },
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}
+
+### 4. Call user_profile
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/call
+Mcp-Name: user_profile
+
+{
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/call",
+    "params": {
+        "name": "user_profile",
+        "arguments": {
+            "userId": "me"
+        },
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}
+
+### 5. Prompts List
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: prompts/list
+
+{
+    "jsonrpc": "2.0",
+    "id": 5,
+    "method": "prompts/list",
+    "params": {
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}
+
+### 6. Get Prompt (Whom Olga reports to?)
+POST {{HostAddress}}/
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: prompts/get
+Mcp-Name: whom_olga_reports_to
+
+{
+    "jsonrpc": "2.0",
+    "id": 6,
+    "method": "prompts/get",
+    "params": {
+        "name": "whom_olga_reports_to",
+        "arguments": {
+            "userName": "Olga Podolyako"
+        },
+        "_meta": {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {}
+        }
+    }
+}

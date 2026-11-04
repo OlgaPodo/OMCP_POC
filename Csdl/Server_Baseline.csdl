@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns="http://docs.oasis-open.org/odata/ns/edm" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:DataServices>
+    <Schema Namespace="Microsoft.Graph">
+      <EntityType Name="User">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="userPrincipalName" Type="Edm.String" />
+        <Property Name="mail" Type="Edm.String" Nullable="true" />
+        <Property Name="jobTitle" Type="Edm.String" Nullable="true" />
+        <Property Name="department" Type="Edm.String" Nullable="true" />
+        <Property Name="officeLocation" Type="Edm.String" Nullable="true" />
+        <Property Name="mobilePhone" Type="Edm.String" Nullable="true" />
+        <NavigationProperty Name="manager" Type="Microsoft.Graph.User" />
+        <NavigationProperty Name="directReports" Type="Collection(Microsoft.Graph.User)" />
+      </EntityType>
+      <EntityType Name="Group">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="description" Type="Edm.String" Nullable="true" />
+        <Property Name="mail" Type="Edm.String" Nullable="true" />
+        <Property Name="mailNickname" Type="Edm.String" Nullable="true" />
+        <Property Name="groupTypes" Type="Collection(Edm.String)" />
+        <Property Name="mailEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="securityEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="visibility" Type="Edm.String" Nullable="true" />
+        <Property Name="createdDateTime" Type="Edm.DateTimeOffset" Nullable="true" />
+        <NavigationProperty Name="members" Type="Collection(Microsoft.Graph.User)" />
+        <NavigationProperty Name="owners" Type="Collection(Microsoft.Graph.User)" />
+      </EntityType>
+      <EntityContainer Name="GraphService">
+        <EntitySet Name="users" EntityType="Microsoft.Graph.User">
+          <NavigationPropertyBinding Path="manager" Target="users" />
+          <NavigationPropertyBinding Path="directReports" Target="users" />
+        </EntitySet>
+        <Singleton Name="me" Type="Microsoft.Graph.User">
+          <NavigationPropertyBinding Path="manager" Target="users" />
+          <NavigationPropertyBinding Path="directReports" Target="users" />
+        </Singleton>
+        <EntitySet Name="groups" EntityType="Microsoft.Graph.Group">
+          <NavigationPropertyBinding Path="members" Target="users" />
+          <NavigationPropertyBinding Path="owners" Target="users" />
+        </EntitySet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

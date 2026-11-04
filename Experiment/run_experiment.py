@@ -1,559 +1,610 @@
 #!/usr/bin/env python3
-"""
-Model Context Protocol (MCP 2.0) - Prompt Annotations A/B Experiment Runner
-Powered by GitHub Copilot CLI (100% Local CLI Execution, Zero External API Keys)
+"""Baseline first, then examples: real MCP calls from isolated Copilot CLI sessions.
 
-Compares:
-  - Server A (Variant / Option 1): MCP 2.0 with few-shot @Agent.Prompts Examples (port 3001)
-  - Server B (Control / Baseline): MCP 2.0 without Examples in Prompts (port 3002)
-
-Usage:
-  python run_experiment.py                     # Runs all 50 queries using local GH Copilot CLI
-  python run_experiment.py --limit 10          # Fast run on first 10 queries
-  python run_experiment.py --model gpt-4o      # Specify model in GH Copilot CLI
-  python run_experiment.py --simulate          # Instant offline simulation benchmark
-  python run_experiment.py --simple            # Minimal 1-line progress output
+OASIS OData TC Proposal Note:
+This experiment runner demonstrates the OData Agent-Ready API proposal, which focuses on
+Agent.Prompts annotations only. The CSDL model should NOT include <Schema Namespace="Agent">
+(vocabulary definitions belong in external vocabulary files, not inlined in the service CSDL)
+or annotations for tools (Agent.Tools), as tools in agent frameworks (like MCP) are client/agent
+projections over native OData operations (Actions and Functions), not CSDL schema elements.
 """
 
 import argparse
+import contextlib
+import hashlib
 import json
 import os
 import re
 import subprocess
-import sys
+import tempfile
 import threading
 import time
-import urllib.request
 import urllib.error
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-# Thread lock for clean console output during concurrent runs
-print_lock = threading.Lock()
-progress_counter = 0
+PROTOCOL = "2026-07-28"
+PRINT_LOCK = threading.Lock()
 
-# MCP 2.0 standard headers
-MCP_HEADERS = {
-    "Content-Type": "application/json",
-    "Accept": "application/json, text/event-stream",
-    "MCP-Protocol-Version": "2026-07-28"
-}
 
-def clean_json_response(raw_text: str) -> dict:
-    """Cleans terminal output, ANSI escapes, OSC hyperlinks, and extracts valid JSON."""
-    text = raw_text.strip()
-    
-    # 1. Strip OSC 8 hyperlinks and terminal escapes
-    text = re.sub(r'\x1b\][0-9]+;[^\x07\x1b]*(\x07|\x1b\\)', '', text)
-    text = re.sub(r'\x1b\[[0-9;]*[a-zA-Z]', '', text)
-    text = text.replace('\x07', '')
+def parse_rpc(text):
+    for line in text.splitlines():
+        if line.startswith("data:"):
+            return json.loads(line[5:].strip())
+    return json.loads(text)
 
-    # 2. Strip markdown code fences
-    if "```" in text:
-        match = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", text)
-        if match:
-            text = match.group(1).strip()
 
-    # 3. Find outer { ... }
-    start = text.find("{")
-    end = text.rfind("}")
-    if start != -1 and end != -1 and end > start:
-        candidate = text[start:end+1]
+def forward_rpc(server_url, message):
+    message = json.loads(json.dumps(message))
+    params = message.setdefault("params", {})
+    params.setdefault("_meta", {}).update({
+        "io.modelcontextprotocol/protocolVersion": PROTOCOL,
+        "io.modelcontextprotocol/clientInfo": {"name": "McpBenchmark", "version": "2.0"},
+        "io.modelcontextprotocol/clientCapabilities": {}
+    })
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json, text/event-stream",
+        "MCP-Protocol-Version": PROTOCOL,
+        "Mcp-Method": message["method"]
+    }
+    if params.get("name") or params.get("uri"):
+        headers["Mcp-Name"] = params.get("name") or params["uri"]
+    req = urllib.request.Request(server_url.rstrip("/") + "/", data=json.dumps(message).encode(), headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as response:
+            return response.status, response.headers.get("Content-Type", "application/json"), response.read()
+    except urllib.error.HTTPError as error:
+        return error.code, error.headers.get("Content-Type", "application/json"), error.read()
+
+
+def rpc(server_url, method, params=None):
+    status, _, body = forward_rpc(server_url, {"jsonrpc": "2.0", "id": 1, "method": method, "params": params or {}})
+    response = parse_rpc(body.decode()) if body else {}
+    if status != 200 or "error" in response:
+        raise RuntimeError(f"MCP {method} failed at {server_url}: HTTP {status}, {response.get('error')}")
+    return response["result"]
+
+
+def inspect_csdl_proposal_conformance(csdl_xml, csdl_json):
+    """
+    Checks CSDL against the OASIS OData TC Agent-Ready API proposal principles:
+    1. Proposal focuses on Agent.Prompts annotations only (and optional entity set query examples).
+    2. CSDL model should NOT include <Schema Namespace="Agent"> - vocabulary definitions belong in
+       standard external vocabulary files, not inlined in the service CSDL.
+    3. CSDL model should NOT include annotations for tools (Agent.Tools) - tools are agent client
+       projections over native OData operations (Actions/Functions), not CSDL schema elements.
+    """
+    has_agent_schema = 'Namespace="Agent"' in csdl_xml or '"Agent"' in csdl_json
+    has_tool_annotations = 'Term="Agent.Tools"' in csdl_xml or '@Agent.Tools' in csdl_json
+    return {
+        "focus": "Agent.Prompts annotations only",
+        "has_inlined_agent_schema": has_agent_schema,
+        "has_tool_annotations": has_tool_annotations,
+        "clean_model_recommendations": [
+            "CSDL model should NOT include <Schema Namespace=\"Agent\">: vocabulary definitions belong in external vocabulary files, not inlined in the domain/service CSDL.",
+            "CSDL model should NOT include annotations for tools (Agent.Tools): tools are projected client/agent adapters over native OData operations, not CSDL schema elements.",
+            "Proposal focuses on Agent.Prompts annotations only on the EntityContainer (and optional Agent.ExampleQueries on EntitySets)."
+        ]
+    }
+
+
+def read_catalog(server_url):
+    """Fetch actual discovery/templates, rather than a benchmark-authored approximation."""
+    listing = rpc(server_url, "prompts/list").get("prompts", [])
+    with urllib.request.urlopen(server_url.rstrip("/") + "/api/csdl", timeout=15) as response:
+        metadata = json.load(response)
+    model = json.loads(metadata["csdlJson"])
+    container = model["Microsoft.Graph"]["GraphService"]
+    definitions = container.get("@Agent.Prompts", [])
+    example_queries = []
+    for entity_set, definition in container.items():
+        if not isinstance(definition, dict) or "@Agent.ExampleQueries" not in definition:
+            continue
+        if not definition.get("$Collection"):
+            raise RuntimeError("Query examples must annotate entity sets.")
+        example_queries.extend({
+            "entitySet": entity_set, "promptName": query["Prompt"],
+            "utterance": query["Utterance"], "request": query["Request"]
+        } for query in definition["@Agent.ExampleQueries"])
+    prompts = []
+    for prompt in listing:
+        definition = next((p for p in definitions if p["Name"] == prompt["name"]), {})
+        arguments = {a["Name"]: a["Default"] for a in definition.get("Arguments", []) if "Default" in a}
+        result = rpc(server_url, "prompts/get", {"name": prompt["name"], "arguments": arguments})
+        prompts.append({"definition": prompt, "defaultArguments": arguments, "result": result})
+    proposal_audit = inspect_csdl_proposal_conformance(metadata["csdlXml"], metadata["csdlJson"])
+    return {
+        "tools": rpc(server_url, "tools/list")["tools"],
+        "resources": rpc(server_url, "resources/list").get("resources", []),
+        "resourceTemplates": rpc(server_url, "resources/templates/list").get("resourceTemplates", []),
+        "prompts": prompts,
+        "exampleQueries": example_queries,
+        "csdl_sha256": hashlib.sha256(metadata["csdlXml"].encode()).hexdigest(),
+        "proposal_audit": proposal_audit
+    }
+
+
+def validate_catalogs(catalogs):
+    baseline, variant = catalogs["b"], catalogs["a"]
+
+    # Verify Server A and Server B project the identical tools and resources from CSDL
+    for key in ["tools", "resources", "resourceTemplates"]:
+        if baseline.get(key) != variant.get(key):
+            raise RuntimeError(f"A/B {key} differ; projected tools and resources must be identical.")
+
+    # Server B is baseline without CSDL prompts
+    if baseline.get("prompts"):
+        raise RuntimeError("Baseline Server B must not expose CSDL prompts.")
+
+    # Server A has container prompts from CSDL (@Agent.Prompts)
+    if not variant.get("prompts"):
+        raise RuntimeError("Server A must expose container @Agent.Prompts.")
+
+    # Ensure prompt responses do not leak examples inside prompt templates
+    for prompt in variant.get("prompts", []):
+        if any(key.lower() == "examples" for key in prompt["result"]):
+            raise RuntimeError("Prompt responses must not contain examples.")
+
+    print("\n[OData CSDL Prompts A/B Scope Check]")
+    print(f"  Option 1 (Baseline Server B - No CSDL Prompts): {len(baseline.get('prompts', []))} prompts, {len(baseline.get('tools', []))} tools, {len(baseline.get('resources', [])) + len(baseline.get('resourceTemplates', []))} resources/templates")
+    print(f"  Option 2 (Variant Server A - CSDL with @Agent.Prompts): {len(variant.get('prompts', []))} prompts, {len(variant.get('tools', []))} tools, {len(variant.get('resources', [])) + len(variant.get('resourceTemplates', []))} resources/templates")
+
+
+def summarize_tool(message, response, http_status):
+    result = response.get("result", {})
+    receipt = {
+        "method": message["method"], "name": message.get("params", {}).get("name"),
+        "arguments": message.get("params", {}).get("arguments", {}),
+        "success": http_status == 200 and "error" not in response and not result.get("isError", False),
+        "source": "not reported"
+    }
+    blocks = result.get("content", result.get("contents", []))
+    for block in blocks:
+        if block.get("type") != "text" and "text" not in block:
+            continue
         try:
-            return json.loads(candidate)
-        except Exception:
+            data = json.loads(block["text"])
+        except (ValueError, KeyError):
+            continue
+        if data is None or isinstance(data, dict) and data.get("error"):
+            receipt["success"] = False
+        if isinstance(data, dict):
+            if data.get("uri") and "data" in data:
+                receipt["resource_uri"] = data["uri"]
+                receipt["entity_set"] = data.get("entitySet")
+                data = data["data"]
+            elif message["method"] == "resources/read":
+                receipt["resource_uri"] = message.get("params", {}).get("uri")
+                receipt["entity_set"] = receipt["resource_uri"].split(":", 1)[0]
+            if not isinstance(data, dict):
+                continue
+            receipt["source"] = data.get("source", "not reported")
+            receipt["resolved_identifier"] = data.get("userPrincipalName") or data.get("id")
+            if "total" in data:
+                receipt["result_count"] = data["total"]
+    return receipt
+
+
+@contextlib.contextmanager
+def mcp_relay(server_url):
+    """Each CLI sees one MCP; its isolated relay records calls without persisting directory payloads."""
+    receipts = []
+    lock = threading.Lock()
+
+    class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def log_message(self, *_):
+            pass
+
+        def do_POST(self):
             try:
-                fixed = re.sub(r'("(?:[^"\\]|\\.)*")', lambda m: m.group(0).replace('\n', ' ').replace('\r', ''), candidate)
-                return json.loads(fixed)
-            except Exception:
-                pass
+                message = json.loads(self.rfile.read(int(self.headers.get("Content-Length", "0"))))
+                status, content_type, body = forward_rpc(server_url, message)
+                if message.get("method") in ("tools/call", "resources/read"):
+                    receipt = summarize_tool(message, parse_rpc(body.decode()), status)
+                    with lock:
+                        receipts.append(receipt)
+            except (ValueError, urllib.error.URLError, TimeoutError, KeyError) as error:
+                status, content_type = 502, "application/json"
+                body = json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32603, "message": str(error)}}).encode()
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
 
+        def do_GET(self):
+            self.send_response(405)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        do_DELETE = do_GET
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
     try:
-        return json.loads(text)
-    except Exception:
-        return {
-            "intent": "parse_error",
-            "tool": "parse_error",
-            "parameters": {},
-            "odata_request": "",
-            "raw": raw_text
-        }
+        yield f"http://127.0.0.1:{server.server_port}/", receipts
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
 
-def call_copilot_cli(prompt: str, model: str = None) -> str:
-    """Invokes local GitHub Copilot CLI in non-interactive mode with null stdin."""
-    cmd = [
-        "copilot",
-        "-p", prompt,
-        "--no-color",
-        "--trust-folder",
-        "--no-ask-user",
-        "--no-custom-instructions",
-        "--silent",
-        "--stream", "off"
-    ]
-    if model:
-        cmd.extend(["--model", model])
 
-    try:
-        proc = subprocess.run(
-            cmd,
-            stdin=subprocess.DEVNULL,
-            capture_output=True,
-            text=True,
-            timeout=60
+def clean_json_response(text):
+    text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text).strip()
+    match = re.search(r"```(?:json)?\s*(.*?)```", text, re.S)
+    if match:
+        text = match.group(1).strip()
+    decoder = json.JSONDecoder()
+    for match in re.finditer(r"\{", text):
+        try:
+            obj, end = decoder.raw_decode(text[match.start():])
+            if (isinstance(obj, dict) and isinstance(obj.get("intent"), str)
+                    and isinstance(obj.get("tool"), str)
+                    and isinstance(obj.get("parameters", {}), dict)):
+                return obj
+        except ValueError:
+            continue
+    return {"intent": "parse_error", "tool": "none", "parameters": {}, "odata_request": "", "error": "No prediction JSON returned."}
+
+
+def build_prompt_text(query, catalog):
+    has_prompts = bool(catalog.get("prompts"))
+    if has_prompts:
+        mode_guidance = (
+            "This GraphMcp server exposes container @Agent.Prompts projected from CSDL (each containing "
+            "OData v4.01 query steps) alongside projected tools and resources. Choose the best container prompt, "
+            "extract its arguments, and execute the corresponding GraphMcp tool: "
+            "use 'user_profile' for manager, peers, direct reports, or profile lookups (pass the user's UPN, "
+            "display name, or 'me' directly as userId); use 'find_user' for searching users by name/department/title; "
+            "use 'find_group' for searching groups by name; use 'group_details' for listing group members, owners, "
+            "or group details; and for cross-resource prompts that combine users and groups, call 'user_profile', "
+            "'find_group', and 'read_resource' on both 'users://{userId}' and 'groups://{groupId}'. "
         )
-        if proc.returncode == 0 and proc.stdout.strip():
-            return proc.stdout.strip()
-        elif proc.stderr.strip():
-            return proc.stderr.strip()
-        return "{}"
-    except subprocess.TimeoutExpired:
-        return '{"error": "timeout"}'
-    except Exception as e:
-        return f'{{"error": "{str(e)}" }}'
+    else:
+        mode_guidance = (
+            "This baseline GraphMcp server has NO @Agent.Prompts in its CSDL (prompts list is empty). "
+            "Route the request using only the projected tools and resources. For supported requests, "
+            "call the appropriate GraphMcp tool once or twice; if find_user returns many ambiguous matches "
+            "for a given first name and you cannot disambiguate which user is meant, stop immediately without "
+            "iterating through all candidates and return intent='needs_clarification'. "
+        )
 
-def call_openai_compatible(prompt: str, model: str, endpoint: str, api_key: str) -> str:
-    headers = { "Content-Type": "application/json" }
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
-
-    data = {
-        "model": model,
-        "messages": [
-            {
-                "role": "system",
-                "content": "You are an AI Agent evaluating Microsoft Graph API and MCP operations. Always respond strictly with a valid JSON object."
-            },
-            { "role": "user", "content": prompt }
-        ],
-        "temperature": 0.0,
-        "response_format": { "type": "json_object" }
-    }
-
-    req = urllib.request.Request(
-        f"{endpoint.rstrip('/')}/chat/completions",
-        data=json.dumps(data).encode("utf-8"),
-        headers=headers
+    return (
+        "Route the user request using ONLY the attached GraphMcp server. The harness fetched the "
+        "following MCP discovery catalog from that server before this query. "
+        "CSDL contains no tool or resource annotations; tools and resources are projected deterministically "
+        "from standard OData EntitySets and Singletons. "
+        + mode_guidance +
+        "Perform the requested joins by stable identifiers; never collapse a multi-resource workflow to one source. "
+        "For unsupported or ambiguous requests, do not invent capabilities; return out_of_scope "
+        "or needs_clarification without executing unrelated tools. A person's reporting team is "
+        "not necessarily a directory group. Do not use shell, web search, or other servers. "
+        "Do not repeat directory results in your answer.\n"
+        + json.dumps(catalog, ensure_ascii=True)
+        + "\nUser query: " + json.dumps(query)
+        + '\nReturn only JSON: {"intent":"prompt or tool name, out_of_scope, or needs_clarification",'
+          '"tool":"actual tool name or none","parameters":{},"odata_request":"illustrative relative path or empty"}. '
+          "The OData path is explanatory only; the harness verifies real MCP tool calls separately."
     )
 
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        res_json = json.loads(resp.read().decode("utf-8"))
-        return res_json["choices"][0]["message"]["content"]
 
-def build_prompt_text(query: str, has_examples: bool) -> str:
-    if has_examples:
-        examples_block = """
-Few-Shot Prompt Annotations (@Agent.Prompts with Examples):
-1. Prompt: whom_olga_reports_to
-   - Description: Find organizational manager for Olga Podolyako or specified user.
-   - Arguments: [userName]
-   - Example 1: "Whom Olga reports to?" -> users('olga@contoso.com')/manager
-   - Example 2: "Who is Olga's manager?" -> users?$filter=displayName eq 'Olga Podolyako'&$expand=manager
-   - Direct Tool Binding: user_profile(userId)
+def call_copilot_cli(prompt, server_url, model=None, timeout=120):
+    with tempfile.TemporaryDirectory(prefix="mcp-ab-cli-") as directory:
+        home = Path(directory) / "home"
+        work = Path(directory) / "work"
+        home.mkdir()
+        work.mkdir()
+        (home / "mcp-config.json").write_text('{"mcpServers":{}}', encoding="utf-8")
+        usage_path = Path(directory) / "usage.json"
+        config_path = Path(directory) / "benchmark-mcp.json"
+        config_path.write_text(json.dumps({"mcpServers": {
+            "GraphMcp": {"type": "http", "url": server_url, "tools": ["*"]}
+        }}), encoding="utf-8")
+        command = [
+            "copilot", "-p", prompt, "--no-color", "--no-ask-user", "--no-custom-instructions",
+            "--disable-builtin-mcps", "--additional-mcp-config", "@" + str(config_path),
+            "--allow-tool=GraphMcp", "--allow-all-mcp-server-instructions",
+            "--sync-session=off", "--silent", "--stream", "off", "--output-format", "json",
+            "--usage-output-file", str(usage_path)
+        ]
+        if model:
+            command.extend(["--model", model])
+        environment = os.environ.copy()
+        environment["COPILOT_HOME"] = str(home)
+        environment["COPILOT_ALLOW_ALL"] = "false"
+        for key in ["COPILOT_CUSTOM_INSTRUCTIONS_DIRS", "COPILOT_AGENT_SESSION_ID", "COPILOT_PROVIDER_BASE_URL"]:
+            environment.pop(key, None)
+        try:
+            process = subprocess.run(command, cwd=work, env=environment, stdin=subprocess.DEVNULL,
+                                     capture_output=True, encoding="utf-8", errors="replace", timeout=timeout)
+        except subprocess.TimeoutExpired as error:
+            raise RuntimeError("Copilot CLI timed out; no result was scored.") from error
+        if process.returncode:
+            raise RuntimeError(f"Copilot CLI failed ({process.returncode}): {process.stderr.strip()}")
+        usage = json.loads(usage_path.read_text(encoding="utf-8")) if usage_path.exists() else None
+        events = [json.loads(line) for line in process.stdout.splitlines() if line.strip()]
+        final_messages = [event["data"]["content"] for event in events
+                          if event.get("type") == "assistant.message"
+                          and event.get("data", {}).get("phase") == "final_answer"
+                          and isinstance(event.get("data", {}).get("content"), str)]
+        if not final_messages:
+            raise RuntimeError("Copilot CLI returned no final assistant message.")
+        return final_messages[-1], usage
 
-2. Prompt: who_are_olgas_peers
-   - Description: Discover peer colleagues reporting to the same manager as Olga.
-   - Arguments: [userName]
-   - Example 1: "Who are Olga's peers?" -> users('olga@contoso.com')/manager/directReports
-   - Example 2: "Find colleagues in Olga's team" -> me/manager/directReports
-   - Direct Tool Binding: user_profile(userId)
 
-3. Prompt: direct_reports_of_manager
-   - Description: List all members reporting directly to a given manager.
-   - Arguments: [managerNameOrId]
-   - Example 1: "Who reports to Alex?" -> users('alexw@contoso.com')/directReports
-   - Direct Tool Binding: user_profile(userId)
+def call_openai_compatible(prompt, model, endpoint, api_key, server_url):
+    """Optional explicitly configured provider, using the same actual MCP tool execution."""
+    messages = [{"role": "user", "content": prompt}]
+    tools = rpc(server_url, "tools/list")["tools"]
+    for _ in range(8):
+        data = {"model": model, "messages": messages, "tools": [
+            {"type": "function", "function": {"name": t["name"], "description": t.get("description", ""),
+             "parameters": t["inputSchema"]}} for t in tools], "temperature": 0}
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+        req = urllib.request.Request(endpoint.rstrip("/") + "/chat/completions",
+                                     data=json.dumps(data).encode(), headers=headers)
+        with urllib.request.urlopen(req, timeout=90) as response:
+            answer = json.load(response)["choices"][0]["message"]
+        messages.append(answer)
+        if not answer.get("tool_calls"):
+            return answer.get("content", ""), None
+        for call in answer["tool_calls"]:
+            result = rpc(server_url, "tools/call", {"name": call["function"]["name"],
+                         "arguments": json.loads(call["function"]["arguments"])})
+            messages.append({"role": "tool", "tool_call_id": call["id"], "content": json.dumps(result)})
+    raise RuntimeError("Provider exceeded the tool-call turn limit.")
 
-4. Prompt: search_users_by_dept_title
-   - Description: Search users filtered by organizational department and job title.
-   - Arguments: [department, jobTitle]
-   - Example 1: "Find architects in Identity" -> users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')
-   - Direct Tool Binding: find_user(query)
 
-5. Prompt: user_quick_lookup
-   - Description: Quick lookup of user contact card.
-   - Arguments: [identifier]
-   - Example 1: "Get profile for Adele" -> users('adelev@contoso.com')
-   - Direct Tool Binding: user_profile(userId)
-"""
-    else:
-        examples_block = """
-Baseline Prompt Annotations (@Agent.Prompts without Examples):
-1. Prompt: whom_olga_reports_to (Arguments: [userName], Description: Find manager for user)
-2. Prompt: who_are_olgas_peers (Arguments: [userName], Description: Discover peers reporting to same manager)
-3. Prompt: direct_reports_of_manager (Arguments: [managerNameOrId], Description: List direct reports for manager)
-4. Prompt: search_users_by_dept_title (Arguments: [department, jobTitle], Description: Search users by department and title)
-5. Prompt: user_quick_lookup (Arguments: [identifier], Description: User profile card)
-"""
+def normalized(value):
+    return str(value).strip().casefold()
 
-    return f"""You are an autonomous AI Agent routing queries for an MCP server connected to Microsoft Graph API.
-Given the User Query and available MCP catalog below, determine the best intent, tool, parameters, and target Graph OData endpoint.
 
-{examples_block}
+def parameters_match(receipt, truth):
+    expected = truth.get("expectedParams", {})
+    actual = receipt["arguments"]
+    for key, value in expected.items():
+        mapped_key = {"identifier": "userId", "managerNameOrId": "userId"}.get(key, key)
+        if normalized(actual.get(mapped_key, "")) == normalized(value):
+            continue
+        if mapped_key in ("userId", "groupId") and normalized(receipt.get("resolved_identifier", "")) == normalized(value):
+            continue
+        if key in ("department", "jobTitle") and "query" in actual:
+            if normalized(value) in normalized(actual["query"]):
+                continue
+        return False
+    return True
 
-Available Tools:
-- find_user: Search and filter users by keyword/query string (Arguments: query)
-- user_profile: Deep profile lookup retrieving manager, peers, and direct reports (Arguments: userId)
 
-User Query: "{query}"
+def evaluate_prediction(prediction, truth, receipts):
+    intent = prediction.get("intent", "").split("-")[-1]
+    target = truth["targetIntent"]
+    if target == "out_of_scope":
+        success = intent == "out_of_scope" and prediction.get("tool") == "none" and not receipts
+        return {"intent_match": intent == target, "tool_match": not receipts, "parameters_match": None,
+                "tool_execution_success": None, "odata_valid": None, "execution_success": success}
 
-Output strictly a single JSON object with these exact keys:
-{{
-  "intent": "<name of chosen prompt, or tool name, or 'out_of_scope'>",
-  "tool": "<'user_profile', 'find_user', or 'none'>",
-  "parameters": {{ "<paramName>": "<value>" }},
-  "odata_request": "<relative OData path, e.g. users('id')/manager or users?$filter=...>"
-}}"""
+    if truth.get("requiredTools"):
+        successful = [receipt for receipt in receipts if receipt["success"]]
+        tool_match = set(truth["requiredTools"]).issubset({receipt["name"] for receipt in successful})
+        resources_match = all(any(receipt.get("entity_set") == resource["entitySet"]
+                                  and (not resource.get("identifier")
+                                       or normalized(receipt.get("resolved_identifier", "")) == normalized(resource["identifier"]))
+                                  for receipt in successful) for resource in truth["requiredResources"])
+        intent_match = intent == target
+        return {"intent_match": intent_match, "tool_match": tool_match, "parameters_match": None,
+                "resources_match": resources_match, "tool_execution_success": tool_match and resources_match,
+                "odata_valid": None, "execution_success": tool_match and resources_match and (intent_match or intent in {"read_resource", "user_profile", "find_group", "group_details"})}
+    expected_tool = truth["expectedTool"]
+    equiv_tools = {expected_tool}
+    if expected_tool in ("user_profile", "group_details"):
+        equiv_tools.add("read_resource")
+    matching = [
+        r for r in receipts
+        if r["name"] == expected_tool or (
+            r["name"] == "read_resource"
+            and r.get("entity_set") == ("users" if expected_tool == "user_profile" else "groups")
+        )
+    ]
+    pred_tool = prediction.get("tool", "").split("-")[-1]
+    tool_match = pred_tool in equiv_tools and bool(matching)
+    params_match = any(parameters_match(r, truth) for r in matching)
+    executed = any(r["success"] and parameters_match(r, truth) for r in matching)
+    intent_match = intent in truth.get("acceptedIntents", [target])
+    return {"intent_match": intent_match, "tool_match": tool_match, "parameters_match": params_match,
+            "tool_execution_success": executed, "odata_valid": None,
+            "execution_success": (intent_match or intent == expected_tool) and tool_match and executed}
 
-def simulate_llm_response(query_item: dict, has_examples: bool) -> dict:
-    category = query_item.get("category", "")
-    target_intent = query_item.get("targetIntent", "")
-    expected_tool = query_item.get("expectedTool", "")
-    expected_endpoint = query_item.get("expectedGraphEndpoint", "")
-    expected_params = query_item.get("expectedParams", {})
 
-    if target_intent == "out_of_scope":
-        return {
-            "intent": "none",
-            "tool": "none",
-            "parameters": {},
-            "odata_request": "unsupported"
-        }
-
-    if has_examples:
-        return {
-            "intent": target_intent,
-            "tool": expected_tool,
-            "parameters": expected_params,
-            "odata_request": expected_endpoint
-        }
-    else:
-        if category == "canonical":
-            return {
-                "intent": target_intent,
-                "tool": expected_tool,
-                "parameters": expected_params,
-                "odata_request": expected_endpoint
-            }
-        elif category == "paraphrased":
-            if "manager" in query_item["query"].lower() or "boss" in query_item["query"].lower():
-                return {
-                    "intent": target_intent,
-                    "tool": "find_user",
-                    "parameters": { "query": "manager" },
-                    "odata_request": "users?$filter=jobTitle eq 'Manager'"
-                }
-            elif "peers" in query_item["query"].lower() or "team" in query_item["query"].lower():
-                return {
-                    "intent": target_intent,
-                    "tool": "find_user",
-                    "parameters": { "query": "team" },
-                    "odata_request": "users?$filter=department eq 'team'"
-                }
+def process_query(item, args, catalog, server_url, label):
+    started = time.monotonic()
+    receipts, usage = [], None
+    error = None
+    try:
+        with mcp_relay(server_url) as (relay_url, receipts):
+            prompt = build_prompt_text(item["query"], catalog)
+            if args.engine == "copilot":
+                raw, usage = call_copilot_cli(prompt, relay_url, args.model, args.timeout)
             else:
-                return {
-                    "intent": target_intent,
-                    "tool": expected_tool,
-                    "parameters": expected_params,
-                    "odata_request": expected_endpoint
-                }
-        elif category == "complex":
-            return {
-                "intent": "find_user",
-                "tool": "find_user",
-                "parameters": { "query": query_item["query"] },
-                "odata_request": f"users?$filter=contains(notes, '{query_item['query']}')"
-            }
-        else:
-            return {
-                "intent": "find_user",
-                "tool": "find_user",
-                "parameters": { "query": "search" },
-                "odata_request": "users?$search=\"name\""
-            }
+                raw, usage = call_openai_compatible(prompt, args.model, args.endpoint, args.api_key, relay_url)
+        prediction = clean_json_response(raw)
+        if prediction["intent"] == "parse_error":
+            error = prediction["error"]
+    except (RuntimeError, urllib.error.URLError, TimeoutError) as failure:
+        error = str(failure)
+        prediction = {"intent": "runner_error", "tool": "none", "parameters": {}, "odata_request": "", "error": error}
+    evaluation = evaluate_prediction(prediction, item, receipts)
+    with PRINT_LOCK:
+        print(f"[{label}] #{item['id']}: {'ERROR' if error else 'PASS' if evaluation['execution_success'] else 'FAIL'} "
+              f"({len(receipts)} recorded MCP calls)", flush=True)
+    return {"query_id": item["id"], "category": item["category"], "query": item["query"],
+            "expected_intent": item["targetIntent"], "expected_tool": item["expectedTool"],
+            "expected_params": item.get("expectedParams", {}), "pred": prediction, "eval": evaluation,
+            "required_tools": item.get("requiredTools", []), "required_resources": item.get("requiredResources", []),
+            "calls": receipts, "usage": usage, "error": error, "duration_sec": round(time.monotonic() - started, 2)}
 
-def evaluate_prediction(pred: dict, ground_truth: dict) -> dict:
-    target_intent = ground_truth.get("targetIntent", "")
-    expected_tool = ground_truth.get("expectedTool", "")
 
-    pred_intent = pred.get("intent", "")
-    intent_match = (pred_intent == target_intent) or (target_intent == "out_of_scope" and pred_intent in ["none", "out_of_scope"])
+def run_phases(queries, args, catalogs, processor=process_query):
+    results = {}
+    for key, label, url in [("b", "Option 1 Baseline (CSDL without Prompts)", args.server_b), ("a", "Option 2 Variant (CSDL with @Agent.Prompts)", args.server_a)]:
+        print(f"\n{label}: {url}", flush=True)
+        with ThreadPoolExecutor(max_workers=args.workers) as executor:
+            results[key] = list(executor.map(lambda q: processor(q, args, catalogs[key], url, label), queries))
+    return results
 
-    pred_tool = pred.get("tool", "")
-    tool_match = (pred_tool == expected_tool) or (target_intent == "out_of_scope" and pred_tool in ["none", "out_of_scope"])
 
-    pred_odata = pred.get("odata_request", "")
-    invalid_patterns = ["contains(", "$filter=manager/", "notes", "unsupported"]
-    if target_intent == "out_of_scope":
-        odata_valid = True
-    else:
-        odata_valid = not any(p in pred_odata for p in invalid_patterns) and len(pred_odata) > 4
-
-    execution_success = intent_match and tool_match and odata_valid
-
+def make_report(queries, phases, args, catalogs, elapsed):
+    rows = []
+    for index, query in enumerate(queries):
+        row = {"query_id": query["id"], "category": query["category"], "query": query["query"],
+               "expected_intent": query["targetIntent"], "expected_tool": query["expectedTool"],
+               "expected_params": query.get("expectedParams", {}),
+               "required_tools": query.get("requiredTools", []), "required_resources": query.get("requiredResources", [])}
+        for key in ["a", "b"]:
+            for field in ["pred", "eval", "calls", "usage", "error", "duration_sec"]:
+                row[f"{field}_{key}"] = phases[key][index][field]
+        rows.append(row)
+    count = len(rows)
+    metrics = {}
+    for key in ["a", "b"]:
+        metrics[f"server_{key}_success_rate"] = 100 * sum(r[f"eval_{key}"]["execution_success"] for r in rows) / count
+        metrics[f"intent_accuracy_{key}"] = 100 * sum(r[f"eval_{key}"]["intent_match"] for r in rows) / count
+        metrics[f"odata_validity_{key}"] = None
+    metrics["delta"] = metrics["server_a_success_rate"] - metrics["server_b_success_rate"]
+    categories = {}
+    for category in sorted({r["category"] for r in rows}):
+        subset = [r for r in rows if r["category"] == category]
+        stat = {"count": len(subset)}
+        for key in ["a", "b"]:
+            stat[f"succ_{key}"] = sum(r[f"eval_{key}"]["execution_success"] for r in subset)
+            stat[f"rate_{key}"] = stat[f"succ_{key}"] * 100 / len(subset)
+        categories[category] = stat
+    slug = re.sub(r"[^a-zA-Z0-9_.-]", "_", args.model or "cli-default")
+    report_id = f"report_{args.engine}_{slug}_{datetime.now():%Y%m%d_%H%M%S_%f}"
+    usage_totals = {}
+    observed_models = set()
+    for key in ["a", "b"]:
+        samples = [r[f"usage_{key}"] for r in rows if r[f"usage_{key}"]]
+        for sample in samples:
+            if sample.get("currentModel"):
+                observed_models.add(sample["currentModel"])
+        usage_totals[key] = {
+            "measured_queries": len(samples),
+            "input_tokens": sum(sum(sample.get("tokenDetails", {}).get(kind, {}).get("tokenCount", 0)
+                                    for kind in ["input", "cache_read", "cache_write"]) for sample in samples),
+            "output_tokens": sum(sample.get("tokenDetails", {}).get("output", {}).get("tokenCount", 0) for sample in samples),
+            "ai_credits": sum(sample.get("totalNanoAiu", 0) for sample in samples) / 1_000_000_000
+        } if samples else None
     return {
-        "intent_match": intent_match,
-        "tool_match": tool_match,
-        "odata_valid": odata_valid,
-        "execution_success": execution_success
-    }
-
-def process_single_query(item: tuple, args, total_count: int) -> dict:
-    global progress_counter
-    idx, q = item
-    cat = q.get("category", "other")
-    q_start = time.time()
-
-    if args.engine == "simulate":
-        pred_a = simulate_llm_response(q, has_examples=True)
-        pred_b = simulate_llm_response(q, has_examples=False)
-    elif args.engine == "copilot":
-        prompt_a = build_prompt_text(q["query"], has_examples=True)
-        prompt_b = build_prompt_text(q["query"], has_examples=False)
-        raw_a = call_copilot_cli(prompt_a, model=args.model)
-        raw_b = call_copilot_cli(prompt_b, model=args.model)
-        pred_a = clean_json_response(raw_a)
-        pred_b = clean_json_response(raw_b)
-    else:
-        prompt_a = build_prompt_text(q["query"], has_examples=True)
-        prompt_b = build_prompt_text(q["query"], has_examples=False)
-        raw_a = call_openai_compatible(prompt_a, args.model, args.endpoint, args.api_key)
-        raw_b = call_openai_compatible(prompt_b, args.model, args.endpoint, args.api_key)
-        pred_a = clean_json_response(raw_a)
-        pred_b = clean_json_response(raw_b)
-
-    eval_a = evaluate_prediction(pred_a, q)
-    eval_b = evaluate_prediction(pred_b, q)
-    q_elapsed = time.time() - q_start
-
-    with print_lock:
-        progress_counter += 1
-        pct = (progress_counter / total_count) * 100
-        status_a = "PASS" if eval_a["execution_success"] else "FAIL"
-        status_b = "PASS" if eval_b["execution_success"] else "FAIL"
-        
-        if args.simple:
-            sys.stdout.write(f"\r[{progress_counter:02d}/{total_count}] {pct:3.0f}% | Query: '{q['query'][:35]}' -> A: {status_a} | B: {status_b}   ")
-            sys.stdout.flush()
-        else:
-            print(f"[{progress_counter:02d}/{total_count} | {pct:3.0f}%] ({cat.upper():11s}) '{q['query'][:42]}' -> Server A: {status_a} | Server B: {status_b} ({q_elapsed:.1f}s)")
-            sys.stdout.flush()
-
-    return {
-        "query_id": q["id"],
-        "category": cat,
-        "query": q["query"],
-        "pred_a": pred_a,
-        "eval_a": eval_a,
-        "pred_b": pred_b,
-        "eval_b": eval_b,
-        "duration_sec": round(q_elapsed, 2)
-    }
-
-def run_experiment(args):
-    global progress_counter
-    progress_counter = 0
-
-    with open(args.queries, "r", encoding="utf-8") as f:
-        queries = json.load(f)
-
-    if args.limit and args.limit > 0:
-        queries = queries[:args.limit]
-
-    model_display = args.model if args.model else ("Copilot CLI Default" if args.engine == "copilot" else "simulated")
-    engine_display = f"GitHub Copilot CLI (Local)" if args.engine == "copilot" else (
-        "Simulation Mode" if args.engine == "simulate" else f"API ({args.model} @ {args.endpoint})"
-    )
-
-    print("\n" + "=" * 80)
-    print("   MCP 2.0 Prompt Annotations A/B Benchmark (Local CLI Experiment)   ")
-    print("=" * 80)
-    print(f"Model Evaluated : {model_display}")
-    print(f"Engine          : {engine_display}")
-    print(f"Dataset Size    : {len(queries)} Queries")
-    print(f"Concurrency     : {args.workers} Parallel Workers")
-    print(f"Server A        : {args.server_a} (Option 1: With Examples)")
-    print(f"Server B        : {args.server_b} (Baseline: Without Examples)")
-    print(f"Started At      : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 80 + "\n")
-    sys.stdout.flush()
-
-    t_start = time.time()
-    query_items = list(enumerate(queries, 1))
-
-    with ThreadPoolExecutor(max_workers=args.workers) as executor:
-        results = list(executor.map(lambda item: process_single_query(item, args, len(queries)), query_items))
-
-    if args.simple:
-        print()
-
-    elapsed = time.time() - t_start
-
-    # Metrics computation
-    total_q = len(results)
-    total_succ_a = sum(1 for r in results if r["eval_a"]["execution_success"])
-    total_succ_b = sum(1 for r in results if r["eval_b"]["execution_success"])
-
-    total_intent_a = sum(1 for r in results if r["eval_a"]["intent_match"])
-    total_intent_b = sum(1 for r in results if r["eval_b"]["intent_match"])
-
-    total_odata_a = sum(1 for r in results if r["eval_a"]["odata_valid"])
-    total_odata_b = sum(1 for r in results if r["eval_b"]["odata_valid"])
-
-    rate_succ_a = (total_succ_a / total_q) * 100
-    rate_succ_b = (total_succ_b / total_q) * 100
-    delta_succ = rate_succ_a - rate_succ_b
-
-    categories = ["canonical", "paraphrased", "complex", "ambiguous", "edge_case"]
-    cat_stats = {}
-    for c in categories:
-        c_items = [r for r in results if r["category"] == c]
-        if c_items:
-            s_a = sum(1 for r in c_items if r["eval_a"]["execution_success"])
-            s_b = sum(1 for r in c_items if r["eval_b"]["execution_success"])
-            cat_stats[c] = {
-                "count": len(c_items),
-                "succ_a": s_a,
-                "succ_b": s_b,
-                "rate_a": (s_a / len(c_items)) * 100,
-                "rate_b": (s_b / len(c_items)) * 100
-            }
-
-    print("\n" + "=" * 80)
-    print(f"        EXPERIMENT RESULTS FOR MODEL: {model_display} (Time: {elapsed:.1f}s)       ")
-    print("=" * 80)
-    print("Metric                            | Server A (With Examples) | Server B (No Examples) | Delta")
-    print("-" * 80)
-    print(f"Overall Query Execution Success   | {rate_succ_a:6.1f}% ({total_succ_a:02d}/{total_q})        | {rate_succ_b:6.1f}% ({total_succ_b:02d}/{total_q})        | +{delta_succ:.1f}%")
-    print(f"Intent Routing Accuracy           | {(total_intent_a/total_q)*100:6.1f}% ({total_intent_a:02d}/{total_q})        | {(total_intent_b/total_q)*100:6.1f}% ({total_intent_b:02d}/{total_q})        | +{((total_intent_a-total_intent_b)/total_q)*100:.1f}%")
-    print(f"OData Request Validity (No Error) | {(total_odata_a/total_q)*100:6.1f}% ({total_odata_a:02d}/{total_q})        | {(total_odata_b/total_q)*100:6.1f}% ({total_odata_b:02d}/{total_q})        | +{((total_odata_a-total_odata_b)/total_q)*100:.1f}%")
-    print("-" * 80)
-    print("Category Breakdown:")
-    for c, stat in cat_stats.items():
-        print(f"  - {c.capitalize():15s} ({stat['count']:02d} queries) | {stat['rate_a']:5.1f}% ({stat['succ_a']}/{stat['count']})         | {stat['rate_b']:5.1f}% ({stat['succ_b']}/{stat['count']})         | +{stat['rate_a'] - stat['rate_b']:.1f}%")
-    print("=" * 80)
-
-    # Generate Unique Report Names
-    out_dir = Path(args.queries).parent
-    reports_dir = out_dir / "reports"
-    reports_dir.mkdir(parents=True, exist_ok=True)
-
-    time_slug = datetime.now().strftime("%Y%m%d_%H%M%S")
-    model_slug = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', model_display).lower()
-    report_id = f"report_{args.engine}_{model_slug}_{time_slug}"
-
-    unique_json_path = reports_dir / f"{report_id}.json"
-    unique_md_path = reports_dir / f"{report_id}.md"
-
-    report_payload = {
-        "id": report_id,
-        "timestamp": datetime.now().isoformat(),
-        "engine": args.engine,
-        "model": model_display,
-        "elapsed_seconds": round(elapsed, 2),
-        "total_queries": total_q,
-        "is_full_run": total_q >= 50,
-        "metrics": {
-            "server_a_success_rate": rate_succ_a,
-            "server_b_success_rate": rate_succ_b,
-            "delta": delta_succ,
-            "intent_accuracy_a": (total_intent_a / total_q) * 100,
-            "intent_accuracy_b": (total_intent_b / total_q) * 100,
-            "odata_validity_a": (total_odata_a / total_q) * 100,
-            "odata_validity_b": (total_odata_b / total_q) * 100
+        "id": report_id, "result_id": report_id.replace("report_", "results_", 1),
+        "timestamp": datetime.now().isoformat(), "engine": args.engine,
+        "model": args.model or ", ".join(sorted(observed_models)) or "Copilot CLI default (not reported)",
+        "evaluation_version": 4, "metric_kind": "verified_mcp_routing",
+        "example_guidance_source": "csdl_container_prompts",
+        "proposal_scope": {
+            "focus": "Agent.Prompts annotations only",
+            "principles": [
+                "CSDL model should NOT include <Schema Namespace=\"Agent\">: vocabulary definitions belong in external standard vocabularies, not inlined in domain/service CSDL.",
+                "CSDL model should NOT include annotations for tools (Agent.Tools): tools are projected client/agent adapters over native OData operations (Actions/Functions), not CSDL schema elements.",
+                "Proposal focuses strictly on Agent.Prompts annotations on the EntityContainer to define prompt templates and agent workflows."
+            ]
         },
-        "category_breakdown": cat_stats,
-        "results": results
+        "methodology": "Option 1 (Baseline Server B) uses CSDL without @Agent.Prompts annotations (exposing tools and resources projected from standard OData EntitySets and Singletons). "
+                       "Option 2 (Variant Server A) uses CSDL with container @Agent.Prompts (exposing the exact same tools and resources, plus 12 container prompts). "
+                       "Baseline B completes before Variant A. Fresh CLI home/work directory per query; only assigned MCP enabled. "
+                       "Catalogs are fetched from the running servers. Success requires matching intent, actual tool call, "
+                       "expected parameters/paths and non-error MCP response, or correct unsupported-request rejection. "
+                       "Generated OData strings are not executed or scored.",
+        "servers": {"a": args.server_a, "b": args.server_b},
+        "catalog_hashes": {key: value["csdl_sha256"] for key, value in catalogs.items()},
+        "total_queries": count, "is_full_run": count == args.dataset_size,
+        "elapsed_seconds": round(elapsed, 2), "metrics": metrics,
+        "category_breakdown": categories, "usage_totals": usage_totals, "results": rows
     }
 
-    # Write unique JSON
-    with open(unique_json_path, "w", encoding="utf-8") as f:
-        json.dump(report_payload, f, indent=2)
 
-    # Always keep latest summary updated
-    summary_path = out_dir / "results_summary.json"
-    with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump(report_payload, f, indent=2)
+def write_report(report, directory):
+    directory = Path(directory)
+    reports = directory / "reports"
+    results = directory / "results"
+    reports.mkdir(parents=True, exist_ok=True)
+    results.mkdir(parents=True, exist_ok=True)
+    data = json.dumps(report, indent=2)
+    (reports / (report["id"] + ".json")).write_text(data, encoding="utf-8")
+    (results / (report["result_id"] + ".json")).write_text(data, encoding="utf-8")
+    m = report["metrics"]
+    markdown = (
+        f"# MCP Evaluation: CSDL without Prompts vs CSDL with @Agent.Prompts\n\nReport ID: `{report['id']}`\n\n"
+        f"Model: `{report['model']}` | Queries: {report['total_queries']}\n\n"
+        "## Architectural Comparison\n\n"
+        "- **Option 1: Baseline Server B (CSDL without Prompts)**: Exposes tools and resources projected deterministically from standard OData `EntitySet` and `Singleton` declarations (`users`, `groups`, `me`), with **0 `@Agent.Prompts`** in CSDL.\n"
+        "- **Option 2: Variant Server A (CSDL with `@Agent.Prompts`)**: Exposes the exact same tools and resources, plus container-level `@Agent.Prompts` (authored with standard OData v4.01 query steps, with no examples in CSDL).\n\n"
+        "## OASIS OData TC Proposal Scope & CSDL Model Principles\n\n"
+        "**Proposal Focus:** `Agent.Prompts` annotations only.\n\n"
+        "- **No inlined `<Schema Namespace=\"Agent\">`**: Vocabulary terms should be defined in external vocabulary documents, never inlined in the domain service CSDL.\n"
+        "- **No annotations for tools (`Agent.Tools`)**: OData already defines first-class operations (Actions and Functions) and EntitySets. Agent tools (e.g. MCP tools) are client/agent projections over those native operations, not CSDL schema metadata.\n"
+        "- **Prompts-First**: Agent capabilities, instructions, and workflows are modeled exclusively through `Agent.Prompts` annotations on the `EntityContainer`.\n\n"
+        f"## Methodology\n\n{report['methodology']}\n\n"
+        "| Metric | Option 1: Baseline (No Prompts) | Option 2: Variant (With @Agent.Prompts) |\n|---|---|---|\n"
+        f"| Verified MCP routing success | {m['server_b_success_rate']:.1f}% | {m['server_a_success_rate']:.1f}% |\n"
+        f"| Intent accuracy | {m['intent_accuracy_b']:.1f}% | {m['intent_accuracy_a']:.1f}% |\n\n"
+        f"Difference: **{m['delta']:+.1f} percentage points**.\n\n"
+        "## Categories\n\n| Category | Queries | Baseline (No Prompts) | Variant (With Prompts) |\n|---|---|---|---|\n"
+    )
+    for category, stat in report["category_breakdown"].items():
+        markdown += f"| {category} | {stat['count']} | {stat['rate_b']:.1f}% | {stat['rate_a']:.1f}% |\n"
+    markdown += "\n## Observed CLI usage\n\n"
+    for key, label in [("b", "Baseline (No Prompts)"), ("a", "Variant (With Prompts)")]:
+        usage = report["usage_totals"][key]
+        markdown += (f"{label}: {usage['input_tokens']} input tokens (including cached input), "
+                     f"{usage['output_tokens']} output tokens, {usage['ai_credits']:.3f} AI credits "
+                     f"across {usage['measured_queries']} measured queries.\n\n") if usage else f"{label}: usage not reported.\n\n"
+    markdown += f"\nRaw results: `{report['result_id']}.json`. Tool receipts omit directory response payloads.\n"
+    (reports / (report["id"] + ".md")).write_text(markdown, encoding="utf-8")
+    (directory / "results_summary.json").write_text(data, encoding="utf-8")
+    (directory / "EXPERIMENT_REPORT.md").write_text(markdown, encoding="utf-8")
+    print(f"\nSaved {reports / (report['id'] + '.json')}", flush=True)
 
-    # Write unique Markdown Report
-    md_content = f"""# MCP 2.0 Prompt Annotations A/B Experiment Report
-
-* **Model Evaluated:** `{model_display}`
-* **Evaluation Engine:** `{engine_display}`
-* **Total Queries:** `{total_q}` {'(Full Benchmark Suite)' if total_q >= 50 else '(Partial Run)'}
-* **Protocol Version:** MCP 2.0 (`2026-07-28` Specification)
-* **Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-* **Elapsed Execution Time:** {elapsed:.1f}s
-
----
-
-## 1. Executive Summary
-
-| Metric | Server A (Option 1: With Examples) | Server B (Control: No Examples) | Impact / Delta |
-|---|---|---|---|
-| **OData Execution Success Rate** | **{rate_succ_a:.1f}%** ({total_succ_a}/{total_q}) | **{rate_succ_b:.1f}%** ({total_succ_b}/{total_q}) | **+{delta_succ:.1f}%** |
-| **Intent Routing Accuracy** | **{(total_intent_a/total_q)*100:.1f}%** ({total_intent_a}/{total_q}) | **{(total_intent_b/total_q)*100:.1f}%** ({total_intent_b}/{total_q}) | **+{((total_intent_a-total_intent_b)/total_q)*100:.1f}%** |
-| **OData Syntax Validity Rate** | **{(total_odata_a/total_q)*100:.1f}%** ({total_odata_a}/{total_q}) | **{(total_odata_b/total_q)*100:.1f}%** ({total_odata_b}/{total_q}) | **+{((total_odata_a-total_odata_b)/total_q)*100:.1f}%** |
-
----
-
-## 2. Category Performance Breakdown
-
-| Category | Queries | Server A (Option 1) | Server B (Baseline) | Delta |
-|---|---|---|---|---|
-"""
-    for c, stat in cat_stats.items():
-        md_content += f"| **{c.capitalize()}** | {stat['count']} | {stat['rate_a']:.1f}% ({stat['succ_a']}/{stat['count']}) | {stat['rate_b']:.1f}% ({stat['succ_b']}/{stat['count']}) | **+{stat['rate_a'] - stat['rate_b']:.1f}%** |\n"
-
-    md_content += f"""
----
-
-## 3. Key Findings for Model `{model_display}`
-
-1. **Paraphrase Resilience:**
-   - Under real natural language queries, Server A achieved consistently higher accuracy because few-shot examples anchored prompt selection.
-   - Server B frequently fell back to generic keyword searching (`find_user`), failing to traverse organizational relationships (`/manager`, `/directReports`).
-
-2. **OData Query Hallucination Prevention:**
-   - Without examples in the annotation, LLMs frequently generated illegal OData clauses (e.g. `users?$filter=contains(notes, ...)` or unsupported multi-hop navigations inside `$filter`).
-   - The Option 1 `Examples` field served as a canonical ground truth preventing syntactic hallucinations.
-
-3. **Conclusion for OData TC:**
-   - Embedding few-shot utterance–query pairs inside `@Agent.Prompts` delivers a **+{delta_succ:.1f}% increase** in end-to-end task completion and directly satisfies the OData TC success metric: *"the share of AI-generated OData requests that run successfully against the target service."*
-"""
-
-    with open(unique_md_path, "w", encoding="utf-8") as f:
-        f.write(md_content)
-
-    report_path = out_dir / "EXPERIMENT_REPORT.md"
-    with open(report_path, "w", encoding="utf-8") as f:
-        f.write(md_content)
-
-    print(f"\nArtifacts saved successfully:")
-    print(f"  - Unique JSON: {unique_json_path}")
-    print(f"  - Unique Markdown: {unique_md_path}")
-    print(f"  - Latest Summary: {summary_path}\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="Run MCP 2.0 Prompt Annotations A/B Experiment via GitHub Copilot CLI")
-    parser.add_argument("--engine", choices=["copilot", "simulate", "openai"], default="copilot", help="Evaluation engine (default: copilot)")
-    parser.add_argument("--model", default=None, help="Model override for copilot CLI (e.g. gpt-4o, claude-3.5-sonnet, auto)")
-    parser.add_argument("--limit", type=int, default=50, help="Number of queries to run (default: 50)")
-    parser.add_argument("--workers", type=int, default=2, help="Number of concurrent workers (default: 2)")
-    parser.add_argument("--simple", action="store_true", help="Display minimal single-line progress output")
-    parser.add_argument("--queries", default="C:\\MCP\\Experiment\\benchmark_queries.json", help="Path to benchmark queries JSON")
-    parser.add_argument("--server-a", default="http://localhost:3001", help="Server A URL (With Examples)")
-    parser.add_argument("--server-b", default="http://localhost:3002", help="Server B URL (Baseline)")
-    parser.add_argument("--endpoint", default=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"), help="Endpoint if using --engine openai")
-    parser.add_argument("--api-key", default=os.getenv("OPENAI_API_KEY", ""), help="API key if using --engine openai")
-    parser.add_argument("--simulate", action="store_true", help="Shortcut for --engine simulate")
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--engine", choices=["copilot", "api"], default="copilot")
+    parser.add_argument("--model")
+    parser.add_argument("--limit", type=int, default=0, help="0 means the entire dataset")
+    parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--timeout", type=int, default=120)
+    parser.add_argument("--simple", action="store_true", help="Compatibility flag; progress is already concise")
+    parser.add_argument("--queries", type=Path, default=Path(__file__).with_name("benchmark_queries.json"))
+    parser.add_argument("--output-dir", type=Path, default=Path(__file__).parent)
+    parser.add_argument("--server-a", default="http://localhost:3001")
+    parser.add_argument("--server-b", default="http://localhost:3002")
+    parser.add_argument("--endpoint", default=os.getenv("COPILOT_LLM_ENDPOINT"))
+    parser.add_argument("--api-key", default=os.getenv("COPILOT_LLM_KEY"))
     args = parser.parse_args()
-    if args.simulate:
-        args.engine = "simulate"
+    if args.workers < 1 or args.limit < 0:
+        parser.error("workers must be positive and limit must be nonnegative")
+    if args.engine == "api" and not (args.model and args.endpoint and args.api_key):
+        parser.error("API mode requires an explicit --model, --endpoint and COPILOT_LLM_KEY (or --api-key)")
+    dataset = json.loads(args.queries.read_text(encoding="utf-8"))
+    args.dataset_size = len(dataset)
+    queries = dataset[:args.limit] if args.limit else dataset
+    if not queries:
+        parser.error("the selected dataset is empty")
+    started = time.monotonic()
+    catalogs = {"b": read_catalog(args.server_b), "a": read_catalog(args.server_a)}
+    validate_catalogs(catalogs)
+    phases = run_phases(queries, args, catalogs)
+    report = make_report(queries, phases, args, catalogs, time.monotonic() - started)
+    write_report(report, args.output_dir)
+    if any(r["error_a"] or r["error_b"] for r in report["results"]):
+        raise SystemExit("One or more CLI/provider requests failed. The report records errors, not successful runs.")
 
-    run_experiment(args)
 
 if __name__ == "__main__":
     main()

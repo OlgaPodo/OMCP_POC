@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns="http://docs.oasis-open.org/odata/ns/edm" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:DataServices>
+    <Schema Namespace="Microsoft.Graph">
+      <EntityType Name="User">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="userPrincipalName" Type="Edm.String" />
+        <Property Name="mail" Type="Edm.String" Nullable="true" />
+        <Property Name="jobTitle" Type="Edm.String" Nullable="true" />
+        <Property Name="department" Type="Edm.String" Nullable="true" />
+        <Property Name="officeLocation" Type="Edm.String" Nullable="true" />
+        <Property Name="mobilePhone" Type="Edm.String" Nullable="true" />
+        <NavigationProperty Name="manager" Type="Microsoft.Graph.User" />
+        <NavigationProperty Name="directReports" Type="Collection(Microsoft.Graph.User)" />
+      </EntityType>
+      <EntityType Name="Group">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="displayName" Type="Edm.String" />
+        <Property Name="description" Type="Edm.String" Nullable="true" />
+        <Property Name="mail" Type="Edm.String" Nullable="true" />
+        <Property Name="mailNickname" Type="Edm.String" Nullable="true" />
+        <Property Name="groupTypes" Type="Collection(Edm.String)" />
+        <Property Name="mailEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="securityEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="visibility" Type="Edm.String" Nullable="true" />
+        <Property Name="createdDateTime" Type="Edm.DateTimeOffset" Nullable="true" />
+        <NavigationProperty Name="members" Type="Collection(Microsoft.Graph.User)" />
+        <NavigationProperty Name="owners" Type="Collection(Microsoft.Graph.User)" />
+      </EntityType>
+      <EntityContainer Name="GraphService">
+        <EntitySet Name="users" EntityType="Microsoft.Graph.User">
+          <NavigationPropertyBinding Path="manager" Target="users" />
+          <NavigationPropertyBinding Path="directReports" Target="users" />
+        </EntitySet>
+        <Singleton Name="me" Type="Microsoft.Graph.User">
+          <NavigationPropertyBinding Path="manager" Target="users" />
+          <NavigationPropertyBinding Path="directReports" Target="users" />
+        </Singleton>
+        <EntitySet Name="groups" EntityType="Microsoft.Graph.Group">
+          <NavigationPropertyBinding Path="members" Target="users" />
+          <NavigationPropertyBinding Path="owners" Target="users" />
+        </EntitySet>
+        <Annotation Term="Agent.Prompts">
+          <Collection>
+            <Record>
+              <PropertyValue Property="Name" String="whom_olga_reports_to" />
+              <PropertyValue Property="Title" String="Whom Olga reports to?" />
+              <PropertyValue Property="Description" String="Find organizational manager for Olga Podolyako or any given user." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="userName" />
+                    <PropertyValue Property="Description" String="User display name or UPN" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Whom does {userName} report to? Query GET users?$filter=startswith(displayName,'{userName}') or startswith(userPrincipalName,'{userName}')&amp;$select=id,displayName,userPrincipalName,jobTitle,department to resolve the user, then query GET users('{userId}')/manager?$select=id,displayName,userPrincipalName,jobTitle,department." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="who_are_olgas_peers" />
+              <PropertyValue Property="Title" String="Who are Olga's peers?" />
+              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Olga Podolyako." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="userName" />
+                    <PropertyValue Property="Description" String="User display name or UPN" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Who are {userName}'s peers? Query GET users?$filter=startswith(displayName,'{userName}') or startswith(userPrincipalName,'{userName}')&amp;$select=id,displayName,userPrincipalName to resolve the user, query GET users('{userId}')/manager?$select=id,displayName,userPrincipalName, and then query GET users('{managerId}')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="direct_reports_of_manager" />
+              <PropertyValue Property="Title" String="Direct reports of a manager" />
+              <PropertyValue Property="Description" String="List all members reporting directly to a given manager." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="managerNameOrId" />
+                    <PropertyValue Property="Description" String="Manager's name, ID, or UPN" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="List direct reports for manager {managerNameOrId}. Query GET users?$filter=startswith(displayName,'{managerNameOrId}') or startswith(userPrincipalName,'{managerNameOrId}')&amp;$select=id,displayName,userPrincipalName to resolve the manager, then query GET users('{managerId}')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="search_users_by_dept_title" />
+              <PropertyValue Property="Title" String="Search users by department and title" />
+              <PropertyValue Property="Description" String="Search users filtered by organizational department and job title." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="department" />
+                    <PropertyValue Property="Description" String="Department name" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity" />
+                  </Record>
+                  <Record>
+                    <PropertyValue Property="Name" String="jobTitle" />
+                    <PropertyValue Property="Description" String="Job title keyword" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Architect" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Find users in department '{department}' with title '{jobTitle}'. Query GET users?$filter=department eq '{department}' and startswith(jobTitle,'{jobTitle}')&amp;$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="user_quick_lookup" />
+              <PropertyValue Property="Title" String="User quick lookup" />
+              <PropertyValue Property="Description" String="Quick lookup of user contact card and organization profile." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="identifier" />
+                    <PropertyValue Property="Description" String="User ID, UPN, or 'me'" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="me" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Display the complete profile card for '{identifier}'. If '{identifier}' is 'me', query GET me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&amp;$expand=manager,directReports; otherwise query GET users('{identifier}')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&amp;$expand=manager,directReports." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="find_group_by_name" />
+              <PropertyValue Property="Title" String="Find group by name" />
+              <PropertyValue Property="Description" String="Search for a Microsoft 365 or Security group by display name or prefix." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupName" />
+                    <PropertyValue Property="Description" String="Group name or search keyword" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Find the group '{groupName}'. Query GET groups?$filter=startswith(displayName,'{groupName}') or startswith(mailNickname,'{groupName}')&amp;$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="list_group_members" />
+              <PropertyValue Property="Title" String="List members of a group" />
+              <PropertyValue Property="Description" String="List all members belonging to a specified group." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupIdOrName" />
+                    <PropertyValue Property="Description" String="Group ID or name" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="List all members of group '{groupIdOrName}'. Resolve the group with GET groups?$filter=startswith(displayName,'{groupIdOrName}')&amp;$select=id,displayName, then query GET groups('{groupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="who_owns_group" />
+              <PropertyValue Property="Title" String="Who is the owner of a group?" />
+              <PropertyValue Property="Description" String="Identify the owners and managers of a specified group." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupIdOrName" />
+                    <PropertyValue Property="Description" String="Group ID or name" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Who is the owner of group '{groupIdOrName}'? Resolve the group with GET groups?$filter=startswith(displayName,'{groupIdOrName}')&amp;$select=id,displayName, then query GET groups('{groupId}')/owners?$select=id,displayName,userPrincipalName,jobTitle,department." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="group_quick_lookup" />
+              <PropertyValue Property="Title" String="Group quick lookup" />
+              <PropertyValue Property="Description" String="Quick lookup of group profile, membership, and catalog." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="identifier" />
+                    <PropertyValue Property="Description" String="Group ID, display name, or 'groups'" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="groups" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Display group information for '{identifier}'. If '{identifier}' is 'groups', query GET groups?$top=100&amp;$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility; otherwise query GET groups('{identifier}')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&amp;$expand=members,owners." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="user_peers_in_group" />
+              <PropertyValue Property="Title" String="Which user peers belong to a group?" />
+              <PropertyValue Property="Description" String="Intersect a user's reporting peers with a directory group's members. User data alone lacks membership; group data alone lacks reporting peers." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="userName" />
+                    <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                  </Record>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupName" />
+                    <PropertyValue Property="Description" String="Group display name or ID" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Which peers of '{userName}' belong to group '{groupName}'? 1. Resolve the user with GET users?$filter=startswith(displayName,'{userName}') or startswith(userPrincipalName,'{userName}')&amp;$select=id,displayName,userPrincipalName and the group with GET groups?$filter=startswith(displayName,'{groupName}')&amp;$select=id,displayName; clarify multiple matches. 2. Query GET users('{userId}')/manager/directReports?$select=id,displayName,userPrincipalName,jobTitle,department and GET groups('{groupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department. 3. Intersect the user's reporting peers and group members by stable id or userPrincipalName, excluding the user. Both users and groups entity sets are required; do not infer directory membership from a shared manager. Report empty overlap and data provenance explicitly." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="group_members_reporting_to_manager" />
+              <PropertyValue Property="Title" String="Which group members report to a manager?" />
+              <PropertyValue Property="Description" String="Filter group members by their reporting manager, joining group membership to user organization profiles." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="managerName" />
+                    <PropertyValue Property="Description" String="Manager display name, ID or UPN" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                  </Record>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupName" />
+                    <PropertyValue Property="Description" String="Group display name or ID" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Which members of group '{groupName}' report directly to '{managerName}'? 1. Resolve the manager with GET users?$filter=startswith(displayName,'{managerName}') or startswith(userPrincipalName,'{managerName}')&amp;$select=id,displayName,userPrincipalName and the group with GET groups?$filter=startswith(displayName,'{groupName}')&amp;$select=id,displayName; clarify ambiguous identities. 2. Query GET groups('{groupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department to enumerate members. 3. Query GET users('{managerId}')/directReports?$select=id,displayName,userPrincipalName (or GET users('{memberId}')/manager?$select=id,displayName,userPrincipalName for each member) and compare manager id values. Both users and groups entity sets are required. Return only confirmed matches and report live/mock provenance." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record>
+              <PropertyValue Property="Name" String="user_and_group_owners_common_manager" />
+              <PropertyValue Property="Title" String="Does a user share a manager with group owners?" />
+              <PropertyValue Property="Description" String="Compare a user's manager with the managers of a group's owners. Requires group ownership and separate user reporting profiles." />
+              <PropertyValue Property="Arguments">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Name" String="userName" />
+                    <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                  </Record>
+                  <Record>
+                    <PropertyValue Property="Name" String="groupName" />
+                    <PropertyValue Property="Description" String="Group display name or ID" />
+                    <PropertyValue Property="Required" Bool="false" />
+                    <PropertyValue Property="Default" String="Identity Architecture" />
+                  </Record>
+                </Collection>
+              </PropertyValue>
+              <PropertyValue Property="Messages">
+                <Collection>
+                  <Record>
+                    <PropertyValue Property="Role" String="user" />
+                    <PropertyValue Property="Content">
+                      <Record>
+                        <PropertyValue Property="Type" String="text" />
+                        <PropertyValue Property="Text" String="Does '{userName}' share a reporting manager with any owner of group '{groupName}'? 1. Resolve the user with GET users?$filter=startswith(displayName,'{userName}') or startswith(userPrincipalName,'{userName}')&amp;$select=id,displayName,userPrincipalName and the group with GET groups?$filter=startswith(displayName,'{groupName}')&amp;$select=id,displayName; clarify multiple matches. 2. Query GET groups('{groupId}')/owners?$select=id,displayName,userPrincipalName to obtain owners. 3. Query GET users('{userId}')/manager?$select=id,displayName,userPrincipalName for the user and each group owner, then compare manager id values. Both users and groups entity sets are required; an owner is not necessarily a reporting manager. Missing manager values mean unknown, not no. Include data provenance." />
+                      </Record>
+                    </PropertyValue>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Collection>
+        </Annotation>
+      </EntityContainer>
+    </Schema>
+    <Schema Namespace="Agent">
+      <ComplexType Name="PromptType">
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Title" Type="Edm.String" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" Nullable="false" />
+        <Property Name="Arguments" Type="Collection(Agent.PromptArgument)" Nullable="false" />
+        <Property Name="Messages" Type="Collection(Agent.PromptMessage)" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="PromptArgument">
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" Nullable="false" />
+        <Property Name="Required" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Default" Type="Edm.String" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="PromptMessage">
+        <Property Name="Role" Type="Edm.String" Nullable="false" />
+        <Property Name="Content" Type="Agent.TextContent" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="TextContent">
+        <Property Name="Type" Type="Edm.String" Nullable="false" />
+        <Property Name="Text" Type="Edm.String" Nullable="false" />
+      </ComplexType>
+      <Term Name="Prompts" Type="Collection(Agent.PromptType)" AppliesTo="EntityContainer" />
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -59,6 +59,51 @@ public class GraphListResponse<T>
     public string? ODataNextLink { get; set; }
 }
 
+public class GraphGroup
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = string.Empty;
+
+    [JsonPropertyName("displayName")]
+    public string DisplayName { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    [JsonPropertyName("mail")]
+    public string? Mail { get; set; }
+
+    [JsonPropertyName("mailNickname")]
+    public string? MailNickname { get; set; }
+
+    [JsonPropertyName("groupTypes")]
+    public List<string> GroupTypes { get; set; } = [];
+
+    [JsonPropertyName("mailEnabled")]
+    public bool MailEnabled { get; set; }
+
+    [JsonPropertyName("securityEnabled")]
+    public bool SecurityEnabled { get; set; }
+
+    [JsonPropertyName("visibility")]
+    public string? Visibility { get; set; }
+
+    [JsonPropertyName("createdDateTime")]
+    public DateTimeOffset? CreatedDateTime { get; set; }
+}
+
+public class GroupDetail : GraphGroup
+{
+    [JsonPropertyName("owners")]
+    public List<GraphUser> Owners { get; set; } = [];
+
+    [JsonPropertyName("members")]
+    public List<GraphUser> Members { get; set; } = [];
+
+    [JsonPropertyName("source")]
+    public string Source { get; set; } = "Microsoft Graph v1.0";
+}
+
 public class GraphTraceRecord
 {
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;

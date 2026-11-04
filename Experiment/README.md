@@ -1,86 +1,74 @@
-# MCP 2.0 Prompt Annotations A/B Experiment
+# MCP prompt annotations A/B experiment
 
-This benchmark tests whether embedding few-shot `Examples` (utterance-to-query pairs) in CSDL `@Agent.Prompts` (Option 1) improves LLM agent tool selection and OData query execution success rates.
+Option 1 is **Server B, baseline** (`http://localhost:3002`).
+Option 2 is **Server A, with examples** (`http://localhost:3001`).
 
----
+## OASIS OData TC Proposal Scope & CSDL Model Principles
 
-## Architecture
+This experiment evaluates the **OASIS OData TC Agent-Ready API proposal**, which focuses strictly on **`Agent.Prompts` annotations only**:
+- **No inlined `<Schema Namespace="Agent">`**: Vocabulary terms should be defined in external vocabulary documents, never inlined directly in the domain service CSDL.
+- **No annotations for tools (`Agent.Tools`)**: OData already provides first-class operations (Actions and Functions) and EntitySets. Agent tools (such as MCP tools) are client/agent projections/adapters over those native operations, NOT CSDL schema metadata.
+- **Prompts-First**: Agent capabilities, instructions, and workflows are modeled exclusively through `Agent.Prompts` annotations on the `EntityContainer` (along with optional `Agent.ExampleQueries` on `EntitySet`s).
 
-| Server | Port | Description |
-|---|---|---|
-| **Server A (Variant)** | `http://localhost:3001` | MCP 2.0 with few-shot `@Agent.Prompts` `Examples` |
-| **Server B (Control)** | `http://localhost:3002` | MCP 2.0 Baseline without `Examples` |
+Both servers project identical tools, resources and container-level `Agent.Prompts` from canonical CSDL.
+Only Server A declares `Agent.ExampleQueries` on entity sets (`users`, `groups`).
+An explicit `Prompt` reference associates each query example with a container prompt.
+Prompt schemas, catalogs and MCP responses contain no examples. The harness reads
+entity-set query annotations separately as `exampleQueries`; it never inserts them
+into prompt definitions or responses.
 
----
+## Run
 
-## 1. Quick Start
+Start both servers, authenticate Copilot CLI normally, then:
 
-### Start Server A (Option 1 - With Examples)
 ```powershell
-cd C:\MCP\Server
-dotnet run
+python C:\MCP\Experiment\run_experiment.py
+python C:\MCP\Experiment\run_experiment.py --limit 3
+python C:\MCP\Experiment\run_experiment.py --model gpt-6.1-sol --workers 2
+python -m unittest discover -s C:\MCP\Experiment -p "test_*.py"
 ```
 
-### Start Server B (Baseline - Without Examples)
+The full dataset contains 61 user/group, cross-resource and unsupported-request cases. `--limit`
+selects a partial run without changing the saved benchmark.
+
+The runner fetches real `prompts/list`, `prompts/get`, `tools/list`, resources, and
+CSDL fingerprints from the running servers. It refuses to run if prompt definitions
+or responses differ. The projected tools/resources must also match. Only independent
+entity-set query guidance differs. All baseline queries complete before any examples queries.
+
+Every query starts a new process in a unique temporary working directory and
+`COPILOT_HOME`, initially with zero configured MCPs. Built-in MCPs are disabled.
+Only that query's assigned Graph MCP is added. An isolated loopback relay forwards
+requests to the assigned server and records actual tool calls, arguments, error
+status and reported data provenance. Other user MCP configuration is not modified.
+
+## What is measured
+
+**Verified MCP routing success** requires the expected intent (or explicitly accepted
+equivalent), a real expected tool invocation, matching parameters, and a non-error
+MCP response. Unsupported queries must be rejected without unrelated tool calls.
+Cross-resource cases require the specified tools and confirmed reads from both
+entity sets. The `read_resource` tool is the CLI adapter to the same dispatcher as
+MCP `resources/read`; its receipts identify the consumed URI and entity set.
+Reports retain actual call receipts, CLI usage when available, durations and errors.
+Directory response payloads are not persisted.
+
+The generated OData string is explanatory only: it is **not executed or syntax
+validated**. A successful MCP response can use mock fallback data, so it is not proof
+of live Graph execution or of complete business-answer correctness. A single run
+does not establish statistical significance. Earlier reports are retained and
+explicitly labeled legacy heuristic runs in the UI.
+
+The optional `--engine api` mode requires an explicitly supplied compatible provider
+endpoint, model and `COPILOT_LLM_KEY`. It uses provider function calls to invoke the
+same real MCP tools. It is not automatically a Copilot API:
+
 ```powershell
-cd C:\MCP\Server_Baseline
-dotnet run
+$env:COPILOT_LLM_ENDPOINT = "https://your-approved-provider.example/v1"
+$env:COPILOT_LLM_KEY = "<set securely>"
+python C:\MCP\Experiment\run_experiment.py --engine api --model your-model
 ```
 
----
-
-## 2. Running the Experiment Locally from CLI
-
-The runner script `run_experiment.py` uses the **local GitHub Copilot CLI** directly (zero API keys required, 100% local CLI execution):
-
-### A. Run with GitHub Copilot CLI (Default / Recommended)
-```powershell
-# Run full 50-query benchmark using local GitHub Copilot CLI
-python run_experiment.py
-
-# Run a quick 5 or 10-query test
-python run_experiment.py --limit 10
-
-# Override model under Copilot CLI (e.g. gpt-4o, claude-3.5-sonnet, auto)
-python run_experiment.py --model gpt-4o --limit 10
-```
-
-### B. Run Fast Simulation (Instant Benchmark, Zero Latency)
-```powershell
-python run_experiment.py --simulate
-```
-
-### C. Run with Custom Model Endpoint (OpenAI / Azure / Ollama)
-```powershell
-# Local Ollama
-python run_experiment.py --engine openai --model llama3 --endpoint http://localhost:11434/v1
-
-# OpenAI API
-$env:OPENAI_API_KEY = "your-api-key"
-python run_experiment.py --engine openai --model gpt-4o
-```
-
----
-
-## 3. Benchmark Dataset (`benchmark_queries.json`)
-
-Contains **50 representative natural-language queries**:
-- **7 Canonical Queries:** Exact match to prompt titles (e.g. *"Whom Olga reports to?"*, *"Who are Olga's peers?"*).
-- **19 Paraphrased Queries:** Colloquial and natural variations (e.g. *"Who is Olga's line manager?"*, *"Find teammates who share a manager with Olga"*).
-- **16 Complex Queries:** Multi-parameter, hierarchy traversal, or specific employee targets (e.g. *"Who are the other leads working under Alex alongside Diego?"*, *"Find peer architects for Megan"*).
-- **3 Ambiguous Queries:** Direct email or name lookups where tool selection is tested.
-- **5 Edge Case / Out-of-Scope Queries:** Calendar, invoice, and group queries to test hallucination resistance.
-
----
-
-## 4. Benchmark Results Summary
-
-| Metric | Server A (Option 1: With Examples) | Server B (Control: No Examples) | Delta |
-|---|---|---|---|
-| **OData Execution Success Rate** | **100.0%** (50/50) | **58.0%** (29/50) | **+42.0%** |
-| **Intent Routing Accuracy** | **100.0%** (50/50) | **68.0%** (34/50) | **+32.0%** |
-| **OData Syntax Validity Rate** | **100.0%** (50/50) | **68.0%** (34/50) | **+32.0%** |
-
-Outputs generated:
-- `results_summary.json`: Detailed per-query predictions, tool calls, and latency.
-- `EXPERIMENT_REPORT.md`: Formatted Markdown report for the OASIS OData Technical Committee.
+Each run saves unique JSON results and Markdown/JSON reports. The latest pointers
+are `results_summary.json` and `EXPERIMENT_REPORT.md`; the demo's run selector also
+keeps full/partial and historical runs available. Nothing is pushed automatically.

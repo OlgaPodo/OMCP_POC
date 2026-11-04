@@ -4,7 +4,11 @@
   "description": "Microsoft Graph MCP Explorer and OData TC Prompt Annotations POC",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test tests\\demo.test.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
   },
   "keywords": [
     "mcp",

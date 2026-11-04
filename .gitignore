@@ -26,8 +26,21 @@ yarn-error.log*
 
 ## Local and Internal documentation / binaries (Do Not Commit)
 *.pdf
+*.docx
+~$*
 *.vsdx
 report.*
 PavedPath.md
+transcript-*.md
+gemini-failures.md
 temp_*
 *.log
+__pycache__/
+*.pyc
+
+## Experiment benchmark queries, result summaries and reports (Do Not Commit)
+Experiment/benchmark_queries.json
+Experiment/results_summary.json
+Experiment/EXPERIMENT_REPORT.md
+Experiment/reports/
+Experiment/results/

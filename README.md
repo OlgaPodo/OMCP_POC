@@ -1,6 +1,6 @@
 # Microsoft Graph HTTP MCP 2.0 Server & Demo Site POC
 
-Proof-of-Concept updated to **MCP 2.0 (`2026-07-28` Specification)** ([specification reference](https://modelcontextprotocol.io/specification/2026-07-28)) and the OASIS OData TC proposal *"Making OData Agent-Ready: Prompts, Events and Tasks, and a Modernized Domain Language"* (Option 1).
+Proof-of-Concept updated to **MCP 2.0 (`2026-07-28` Specification)** ([specification reference](https://modelcontextprotocol.io/specification/2026-07-28)) and the OASIS OData TC proposal *"Making OData Agent-Ready: Prompts, Events and Tasks, and a Modernized Domain Language"*. The `Agent` vocabulary is experimental; prompt schemas and responses contain no examples.
 
 ---
 
@@ -68,13 +68,20 @@ The implementation adheres to the **Model Context Protocol 2.0 (2026-07-28)** st
 | **Discovery** | `server/discover` | MCP 2.0 capability & version negotiation | Protocol Core |
 | **Tool** | `find_user` | Search/filter users by name, email, or UPN prefix | `GET /v1.0/users?$filter=startswith(...)` |
 | **Tool** | `user_profile` | Detailed profile with manager, peers, and direct reports | `GET /v1.0/users/{id}`, `/manager`, `/directReports` |
+| **Tool** | `find_group`, `group_details` | Group search, membership and ownership | `GET /v1.0/groups`, `/members`, `/owners` |
+| **Tool** | `read_resource` | CLI adapter using the same projected resource dispatcher as `resources/read` | Determined by the declared resource URI binding |
 | **Resource** | `users://me` | Authenticated user profile representation | `GET /v1.0/me` |
 | **Resource** | `users://{userId}` | Individual user profile representation | `GET /v1.0/users/{id}` |
+| **Resource** | `groups://all`, `groups://{groupId}` | Group catalog and group membership/ownership data | `GET /v1.0/groups`, `/groups/{id}` |
 | **Prompt** | `whom_olga_reports_to` | "Whom Olga reports to?" | Resolves manager via `user_profile` |
 | **Prompt** | `who_are_olgas_peers` | "Who are Olga's peers?" | Resolves manager's direct reports via `user_profile` |
 | **Prompt** | `direct_reports_of_manager` | "Direct reports of a manager" | Queries direct reports for any manager |
 | **Prompt** | `search_users_by_dept_title` | "Search users by dept & title" | Queries users filtered by department & title |
 | **Prompt** | `user_quick_lookup` | "User quick lookup" | Resource reader template (`users://{id}`) |
+| **Prompt** | `find_group_by_name`, `list_group_members`, `who_owns_group`, `group_quick_lookup` | Group workflows | Projected group tools and resources |
+| **Composed prompt** | `user_peers_in_group` | Intersect reporting peers with group members | Requires both user and group resources |
+| **Composed prompt** | `group_members_reporting_to_manager` | Filter group members by reporting manager | Requires membership plus user reporting profiles |
+| **Composed prompt** | `user_and_group_owners_common_manager` | Compare user and owner managers | Requires ownership plus separate user reporting profiles |
 
 ---
 
@@ -86,45 +93,50 @@ Modeled directly after **Microsoft Graph Explorer (`aka.ms/ge`)**:
    - Inspects exact **HTTP Request Headers** (`MCP-Protocol-Version: 2026-07-28`, `Mcp-Method`, `Mcp-Name`), **Request Payload (JSON-RPC)**, **Response Headers**, and **Response Payload** (`resultType: complete`).
    - Interactive Org Profile Card rendering (Avatar, Details, Manager Card, Peers Grid, Direct Reports).
    - Live Microsoft Graph REST trace inspection (`https://graph.microsoft.com/v1.0/...`).
-2. **Limited User CSDL with `@Agent.Prompts` (Option 1)**:
+2. **CSDL and annotations**:
    - Full CSDL JSON ($Version 4.01) and CSDL XML (EDMX 4.0) viewers.
-   - Shows `@Agent.Prompts` embedded with `Examples` (utterance & OData request pairs) attached to the `GraphService` container.
+   - Canonical XML declares `Agent.Prompts` on `GraphService` and `Agent.ExampleQueries` only on entity sets (`users`, `groups`).
+   - JSON, tool schemas, resource URIs/dispatch and MCP prompts are deterministic projections of the same XML, with explicit example-to-prompt references.
+   - POC `Agent.Tools` and `Agent.Resources` bindings select supported read-only Graph operations. Container prompt `Tools`/`Resources` collections reference these generated primitives, including cross-resource workflows.
 3. **Addressing Concern 1 (Prompts as Search Index vs. Reusable Templates)**:
-   - Architectural analysis of how Option 1 bridges the duality:
+   - Architectural analysis separates core MCP from POC/client behavior:
      - *MCP role:* Formal parameterized templates (`Messages`, `Arguments`) for execution.
-     - *Search Index role:* Utterance-query pairs in `Examples` used as semantic embeddings for zero-shot prompt discovery.
-   - Live interactive semantic matcher sandbox.
+     - *Retrieval role:* Entity-set example queries remain independent CSDL metadata, never fields on prompt schemas or responses.
+   - The sandbox is explicitly illustrative word-overlap search, not embeddings or LLM execution.
 4. **Addressing Concern 2 (The End-to-End Mapping Pipeline)**:
-   - Visual 4-stage interactive pipeline:
-     `[OData CSDL Annotation]` ➔ `[MCP 2.0 Protocol (prompts/get)]` ➔ `[Agent Tool Call]` ➔ `[Microsoft Graph REST Request]`
-   - Step-through walk-through for all 4 script queries.
+   - Six expanded, unclipped tiles show canonical CSDL bindings, generated tools/resources, prompt invocation, rendered messages, resource reads and joins. The mapping contains no examples.
+   - A separate **Runtime Sequence with Discovery** subtab captures read-only `server/discover`, tool/resource/template/prompt listings from the selected MCP. Later prompt, tool, resource and synthesis steps are explicitly illustrative; refresh does not execute Graph operations.
+   - The default joins a user's reporting peers with group members; selecting another Explorer prompt changes the mapping.
+   - CSDL selects operations from an explicit C# Graph operation registry; no unrestricted REST compiler is claimed.
 5. **Interactive A/B Experiment View**:
    - Inspect live status of Server A (:3001) vs Server B (:3002).
-   - Filter and explore the 50 benchmark queries dataset with side-by-side evaluation status.
+   - Filter benchmark entries and inspect actual recorded outcomes; absent results are labeled Not run.
+6. **POC Summary**:
+   - Inventories and counts are loaded from the selected CSDL projection, including all container prompts.
+   - Tiles distinguish deterministic annotated-schema conversion from the supported C# operation registry, probabilistic client orchestration, changing Graph data and mock fallback.
+   - Protected PDF requirements and production / full standards conformance are not claimed as verified.
 
 ---
 
 ## 5. A/B Benchmark Experiment (`C:\MCP\Experiment`)
 
-To empirically evaluate whether embedding few-shot `Examples` inside `@Agent.Prompts` (Option 1) improves LLM agent outcomes:
+Compare actual Copilot CLI routing with and without entity-set example queries:
 
-* **Server A (Variant):** `http://localhost:3001` (Prompts with few-shot Examples)
-* **Server B (Control):** `http://localhost:3002` in `Server_Baseline/` (Prompts without Examples)
-* **Dataset:** 50 natural language queries across canonical, paraphrased, complex, ambiguous, and edge cases (`benchmark_queries.json`).
+* **Server A (Variant):** `http://localhost:3001` (Independent entity-set example annotations)
+* **Server B (Control):** `http://localhost:3002` in `Server_Baseline/` (No entity-set example annotations)
+* Both expose identical, standard MCP prompt messages without examples. The harness supplies entity-set query guidance separately.
+* **Dataset:** 61 user/group, cross-resource and unsupported-request queries (`benchmark_queries.json`).
 
 ### Run with any model:
 ```powershell
-# Simulation benchmark (offline, no key needed)
-python C:\MCP\Experiment\run_experiment.py --simulate
-
-# Run with OpenAI (GPT-4o)
-python C:\MCP\Experiment\run_experiment.py --model gpt-4o --api-key <KEY>
-
-# Run with local Ollama
-python C:\MCP\Experiment\run_experiment.py --model llama3 --endpoint http://localhost:11434/v1
+# Use your authenticated Copilot CLI; baseline completes first
+python C:\MCP\Experiment\run_experiment.py
+python C:\MCP\Experiment\run_experiment.py --limit 3
 ```
 
-### Empirical Results (50 Queries):
-- **OData Execution Success Rate:** Option 1: **100.0%** vs. Baseline: **58.0%** (**+42.0% advantage**)
-- **Intent Routing Accuracy:** Option 1: **100.0%** vs. Baseline: **68.0%** (**+32.0% precision**)
-- **Syntax / Hallucination Rate:** Option 1: **0.0%** vs. Baseline: **32.0%** invalid queries
+Every query gets a unique CLI home/work directory and only the assigned MCP.
+Option 1 is baseline Server B; Option 2 is examples Server A.
+New reports verify actual MCP calls, parameters and errors, and distinguish mock
+fallback from live provenance. Generated OData strings are not executed or syntax
+validated. Historical heuristic reports are retained and labeled unverified.
+See `Experiment\README.md` for methodology and commands.

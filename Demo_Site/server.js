@@ -4,6 +4,21 @@ const path = require('path');
 
 const PORT = 3000;
 const MCP_SERVER_URL = 'http://localhost:3001';
+const MCP_SERVERS = new Set(['http://localhost:3001', 'http://localhost:3002']);
+
+function selectedServer(req) {
+  const target = String(req.headers['x-target-url'] || MCP_SERVER_URL).replace(/\/$/, '');
+  if (!MCP_SERVERS.has(target)) throw new Error('Select one of the two local MCP servers.');
+  return target;
+}
+
+function reportFile(directory, reportId, extension) {
+  const id = reportId.replace(/\.(json|md)$/, '');
+  if (!/^(report|results)_[a-zA-Z0-9_.-]+$/.test(id)) return null;
+  const name = extension === '.md' ? id.replace(/^results_/, 'report_') : id;
+  const location = path.join(__dirname, '..', 'Experiment', directory, name + extension);
+  return fs.existsSync(location) ? location : null;
+}
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -78,12 +93,13 @@ const server = http.createServer(async (req, res) => {
       }
 
       const outgoingBody = JSON.stringify(parsedRequest);
-
       try {
-        const fetchRes = await fetch(`${MCP_SERVER_URL}/`, {
+        const targetEndpoint = selectedServer(req);
+        const fetchRes = await fetch(targetEndpoint, {
           method: 'POST',
           headers: clientReqHeaders,
-          body: outgoingBody
+          body: outgoingBody,
+          signal: AbortSignal.timeout(60000)
         });
 
         const elapsedMs = Date.now() - startTime;
@@ -133,7 +149,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(502, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
           statusCode: 502,
-          error: 'Failed to communicate with MCP server on ' + MCP_SERVER_URL,
+          error: 'Failed to communicate with the selected MCP server',
           message: err.message,
           elapsedMs: Date.now() - startTime
         }));
@@ -146,7 +162,7 @@ const server = http.createServer(async (req, res) => {
   if (req.url === '/api/experiment/queries' && req.method === 'GET') {
     try {
       const qPath = path.join(__dirname, '..', 'Experiment', 'benchmark_queries.json');
-      const data = fs.readFileSync(qPath, 'utf8');
+      const data = fs.existsSync(qPath) ? fs.readFileSync(qPath, 'utf8') : '[]';
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(data);
     } catch (e) {
@@ -174,12 +190,15 @@ const server = http.createServer(async (req, res) => {
               timestamp: content.timestamp,
               elapsed_seconds: content.elapsed_seconds || 0,
               total_queries: content.total_queries || 0,
-              is_full_run: (content.total_queries || 0) >= 50,
+              is_full_run: content.is_full_run ?? (content.total_queries || 0) >= 50,
+              evaluation_version: content.evaluation_version || 1,
               success_rate_a: content.metrics ? content.metrics.server_a_success_rate : 0,
               success_rate_b: content.metrics ? content.metrics.server_b_success_rate : 0,
               delta: content.metrics ? content.metrics.delta : 0
             });
-          } catch (_) {}
+          } catch (error) {
+            console.error(`Cannot read experiment report ${f}: ${error.message}`);
+          }
         }
       }
       // Sort newest first
@@ -201,13 +220,10 @@ const server = http.createServer(async (req, res) => {
       let targetPath = path.join(__dirname, '..', 'Experiment', 'results_summary.json');
       
       if (reportId) {
-        const customPath = path.join(__dirname, '..', 'Experiment', 'reports', reportId.endsWith('.json') ? reportId : `${reportId}.json`);
-        if (fs.existsSync(customPath)) {
-          targetPath = customPath;
-        }
+        targetPath = reportFile('reports', reportId, '.json') || reportFile('results', reportId, '.json');
       }
 
-      if (fs.existsSync(targetPath)) {
+      if (targetPath && fs.existsSync(targetPath)) {
         const data = fs.readFileSync(targetPath, 'utf8');
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(data);
@@ -230,13 +246,10 @@ const server = http.createServer(async (req, res) => {
       let targetPath = path.join(__dirname, '..', 'Experiment', 'EXPERIMENT_REPORT.md');
 
       if (reportId) {
-        const customPath = path.join(__dirname, '..', 'Experiment', 'reports', reportId.endsWith('.md') ? reportId : `${reportId.replace('.json', '')}.md`);
-        if (fs.existsSync(customPath)) {
-          targetPath = customPath;
-        }
+        targetPath = reportFile('reports', reportId, '.md');
       }
 
-      if (fs.existsSync(targetPath)) {
+      if (targetPath && fs.existsSync(targetPath)) {
         const data = fs.readFileSync(targetPath, 'utf8');
         res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end(data);
@@ -264,10 +277,38 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Standard OData v4.01 $metadata endpoint support (XML and JSON representations)
+  if ((req.url === '/$metadata' || req.url.startsWith('/$metadata?')) && req.method === 'GET') {
+    try {
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const formatParam = (parsedUrl.searchParams.get('$format') || '').toLowerCase();
+      const acceptHeader = (req.headers['accept'] || '').toLowerCase();
+      const wantsJson = formatParam === 'json' || formatParam === 'application/json' ||
+        (!formatParam && acceptHeader.includes('application/json') && !acceptHeader.includes('application/xml'));
+
+      const targetUrl = `${selectedServer(req)}/api/csdl`;
+      const forwardRes = await fetch(targetUrl);
+      if (!forwardRes.ok) throw new Error(`Upstream HTTP ${forwardRes.status}`);
+      const payload = await forwardRes.json();
+      res.setHeader('OData-Version', '4.01');
+      if (wantsJson) {
+        res.writeHead(200, { 'Content-Type': 'application/odata+json;odata.metadata=minimal; charset=utf-8' });
+        res.end(payload.csdlJson);
+      } else {
+        res.writeHead(200, { 'Content-Type': 'application/xml; charset=utf-8' });
+        res.end(payload.csdlXml);
+      }
+    } catch (err) {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
   // Proxy to MCP Server health and CSDL APIs
   if (req.url.startsWith('/api/') || req.url === '/health') {
     try {
-      const targetUrl = `${MCP_SERVER_URL}${req.url}`;
+      const targetUrl = `${selectedServer(req)}${req.url}`;
       const forwardRes = await fetch(targetUrl);
       const data = await forwardRes.text();
       res.writeHead(forwardRes.status, {
