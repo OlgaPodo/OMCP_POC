@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns="http://docs.oasis-open.org/odata/ns/edm" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:DataServices>
+    <Schema Namespace="Inventory" Alias="I">
+      <EnumType Name="Color"><Member Name="Red" /><Member Name="Blue" /></EnumType>
+      <ComplexType Name="Address"><Property Name="City" Type="Edm.String" Nullable="false" /></ComplexType>
+      <EntityType Name="Item">
+        <Key><PropertyRef Name="Id" /></Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" />
+        <NavigationProperty Name="Supplier" Type="Inventory.Supplier" />
+      </EntityType>
+      <EntityType Name="SpecialItem" BaseType="Inventory.Item"><Property Name="Discount" Type="Edm.Decimal" /></EntityType>
+      <EntityType Name="Supplier">
+        <Key><PropertyRef Name="Region" /><PropertyRef Name="Code" /></Key>
+        <Property Name="Region" Type="Edm.String" Nullable="false" />
+        <Property Name="Code" Type="Edm.Int32" Nullable="false" />
+      </EntityType>
+      <Function Name="Search" IsBound="true">
+        <Parameter Name="binding" Type="Collection(Inventory.Item)" />
+        <Parameter Name="q" Type="Edm.String" Nullable="false" />
+        <ReturnType Type="Collection(Inventory.Item)" />
+      </Function>
+      <Function Name="Search" IsBound="true">
+        <Parameter Name="binding" Type="Collection(Inventory.Item)" />
+        <Parameter Name="limit" Type="Edm.Int32" Nullable="false" />
+        <ReturnType Type="Collection(Inventory.Item)" />
+      </Function>
+      <Function Name="Price" IsBound="true">
+        <Parameter Name="binding" Type="Inventory.Item" />
+        <Parameter Name="tax" Type="Edm.Decimal" Nullable="false" />
+        <ReturnType Type="Edm.Decimal" />
+      </Function>
+      <Function Name="Colors">
+        <Parameter Name="color" Type="Inventory.Color" Nullable="false" />
+        <ReturnType Type="Edm.String" />
+      </Function>
+      <Action Name="Restock" IsBound="true">
+        <Parameter Name="binding" Type="Inventory.Item" />
+        <Parameter Name="quantity" Type="Edm.Int32" Nullable="false" />
+        <Parameter Name="address" Type="Inventory.Address" Nullable="false" />
+        <Parameter Name="tags" Type="Collection(Edm.String)" Nullable="false" />
+      </Action>
+      <Action Name="Reset"><Parameter Name="confirm" Type="Edm.Boolean" Nullable="false" /></Action>
+      <Action Name="Discount" IsBound="true"><Parameter Name="binding" Type="Inventory.SpecialItem" /></Action>
+      <EntityContainer Name="Warehouse">
+        <EntitySet Name="Products" EntityType="I.Item"><NavigationPropertyBinding Path="Supplier" Target="Suppliers" /></EntitySet>
+        <EntitySet Name="Specials" EntityType="Inventory.SpecialItem" />
+        <EntitySet Name="Suppliers" EntityType="Inventory.Supplier" />
+        <Singleton Name="Featured" Type="Inventory.Item" />
+        <FunctionImport Name="AvailableColors" Function="Inventory.Colors" />
+        <ActionImport Name="ResetInventory" Action="Inventory.Reset" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

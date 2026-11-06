@@ -1,0 +1,26 @@
+{
+  "generator": "CsdlToMcpTransformer",
+  "sourceCsdl": "C:\\MCP\\Csdl\\Server_Baseline.csdl",
+  "outputProject": "C:\\MCP\\Server_Baseline_transform",
+  "port": 3012,
+  "endpoint": "http://localhost:3012/",
+  "entityContainer": "Microsoft.Graph.GraphService",
+  "entityTypesCount": 2,
+  "entityTypes": [
+    "Microsoft.Graph.User",
+    "Microsoft.Graph.Group"
+  ],
+  "entitySetsCount": 2,
+  "entitySets": [
+    "users",
+    "groups"
+  ],
+  "singletonsCount": 1,
+  "singletons": [
+    "me"
+  ],
+  "operationsCount": 0,
+  "operations": [],
+  "promptsCount": 0,
+  "examplesCount": 0
+}

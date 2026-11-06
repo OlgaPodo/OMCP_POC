@@ -264,7 +264,7 @@ test('canonical XML projects tools/resources and multi-entity-set prompt depende
           assert.ok(!Object.hasOwn(model['@Agent.Prompts'].find(prompt => prompt.Name === name), 'Target'));
         }
       }
-      const userUri = 'users://olga@contoso.com';
+      const userUri = 'users://opodolyako@microsoft.com';
       const groupUri = 'groups://11111111-2222-3333-4444-555555555555';
       const user = JSON.parse((await rpc(server, 'resources/read', { uri: userUri })).contents[0].text);
       const group = JSON.parse((await rpc(server, 'resources/read', { uri: groupUri })).contents[0].text);

@@ -115,7 +115,7 @@
                     <PropertyValue Property="Name" String="managerNameOrId" />
                     <PropertyValue Property="Description" String="Manager's name, ID, or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Vojtech Vondra" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -351,7 +351,7 @@
                     <PropertyValue Property="Name" String="managerName" />
                     <PropertyValue Property="Description" String="Manager display name, ID or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Vojtech Vondra" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />

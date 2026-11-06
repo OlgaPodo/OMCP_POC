@@ -287,34 +287,7 @@ public static class UserCsdlProvider
     {
         var items = new List<CatalogItem>();
         var promptMap = Prompts.Select(p => p!.AsObject()).ToDictionary(p => p["Name"]!.GetValue<string>(), StringComparer.Ordinal);
-        var exampleQueries = GetBindings("Agent.ExampleQueries");
 
-        foreach (var ex in exampleQueries)
-        {
-            var promptName = ex["Prompt"]?.GetValue<string>() ?? "";
-            promptMap.TryGetValue(promptName, out var promptObj);
-            var title = promptObj?["Title"]?.GetValue<string>() ?? promptName;
-            var desc = promptObj?["Description"]?.GetValue<string>() ?? "";
-            var args = promptObj?["Arguments"]?.AsArray().Select(a => a!["Name"]!.GetValue<string>()).ToList() ?? [];
-            var request = ex["Request"]?.GetValue<string>() ?? "";
-            if (string.IsNullOrEmpty(request) && promptObj != null)
-            {
-                var msg = promptObj["Messages"]?[0]?["Content"]?["Text"]?.GetValue<string>() ?? "";
-                var m = Regex.Match(msg, @"GET\s+([A-Za-z0-9_\$'\(\)\{\}\/\?=&,-]+)");
-                if (m.Success) request = m.Groups[1].Value;
-            }
-
-            items.Add(new CatalogItem(
-                PromptName: promptName,
-                Title: title,
-                Description: desc,
-                EntitySet: ex["entitySet"]?.GetValue<string>(),
-                Utterance: ex["Utterance"]?.GetValue<string>() ?? "",
-                ODataRequest: request,
-                ArgumentNames: args));
-        }
-
-        // Also add prompts that might not have example queries
         foreach (var (name, promptObj) in promptMap)
         {
             if (items.Any(i => i.PromptName == name)) continue;
@@ -594,8 +567,8 @@ public static class UserCsdlProvider
             if (resource is not JsonObject definition || definition["@Agent.ExampleQueries"] is not JsonArray examples) continue;
             if (definition["$Collection"]?.GetValue<bool>() != true)
                 throw new InvalidOperationException("Example queries must annotate entity sets.");
-            if (examples.Any(example => !names.Contains(example!["Prompt"]!.GetValue<string>())))
-                throw new InvalidOperationException("An example query references an undeclared prompt.");
+            if (examples.Any(example => example is JsonObject exObj && exObj.ContainsKey("Prompt")))
+                throw new InvalidOperationException("Example queries must not reference prompts.");
         }
     }
 
@@ -671,8 +644,7 @@ public static class UserCsdlProvider
                 {
                     ["utterance"] = query!["Utterance"]!.GetValue<string>(),
                     ["request"] = query["Request"]!.GetValue<string>(),
-                    ["entitySet"] = name,
-                    ["promptName"] = query["Prompt"]!.GetValue<string>()
+                    ["entitySet"] = name
                 });
         }
         return examples;
@@ -718,7 +690,7 @@ public static class UserCsdlProvider
     {
         modelParser = "Validated using Microsoft.OData.Edm (IEdmModel) with CsdlReader.",
         promptProjection = "Container Agent.Prompts use standard OData queries in Messages and are projected to MCP names, arguments and messages without AI rewriting.",
-        examples = "Agent.ExampleQueries apply only to EntitySet. Prompt references explicitly associate examples with container prompts.",
+        examples = "Entity and operation examples are independent metadata and do not reference prompts.",
         promptResponses = "Prompts contain rendered messages with OData query steps, never examples. Entity-set query annotations are independent metadata.",
         vocabulary = "CSDL contains no Agent.Tools or Agent.Resources annotations; tools and resources are projected deterministically from standard OData EntitySets and Singletons.",
         toolExecution = "Standard OData EntitySets and Singletons project to MCP discovery and dispatch through declared, supported C# operations.",

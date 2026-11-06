@@ -4,11 +4,11 @@ const path = require('path');
 
 const PORT = 3000;
 const MCP_SERVER_URL = 'http://localhost:3001';
-const MCP_SERVERS = new Set(['http://localhost:3001', 'http://localhost:3002']);
+const MCP_SERVERS = new Set(['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003']);
 
 function selectedServer(req) {
   const target = String(req.headers['x-target-url'] || MCP_SERVER_URL).replace(/\/$/, '');
-  if (!MCP_SERVERS.has(target)) throw new Error('Select one of the two local MCP servers.');
+  if (!MCP_SERVERS.has(target)) throw new Error('Select one of the local MCP servers (:3001, :3002, or :3003).');
   return target;
 }
 

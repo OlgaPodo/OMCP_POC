@@ -350,107 +350,107 @@ public class GraphClientService
         return [];
     }
 
-    #region Mock High-Fidelity Dataset (Sanitized Contoso Sample Data)
+    #region Mock High-Fidelity Dataset (Microsoft Tenant Fallback)
     public static List<GraphUser> GetMockUsers()
     {
         return [
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000001",
+                Id = "93816c1c-1b19-41de-a322-a1643d7f4d39",
                 DisplayName = "Olga Podolyako",
-                UserPrincipalName = "olga@contoso.com",
-                Mail = "olga@contoso.com",
-                JobTitle = "Principal API Architect",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 1 / Redmond",
+                UserPrincipalName = "opodolyako@microsoft.com",
+                Mail = "opodolyako@microsoft.com",
+                JobTitle = "PRINCIPAL API ARCHITECT",
+                Department = "IDM Services ENG",
+                OfficeLocation = "Home Office",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000002",
-                DisplayName = "Alex Wilbur",
-                UserPrincipalName = "alexw@contoso.com",
-                Mail = "alexw@contoso.com",
-                JobTitle = "Partner Director of Engineering",
-                Department = "Engineering Leadership",
-                OfficeLocation = "Building 1 / Redmond",
+                Id = "c16f9131-2702-4e35-8cbf-95ead0163f31",
+                DisplayName = "Vojtech Vondra",
+                UserPrincipalName = "vvondra@microsoft.com",
+                Mail = "vvondra@microsoft.com",
+                JobTitle = "Partner Director Engineering",
+                Department = "IDM MAP COGS 1908 Prague",
+                OfficeLocation = "PRAGUE-BBC/Mobile",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000003",
-                DisplayName = "Megan Bowen",
-                UserPrincipalName = "meganb@contoso.com",
-                Mail = "meganb@contoso.com",
-                JobTitle = "Principal Software Architect",
-                Department = "Architecture",
-                OfficeLocation = "Redmond",
+                Id = "e3c93806-05d6-4371-9a67-0f9ce3c63fd4",
+                DisplayName = "Joao Paiva",
+                UserPrincipalName = "jpaiva@microsoft.com",
+                Mail = "jpaiva@microsoft.com",
+                JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
+                Department = "IDM Services ENG",
+                OfficeLocation = "REDW-B/1072",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000004",
-                DisplayName = "Adele Vance",
-                UserPrincipalName = "adelev@contoso.com",
-                Mail = "adelev@contoso.com",
-                JobTitle = "Principal Product Manager",
-                Department = "Product Operations",
-                OfficeLocation = "Redmond",
+                Id = "a324a8f9-4ed4-4ccb-867d-b81c2ece41a7",
+                DisplayName = "Luca Spolidoro",
+                UserPrincipalName = "lspolidoro@microsoft.com",
+                Mail = "lspolidoro@microsoft.com",
+                JobTitle = "PRINCIPAL PRODUCT MANAGER",
+                Department = "IDNA AI Innovations",
+                OfficeLocation = "REDW-B/1084",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000005",
-                DisplayName = "Diego Siciliani",
-                UserPrincipalName = "diegos@contoso.com",
-                Mail = "diegos@contoso.com",
-                JobTitle = "Principal Group Engineering Manager",
-                Department = "Engineering",
-                OfficeLocation = "Redmond",
+                Id = "3ec7370d-7be5-4d28-8e92-ec6a9efa7a15",
+                DisplayName = "Z Wang",
+                UserPrincipalName = "zwang@microsoft.com",
+                Mail = "zwang@microsoft.com",
+                JobTitle = "PRINCIPAL GROUP ENG MANAGER",
+                Department = "IDM Services ENG",
+                OfficeLocation = "REDW-B/1086",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000006",
-                DisplayName = "Patti Fernandez",
-                UserPrincipalName = "pattif@contoso.com",
-                Mail = "pattif@contoso.com",
-                JobTitle = "Business Administrator",
-                Department = "Operations",
-                OfficeLocation = "Seattle",
+                Id = "d403659d-c5ac-4fba-b174-4509ab82da15",
+                DisplayName = "Tereza Pazourkova",
+                UserPrincipalName = "tpazourkova@microsoft.com",
+                Mail = "tpazourkova@microsoft.com",
+                JobTitle = "BUSINESS ADMINISTRATOR",
+                Department = "IDM MAP COGS 1908 Prague",
+                OfficeLocation = "PRAGUE-BBC/Mobile",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000007",
-                DisplayName = "Lynne Robbins",
-                UserPrincipalName = "lynner@contoso.com",
-                Mail = "lynner@contoso.com",
-                JobTitle = "Group Product Manager",
-                Department = "Product",
-                OfficeLocation = "Redmond",
+                Id = "fdbb1b9d-97b0-4d13-8533-09ceef2771ce",
+                DisplayName = "Gita Kannan",
+                UserPrincipalName = "gkannan@microsoft.com",
+                Mail = "gkannan@microsoft.com",
+                JobTitle = "GROUP PM MANAGER",
+                Department = "IDM AD Ops COGS",
+                OfficeLocation = "REDW-B/1072",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000008",
-                DisplayName = "Joni Sherman",
-                UserPrincipalName = "jonis@contoso.com",
-                Mail = "jonis@contoso.com",
-                JobTitle = "Principal Group Software Manager",
-                Department = "Engineering",
-                OfficeLocation = "Seattle",
+                Id = "94cb6522-b096-4128-b97a-b20044d5a591",
+                DisplayName = "Jan Skrabal",
+                UserPrincipalName = "jskrabal@microsoft.com",
+                Mail = "jskrabal@microsoft.com",
+                JobTitle = "PRINCIPAL GROUP ENG MGR",
+                Department = "IDM Services ENG",
+                OfficeLocation = "PRAGUE-BBC",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000009",
-                DisplayName = "Henrietta Mueller",
-                UserPrincipalName = "henriettam@contoso.com",
-                Mail = "henriettam@contoso.com",
-                JobTitle = "Principal Standards Architect",
-                Department = "Standards",
-                OfficeLocation = "Building 1 / Redmond",
+                Id = "b6da39e7-1231-44e8-bc48-5b02f281964e",
+                DisplayName = "Michael Pizzo",
+                UserPrincipalName = "mikep@microsoft.com",
+                Mail = "mikep@microsoft.com",
+                JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
+                Department = "Data & AI",
+                OfficeLocation = "REDW-B",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -467,7 +467,7 @@ public class GraphClientService
 
         if (user == null) user = users[0]; // default to Olga
 
-        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Alex", StringComparison.OrdinalIgnoreCase));
+        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Vojtech", StringComparison.OrdinalIgnoreCase));
         var peers = users.Where(u => u.Id != user.Id && u.Id != manager?.Id).ToList();
 
         return new UserProfileDetail
@@ -495,7 +495,7 @@ public class GraphClientService
                 Id = "11111111-2222-3333-4444-555555555555",
                 DisplayName = "Identity Architecture",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
-                Mail = "identityarch@contoso.com",
+                Mail = "identityarch@microsoft.com",
                 MailNickname = "identityarch",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -508,7 +508,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "scimreviewers@contoso.com",
+                Mail = "scimreviewers@microsoft.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -521,7 +521,7 @@ public class GraphClientService
                 Id = "33333333-4444-5555-6666-777777777777",
                 DisplayName = "Microsoft Graph Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "graphpartners@contoso.com",
+                Mail = "graphpartners@microsoft.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -534,7 +534,7 @@ public class GraphClientService
                 Id = "44444444-5555-6666-7777-888888888888",
                 DisplayName = "OData TC Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odatetc@contoso.com",
+                Mail = "odatetc@microsoft.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -556,13 +556,13 @@ public class GraphClientService
             string.Equals(g.MailNickname, identifier, StringComparison.OrdinalIgnoreCase) ||
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
-        var owners = users.Where(u => u.DisplayName.Contains("Alex") || u.DisplayName.Contains("Henrietta")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Olga") || u.DisplayName.Contains("Megan") || u.DisplayName.Contains("Adele") || u.DisplayName.Contains("Diego")).ToList();
+        var owners = users.Where(u => u.DisplayName.Contains("Vojtech") || u.DisplayName.Contains("Michael")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Olga") || u.DisplayName.Contains("Joao") || u.DisplayName.Contains("Luca") || u.DisplayName.Contains("Z Wang")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
             owners = users.Where(u => u.DisplayName.Contains("Olga")).ToList();
-            members = users.Where(u => u.DisplayName.Contains("Lynne") || u.DisplayName.Contains("Patti") || u.DisplayName.Contains("Joni")).ToList();
+            members = users.Where(u => u.DisplayName.Contains("Gita") || u.DisplayName.Contains("Tereza") || u.DisplayName.Contains("Jan")).ToList();
         }
 
         return new GroupDetail
