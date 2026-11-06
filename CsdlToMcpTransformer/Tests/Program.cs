@@ -11,7 +11,11 @@ using Microsoft.OData.Edm.Vocabularies;
 using ModelContextProtocol.Protocol;
 
 var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures", "Inventory.csdl");
+Check(CsdlToMcpTransformer.Program.Main(["--help"]) == 0, "CLI --help exits with 0");
+Check(CsdlToMcpTransformer.Program.Main([]) == 1, "CLI with no args displays usage and exits with 1");
+
 var generated = Path.Combine(Path.GetTempPath(), "CsdlToMcpTests-" + Guid.NewGuid().ToString("N"));
+var directGenerated = Path.Combine(Path.GetTempPath(), "CsdlToMcpTestsDirect-" + Guid.NewGuid().ToString("N"));
 try
 {
     CsdlToMcpTransformer.Program.Main(["--single", fixture, generated, "3444"]);
@@ -19,7 +23,7 @@ try
         File.Exists(Path.Combine(generated, "Csdl", "EdmJsonSchema.cs")) &&
         File.Exists(Path.Combine(generated, "Csdl", "CsdlProvider.cs")) &&
         !File.Exists(Path.Combine(generated, "Csdl", "UserCsdlProvider.cs")) &&
-        !File.Exists(Path.Combine(generated, "Services", "GraphClientService.cs")), "Fresh standalone generation");
+        !File.Exists(Path.Combine(generated, "Services", "GraphClientService.cs")), "Fresh standalone generation via --single");
     using (var settings = JsonDocument.Parse(File.ReadAllText(Path.Combine(generated, "appsettings.json"))))
         Check(settings.RootElement.GetProperty("Csdl").GetProperty("FileName").GetString() == "metadata.csdl", "Portable generated CSDL configuration");
     Directory.CreateDirectory(Path.Combine(generated, "Models"));
@@ -31,10 +35,17 @@ try
     Check(!File.Exists(Path.Combine(generated, "Models", "GraphModels.cs")) &&
         !File.Exists(Path.Combine(generated, "Services", "GraphClientService.cs")) &&
         !File.Exists(Path.Combine(generated, "Csdl", "UserCsdlProvider.cs")), "Regeneration removes obsolete generated code");
+
+    // Test direct CLI invocation without --single flag
+    Check(CsdlToMcpTransformer.Program.Main([fixture, directGenerated, "3445"]) == 0, "Direct single-server generation without --single");
+    Check(File.Exists(Path.Combine(directGenerated, "metadata.csdl")) &&
+        File.Exists(Path.Combine(directGenerated, "GraphMcpServer.csproj")) &&
+        File.Exists(Path.Combine(directGenerated, "Program.cs")), "Direct single-server project structure verified");
 }
 finally
 {
     if (Directory.Exists(generated)) Directory.Delete(generated, true);
+    if (Directory.Exists(directGenerated)) Directory.Delete(directGenerated, true);
 }
 CsdlProvider.Initialize(fixture);
 var tools = CsdlProvider.GetProjectedTools();

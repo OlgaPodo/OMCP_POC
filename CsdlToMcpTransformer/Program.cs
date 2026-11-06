@@ -13,11 +13,21 @@ public static class Program
 
     public static int Main(string[] args)
     {
-        if (args.Length > 0 && (args[0] == "--help" || args[0] == "-h" || args[0] == "help"))
+        if (args.Length == 0 || (args.Length > 0 && args[0] is "--help" or "-h" or "help"))
         {
             Console.WriteLine("CsdlToMcpTransformer - Generic CSDL OData to MCP 2.0 Server Generator");
-            Console.WriteLine("Usage: dotnet run [--single <csdl-path> <output-dir> <port>]");
-            return 0;
+            Console.WriteLine();
+            Console.WriteLine("Generates a single standalone MCP 2.0 HTTP server project for a given CSDL schema.");
+            Console.WriteLine();
+            Console.WriteLine("Usage:");
+            Console.WriteLine("  dotnet run --project CsdlToMcpTransformer.csproj -- <csdl-path> <output-directory> [port]");
+            Console.WriteLine("  dotnet run --project CsdlToMcpTransformer.csproj -- --single <csdl-path> <output-directory> [port]");
+            Console.WriteLine();
+            Console.WriteLine("Arguments:");
+            Console.WriteLine("  <csdl-path>         Full path or filename (relative to Csdl/) of the OData CSDL file");
+            Console.WriteLine("  <output-directory>  Destination directory where the MCP server project will be written");
+            Console.WriteLine("  [port]              HTTP port for the generated MCP server (default: 3001)");
+            return args.Length == 0 ? 1 : 0;
         }
 
         var csdlDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "Csdl"));
@@ -27,28 +37,32 @@ public static class Program
             csdlDir = Directory.Exists(fallback) ? fallback : @"C:\MCP\Csdl";
         }
 
-        var targets = new List<TransformTarget>();
-        if (args.Length > 0)
+        string csdlInput;
+        string outputDir;
+        int port = 3001;
+
+        if (args[0] == "--single")
         {
-            if (args.Length != 4 || args[0] != "--single" || !int.TryParse(args[3], out var port) || port is < 1 or > 65535)
-                throw new ArgumentException("Usage: --single <CSDL filename or full path> <output directory> <port 1-65535>");
-            targets.Add(new TransformTarget(args[1], args[2], port, $"CSDL MCP Server ({Path.GetFileName(args[1])})"));
+            if (args.Length < 3 || args.Length > 4)
+                throw new ArgumentException("Usage: --single <CSDL filename or full path> <output directory> [port 1-65535]");
+            csdlInput = args[1];
+            outputDir = args[2];
+            if (args.Length == 4 && (!int.TryParse(args[3], out port) || port is < 1 or > 65535))
+                throw new ArgumentException($"Invalid port number: '{args[3]}'. Port must be between 1 and 65535.");
         }
         else
         {
-            var repoRoot = Directory.Exists(Path.Combine(csdlDir, "..")) ? Path.GetFullPath(Path.Combine(csdlDir, "..")) : @"C:\MCP";
-            targets.AddRange([
-                new TransformTarget("Server_WithPrompts.csdl", Path.Combine(repoRoot, "Server_transform"), 3011, "Transformed Microsoft Graph HTTP MCP Server (Server_WithPrompts.csdl)"),
-                new TransformTarget("Server_Baseline.csdl", Path.Combine(repoRoot, "Server_Baseline_transform"), 3012, "Transformed Baseline Microsoft Graph HTTP MCP Server (Server_Baseline.csdl)"),
-                new TransformTarget("Server_Large.csdl", Path.Combine(repoRoot, "LargeServer_transform"), 3013, "Transformed Large M365 Graph HTTP MCP Server (Server_Large.csdl)")
-            ]);
+            if (args.Length < 2 || args.Length > 3)
+                throw new ArgumentException("Usage: <CSDL filename or full path> <output directory> [port 1-65535]");
+            csdlInput = args[0];
+            outputDir = args[1];
+            if (args.Length == 3 && (!int.TryParse(args[2], out port) || port is < 1 or > 65535))
+                throw new ArgumentException($"Invalid port number: '{args[2]}'. Port must be between 1 and 65535.");
         }
 
-        foreach (var target in targets)
-        {
-            var csdlPath = Path.IsPathRooted(target.CsdlFileName) ? target.CsdlFileName : Path.Combine(csdlDir, target.CsdlFileName);
-            TransformCsdlToMcpServer(csdlPath, target);
-        }
+        var csdlPath = Path.IsPathRooted(csdlInput) ? csdlInput : Path.Combine(csdlDir, csdlInput);
+        var target = new TransformTarget(Path.GetFileName(csdlPath), outputDir, port, $"CSDL MCP Server ({Path.GetFileName(csdlPath)})");
+        TransformCsdlToMcpServer(csdlPath, target);
 
         return 0;
     }

@@ -5,38 +5,60 @@ JSON at the protocol boundary**. There is no custom JSON metadata model or
 Microsoft Graph entity-name dispatcher. Namespaces, containers, keys, navigation
 properties, parameter types, and operation signatures come from `IEdmModel`.
 
-## Generate a server
+## Generate a single MCP server
+
+The transformer generates **a single standalone MCP server project for a given CSDL schema at a time**.
 
 ```powershell
-dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- --single C:\schemas\Inventory.csdl C:\MCP\InventoryServer 3020
+# Standard usage with full path from C:\MCP\Csdl:
+dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- C:\MCP\Csdl\Server_Large.csdl C:\MCP\LargeServer_transform 3013
+
+# Or using filename relative to C:\MCP\Csdl:
+dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- Server_WithPrompts.csdl C:\MCP\Server_transform 3011
+
+# Or with the optional --single flag:
+dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- --single Server_Baseline.csdl C:\MCP\Server_Baseline_transform 3012
 ```
 
-`--single` accepts a full CSDL path, or a filename relative to `C:\MCP\Csdl`.
-With no arguments, the transformer generates the three existing demo schemas.
-The generated project includes its input as `metadata.csdl`, copied to build and
-publish outputs. Existing server projects are not consulted during generation.
+- `<csdl-path>` accepts a full file path (e.g. `C:\MCP\Csdl\Server_Large.csdl`), or a filename relative to `C:\MCP\Csdl`.
+- `<output-directory>` is the target destination where the standalone project will be generated (e.g. `C:\MCP\LargeServer_transform`).
+- `[port]` is optional (defaults to `3001` if omitted; range: 1–65535).
+- Running without arguments or with `--help` displays command-line usage.
 
-Source templates under `Templates` are embedded in the transformer assembly.
-Edit these templates and rebuild to change generated behavior. Regeneration
-overwrites generated files and removes the obsolete generated Graph models/client
-and legacy `UserCsdlProvider.cs`. The generic provider is `Csdl/CsdlProvider.cs`.
+Each run generates a single self-contained server project containing:
+- `GraphMcpServer.csproj` - The ASP.NET Core web project targeting `net10.0`
+- `metadata.csdl` - The input CSDL schema, copied to build and publish outputs
+- `Program.cs` - Application bootstrap configured for the target port and title
+- `appsettings.json` - Server settings pointing to `metadata.csdl` and OData backend
+- `transformation-manifest.json` - Generation summary with schema statistics
+- `Csdl/CsdlProvider.cs` - Generic CSDL parser and EDM projection provider
+- `Csdl/CsdlMcpProjection.cs` - MCP protocol handler (tools, resources, templates, prompts)
+- `Csdl/EdmJsonSchema.cs` - EDM type to JSON Schema translator with argument descriptions
+- `Services/ODataClientService.cs` - Upstream HTTP client with `DefaultAzureCredential` and metrics
+
+Source templates under `Templates` are embedded directly in the transformer assembly.
+Existing server projects are not consulted during generation. Regeneration
+overwrites generated files and removes obsolete legacy code.
 
 ## Generic projection
 
-| EDM element | MCP projection |
-|---|---|
-| Entity set `Products` | `list_Products`, `get_Products`; collection resource and keyed resource template |
-| Singleton `Featured` | `get_Featured` and a fixed resource |
-| Navigation property `Products/Supplier` | `get_Products_Supplier` |
-| Bound function/action | One tool per compatible navigation source, including inherited types and derived-type casts |
-| Function/action import | Tool using the import's service-root path |
-| `Agent.Prompts` | Typed prompt definitions, arguments/defaults, and all text messages |
-| `Agent.Examples` / `Agent.ExampleQueries` | Examples attached to their EDM annotation targets |
+Using schemas in `C:\MCP\Csdl` (such as `Server_Large.csdl` and `Server_WithPrompts.csdl`), OData EDM elements map to MCP primitives:
 
-For example, resources use `odata://Inventory.Warehouse/Products` and
-`odata://Inventory.Warehouse/Products/{key_Id}`. Composite keys produce one
-template segment per key. Resource key values are URI-encoded, unquoted values.
-Read-tool keys are named `key_<property>`, and use the property's EDM type.
+| EDM element (e.g. from `C:\MCP\Csdl\Server_Large.csdl`) | MCP projection |
+|---|---|
+| Entity set `users`, `groups`, `drives` | `list_users`, `get_users`, `list_groups`, `get_groups`; collection resources and keyed templates |
+| Singleton `me` | `get_me` tool and fixed resource |
+| Navigation property `users/manager`, `users/directReports` | `get_users_manager`, `get_users_directReports` |
+| Bound function `Microsoft.Graph.searchDriveItems` on `drives` | `drives_Microsoft_Graph_searchDriveItems` |
+| Bound action `Microsoft.Graph.sendChannelMessage` on `channels` | `channels_Microsoft_Graph_sendChannelMessage` |
+| Bound action `Microsoft.Graph.completeTodoTask` on `todoTasks` | `todoTasks_Microsoft_Graph_completeTodoTask` |
+| `@Agent.Prompts` (e.g. `whom_olga_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
+| `@Agent.Examples` / `@Agent.ExampleQueries` | Examples attached to their EDM annotation targets (e.g. `User`, `DriveItem`) |
+
+For example, for `Server_Large.csdl` in `C:\MCP\Csdl`, resources use `odata://Microsoft.Graph.GraphService/users` and
+`odata://Microsoft.Graph.GraphService/users/{key_id}`, while singletons map to `odata://Microsoft.Graph.GraphService/me`.
+Composite keys produce one template segment per key. Resource key values are URI-encoded, unquoted values.
+Read-tool keys are named `key_<property>` (e.g. `key_id`), and use the property's EDM type.
 
 Read tools accept `filter`, `select`, `expand`, `orderby`, `top`, `skip`, `count`,
 and `search`. Function arguments use OData parameter aliases; action arguments
@@ -54,16 +76,15 @@ text with `user` or `assistant` roles. Agent annotations are optional.
 ### Configure the backend
 
 Set `OData:BaseUrl` in generated `appsettings.json`, or through an environment
-variable. Optional `OData:Scope` enables Azure CLI authentication for that scope:
+variable. For Microsoft Graph CSDL schemas in `C:\MCP\Csdl`, configure the Graph endpoint and optional scope for automatic Azure CLI or Managed Identity token acquisition:
 
 ```powershell
-$env:OData__BaseUrl = "https://example.com/odata/"
-dotnet run --project C:\MCP\InventoryServer\GraphMcpServer.csproj
+$env:OData__BaseUrl = "https://graph.microsoft.com/v1.0/"
+$env:OData__Scope = "https://graph.microsoft.com/.default"
+dotnet run --project C:\MCP\LargeServer_transform\GraphMcpServer.csproj
 ```
 
-For Microsoft Graph, use `https://graph.microsoft.com/v1.0/` and, when needed,
-scope `https://graph.microsoft.com/.default`. The backend must implement the
-paths/operations declared by the CSDL; the transformer does not map fictional
+The backend must implement the paths/operations declared by the CSDL; the transformer does not map fictional
 schema operations to unrelated service APIs.
 
 Discovery and prompts work without a backend URL. Execution requires a configured
@@ -91,9 +112,8 @@ legacy verifier for the previous Graph-specific projection, not this pipeline.
 dotnet run --project C:\MCP\CsdlToMcpTransformer\Tests\PipelineTests.csproj
 ```
 
-The dependency-light console runner compiles the actual templates and tests a
-non-Graph inventory schema: composite/inherited keys, navigation, operation
-overloads, functions, actions, derived-type casts, enums, structured/collection
-inputs, HTTP routing/bodies, validation, errors, and traces. It also verifies
-all existing demo prompt renderings and example counts. HTTP execution uses a
-recording handler; tests do not authenticate or call a live service.
+The dependency-light console runner compiles the templates and tests all three schemas
+from `C:\MCP\Csdl` (`Server_Large.csdl`, `Server_WithPrompts.csdl`, `Server_Baseline.csdl`),
+verifying all 34 prompt renderings and example counts. It also exercises edge-case OData
+semantics (composite keys, derived types, enum parameters, structured payloads) using a test
+fixture. HTTP execution uses an in-memory recording handler; tests do not authenticate or call a live service.
