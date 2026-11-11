@@ -31,6 +31,7 @@ yarn-error.log*
 *.vsdx
 report.*
 PavedPath.md
+MCP_CSDL_Annotations_Recommendation.md
 transcript-*.md
 gemini-failures.md
 temp_*
@@ -43,5 +44,3 @@ Experiment/
 Experiment/**
 Large_MCP_Experiment/
 Large_MCP_Experiment/**
-*Experiment/
-*Experiment/**
