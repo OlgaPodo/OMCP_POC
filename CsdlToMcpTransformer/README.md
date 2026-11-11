@@ -52,7 +52,7 @@ Using schemas in `C:\MCP\Csdl` (such as `Server_Large.csdl` and `Server_WithProm
 | Bound function `Microsoft.Graph.searchDriveItems` on `drives` | `drives_Microsoft_Graph_searchDriveItems` |
 | Bound action `Microsoft.Graph.sendChannelMessage` on `channels` | `channels_Microsoft_Graph_sendChannelMessage` |
 | Bound action `Microsoft.Graph.completeTodoTask` on `todoTasks` | `todoTasks_Microsoft_Graph_completeTodoTask` |
-| `@Agent.Prompts` (e.g. `whom_olga_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
+| `@Agent.Prompts` (e.g. `whom_miriam_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
 | `@Agent.Examples` / `@Agent.ExampleQueries` | Examples attached to their EDM annotation targets (e.g. `User`, `DriveItem`) |
 
 For example, for `Server_Large.csdl` in `C:\MCP\Csdl`, resources use `odata://Microsoft.Graph.GraphService/users` and
@@ -79,8 +79,8 @@ Set `OData:BaseUrl` in generated `appsettings.json`, or through an environment
 variable. For Microsoft Graph CSDL schemas in `C:\MCP\Csdl`, configure the Graph endpoint and optional scope for automatic Azure CLI or Managed Identity token acquisition:
 
 ```powershell
-$env:OData__BaseUrl = "https://graph.microsoft.com/v1.0/"
-$env:OData__Scope = "https://graph.microsoft.com/.default"
+$env:OData__BaseUrl = "https://graph.contoso.com/v1.0/"
+$env:OData__Scope = "https://graph.contoso.com/.default"
 dotnet run --project C:\MCP\LargeServer_transform\GraphMcpServer.csproj
 ```
 

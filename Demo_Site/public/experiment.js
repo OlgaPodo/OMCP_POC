@@ -20,6 +20,10 @@ function currentCategoryFilter() {
   return document.querySelector('#experimentCategoryFilters .active')?.dataset.expCat || 'all';
 }
 
+function currentOutcomeFilter() {
+  return document.querySelector('#experimentOutcomeFilters .active')?.dataset.expStatus || 'all';
+}
+
 async function initExperimentView() {
   initExpSubtabs();
   document.getElementById('btnReloadExpSummary').addEventListener('click', async event => {
@@ -37,7 +41,14 @@ async function initExperimentView() {
     button.addEventListener('click', () => {
       document.querySelectorAll('#experimentCategoryFilters .map-query-btn').forEach(b => b.classList.remove('active'));
       button.classList.add('active');
-      renderExperimentQueriesTable(button.dataset.expCat);
+      renderExperimentQueriesTable(button.dataset.expCat, currentOutcomeFilter());
+    });
+  });
+  document.querySelectorAll('#experimentOutcomeFilters .map-query-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('#experimentOutcomeFilters .map-query-btn').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      renderExperimentQueriesTable(currentCategoryFilter(), button.dataset.expStatus);
     });
   });
   await Promise.all([loadAvailableReports(), loadExperimentQueries(), checkBaselineServerHealth()]);
@@ -157,6 +168,22 @@ function renderScorecardMetrics(data) {
   document.getElementById('kpiIntentDelta').textContent = difference(metrics.intent_accuracy_a, metrics.intent_accuracy_b);
   document.getElementById('kpiOdataText').textContent = 'Not measured';
   document.getElementById('kpiOdataDelta').textContent = 'Generated OData strings are not executed or syntax-validated.';
+
+  const totalQ = Number(data.total_queries) || 0;
+  const succBCount = (data.results || []).filter(r => r.eval_b?.execution_success).length;
+  const succACount = (data.results || []).filter(r => r.eval_a?.execution_success).length;
+  const opt1Banner = document.getElementById('promptOpt1TotalPct');
+  const opt2Banner = document.getElementById('promptOpt2TotalPct');
+  if (opt1Banner) {
+    opt1Banner.innerHTML = `Total Success Rate (Option 1): <strong style="font-size:16px;color:#0078d4;">${format(metrics.server_b_success_rate)}</strong> (${succBCount}/${totalQ} queries)`;
+  }
+  if (opt2Banner) {
+    const deltaVal = Number.isFinite(metrics.server_a_success_rate) && Number.isFinite(metrics.server_b_success_rate)
+      ? `${metrics.server_a_success_rate - metrics.server_b_success_rate >= 0 ? '+' : ''}${(metrics.server_a_success_rate - metrics.server_b_success_rate).toFixed(1)} pp`
+      : '';
+    opt2Banner.innerHTML = `Total Success Rate (Option 2): <strong style="font-size:16px;color:#107c41;">${format(metrics.server_a_success_rate)}</strong> (${succACount}/${totalQ} queries${deltaVal ? ` &bull; ${deltaVal}` : ''})`;
+  }
+
   document.getElementById('experimentMethodology').textContent = verified ? data.methodology
     : 'Historical run: scores used hardcoded catalogs and heuristic checks. They do not prove MCP or Graph execution. Historical Markdown conclusions are unverified.';
   if (data.usage_totals) {
@@ -169,10 +196,17 @@ function renderScorecardMetrics(data) {
   }
   const bars = document.getElementById('categoryBarsContainer');
   bars.replaceChildren();
-  for (const [category, stat] of Object.entries(data.category_breakdown || {})) {
+  const entriesWithTotal = [
+    ['Total (All Queries)', { count: totalQ, rate_b: metrics.server_b_success_rate, rate_a: metrics.server_a_success_rate, isTotal: true }],
+    ...Object.entries(data.category_breakdown || {})
+  ];
+  for (const [category, stat] of entriesWithTotal) {
     const row = document.createElement('div');
+    if (stat.isTotal) {
+      row.style.cssText = 'padding:10px 12px;background:#f8fbff;border:1px solid #c7e0f4;border-radius:6px;margin-bottom:4px;';
+    }
     row.innerHTML = `<strong>${escapeHtml(category)} (${stat.count} queries)</strong>`;
-    for (const [key, label, color] of [['b', 'Baseline B (No Prompts)', '#0078d4'], ['a', 'Variant A (With Prompts)', '#107c41']]) {
+    for (const [key, label, color] of [['b', 'Option 1: Baseline B (No Prompts)', '#0078d4'], ['a', 'Option 2: Variant A (With Prompts)', '#107c41']]) {
       const rate = stat[`rate_${key}`];
       if (!Number.isFinite(rate)) continue;
       const line = document.createElement('div');
@@ -188,9 +222,142 @@ function renderScorecardMetrics(data) {
   }
 }
 
-function simpleMarkdownToHtml(markdown) {
-  return `<pre style="white-space:pre-wrap;overflow-wrap:anywhere;">${escapeHtml(markdown)}</pre>`;
+function formatInlineMarkdown(text) {
+  let escaped = escapeHtml(text);
+  // Inline code `...`
+  escaped = escaped.replace(/`([^`]+)`/g, '<code class="md-inline-code">$1</code>');
+  // Bold **...**
+  escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Italic *...*
+  escaped = escaped.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Links [label](url)
+  escaped = escaped.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  return escaped;
 }
+
+function simpleMarkdownToHtml(markdown) {
+  const lines = String(markdown || '').replace(/\r\n/g, '\n').split('\n');
+  const html = [];
+  let inList = false;
+  let inTable = false;
+  let inCodeBlock = false;
+  let codeLines = [];
+
+  function closeList() {
+    if (inList) {
+      html.push('</ul>');
+      inList = false;
+    }
+  }
+
+  function closeTable() {
+    if (inTable) {
+      html.push('</tbody></table></div>');
+      inTable = false;
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+
+    if (line.startsWith('```')) {
+      closeList();
+      closeTable();
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLines = [];
+      } else {
+        html.push(`<pre class="code-viewer" style="margin:10px 0;padding:12px;border-radius:6px;"><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+        inCodeBlock = false;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(rawLine);
+      continue;
+    }
+
+    if (!line) {
+      closeList();
+      closeTable();
+      continue;
+    }
+
+    if (/^---+$/.test(line)) {
+      closeList();
+      closeTable();
+      html.push('<hr style="border:none;border-top:1px solid #edebe9;margin:16px 0;">');
+      continue;
+    }
+
+    // Markdown Table row
+    if (line.startsWith('|') && line.endsWith('|')) {
+      closeList();
+      const cells = line.slice(1, -1).split('|').map(c => c.trim());
+      // Check if separator row |---|---|
+      if (cells.every(c => /^:?-{2,}:?$/.test(c))) {
+        continue;
+      }
+      if (!inTable) {
+        html.push('<div style="overflow-x:auto;margin:12px 0;"><table class="matrix-table"><thead><tr>');
+        for (const c of cells) {
+          html.push(`<th>${formatInlineMarkdown(c)}</th>`);
+        }
+        html.push('</tr></thead><tbody>');
+        inTable = true;
+      } else {
+        html.push('<tr>');
+        for (const c of cells) {
+          html.push(`<td>${formatInlineMarkdown(c)}</td>`);
+        }
+        html.push('</tr>');
+      }
+      continue;
+    } else {
+      closeTable();
+    }
+
+    // Headings
+    const hMatch = line.match(/^(#{1,4})\s+(.*)$/);
+    if (hMatch) {
+      closeList();
+      const level = hMatch[1].length;
+      html.push(`<h${level} class="md-heading-${level}">${formatInlineMarkdown(hMatch[2])}</h${level}>`);
+      continue;
+    }
+
+    // Bullet list item
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      if (!inList) {
+        html.push('<ul class="md-report-list">');
+        inList = true;
+      }
+      html.push(`<li>${formatInlineMarkdown(line.slice(2))}</li>`);
+      continue;
+    } else {
+      closeList();
+    }
+
+    // Blockquote
+    if (line.startsWith('> ')) {
+      html.push(`<blockquote class="md-blockquote">${formatInlineMarkdown(line.slice(2))}</blockquote>`);
+      continue;
+    }
+
+    html.push(`<p class="md-paragraph">${formatInlineMarkdown(line)}</p>`);
+  }
+
+  closeList();
+  closeTable();
+  if (inCodeBlock) {
+    html.push(`<pre class="code-viewer"><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+  }
+
+  return `<div class="rendered-md-report">${html.join('\n')}</div>`;
+}
+window.renderMarkdownReportToHtml = simpleMarkdownToHtml;
 
 async function checkBaselineServerHealth() {
   await Promise.all([['serverAPill', 'http://localhost:3001/'], ['serverBPill', 'http://localhost:3002/']].map(async ([id, url]) => {
@@ -223,7 +390,7 @@ async function loadExperimentQueries() {
   }
 }
 
-function renderExperimentQueriesTable(categoryFilter = 'all') {
+function renderExperimentQueriesTable(categoryFilter = currentCategoryFilter(), outcomeFilter = currentOutcomeFilter()) {
   const tbody = document.getElementById('experimentTableBody');
   tbody.replaceChildren();
   const results = new Map((experimentSummaryData?.results || []).map(result => [String(result.query_id), result]));
@@ -232,10 +399,40 @@ function renderExperimentQueriesTable(categoryFilter = 'all') {
     ...queries.get(String(result.query_id)), id: result.query_id, query: result.query, category: result.category,
     targetIntent: result.expected_intent || queries.get(String(result.query_id))?.targetIntent
   });
+
+  // Update outcome filter button counts dynamically
+  const allRows = [...queries.values()].map(q => results.get(String(q.id))).filter(Boolean);
+  const outcomeCounts = {
+    all: queries.size,
+    failed_any: allRows.filter(r => r.eval_b?.execution_success === false || r.eval_a?.execution_success === false).length,
+    failed_opt1: allRows.filter(r => r.eval_b?.execution_success === false).length,
+    failed_opt2: allRows.filter(r => r.eval_a?.execution_success === false).length,
+    fixed: allRows.filter(r => r.eval_b?.execution_success === false && r.eval_a?.execution_success === true).length
+  };
+  const outcomeLabels = {
+    all: `All Outcomes (${outcomeCounts.all})`,
+    failed_any: `❌ Any Failed (${outcomeCounts.failed_any})`,
+    failed_opt1: `❌ Failed Option 1 (${outcomeCounts.failed_opt1})`,
+    failed_opt2: `❌ Failed Option 2 (${outcomeCounts.failed_opt2})`,
+    fixed: `✅ Fixed by Prompts (${outcomeCounts.fixed})`
+  };
+  document.querySelectorAll('#experimentOutcomeFilters .map-query-btn').forEach(btn => {
+    const key = btn.dataset.expStatus;
+    if (outcomeLabels[key]) btn.textContent = outcomeLabels[key];
+  });
+
   document.getElementById('inspectorHeading').textContent = `${queries.size} benchmark entries; ${results.size} recorded outcomes`;
   for (const query of queries.values()) {
     if (categoryFilter !== 'all' && query.category !== categoryFilter) continue;
     const result = results.get(String(query.id));
+    if (outcomeFilter !== 'all') {
+      const okB = result?.eval_b?.execution_success;
+      const okA = result?.eval_a?.execution_success;
+      if (outcomeFilter === 'failed_any' && !(okB === false || okA === false)) continue;
+      if (outcomeFilter === 'failed_opt1' && okB !== false) continue;
+      if (outcomeFilter === 'failed_opt2' && okA !== false) continue;
+      if (outcomeFilter === 'fixed' && !(okB === false && okA === true)) continue;
+    }
     const row = document.createElement('tr');
     row.tabIndex = 0;
     row.setAttribute('aria-expanded', 'false');

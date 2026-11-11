@@ -4,11 +4,17 @@ const path = require('path');
 
 const PORT = 3000;
 const MCP_SERVER_URL = 'http://localhost:3001';
-const MCP_SERVERS = new Set(['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003']);
+const MCP_SERVERS = new Set([
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
+  'http://localhost:3004',
+  'http://localhost:3005'
+]);
 
 function selectedServer(req) {
   const target = String(req.headers['x-target-url'] || MCP_SERVER_URL).replace(/\/$/, '');
-  if (!MCP_SERVERS.has(target)) throw new Error('Select one of the local MCP servers (:3001, :3002, or :3003).');
+  if (!MCP_SERVERS.has(target)) throw new Error('Select one of the local MCP servers (:3001-:3005).');
   return target;
 }
 
@@ -155,6 +161,102 @@ const server = http.createServer(async (req, res) => {
         }));
       }
     });
+    return;
+  }
+
+  // Large 100-Question 3-Way Experiment APIs
+  if (req.url === '/api/large-experiment/queries' && req.method === 'GET') {
+    try {
+      const qPath = path.join(__dirname, '..', 'Large_MCP_Experiment', 'benchmark_queries_100.json');
+      const data = fs.existsSync(qPath) ? fs.readFileSync(qPath, 'utf8') : '[]';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(data);
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url.startsWith('/api/large-experiment/reports') && req.method === 'GET') {
+    try {
+      const reportsDir = path.join(__dirname, '..', 'Large_MCP_Experiment', 'reports');
+      const reportList = [];
+      if (fs.existsSync(reportsDir)) {
+        const files = fs.readdirSync(reportsDir).filter(f => f.endsWith('.json'));
+        for (const f of files) {
+          try {
+            const content = JSON.parse(fs.readFileSync(path.join(reportsDir, f), 'utf8'));
+            reportList.push({
+              id: content.id || f.replace('.json', ''),
+              filename: f,
+              model: content.model || 'gpt-6.1-sol',
+              timestamp: content.timestamp,
+              elapsed_seconds: content.elapsed_seconds || 0,
+              total_queries: content.total_queries || 0,
+              is_full_run: content.is_full_run ?? (content.total_queries || 0) >= 100,
+              no_examples_rate: content.metrics?.no_examples_success_rate ?? 0,
+              with_examples_rate: content.metrics?.with_examples_success_rate ?? 0,
+              search_query_rate: content.metrics?.search_query_success_rate ?? 0,
+              examples_delta: content.metrics?.examples_impact_delta ?? 0,
+              arch_delta: content.metrics?.architecture_impact_delta ?? 0
+            });
+          } catch (_) {}
+        }
+      }
+      reportList.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(reportList));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url.startsWith('/api/large-experiment/summary') && req.method === 'GET') {
+    try {
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const reportId = parsedUrl.searchParams.get('id');
+      let sPath = path.join(__dirname, '..', 'Large_MCP_Experiment', 'results_summary.json');
+      if (reportId && /^[a-zA-Z0-9_.-]+$/.test(reportId)) {
+        const candidate = path.join(__dirname, '..', 'Large_MCP_Experiment', 'reports', reportId.replace(/\.json$/, '') + '.json');
+        if (fs.existsSync(candidate)) sPath = candidate;
+      }
+      if (fs.existsSync(sPath)) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(fs.readFileSync(sPath, 'utf8'));
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Large experiment summary not found.' }));
+      }
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url.startsWith('/api/large-experiment/report-markdown') && req.method === 'GET') {
+    try {
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const reportId = parsedUrl.searchParams.get('id');
+      let mPath = path.join(__dirname, '..', 'Large_MCP_Experiment', 'EXPERIMENT_REPORT.md');
+      if (reportId && /^[a-zA-Z0-9_.-]+$/.test(reportId)) {
+        const candidate = path.join(__dirname, '..', 'Large_MCP_Experiment', 'reports', reportId.replace(/\.(md|json)$/, '') + '.md');
+        if (fs.existsSync(candidate)) mPath = candidate;
+      }
+      if (fs.existsSync(mPath)) {
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end(fs.readFileSync(mPath, 'utf8'));
+      } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Report file not found.');
+      }
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Error loading report: ' + e.message);
+    }
     return;
   }
 

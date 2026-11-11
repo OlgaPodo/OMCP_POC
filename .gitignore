@@ -41,3 +41,7 @@ __pycache__/
 ## Experiment folder and all content (Do Not Commit)
 Experiment/
 Experiment/**
+Large_MCP_Experiment/
+Large_MCP_Experiment/**
+*Experiment/
+*Experiment/**

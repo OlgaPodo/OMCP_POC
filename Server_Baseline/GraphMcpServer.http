@@ -59,7 +59,7 @@ Mcp-Name: find_user
     "params": {
         "name": "find_user",
         "arguments": {
-            "query": "Olga"
+            "query": "Miriam"
         },
         "_meta": {
             "io.modelcontextprotocol/protocolVersion": "2026-07-28",
@@ -111,22 +111,22 @@ Mcp-Method: prompts/list
     }
 }
 
-### 6. Get Prompt (Whom Olga reports to?)
+### 6. Get Prompt (Whom Miriam reports to?)
 POST {{HostAddress}}/
 Accept: application/json, text/event-stream
 Content-Type: application/json
 MCP-Protocol-Version: 2026-07-28
 Mcp-Method: prompts/get
-Mcp-Name: whom_olga_reports_to
+Mcp-Name: whom_miriam_reports_to
 
 {
     "jsonrpc": "2.0",
     "id": 6,
     "method": "prompts/get",
     "params": {
-        "name": "whom_olga_reports_to",
+        "name": "whom_miriam_reports_to",
         "arguments": {
-            "userName": "Olga Podolyako"
+            "userName": "Miriam Graham"
         },
         "_meta": {
             "io.modelcontextprotocol/protocolVersion": "2026-07-28",

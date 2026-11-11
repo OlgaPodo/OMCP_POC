@@ -28,8 +28,8 @@ const SAMPLE_QUERIES = {
     entity: 'MCP 2.0 Server Core Transport',
     args: []
   },
-  'tool-find-olga': {
-    name: 'find_user ("Olga")',
+  'tool-find-miriam': {
+    name: 'find_user ("Miriam")',
     category: 'tool',
     payload: {
       jsonrpc: '2.0',
@@ -37,15 +37,15 @@ const SAMPLE_QUERIES = {
       method: 'tools/call',
       params: {
         name: 'find_user',
-        arguments: { query: 'Olga' }
+        arguments: { query: 'Miriam' }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga') or startswith(userPrincipalName,'Olga')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'Miriam') or startswith(userPrincipalName,'Miriam')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10",
     entity: 'Microsoft.Graph.User (EntitySet: users)',
-    args: [{ name: 'query', label: 'Search Query', default: 'Olga' }]
+    args: [{ name: 'query', label: 'Search Query', default: 'Miriam' }]
   },
-  'tool-find-vojtech': {
-    name: 'find_user ("Vojtech")',
+  'tool-find-alex': {
+    name: 'find_user ("Alex")',
     category: 'tool',
     payload: {
       jsonrpc: '2.0',
@@ -53,11 +53,11 @@ const SAMPLE_QUERIES = {
       method: 'tools/call',
       params: {
         name: 'find_user',
-        arguments: { query: 'Vojtech' },
+        arguments: { query: 'Alex' },
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Alex') or startswith(userPrincipalName,'Alex')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'Alex') or startswith(userPrincipalName,'Alex')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10",
     entity: 'Microsoft.Graph.User (EntitySet: users)',
     args: [{ name: 'query', label: 'Search Query', default: 'Alex' }]
   },
@@ -74,12 +74,12 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)',
     entity: 'Microsoft.Graph.User (Singleton: me + Nav: manager, directReports)',
     args: [{ name: 'userId', label: 'User ID or UPN', default: 'me' }]
   },
-  'tool-profile-olga': {
-    name: 'user_profile ("opodolyako@microsoft.com")',
+  'tool-profile-miriam': {
+    name: 'user_profile ("miriamg@contoso.com")',
     category: 'tool',
     payload: {
       jsonrpc: '2.0',
@@ -87,13 +87,13 @@ const SAMPLE_QUERIES = {
       method: 'tools/call',
       params: {
         name: 'user_profile',
-        arguments: { userId: 'opodolyako@microsoft.com' },
+        arguments: { userId: 'miriamg@contoso.com' },
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)",
     entity: 'Microsoft.Graph.User (EntitySet: users)',
-    args: [{ name: 'userId', label: 'User ID or UPN', default: 'opodolyako@microsoft.com' }]
+    args: [{ name: 'userId', label: 'User ID or UPN', default: 'miriamg@contoso.com' }]
   },
   'tool-find-group': {
     name: 'find_group ("Identity")',
@@ -108,7 +108,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'Identity') or startswith(mailNickname,'Identity')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'Identity') or startswith(mailNickname,'Identity')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25",
     entity: 'Microsoft.Graph.Group (EntitySet: groups)',
     args: [{ name: 'query', label: 'Group Search Query', default: 'Identity' }]
   },
@@ -125,7 +125,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members($select=id,displayName,userPrincipalName,jobTitle,department),owners($select=id,displayName,userPrincipalName,jobTitle,department)",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members($select=id,displayName,userPrincipalName,jobTitle,department),owners($select=id,displayName,userPrincipalName,jobTitle,department)",
     entity: 'Microsoft.Graph.Group (EntitySet: groups + Nav: members, owners)',
     args: [{ name: 'groupId', label: 'Group ID or Display Name', default: 'Identity Architecture' }]
   },
@@ -135,7 +135,7 @@ const SAMPLE_QUERIES = {
     payload: { jsonrpc: '2.0', id: 28, method: 'tools/call', params: {
       name: 'read_resource', arguments: { uri: 'users://me' }, _meta: { ...MCP_20_META }
     } },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager($select=id,displayName,userPrincipalName,jobTitle,department),directReports($select=id,displayName,userPrincipalName,jobTitle,department)',
     entity: 'Microsoft.Graph.GraphService/me',
     args: [{ name: 'uri', label: 'Projected resource URI', default: 'users://me' }]
   },
@@ -145,44 +145,44 @@ const SAMPLE_QUERIES = {
     payload: { jsonrpc: '2.0', id: 29, method: 'tools/call', params: {
       name: 'read_resource', arguments: { uri: 'groups://11111111-2222-3333-4444-555555555555' }, _meta: { ...MCP_20_META }
     } },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members($select=id,displayName,userPrincipalName,jobTitle,department),owners($select=id,displayName,userPrincipalName,jobTitle,department)",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members($select=id,displayName,userPrincipalName,jobTitle,department),owners($select=id,displayName,userPrincipalName,jobTitle,department)",
     entity: 'Microsoft.Graph.GraphService/groups',
     args: [{ name: 'uri', label: 'Projected resource URI', default: 'groups://11111111-2222-3333-4444-555555555555' }]
   },
   // 4. Container-level prompts
   'prompt-reports-to': {
-    name: 'Whom Olga reports to?',
+    name: 'Whom Miriam reports to?',
     category: 'prompt',
     payload: {
       jsonrpc: '2.0',
       id: 5,
       method: 'prompts/get',
       params: {
-        name: 'whom_olga_reports_to',
-        arguments: { userName: 'Olga Podolyako' },
+        name: 'whom_miriam_reports_to',
+        arguments: { userName: 'Miriam Graham' },
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
-    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[whom_olga_reports_to]',
-    args: [{ name: 'userName', label: 'User Name', default: 'Olga Podolyako' }]
+    graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[whom_miriam_reports_to]',
+    args: [{ name: 'userName', label: 'User Name', default: 'Miriam Graham' }]
   },
   'prompt-peers': {
-    name: "Who are Olga's peers?",
+    name: "Who are Miriam's peers?",
     category: 'prompt',
     payload: {
       jsonrpc: '2.0',
       id: 6,
       method: 'prompts/get',
       params: {
-        name: 'who_are_olgas_peers',
-        arguments: { userName: 'Olga Podolyako' },
+        name: 'who_are_miriams_peers',
+        arguments: { userName: 'Miriam Graham' },
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager/directReports?$select=id,displayName,userPrincipalName,jobTitle,department",
-    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[who_are_olgas_peers]',
-    args: [{ name: 'userName', label: 'User Name', default: 'Olga Podolyako' }]
+    graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager/directReports?$select=id,displayName,userPrincipalName,jobTitle,department",
+    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[who_are_miriams_peers]',
+    args: [{ name: 'userName', label: 'User Name', default: 'Miriam Graham' }]
   },
   'prompt-direct-reports': {
     name: 'Direct reports of a manager',
@@ -193,13 +193,13 @@ const SAMPLE_QUERIES = {
       method: 'prompts/get',
       params: {
         name: 'direct_reports_of_manager',
-        arguments: { managerNameOrId: 'Vojtech Vondra' },
+        arguments: { managerNameOrId: 'Alex Wilbur' },
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department",
     entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[direct_reports_of_manager]',
-    args: [{ name: 'managerNameOrId', label: 'Manager Name or UPN', default: 'Vojtech Vondra' }]
+    args: [{ name: 'managerNameOrId', label: 'Manager Name or UPN', default: 'Alex Wilbur' }]
   },
   'prompt-search-dept': {
     name: 'Search users by dept & title',
@@ -214,7 +214,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')&$select=id,displayName,userPrincipalName,jobTitle,department",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')&$select=id,displayName,userPrincipalName,jobTitle,department",
     entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[search_users_by_dept_title]',
     args: [
       { name: 'department', label: 'Department', default: 'Identity' },
@@ -234,7 +234,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
     entity: 'Microsoft.Graph.User (Resource link + Tool binding)',
     args: [{ name: 'identifier', label: 'Identifier (me or UPN)', default: 'me' }]
   },
@@ -251,7 +251,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility",
     entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[find_group_by_name]',
     args: [{ name: 'groupName', label: 'Group Name or Prefix', default: 'Identity Architecture' }]
   },
@@ -268,7 +268,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department",
     entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[list_group_members]',
     args: [{ name: 'groupIdOrName', label: 'Group ID or Name', default: 'Identity Architecture' }]
   },
@@ -285,7 +285,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/owners?$select=id,displayName,userPrincipalName,jobTitle,department",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/owners?$select=id,displayName,userPrincipalName,jobTitle,department",
     entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[who_owns_group]',
     args: [{ name: 'groupIdOrName', label: 'Group ID or Name', default: 'Identity Architecture' }]
   },
@@ -302,7 +302,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility',
     entity: 'Microsoft.Graph.Group (Resource link + Tool binding)',
     args: [{ name: 'identifier', label: 'Group ID or groups://all', default: 'groups://all' }]
   },
@@ -318,7 +318,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
     entity: 'Microsoft.Graph.User (Singleton: me)',
     args: []
   },
@@ -330,13 +330,13 @@ const SAMPLE_QUERIES = {
       id: 11,
       method: 'resources/read',
       params: {
-        uri: 'users://opodolyako@microsoft.com',
+        uri: 'users://miriamg@contoso.com',
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+    graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
     entity: 'Microsoft.Graph.User (EntitySet: users)',
-    args: [{ name: 'uri', label: 'Resource URI', default: 'users://opodolyako@microsoft.com' }]
+    args: [{ name: 'uri', label: 'Resource URI', default: 'users://miriamg@contoso.com' }]
   },
   'res-read-groups': {
     name: 'Read groups://all',
@@ -350,7 +350,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: 'GET https://graph.microsoft.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility',
+    graphTarget: 'GET https://graph.contoso.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility',
     entity: 'Microsoft.Graph.Group (EntitySet: groups)',
     args: []
   },
@@ -366,7 +366,7 @@ const SAMPLE_QUERIES = {
         _meta: { ...MCP_20_META }
       }
     },
-    graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility",
+    graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility",
     entity: 'Microsoft.Graph.Group (EntitySet: groups)',
     args: [{ name: 'uri', label: 'Group URI or ID', default: 'groups://11111111-2222-3333-4444-555555555555' }]
   },
@@ -935,7 +935,7 @@ if (Array.isArray(resp?.result?.messages)) {
       <div class="profile-header">
         <div class="avatar-circle">${initials}</div>
         <div>
-          <div class="profile-name">${escapeHtml(userObj.displayName || 'Olga Podolyako')}</div>
+          <div class="profile-name">${escapeHtml(userObj.displayName || 'Miriam Graham')}</div>
           <div class="profile-title">${escapeHtml(userObj.jobTitle || 'PRINCIPAL API ARCHITECT')}</div>
           <div style="font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px;">${escapeHtml(userObj.source || 'Microsoft Graph')}</div>
         </div>
@@ -944,11 +944,11 @@ if (Array.isArray(resp?.result?.messages)) {
       <div class="profile-details-grid">
         <div class="detail-item">
           <span class="detail-label">User Principal Name</span>
-          <span class="detail-value">${escapeHtml(userObj.userPrincipalName || 'opodolyako@microsoft.com')}</span>
+          <span class="detail-value">${escapeHtml(userObj.userPrincipalName || 'miriamg@contoso.com')}</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Mail</span>
-          <span class="detail-value">${escapeHtml(userObj.mail || userObj.userPrincipalName || 'opodolyako@microsoft.com')}</span>
+          <span class="detail-value">${escapeHtml(userObj.mail || userObj.userPrincipalName || 'miriamg@contoso.com')}</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Department</span>
@@ -966,7 +966,7 @@ if (Array.isArray(resp?.result?.messages)) {
     const mgrInitials = (userObj.manager.displayName || 'VV').split(' ').map(n => n[0]).join('').substring(0, 2);
     html += `
       <div class="org-relation-section">
-        <div class="relation-title">Reporting Manager (Script Query: "Whom Olga reports to?")</div>
+        <div class="relation-title">Reporting Manager (Script Query: "Whom Miriam reports to?")</div>
         <div class="mini-user-card" style="background: #eef5fc; border-color: #b3d6f4;">
           <div class="mini-avatar" style="background: #0078d4;">${mgrInitials}</div>
           <div class="mini-info">
@@ -981,7 +981,7 @@ if (Array.isArray(resp?.result?.messages)) {
   if (userObj.peers && userObj.peers.length > 0) {
     html += `
       <div class="org-relation-section">
-        <div class="relation-title">Peer Colleagues (Script Query: "Who are Olga's peers?") [${userObj.peers.length} Peers]</div>
+        <div class="relation-title">Peer Colleagues (Script Query: "Who are Miriam's peers?") [${userObj.peers.length} Peers]</div>
         <div class="relation-cards-grid">`;
     userObj.peers.forEach(peer => {
       const peerInit = (peer.displayName || 'P').split(' ').map(n => n[0]).join('').substring(0, 2);
@@ -1022,7 +1022,7 @@ if (Array.isArray(resp?.result?.messages)) {
 }
 
 window.runProfileForUser = function(upn) {
-  selectQuery('tool-profile-olga');
+  selectQuery('tool-profile-miriam');
   const payload = JSON.parse(document.getElementById('requestJsonArea').value);
   payload.params.arguments.userId = upn;
   document.getElementById('requestJsonArea').value = JSON.stringify(payload, null, 2);
@@ -1139,9 +1139,9 @@ function syncPromptQueries(catalog) {
     query.payload.params.arguments = Object.fromEntries(query.args.map(argument => [argument.name, argument.default]));
     query.entity = `Microsoft.Graph.GraphService/@Agent.Prompts[${prompt.name}]`;
     const odataPromptTargets = {
-      user_peers_in_group: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager/directReports; GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members",
-      group_members_reporting_to_manager: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members; GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports",
-      user_and_group_owners_common_manager: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager; GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/owners"
+      user_peers_in_group: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager/directReports; GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members",
+      group_members_reporting_to_manager: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members; GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports",
+      user_and_group_owners_common_manager: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager; GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/owners"
     };
     if (!query.graphTarget || odataPromptTargets[prompt.name]) {
       query.graphTarget = odataPromptTargets[prompt.name] || query.graphTarget;
@@ -1457,9 +1457,9 @@ function renderTileExchanges(cardEl, summaryNote, exchanges) {
 }
 
 function buildScenarioCallExchanges(prompt, arguments_) {
-  const userQuery = arguments_.userName || arguments_.managerNameOrId || arguments_.identifier || 'Olga Podolyako';
+  const userQuery = arguments_.userName || arguments_.managerNameOrId || arguments_.identifier || 'Miriam Graham';
   const groupQuery = arguments_.groupName || arguments_.groupIdOrName || 'Identity Architecture';
-  const resolvedUpn = String(userQuery).toLowerCase().includes('alex') ? 'vvondra@microsoft.com' : 'opodolyako@microsoft.com';
+  const resolvedUpn = String(userQuery).toLowerCase().includes('alex') ? 'alexw@contoso.com' : 'miriamg@contoso.com';
   const resolvedGroupId = '11111111-2222-3333-4444-555555555555';
 
   const toolExchanges = [];
@@ -1475,7 +1475,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             method: 'tools/call',
             params: { name: 'find_user', arguments: { query: userQuery }, _meta: { ...MCP_20_META } }
           },
-          downstreamGraphRequest: `GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'${userQuery}') or startswith(userPrincipalName,'${userQuery}')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10`,
+          downstreamGraphRequest: `GET https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'${userQuery}') or startswith(userPrincipalName,'${userQuery}')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10`,
           transcriptNote: 'Uses Graph-supported startswith(...) instead of unsupported contains(...).'
         },
         responseTitle: 'Response: find_user match & resolved UPN (click to expand)',
@@ -1491,7 +1491,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
                 total: 1,
                 users: [{
                   id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-                  displayName: 'Olga Podolyako',
+                  displayName: 'Miriam Graham',
                   userPrincipalName: resolvedUpn,
                   jobTitle: 'Principal API Architect',
                   department: 'Architecture & Standards'
@@ -1513,9 +1513,9 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             params: { name: 'user_profile', arguments: { userId: resolvedUpn }, _meta: { ...MCP_20_META } }
           },
           downstreamGraphRequests: [
-            `GET https://graph.microsoft.com/v1.0/users('${resolvedUpn}')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation`,
-            `GET https://graph.microsoft.com/v1.0/users('${resolvedUpn}')/manager?$select=id,displayName,userPrincipalName,jobTitle,department`,
-            "GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
+            `GET https://graph.contoso.com/v1.0/users('${resolvedUpn}')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation`,
+            `GET https://graph.contoso.com/v1.0/users('${resolvedUpn}')/manager?$select=id,displayName,userPrincipalName,jobTitle,department`,
+            "GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
           ]
         },
         responseTitle: 'Response: user_profile with manager, peers & directReports (click to expand)',
@@ -1527,22 +1527,22 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             content: [{
               type: 'text',
               text: JSON.stringify({
-                '@context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity',
+                '@context': 'https://graph.contoso.com/v1.0/$metadata#users/$entity',
                 id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-                displayName: 'Olga Podolyako',
+                displayName: 'Miriam Graham',
                 userPrincipalName: resolvedUpn,
                 jobTitle: 'Principal API Architect',
                 department: 'Architecture & Standards',
                 manager: {
                   id: 'mgr-001',
-                  displayName: 'Vojtech Vondra',
-                  userPrincipalName: 'vvondra@microsoft.com',
+                  displayName: 'Alex Wilbur',
+                  userPrincipalName: 'alexw@contoso.com',
                   jobTitle: 'Partner Group Engineering Manager'
                 },
                 peers: [
-                  { displayName: 'Alex Wilber', userPrincipalName: 'vvondra@microsoft.com', jobTitle: 'Senior Identity Architect' },
-                  { displayName: 'Joao Paiva', userPrincipalName: 'jpaiva@microsoft.com', jobTitle: 'Principal PM Manager' },
-                  { displayName: 'Z Wang', userPrincipalName: 'zwang@microsoft.com', jobTitle: 'Principal Security Engineer' }
+                  { displayName: 'Alex Wilber', userPrincipalName: 'alexw@contoso.com', jobTitle: 'Senior Identity Architect' },
+                  { displayName: 'Megan Bowen', userPrincipalName: 'meganb@contoso.com', jobTitle: 'Principal PM Manager' },
+                  { displayName: 'Diego Siciliani', userPrincipalName: 'diegos@contoso.com', jobTitle: 'Principal Security Engineer' }
                 ]
               }, null, 2)
             }]
@@ -1560,7 +1560,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             method: 'tools/call',
             params: { name: 'find_group', arguments: { query: groupQuery }, _meta: { ...MCP_20_META } }
           },
-          downstreamGraphRequest: `GET https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'${groupQuery}') or startswith(mailNickname,'${groupQuery}')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25`
+          downstreamGraphRequest: `GET https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'${groupQuery}') or startswith(mailNickname,'${groupQuery}')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25`
         },
         responseTitle: 'Response: find_group match & resolved Group ID (click to expand)',
         statusBadge: '200 OK',
@@ -1571,7 +1571,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             content: [{
               type: 'text',
               text: JSON.stringify({
-                '@context': 'https://graph.microsoft.com/v1.0/$metadata#groups',
+                '@context': 'https://graph.contoso.com/v1.0/$metadata#groups',
                 query: groupQuery,
                 total: 1,
                 groups: [{
@@ -1598,9 +1598,9 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             params: { name: 'group_details', arguments: { groupId: resolvedGroupId }, _meta: { ...MCP_20_META } }
           },
           downstreamGraphRequests: [
-            `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility`,
-            `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')/owners?$select=id,displayName,userPrincipalName,jobTitle,department`,
-            `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department`
+            `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility`,
+            `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')/owners?$select=id,displayName,userPrincipalName,jobTitle,department`,
+            `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department`
           ]
         },
         responseTitle: 'Response: group_details with owners & members (click to expand)',
@@ -1612,17 +1612,17 @@ function buildScenarioCallExchanges(prompt, arguments_) {
             content: [{
               type: 'text',
               text: JSON.stringify({
-                '@context': 'https://graph.microsoft.com/v1.0/$metadata#groups/$entity',
+                '@context': 'https://graph.contoso.com/v1.0/$metadata#groups/$entity',
                 id: resolvedGroupId,
                 displayName: 'Identity Architecture',
                 owners: [
-                  { displayName: 'Vojtech Vondra', userPrincipalName: 'vvondra@microsoft.com' },
-                  { displayName: 'Olga Podolyako', userPrincipalName: 'opodolyako@microsoft.com' }
+                  { displayName: 'Alex Wilbur', userPrincipalName: 'alexw@contoso.com' },
+                  { displayName: 'Miriam Graham', userPrincipalName: 'miriamg@contoso.com' }
                 ],
                 members: [
-                  { displayName: 'Olga Podolyako', userPrincipalName: 'opodolyako@microsoft.com' },
-                  { displayName: 'Alex Wilber', userPrincipalName: 'vvondra@microsoft.com' },
-                  { displayName: 'Joao Paiva', userPrincipalName: 'jpaiva@microsoft.com' }
+                  { displayName: 'Miriam Graham', userPrincipalName: 'miriamg@contoso.com' },
+                  { displayName: 'Alex Wilber', userPrincipalName: 'alexw@contoso.com' },
+                  { displayName: 'Megan Bowen', userPrincipalName: 'meganb@contoso.com' }
                 ]
               }, null, 2)
             }]
@@ -1639,44 +1639,44 @@ function buildScenarioCallExchanges(prompt, arguments_) {
     const isGroup = resolvedUri.startsWith('groups://');
     const graphUrls = resolvedUri === 'users://me'
       ? [
-          'GET https://graph.microsoft.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
-          'GET https://graph.microsoft.com/v1.0/me/manager?$select=id,displayName,userPrincipalName,jobTitle,department',
-          "GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
+          'GET https://graph.contoso.com/v1.0/me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation',
+          'GET https://graph.contoso.com/v1.0/me/manager?$select=id,displayName,userPrincipalName,jobTitle,department',
+          "GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
         ]
       : resolvedUri === 'groups://all'
-        ? ['GET https://graph.microsoft.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility']
+        ? ['GET https://graph.contoso.com/v1.0/groups?$top=100&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility']
         : isGroup
           ? [
-              `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility`,
-              `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')/owners?$select=id,displayName,userPrincipalName,jobTitle,department`,
-              `GET https://graph.microsoft.com/v1.0/groups('${resolvedGroupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department`
+              `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility`,
+              `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')/owners?$select=id,displayName,userPrincipalName,jobTitle,department`,
+              `GET https://graph.contoso.com/v1.0/groups('${resolvedGroupId}')/members?$select=id,displayName,userPrincipalName,jobTitle,department`
             ]
           : [
-              `GET https://graph.microsoft.com/v1.0/users('${resolvedUpn}')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation`,
-              `GET https://graph.microsoft.com/v1.0/users('${resolvedUpn}')/manager?$select=id,displayName,userPrincipalName,jobTitle,department`,
-              "GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
+              `GET https://graph.contoso.com/v1.0/users('${resolvedUpn}')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation`,
+              `GET https://graph.contoso.com/v1.0/users('${resolvedUpn}')/manager?$select=id,displayName,userPrincipalName,jobTitle,department`,
+              "GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
             ];
     const resourceData = isGroup
       ? {
-          '@context': 'https://graph.microsoft.com/v1.0/$metadata#groups/$entity',
+          '@context': 'https://graph.contoso.com/v1.0/$metadata#groups/$entity',
           id: resolvedGroupId,
           displayName: 'Identity Architecture',
-          owners: [{ displayName: 'Vojtech Vondra', userPrincipalName: 'vvondra@microsoft.com' }],
+          owners: [{ displayName: 'Alex Wilbur', userPrincipalName: 'alexw@contoso.com' }],
           members: [
-            { displayName: 'Olga Podolyako', userPrincipalName: 'opodolyako@microsoft.com' },
-            { displayName: 'Alex Wilber', userPrincipalName: 'vvondra@microsoft.com' },
-            { displayName: 'Joao Paiva', userPrincipalName: 'jpaiva@microsoft.com' }
+            { displayName: 'Miriam Graham', userPrincipalName: 'miriamg@contoso.com' },
+            { displayName: 'Alex Wilber', userPrincipalName: 'alexw@contoso.com' },
+            { displayName: 'Megan Bowen', userPrincipalName: 'meganb@contoso.com' }
           ]
         }
       : {
-          '@context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity',
-          displayName: 'Olga Podolyako',
+          '@context': 'https://graph.contoso.com/v1.0/$metadata#users/$entity',
+          displayName: 'Miriam Graham',
           userPrincipalName: resolvedUpn,
-          manager: { displayName: 'Vojtech Vondra', userPrincipalName: 'vvondra@microsoft.com' },
+          manager: { displayName: 'Alex Wilbur', userPrincipalName: 'alexw@contoso.com' },
           peers: [
-            { displayName: 'Alex Wilber', userPrincipalName: 'vvondra@microsoft.com' },
-            { displayName: 'Joao Paiva', userPrincipalName: 'jpaiva@microsoft.com' },
-            { displayName: 'Z Wang', userPrincipalName: 'zwang@microsoft.com' }
+            { displayName: 'Alex Wilber', userPrincipalName: 'alexw@contoso.com' },
+            { displayName: 'Megan Bowen', userPrincipalName: 'meganb@contoso.com' },
+            { displayName: 'Diego Siciliani', userPrincipalName: 'diegos@contoso.com' }
           ]
         };
 
@@ -1756,8 +1756,8 @@ function renderMappingScenario() {
     [
       {
         badge: 'Request 1 (OData $metadata XML)',
-        requestTitle: 'GET https://graph.microsoft.com/v1.0/$metadata (Accept: application/xml)',
-        request: 'GET https://graph.microsoft.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/xml',
+        requestTitle: 'GET https://graph.contoso.com/v1.0/$metadata (Accept: application/xml)',
+        request: 'GET https://graph.contoso.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/xml',
         responseTitle: `Response: OData CSDL XML EntityContainer & @Agent.Prompts for ${prompt.name} (click to expand)`,
         statusBadge: '200 OK (XML)',
         response: [
@@ -1774,8 +1774,8 @@ function renderMappingScenario() {
       },
       {
         badge: 'Request 2 (OData $metadata JSON)',
-        requestTitle: 'GET https://graph.microsoft.com/v1.0/$metadata (Accept: application/json)',
-        request: 'GET https://graph.microsoft.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/json',
+        requestTitle: 'GET https://graph.contoso.com/v1.0/$metadata (Accept: application/json)',
+        request: 'GET https://graph.contoso.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/json',
         responseTitle: 'Response: OData v4.01 CSDL JSON ($Version: "4.01") @Agent.Prompts with OData queries (click to expand)',
         statusBadge: '200 OK (JSON)',
         response: {
@@ -1944,8 +1944,8 @@ function renderMappingScenario() {
           scenario: prompt.title,
           entitySetsCombined: prompt.entitySets,
           resolvedAnswerSummary: prompt.entitySets.length > 1
-            ? ' Olga Podolyako (reports to Vojtech Vondra) shares group "Identity Architecture" with peers Alex Wilber (vvondra@microsoft.com) and Joao Paiva (jpaiva@microsoft.com).'
-            : 'Resolved target Microsoft Graph directory records for Olga Podolyako (Manager: Vojtech Vondra; Peers: Alex Wilber, Joao Paiva, Z Wang).',
+            ? ' Miriam Graham (reports to Alex Wilbur) shares group "Identity Architecture" with peers Alex Wilber (alexw@contoso.com) and Megan Bowen (meganb@contoso.com).'
+            : 'Resolved target Microsoft Graph directory records for Miriam Graham (Manager: Alex Wilbur; Peers: Alex Wilber, Megan Bowen, Diego Siciliani).',
           provenance: 'Verified via MCP JSON-RPC responses and standard OData v4.01 requests.'
         }
       }
@@ -2127,17 +2127,17 @@ function renderRuntimeSequence() {
       exchanges: [
         {
           badge: 'Request 1 (Supported Utterance)',
-          requestTitle: `User asks: "${prompt ? prompt.title : 'Whom Olga reports to?'}"`,
+          requestTitle: `User asks: "${prompt ? prompt.title : 'Whom Miriam reports to?'}"`,
           request: {
             channel: 'User -> Client/LLM',
-            utterance: prompt ? prompt.title : 'Whom Olga reports to?',
+            utterance: prompt ? prompt.title : 'Whom Miriam reports to?',
             discoveredPromptsAvailable: PROMPT_CATALOG.length,
             discoveredToolsAvailable: currentProjection?.tools.length || 5
           },
           responseTitle: 'Response: Client intent match & extracted arguments (click to expand)',
           statusBadge: 'Matched',
           response: {
-            matchedPrompt: prompt ? prompt.name : 'whom_olga_reports_to',
+            matchedPrompt: prompt ? prompt.name : 'whom_miriam_reports_to',
             extractedArguments: args,
             plannedTools: prompt ? prompt.toolBindings : ['find_user', 'user_profile'],
             plannedResources: prompt ? prompt.resourceBindings : ['users://{userId}', 'users://me']
@@ -2195,7 +2195,7 @@ function renderRuntimeSequence() {
     {
       title: '5. Tool round trips: client -> MCP -> Graph -> client',
       note: 'Multi-turn identity disambiguation & Graph-valid startswith(...) filter execution',
-      summary: `Declared operations:\n${operations}\nDisambiguates display names first (e.g., multiple "Olga" records) before fetching profile or group relationships.`,
+      summary: `Declared operations:\n${operations}\nDisambiguates display names first (e.g., multiple "Miriam" records) before fetching profile or group relationships.`,
       exchanges: toolExchanges.length ? toolExchanges : [
         {
           badge: 'Request 1 (tools/call)',
@@ -2241,9 +2241,9 @@ function renderRuntimeSequence() {
             entitySets: prompt ? prompt.entitySets : ['users'],
             joinKey: 'userPrincipalName / id',
             inputs: [
-              'users://opodolyako@microsoft.com -> manager: vvondra@microsoft.com, peers: [vvondra@microsoft.com, jpaiva@microsoft.com, zwang@microsoft.com]',
+              'users://miriamg@contoso.com -> manager: alexw@contoso.com, peers: [alexw@contoso.com, meganb@contoso.com, diegos@contoso.com]',
               ...(prompt && prompt.entitySets.includes('groups')
-                ? ['groups://11111111-2222-3333-4444-555555555555 -> owners: [vvondra@microsoft.com, opodolyako@microsoft.com], members: [opodolyako@microsoft.com, vvondra@microsoft.com, jpaiva@microsoft.com]']
+                ? ['groups://11111111-2222-3333-4444-555555555555 -> owners: [alexw@contoso.com, miriamg@contoso.com], members: [miriamg@contoso.com, alexw@contoso.com, meganb@contoso.com]']
                 : [])
             ]
           },
@@ -2251,8 +2251,8 @@ function renderRuntimeSequence() {
           statusBadge: 'Validated',
           response: {
             matchedRecords: [
-              { displayName: 'Alex Wilber', userPrincipalName: 'vvondra@microsoft.com', manager: 'Vojtech Vondra', group: 'Identity Architecture' },
-              { displayName: 'Joao Paiva', userPrincipalName: 'jpaiva@microsoft.com', manager: 'Vojtech Vondra', group: 'Identity Architecture' }
+              { displayName: 'Alex Wilber', userPrincipalName: 'alexw@contoso.com', manager: 'Alex Wilbur', group: 'Identity Architecture' },
+              { displayName: 'Megan Bowen', userPrincipalName: 'meganb@contoso.com', manager: 'Alex Wilbur', group: 'Identity Architecture' }
             ],
             missingData: false
           }
@@ -2270,9 +2270,9 @@ function renderRuntimeSequence() {
           request: {
             userQuestion: prompt ? prompt.title : 'Which user peers belong to a group?',
             groundedFactsFromMcp: {
-              user: 'Olga Podolyako (opodolyako@microsoft.com)',
-              manager: 'Vojtech Vondra (vvondra@microsoft.com)',
-              peersInGroup: ['Alex Wilber (vvondra@microsoft.com)', 'Joao Paiva (jpaiva@microsoft.com)']
+              user: 'Miriam Graham (miriamg@contoso.com)',
+              manager: 'Alex Wilbur (alexw@contoso.com)',
+              peersInGroup: ['Alex Wilber (alexw@contoso.com)', 'Megan Bowen (meganb@contoso.com)']
             }
           },
           responseTitle: 'Response: Final assistant message to user (click to expand)',
@@ -2280,36 +2280,36 @@ function renderRuntimeSequence() {
           response: {
             role: 'assistant',
             text: prompt && prompt.entitySets.length > 1
-              ? 'Olga Podolyako reports to Vojtech Vondra. Among her peers under Vojtech Vondra, Alex Wilber (vvondra@microsoft.com) and Joao Paiva (jpaiva@microsoft.com) are members of the "Identity Architecture" group.'
-              : 'Olga Podolyako (opodolyako@microsoft.com) reports to Vojtech Vondra (vvondra@microsoft.com). Her peer colleagues are Alex Wilber, Joao Paiva, and Z Wang.'
+              ? 'Miriam Graham reports to Alex Wilbur. Among her peers under Alex Wilbur, Alex Wilber (alexw@contoso.com) and Megan Bowen (meganb@contoso.com) are members of the "Identity Architecture" group.'
+              : 'Miriam Graham (miriamg@contoso.com) reports to Alex Wilbur (alexw@contoso.com). Her peer colleagues are Alex Wilber, Megan Bowen, and Diego Siciliani.'
           }
         },
         {
           badge: 'Request 2 (OData v4.01 Trace Verification)',
           requestTitle: 'Executed OData v4.01 HTTP GET requests against Microsoft Graph',
           request: [
-            'GET https://graph.microsoft.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/json',
-            "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10 HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
-            "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
-            "GET https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
+            'GET https://graph.contoso.com/v1.0/$metadata HTTP/1.1\nOData-Version: 4.01\nAccept: application/json',
+            "GET https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'Miriam Graham')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10 HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
+            "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
+            "GET https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
             ...(prompt && prompt.entitySets.includes('groups')
               ? [
-                  "GET https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25 HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
-                  "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal"
+                  "GET https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25 HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal",
+                  "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department HTTP/1.1\nOData-Version: 4.01\nAccept: application/json;odata.metadata=minimal"
                 ]
               : [])
           ].join('\n\n'),
           responseTitle: 'Response: OData v4.01 HTTP 200 OK responses with @context (click to expand)',
           statusBadge: '200 OK (OData 4.01)',
           response: [
-            { method: 'GET', url: 'https://graph.microsoft.com/v1.0/$metadata', odataVersion: '4.01', statusCode: 200 },
-            { method: 'GET', url: "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10", '@context': 'https://graph.microsoft.com/v1.0/$metadata#users', statusCode: 200 },
-            { method: 'GET', url: "https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.microsoft.com/v1.0/$metadata#users/$entity', statusCode: 200 },
-            { method: 'GET', url: "https://graph.microsoft.com/v1.0/users('vvondra@microsoft.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.microsoft.com/v1.0/$metadata#users', statusCode: 200 },
+            { method: 'GET', url: 'https://graph.contoso.com/v1.0/$metadata', odataVersion: '4.01', statusCode: 200 },
+            { method: 'GET', url: "https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'Miriam Graham')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=10", '@context': 'https://graph.contoso.com/v1.0/$metadata#users', statusCode: 200 },
+            { method: 'GET', url: "https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.contoso.com/v1.0/$metadata#users/$entity', statusCode: 200 },
+            { method: 'GET', url: "https://graph.contoso.com/v1.0/users('alexw@contoso.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.contoso.com/v1.0/$metadata#users', statusCode: 200 },
             ...(prompt && prompt.entitySets.includes('groups')
               ? [
-                  { method: 'GET', url: "https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25", '@context': 'https://graph.microsoft.com/v1.0/$metadata#groups', statusCode: 200 },
-                  { method: 'GET', url: "https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.microsoft.com/v1.0/$metadata#users', statusCode: 200 }
+                  { method: 'GET', url: "https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&$top=25", '@context': 'https://graph.contoso.com/v1.0/$metadata#groups', statusCode: 200 },
+                  { method: 'GET', url: "https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department", '@context': 'https://graph.contoso.com/v1.0/$metadata#users', statusCode: 200 }
                 ]
               : [])
           ]

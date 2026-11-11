@@ -21,20 +21,6 @@
         <NavigationProperty Name="joinedTeams" Type="Collection(Microsoft.Graph.Team)" />
         <NavigationProperty Name="chats" Type="Collection(Microsoft.Graph.Chat)" />
         <NavigationProperty Name="todoLists" Type="Collection(Microsoft.Graph.TodoTaskList)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my profile" />
-              <PropertyValue Property="Request" String="GET me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation" />
-              <PropertyValue Property="Description" String="Retrieve the signed-in user's profile card (Microsoft Graph Overview popular request)." />
-            </Record>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my manager" />
-              <PropertyValue Property="Request" String="GET me/manager?$select=id,displayName,userPrincipalName,jobTitle,department" />
-              <PropertyValue Property="Description" String="Navigate to the signed-in user's reporting manager." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="Group">
@@ -55,15 +41,6 @@
         <NavigationProperty Name="owners" Type="Collection(Microsoft.Graph.User)" />
         <NavigationProperty Name="drive" Type="Microsoft.Graph.Drive" />
         <NavigationProperty Name="team" Type="Microsoft.Graph.Team" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET Microsoft 365 groups I'm a member of" />
-              <PropertyValue Property="Request" String="GET me/memberOf?$select=id,displayName,description,mail,groupTypes,visibility" />
-              <PropertyValue Property="Description" String="List unified Microsoft 365 groups the user belongs to." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="Drive">
@@ -79,15 +56,6 @@
         <Property Name="quotaUsed" Type="Edm.Int64" Nullable="true" />
         <NavigationProperty Name="root" Type="Microsoft.Graph.DriveItem" />
         <NavigationProperty Name="items" Type="Collection(Microsoft.Graph.DriveItem)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my OneDrive metadata and quota" />
-              <PropertyValue Property="Request" String="GET me/drive?$select=id,name,driveType,webUrl,ownerDisplayName,quotaTotal,quotaUsed" />
-              <PropertyValue Property="Description" String="Inspect the user's OneDrive for Business container." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="DriveItem">
@@ -106,20 +74,6 @@
         <Property Name="lastModifiedByUpn" Type="Edm.String" Nullable="true" />
         <NavigationProperty Name="children" Type="Collection(Microsoft.Graph.DriveItem)" />
         <NavigationProperty Name="lastModifiedByUser" Type="Microsoft.Graph.User" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my files in OneDrive root" />
-              <PropertyValue Property="Request" String="GET me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName" />
-              <PropertyValue Property="Description" String="List files and folders in the signed-in user's OneDrive root (Microsoft Graph Overview popular request)." />
-            </Record>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET last user to modify file Script_MCP_POC.docx" />
-              <PropertyValue Property="Request" String="GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department" />
-              <PropertyValue Property="Description" String="Navigate from a DriveItem to the User who last modified it (Microsoft Graph Overview popular request)." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="Team">
@@ -137,15 +91,6 @@
         <NavigationProperty Name="primaryChannel" Type="Microsoft.Graph.Channel" />
         <NavigationProperty Name="members" Type="Collection(Microsoft.Graph.User)" />
         <NavigationProperty Name="owners" Type="Collection(Microsoft.Graph.User)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET Microsoft Teams I have joined" />
-              <PropertyValue Property="Request" String="GET me/joinedTeams?$select=id,displayName,description,visibility,webUrl&amp;$expand=channels" />
-              <PropertyValue Property="Description" String="Retrieve all Microsoft Teams the user belongs to along with their channels." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="Channel">
@@ -163,15 +108,6 @@
         <NavigationProperty Name="messages" Type="Collection(Microsoft.Graph.ChatMessage)" />
         <NavigationProperty Name="members" Type="Collection(Microsoft.Graph.User)" />
         <NavigationProperty Name="filesFolder" Type="Microsoft.Graph.DriveItem" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET channels and messages for Identity Architecture Team" />
-              <PropertyValue Property="Request" String="GET teams('11111111-2222-3333-4444-555555555555')/channels?$expand=messages($top=10)" />
-              <PropertyValue Property="Description" String="List channels in a Team and expand recent channel messages." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="Chat">
@@ -186,15 +122,6 @@
         <Property Name="webUrl" Type="Edm.String" Nullable="true" />
         <NavigationProperty Name="messages" Type="Collection(Microsoft.Graph.ChatMessage)" />
         <NavigationProperty Name="members" Type="Collection(Microsoft.Graph.User)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my recent 1:1 and group chats" />
-              <PropertyValue Property="Request" String="GET me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&amp;$expand=members,messages($top=5)" />
-              <PropertyValue Property="Description" String="List Microsoft Teams 1:1 and group chats with participants and recent messages." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="ChatMessage">
@@ -211,15 +138,6 @@
         <Property Name="createdDateTime" Type="Edm.DateTimeOffset" Nullable="true" />
         <Property Name="webUrl" Type="Edm.String" Nullable="true" />
         <NavigationProperty Name="sender" Type="Microsoft.Graph.User" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET high-importance messages in a channel" />
-              <PropertyValue Property="Request" String="GET channels('ch-mcp-20')/messages?$filter=importance eq 'high'&amp;$top=10" />
-              <PropertyValue Property="Description" String="Retrieve high-importance messages posted to a Teams channel or chat." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="TodoTaskList">
@@ -232,15 +150,6 @@
         <Property Name="isShared" Type="Edm.Boolean" Nullable="false" />
         <Property Name="wellknownListName" Type="Edm.String" Nullable="true" />
         <NavigationProperty Name="tasks" Type="Collection(Microsoft.Graph.TodoTask)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET my Microsoft To Do task lists" />
-              <PropertyValue Property="Request" String="GET me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&amp;$expand=tasks" />
-              <PropertyValue Property="Description" String="List the user's Microsoft To Do task lists and expand their tasks." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <EntityType Name="TodoTask">
@@ -259,58 +168,22 @@
         <Property Name="dueDateTime" Type="Edm.DateTimeOffset" Nullable="true" />
         <Property Name="completedDateTime" Type="Edm.DateTimeOffset" Nullable="true" />
         <Property Name="assignedToUpn" Type="Edm.String" Nullable="true" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="GET open high-importance To Do tasks" />
-              <PropertyValue Property="Request" String="GET todoTasks?$filter=status ne 'completed' and importance eq 'high'&amp;$select=id,title,status,importance,dueDateTime,listDisplayName" />
-              <PropertyValue Property="Description" String="Filter incomplete high-importance tasks across Microsoft To Do." />
-            </Record>
-          </Collection>
-        </Annotation>
       </EntityType>
 
       <Function Name="searchDriveItems" IsBound="true">
         <Parameter Name="bindingParameter" Type="Microsoft.Graph.Drive" />
         <Parameter Name="q" Type="Edm.String" Nullable="false" />
         <ReturnType Type="Collection(Microsoft.Graph.DriveItem)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="Search OneDrive for 'CSDL' or 'MCP'" />
-              <PropertyValue Property="Request" String="GET drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
-              <PropertyValue Property="Description" String="Bound OData function searching DriveItems by keyword across a Drive." />
-            </Record>
-          </Collection>
-        </Annotation>
       </Function>
 
       <Function Name="recentDriveItems" IsBound="true">
         <Parameter Name="bindingParameter" Type="Microsoft.Graph.Drive" />
         <ReturnType Type="Collection(Microsoft.Graph.DriveItem)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="List recently modified OneDrive files" />
-              <PropertyValue Property="Request" String="GET drives('drive-olga')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
-              <PropertyValue Property="Description" String="Bound OData function returning recent DriveItems accessed or edited by the user." />
-            </Record>
-          </Collection>
-        </Annotation>
       </Function>
 
       <Function Name="deltaChannelMessages" IsBound="true">
         <Parameter Name="bindingParameter" Type="Microsoft.Graph.Channel" />
         <ReturnType Type="Collection(Microsoft.Graph.ChatMessage)" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="Get latest message changes in the CSDL &amp; TypeSpec channel" />
-              <PropertyValue Property="Request" String="GET channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20" />
-              <PropertyValue Property="Description" String="Bound OData delta function returning new and updated channel messages." />
-            </Record>
-          </Collection>
-        </Annotation>
       </Function>
 
       <Action Name="sendChannelMessage" IsBound="true">
@@ -318,29 +191,11 @@
         <Parameter Name="subject" Type="Edm.String" />
         <Parameter Name="bodyContent" Type="Edm.String" Nullable="false" />
         <ReturnType Type="Microsoft.Graph.ChatMessage" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="Post a status update to the MCP 2.0 Integration channel" />
-              <PropertyValue Property="Request" String="POST channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage" />
-              <PropertyValue Property="Description" String="Bound OData action posting a new message to a Microsoft Teams channel." />
-            </Record>
-          </Collection>
-        </Annotation>
       </Action>
 
       <Action Name="completeTodoTask" IsBound="true">
         <Parameter Name="bindingParameter" Type="Microsoft.Graph.TodoTask" />
         <ReturnType Type="Microsoft.Graph.TodoTask" />
-        <Annotation Term="Agent.Examples">
-          <Collection>
-            <Record>
-              <PropertyValue Property="Utterance" String="Mark a To Do task as completed" />
-              <PropertyValue Property="Request" String="POST todoTasks('task-101')/Microsoft.Graph.completeTodoTask" />
-              <PropertyValue Property="Description" String="Bound OData action marking a TodoTask status as completed and recording completedDateTime." />
-            </Record>
-          </Collection>
-        </Annotation>
       </Action>
 
       <EntityContainer Name="GraphService">
@@ -352,15 +207,6 @@
           <NavigationPropertyBinding Path="joinedTeams" Target="teams" />
           <NavigationPropertyBinding Path="chats" Target="chats" />
           <NavigationPropertyBinding Path="todoLists" Target="todoLists" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET users in my organization" />
-                <PropertyValue Property="Request" String="GET users?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&amp;$top=20" />
-                <PropertyValue Property="Description" String="List or filter users in Microsoft Entra ID (Microsoft Graph Overview popular request)." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <Singleton Name="me" Type="Microsoft.Graph.User">
@@ -371,15 +217,6 @@
           <NavigationPropertyBinding Path="joinedTeams" Target="teams" />
           <NavigationPropertyBinding Path="chats" Target="chats" />
           <NavigationPropertyBinding Path="todoLists" Target="todoLists" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET my profile and reporting hierarchy" />
-                <PropertyValue Property="Request" String="GET me?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&amp;$expand=manager,directReports" />
-                <PropertyValue Property="Description" String="Read the signed-in user singleton with manager and directReports expanded." />
-              </Record>
-            </Collection>
-          </Annotation>
         </Singleton>
 
         <EntitySet Name="groups" EntityType="Microsoft.Graph.Group">
@@ -387,43 +224,16 @@
           <NavigationPropertyBinding Path="owners" Target="users" />
           <NavigationPropertyBinding Path="drive" Target="drives" />
           <NavigationPropertyBinding Path="team" Target="teams" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET groups in my organization" />
-                <PropertyValue Property="Request" String="GET groups?$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility&amp;$top=50" />
-                <PropertyValue Property="Description" String="List Microsoft 365 and security groups in the organization (Microsoft Graph Overview popular request)." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="drives" EntityType="Microsoft.Graph.Drive">
           <NavigationPropertyBinding Path="root" Target="driveItems" />
           <NavigationPropertyBinding Path="items" Target="driveItems" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET OneDrive and SharePoint document libraries" />
-                <PropertyValue Property="Request" String="GET drives?$select=id,name,driveType,webUrl,ownerDisplayName,quotaTotal,quotaUsed" />
-                <PropertyValue Property="Description" String="Enumerate personal OneDrive and group SharePoint document drives." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="driveItems" EntityType="Microsoft.Graph.DriveItem">
           <NavigationPropertyBinding Path="children" Target="driveItems" />
           <NavigationPropertyBinding Path="lastModifiedByUser" Target="users" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET my files in OneDrive" />
-                <PropertyValue Property="Request" String="GET me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName" />
-                <PropertyValue Property="Description" String="List files and folders in OneDrive (Microsoft Graph Overview popular request)." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="teams" EntityType="Microsoft.Graph.Team">
@@ -431,97 +241,43 @@
           <NavigationPropertyBinding Path="primaryChannel" Target="channels" />
           <NavigationPropertyBinding Path="members" Target="users" />
           <NavigationPropertyBinding Path="owners" Target="users" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET Microsoft Teams and channels" />
-                <PropertyValue Property="Request" String="GET teams?$select=id,displayName,description,visibility,webUrl&amp;$expand=channels" />
-                <PropertyValue Property="Description" String="List Microsoft Teams workspaces and their channels." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="channels" EntityType="Microsoft.Graph.Channel">
           <NavigationPropertyBinding Path="messages" Target="chatMessages" />
           <NavigationPropertyBinding Path="members" Target="users" />
           <NavigationPropertyBinding Path="filesFolder" Target="driveItems" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET messages in a Teams channel" />
-                <PropertyValue Property="Request" String="GET channels('ch-csdl-typespec')/messages?$top=20&amp;$select=id,subject,bodyContent,fromDisplayName,importance,createdDateTime" />
-                <PropertyValue Property="Description" String="Read discussion threads in a Microsoft Teams channel." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="chats" EntityType="Microsoft.Graph.Chat">
           <NavigationPropertyBinding Path="messages" Target="chatMessages" />
           <NavigationPropertyBinding Path="members" Target="users" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET my Teams chats and latest messages" />
-                <PropertyValue Property="Request" String="GET chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&amp;$expand=members,messages($top=5)" />
-                <PropertyValue Property="Description" String="List 1:1 and group chats with participants and recent messages." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="chatMessages" EntityType="Microsoft.Graph.ChatMessage">
           <NavigationPropertyBinding Path="sender" Target="users" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET recent chat and channel messages" />
-                <PropertyValue Property="Request" String="GET chatMessages?$top=20&amp;$select=id,subject,bodyContent,fromDisplayName,fromUpn,importance,createdDateTime" />
-                <PropertyValue Property="Description" String="Query messages across Teams channels and chats." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="todoLists" EntityType="Microsoft.Graph.TodoTaskList">
           <NavigationPropertyBinding Path="tasks" Target="todoTasks" />
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET my Microsoft To Do task lists" />
-                <PropertyValue Property="Request" String="GET me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&amp;$expand=tasks" />
-                <PropertyValue Property="Description" String="List To Do task lists and expand their tasks." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <EntitySet Name="todoTasks" EntityType="Microsoft.Graph.TodoTask">
-          <Annotation Term="Agent.Examples">
-            <Collection>
-              <Record>
-                <PropertyValue Property="Utterance" String="GET open To Do tasks" />
-                <PropertyValue Property="Request" String="GET todoTasks?$filter=status ne 'completed'&amp;$select=id,title,status,importance,dueDateTime,listDisplayName" />
-                <PropertyValue Property="Description" String="List pending tasks in Microsoft To Do." />
-              </Record>
-            </Collection>
-          </Annotation>
         </EntitySet>
 
         <Annotation Term="Agent.Prompts">
           <Collection>
             <Record>
-              <PropertyValue Property="Name" String="whom_olga_reports_to" />
-              <PropertyValue Property="Title" String="Whom Olga reports to?" />
-              <PropertyValue Property="Description" String="Find organizational manager for Olga Podolyako or any given user." />
+              <PropertyValue Property="Name" String="whom_miriam_reports_to" />
+              <PropertyValue Property="Title" String="Whom Miriam reports to?" />
+              <PropertyValue Property="Description" String="Find organizational manager for Miriam Graham or any given user." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                    <PropertyValue Property="Default" String="Miriam Graham" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -540,16 +296,16 @@
               </PropertyValue>
             </Record>
             <Record>
-              <PropertyValue Property="Name" String="who_are_olgas_peers" />
-              <PropertyValue Property="Title" String="Who are Olga's peers?" />
-              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Olga Podolyako." />
+              <PropertyValue Property="Name" String="who_are_miriams_peers" />
+              <PropertyValue Property="Title" String="Who are Miriam's peers?" />
+              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Miriam Graham." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                    <PropertyValue Property="Default" String="Miriam Graham" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -577,7 +333,7 @@
                     <PropertyValue Property="Name" String="managerNameOrId" />
                     <PropertyValue Property="Description" String="Manager's name, ID, or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Vojtech Vondra" />
+                    <PropertyValue Property="Default" String="Alex Wilbur" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -779,7 +535,7 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                    <PropertyValue Property="Default" String="Miriam Graham" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
@@ -813,7 +569,7 @@
                     <PropertyValue Property="Name" String="managerName" />
                     <PropertyValue Property="Description" String="Manager display name, ID or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Vojtech Vondra" />
+                    <PropertyValue Property="Default" String="Alex Wilbur" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
@@ -847,7 +603,7 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Olga Podolyako" />
+                    <PropertyValue Property="Default" String="Miriam Graham" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
@@ -920,7 +676,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Who was the last user to modify '{fileName}'? 1. Query GET drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='{fileName}')?$select=id,name,lastModifiedDateTime,lastModifiedByDisplayName,lastModifiedByUpn to locate the DriveItem. 2. Navigate to GET driveItems('{itemId}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation to return the modifier's full profile." />
+                        <PropertyValue Property="Text" String="Who was the last user to modify '{fileName}'? 1. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{fileName}')?$select=id,name,lastModifiedDateTime,lastModifiedByDisplayName,lastModifiedByUpn to locate the DriveItem. 2. Navigate to GET driveItems('{itemId}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation to return the modifier's full profile." />
                       </Record>
                     </PropertyValue>
                   </Record>
@@ -948,7 +704,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Search files matching '{query}'. Query GET drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='{query}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName." />
+                        <PropertyValue Property="Text" String="Search files matching '{query}'. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{query}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName." />
                       </Record>
                     </PropertyValue>
                   </Record>
@@ -1111,7 +867,7 @@
                     <PropertyValue Property="Name" String="colleagueName" />
                     <PropertyValue Property="Description" String="Colleague display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Joao Paiva" />
+                    <PropertyValue Property="Default" String="Megan Bowen" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -1150,7 +906,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Synthesize Microsoft 365 activity for topic '{topic}' across Teams, OneDrive, and To Do: 1. Query GET teams?$expand=channels and GET channels('ch-mcp-20')/messages?$top=10 for channel discussions mentioning '{topic}'. 2. Query GET drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='{topic}') for matching specification files. 3. Query GET todoTasks?$filter=status ne 'completed' for open action items matching '{topic}'." />
+                        <PropertyValue Property="Text" String="Synthesize Microsoft 365 activity for topic '{topic}' across Teams, OneDrive, and To Do: 1. Query GET teams?$expand=channels and GET channels('ch-mcp-20')/messages?$top=10 for channel discussions mentioning '{topic}'. 2. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{topic}') for matching specification files. 3. Query GET todoTasks?$filter=status ne 'completed' for open action items matching '{topic}'." />
                       </Record>
                     </PropertyValue>
                   </Record>
@@ -1184,13 +940,7 @@
         <Property Name="Type" Type="Edm.String" Nullable="false" />
         <Property Name="Text" Type="Edm.String" Nullable="false" />
       </ComplexType>
-      <ComplexType Name="ExampleQuery">
-        <Property Name="Utterance" Type="Edm.String" Nullable="false" />
-        <Property Name="Request" Type="Edm.String" Nullable="false" />
-        <Property Name="Description" Type="Edm.String" Nullable="true" />
-      </ComplexType>
       <Term Name="Prompts" Type="Collection(Agent.PromptType)" AppliesTo="EntityContainer" />
-      <Term Name="Examples" Type="Collection(Agent.ExampleQuery)" AppliesTo="EntityType EntitySet Singleton Function Action" />
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>

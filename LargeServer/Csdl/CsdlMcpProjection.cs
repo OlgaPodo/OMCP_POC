@@ -1,217 +1,133 @@
 using System.Text.Json;
-using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using GraphMcpServer.Services;
+using Microsoft.OData.Edm;
+using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Protocol;
 
 namespace GraphMcpServer.Csdl;
 
-public sealed class CsdlMcpProjection(GraphClientService graphService)
+public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMcpProjection> logger)
 {
-    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
-    private static readonly HashSet<string> Operations =
-    [
-        "FindUsers", "GetUserProfile", "FindGroups", "GetGroupDetails", "GetMe", "GetAllGroups",
-        "ListMyFiles", "SearchFiles", "GetFileModifier",
-        "ListTeams", "GetChannelMessages", "SendChannelMessage",
-        "ListChats",
-        "ListTodoTasks", "CompleteTodoTask",
-        "ReadResource"
-    ];
-
-    public static void Validate()
-    {
-        UserCsdlProvider.ValidateDependencies();
-        foreach (var definition in UserCsdlProvider.GetProjectedTools().Concat(UserCsdlProvider.GetProjectedResources()))
-            if (!Operations.Contains(definition["Operation"]!.GetValue<string>()))
-                throw new InvalidOperationException($"Unsupported CSDL operation: {definition["Operation"]}");
-    }
-
     public static ListToolsResult ListTools() => new()
     {
-        Tools = UserCsdlProvider.GetProjectedTools().Select(definition => new Tool
+        Tools = CsdlProvider.GetProjectedTools().Select(t => new Tool
         {
-            Name = definition["Name"]!.GetValue<string>(),
-            Title = definition["Title"]!.GetValue<string>(),
-            Description = definition["Description"]!.GetValue<string>(),
-            InputSchema = CreateInputSchema(definition)
+            Name = t.Name, Title = t.Title, Description = t.Description, InputSchema = EdmJsonSchema.ForArguments(t)
         }).ToList()
     };
-
-    private static JsonElement CreateInputSchema(JsonObject definition)
+    public static ListResourcesResult ListResources() => new()
     {
-        var properties = new JsonObject();
-        var required = new JsonArray();
-        foreach (var argument in definition["Arguments"]!.AsArray())
-        {
-            var name = argument!["Name"]!.GetValue<string>();
-            var property = new JsonObject { ["type"] = "string", ["description"] = argument["Description"]!.DeepClone() };
-            if (argument["Required"]!.GetValue<bool>()) required.Add(name);
-            else property["default"] = argument["Default"]!.DeepClone();
-            properties[name] = property;
-        }
-        return JsonSerializer.SerializeToElement(new JsonObject
-        {
-            ["type"] = "object", ["properties"] = properties, ["required"] = required, ["additionalProperties"] = false
-        });
-    }
-
-    private static Dictionary<string, string> BindArguments(JsonObject definition, IDictionary<string, JsonElement>? supplied)
+        Resources = CsdlProvider.GetProjectedResources().Where(r => !r.UriTemplate.Contains('{'))
+            .Select(r => new Resource { Name = r.Name, Title = r.Title, Description = r.Description,
+                Uri = r.UriTemplate, MimeType = "application/json" }).ToList()
+    };
+    public static ListResourceTemplatesResult ListResourceTemplates() => new()
     {
-        var result = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var argument in definition["Arguments"]!.AsArray())
-        {
-            var name = argument!["Name"]!.GetValue<string>();
-            if (supplied != null && supplied.TryGetValue(name, out var value))
-            {
-                if (value.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(value.GetString()))
-                    throw new ArgumentException($"Tool argument {name} must be a nonempty string.");
-                result[name] = value.GetString()!;
-            }
-            else if (argument["Required"]!.GetValue<bool>())
-                throw new ArgumentException($"Missing required tool argument: {name}");
-            else result[name] = argument["Default"]!.GetValue<string>();
-        }
-        return result;
-    }
+        ResourceTemplates = CsdlProvider.GetProjectedResources().Where(r => r.UriTemplate.Contains('{'))
+            .Select(r => new ResourceTemplate { Name = r.Name, Title = r.Title, Description = r.Description,
+                UriTemplate = r.UriTemplate, MimeType = "application/json" }).ToList()
+    };
 
     public async ValueTask<CallToolResult> CallToolAsync(CallToolRequestParams request, CancellationToken cancellationToken)
     {
-        var definition = UserCsdlProvider.GetProjectedTools().SingleOrDefault(d => d["Name"]!.GetValue<string>() == request.Name)
-            ?? throw new ArgumentException($"Undeclared CSDL tool: {request.Name}");
-        var arguments = BindArguments(definition, request.Arguments);
-        var op = definition["Operation"]!.GetValue<string>();
-        object? data;
-        if (op == "ReadResource")
+        try
         {
-            var (resource, value) = await ReadDataAsync(arguments["uri"], cancellationToken);
-            data = new { uri = arguments["uri"], entitySet = resource["entitySet"]!.GetValue<string>(), data = value };
+            var tool = CsdlProvider.GetProjectedTools().SingleOrDefault(t => t.Name == request.Name)
+                ?? throw new ArgumentException($"Unknown CSDL tool: {request.Name}");
+            var data = await ExecuteAsync(tool, request.Arguments ?? new Dictionary<string, JsonElement>(), cancellationToken);
+            return new() { Content = [new TextContentBlock { Text = data.GetRawText() }] };
         }
-        else if (op == "SendChannelMessage")
+        catch (ArgumentException exception)
         {
-            data = await graphService.SendChannelMessageAsync(arguments["channelId"], arguments["subject"], arguments["bodyContent"], cancellationToken);
+            logger.LogWarning(exception, "Invalid arguments for CSDL tool {Tool}", request.Name);
+            return new() { IsError = true, Content = [new TextContentBlock { Text = exception.Message }] };
         }
-        else
+        catch (HttpRequestException exception)
         {
-            data = await ExecuteAsync(op, arguments.Values.FirstOrDefault(), cancellationToken);
+            logger.LogError(exception, "OData request failed for CSDL tool {Tool}", request.Name);
+            return new() { IsError = true, Content = [new TextContentBlock { Text = $"OData request failed ({exception.StatusCode?.ToString() ?? "transport error"})." }] };
         }
-
-        return new CallToolResult
+        catch (InvalidOperationException exception)
         {
-            IsError = data == null,
-            Content = [new TextContentBlock { Text = data == null
-                ? JsonSerializer.Serialize(new { error = "The requested M365 object was not found." })
-                : JsonSerializer.Serialize(data, JsonOptions) }]
-        };
+            logger.LogError(exception, "OData configuration is invalid for CSDL tool {Tool}", request.Name);
+            return new() { IsError = true, Content = [new TextContentBlock { Text = "Configure a valid OData:BaseUrl before executing this tool." }] };
+        }
+        catch (Azure.Identity.AuthenticationFailedException exception)
+        {
+            logger.LogError(exception, "OData authentication failed for CSDL tool {Tool}", request.Name);
+            return new() { IsError = true, Content = [new TextContentBlock { Text = "OData authentication failed. Check Azure CLI sign-in and OData:Scope." }] };
+        }
     }
-
-    public static ListResourcesResult ListResources() => new()
-    {
-        Resources = UserCsdlProvider.GetProjectedResources()
-            .Where(definition => !definition["UriTemplate"]!.GetValue<string>().Contains('{'))
-            .Select(definition => new Resource
-            {
-                Uri = definition["UriTemplate"]!.GetValue<string>(),
-                Name = definition["Name"]!.GetValue<string>(),
-                Title = definition["Title"]!.GetValue<string>(),
-                Description = definition["Description"]!.GetValue<string>(),
-                MimeType = definition["MimeType"]!.GetValue<string>()
-            }).ToList()
-    };
-
-    public static ListResourceTemplatesResult ListResourceTemplates() => new()
-    {
-        ResourceTemplates = UserCsdlProvider.GetProjectedResources()
-            .Where(definition => definition["UriTemplate"]!.GetValue<string>().Contains('{'))
-            .Select(definition => new ResourceTemplate
-            {
-                UriTemplate = definition["UriTemplate"]!.GetValue<string>(),
-                Name = definition["Name"]!.GetValue<string>(),
-                Title = definition["Title"]!.GetValue<string>(),
-                Description = definition["Description"]!.GetValue<string>(),
-                MimeType = definition["MimeType"]!.GetValue<string>()
-            }).ToList()
-    };
 
     public async ValueTask<ReadResourceResult> ReadResourceAsync(ReadResourceRequestParams request, CancellationToken cancellationToken)
     {
-        var (definition, data) = await ReadDataAsync(request.Uri, cancellationToken);
-        return new ReadResourceResult
+        foreach (var resource in CsdlProvider.GetProjectedResources())
         {
-            Contents = [new TextResourceContents
+            var match = resource.MatchPattern.Match(request.Uri);
+            if (!match.Success) continue;
+            var arguments = new Dictionary<string, JsonElement>();
+            foreach (var key in resource.Tool.Arguments.Where(a => a.IsKey))
             {
-                Uri = request.Uri, MimeType = definition["MimeType"]!.GetValue<string>(),
-                Text = JsonSerializer.Serialize(data, JsonOptions)
-            }]
-        };
+                var value = Uri.UnescapeDataString(match.Groups[key.Name].Value);
+                arguments[key.Name] = EdmJsonSchema.ParseKey(key.Type, value);
+            }
+            var data = await ExecuteAsync(resource.Tool, arguments, cancellationToken);
+            return new() { Contents = [new TextResourceContents { Uri = request.Uri, MimeType = "application/json", Text = data.GetRawText() }] };
+        }
+        throw new ArgumentException($"No CSDL resource matches URI: {request.Uri}");
     }
 
-    private async Task<(JsonObject Definition, object Data)> ReadDataAsync(string uri, CancellationToken cancellationToken)
+    public Task<JsonElement> ExecuteAsync(ToolBinding tool, IDictionary<string, JsonElement> arguments, CancellationToken cancellationToken)
     {
-        foreach (var definition in UserCsdlProvider.GetProjectedResources()
-                     .OrderBy(d => d["UriTemplate"]!.GetValue<string>().Contains('{')))
+        var known = tool.Arguments.Select(a => a.Name).Concat(tool.QueryOptions ? EdmJsonSchema.QueryOptions.Keys : []);
+        if (arguments.Keys.Any(k => !known.Contains(k, StringComparer.Ordinal))) throw new ArgumentException("Unknown tool argument.");
+        foreach (var argument in tool.Arguments)
         {
-            var template = definition["UriTemplate"]!.GetValue<string>();
-            var parameter = definition["Parameter"]!.GetValue<string>();
-            string? argument = null;
-            if (parameter.Length == 0)
+            if (!arguments.TryGetValue(argument.Name, out var value))
             {
-                if (uri != template) continue;
+                if (argument.Required) throw new ArgumentException($"Missing required tool argument: {argument.Name}");
             }
-            else
-            {
-                var parts = template.Split("{" + parameter + "}", StringSplitOptions.None);
-                if (parts.Length != 2 || !uri.StartsWith(parts[0], StringComparison.Ordinal)
-                    || !uri.EndsWith(parts[1], StringComparison.Ordinal) || uri.Length <= parts[0].Length + parts[1].Length)
-                    continue;
-                argument = Uri.UnescapeDataString(uri.Substring(parts[0].Length, uri.Length - parts[0].Length - parts[1].Length));
-            }
-            var data = await ExecuteAsync(definition["Operation"]!.GetValue<string>(), argument, cancellationToken)
-                ?? throw new KeyNotFoundException($"Resource not found: {uri}");
-            return (definition, data);
+            else EdmJsonSchema.Validate(argument.Type, value, argument.Name);
         }
-        throw new ArgumentException($"No CSDL resource binding matches URI: {uri}");
-    }
-
-    private async Task<object?> ExecuteAsync(string operation, string? argument, CancellationToken cancellationToken)
-    {
-        switch (operation)
+        var path = tool.Path;
+        var keys = tool.Arguments.Where(a => a.IsKey).ToList();
+        if (keys.Count > 0)
         {
-            case "FindUsers":
-                var users = await graphService.FindUsersAsync(argument ?? "", cancellationToken);
-                return new { query = argument, total = users.Count, users };
-            case "GetUserProfile":
-                return await graphService.GetUserProfileAsync(argument ?? "me", cancellationToken);
-            case "FindGroups":
-                var groups = await graphService.FindGroupsAsync(argument ?? "", cancellationToken);
-                return new { query = argument, total = groups.Count, groups };
-            case "GetGroupDetails":
-                return await graphService.GetGroupDetailsAsync(argument ?? "Identity Architecture", cancellationToken);
-            case "GetMe":
-                return await graphService.GetMeAsync(cancellationToken);
-            case "GetAllGroups":
-                return await graphService.GetAllGroupsAsync(cancellationToken);
-            case "ListMyFiles":
-                return await graphService.GetDriveAsync(argument ?? "me", cancellationToken);
-            case "SearchFiles":
-                var files = await graphService.SearchDriveItemsAsync(argument ?? "", cancellationToken);
-                return new { query = argument, total = files.Count, items = files };
-            case "GetFileModifier":
-                return await graphService.GetDriveItemWithModifierAsync(argument ?? "Script_MCP_POC.docx", cancellationToken);
-            case "ListTeams":
-                var teams = await graphService.GetTeamsAsync(argument, cancellationToken);
-                return new { filter = argument ?? "all", total = teams.Count, teams };
-            case "GetChannelMessages":
-                return await graphService.GetChannelMessagesAsync(argument ?? "CSDL & TypeSpec", cancellationToken);
-            case "ListChats":
-                var chats = await graphService.GetChatsAsync(argument, cancellationToken);
-                return new { filter = argument ?? "all", total = chats.Count, chats };
-            case "ListTodoTasks":
-                var todoLists = await graphService.GetTodoTaskListsAsync(argument, cancellationToken);
-                return new { filter = argument ?? "all", totalLists = todoLists.Count, todoLists };
-            case "CompleteTodoTask":
-                return await graphService.CompleteTodoTaskAsync(argument ?? "task-101", cancellationToken);
-            default:
-                throw new InvalidOperationException($"Unsupported CSDL resource operation: {operation}");
+            var predicate = string.Join(",", keys.Select(k =>
+                (keys.Count == 1 ? "" : k.Name[4..] + "=") + Uri.EscapeDataString(EdmJsonSchema.Literal(k.Type, arguments[k.Name]))));
+            var separator = path.IndexOf('/');
+            path = separator < 0 ? $"{path}({predicate})" : path.Insert(separator, $"({predicate})");
         }
+        var query = new List<string>();
+        var parameters = tool.Arguments.Where(a => !a.IsKey && arguments.ContainsKey(a.Name)).ToList();
+        if (tool.Operation is IEdmFunction)
+        {
+            path += "(" + string.Join(",", parameters.Select(p => p.Name + "=@" + p.Name)) + ")";
+            query.AddRange(parameters.Select(p => "@" + p.Name + "=" + Uri.EscapeDataString(EdmJsonSchema.Literal(p.Type, arguments[p.Name]))));
+        }
+        if (tool.QueryOptions)
+        {
+            foreach (var (name, odataName) in EdmJsonSchema.QueryOptions)
+            {
+                if (!arguments.TryGetValue(name, out var value)) continue;
+                if (name is "top" or "skip")
+                {
+                    if (value.ValueKind != JsonValueKind.Number || !value.TryGetInt32(out var count) || count < 0)
+                        throw new ArgumentException($"{name} must be a nonnegative Int32.");
+                }
+                else if (name == "count")
+                {
+                    if (value.ValueKind is not (JsonValueKind.True or JsonValueKind.False)) throw new ArgumentException("count must be a Boolean.");
+                }
+                else if (value.ValueKind != JsonValueKind.String) throw new ArgumentException($"{name} must be a string.");
+                query.Add(odataName + "=" + Uri.EscapeDataString(value.ValueKind == JsonValueKind.String ? value.GetString()! : value.GetRawText()));
+            }
+        }
+        if (query.Count > 0) path += "?" + string.Join("&", query);
+        var body = tool.Operation is IEdmAction
+            ? JsonSerializer.SerializeToElement(parameters.ToDictionary(p => p.Name, p => arguments[p.Name]))
+            : (JsonElement?)null;
+        return client.SendAsync(tool.Operation is IEdmAction ? HttpMethod.Post : HttpMethod.Get, path, body, cancellationToken);
     }
 }

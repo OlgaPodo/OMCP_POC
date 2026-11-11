@@ -9,6 +9,11 @@
 
 const LARGE_SERVER_URL = 'http://localhost:3003';
 
+function getSelectedLargeServerUrl() {
+  const sel = document.getElementById('largeMcpEndpointInput');
+  return String(sel?.value || LARGE_SERVER_URL).replace(/\/$/, '');
+}
+
 const LARGE_MCP_META = {
   'io.modelcontextprotocol/protocolVersion': '2026-07-28',
   'io.modelcontextprotocol/clientInfo': { name: 'GraphLargeMcpExplorer', version: '2.0.0' },
@@ -35,10 +40,10 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-tools-list',
         badge: 'CORE',
         badgeClass: 'proto-badge',
-        label: 'tools/list',
+        label: 'tools/list (59 EDM Tools)',
         method: 'tools/list',
         payload: { jsonrpc: '2.0', id: 2, method: 'tools/list', params: { _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'CSDL EntitySets + Bound Functions/Actions -> 14 MCP Tools',
+        graphTarget: 'CSDL EntitySets + NavProps + Bound Functions/Actions -> 59 MCP Tools',
         entity: 'Microsoft.Graph.GraphService',
         args: []
       },
@@ -49,7 +54,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'prompts/list',
         method: 'prompts/list',
         payload: { jsonrpc: '2.0', id: 3, method: 'prompts/list', params: { _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/$metadata (@Agent.Prompts)',
+        graphTarget: 'GET https://graph.contoso.com/v1.0/$metadata (@Agent.Prompts)',
         entity: 'Microsoft.Graph.GraphService/@Agent.Prompts',
         args: []
       },
@@ -85,133 +90,133 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-res-me',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'users://me (Current User)',
+        label: 'odata://.../me (Current User)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 10, method: 'resources/read', params: { uri: 'users://me', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me?$expand=manager,directReports',
+        payload: { jsonrpc: '2.0', id: 10, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/me', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me',
         entity: 'Microsoft.Graph.User (Singleton: me)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'users://me', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/me', isUri: true }]
       },
       {
         id: 'lg-res-user',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'users://{userId} (User Profile)',
+        label: 'odata://.../users/{key_id}',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 11, method: 'resources/read', params: { uri: 'users://opodolyako@microsoft.com', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')?$expand=manager,directReports",
+        payload: { jsonrpc: '2.0', id: 11, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/users/miriamg@contoso.com', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'users://opodolyako@microsoft.com', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/users/miriamg@contoso.com', isUri: true }]
       },
       {
         id: 'lg-res-groups-all',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'groups://all (All Groups)',
+        label: 'odata://.../groups (All Groups)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 12, method: 'resources/read', params: { uri: 'groups://all', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/groups?$top=50',
+        payload: { jsonrpc: '2.0', id: 12, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/groups', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/groups',
         entity: 'Microsoft.Graph.Group (EntitySet: groups)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'groups://all', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/groups', isUri: true }]
       },
       {
         id: 'lg-res-group',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'groups://{groupId} (Group Details)',
+        label: 'odata://.../groups/{key_id}',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 13, method: 'resources/read', params: { uri: 'groups://11111111-2222-3333-4444-555555555555', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members,owners",
+        payload: { jsonrpc: '2.0', id: 13, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/groups/11111111-2222-3333-4444-555555555555', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')",
         entity: 'Microsoft.Graph.Group (EntitySet: groups)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'groups://11111111-2222-3333-4444-555555555555', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/groups/11111111-2222-3333-4444-555555555555', isUri: true }]
       },
       {
         id: 'lg-res-drives-me',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'drives://me (My OneDrive)',
+        label: 'odata://.../drives/drive-miriam',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 14, method: 'resources/read', params: { uri: 'drives://me', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/drive/root/children',
+        payload: { jsonrpc: '2.0', id: 14, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/drives/drive-miriam', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/drives('drive-miriam')",
         entity: 'Microsoft.Graph.Drive (EntitySet: drives)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'drives://me', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/drives/drive-miriam', isUri: true }]
       },
       {
         id: 'lg-res-files-recent',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'files://recent (Recent Files)',
+        label: 'odata://.../driveItems (All Files)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 15, method: 'resources/read', params: { uri: 'files://recent', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.recentDriveItems()",
+        payload: { jsonrpc: '2.0', id: 15, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/driveItems', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/driveItems',
         entity: 'Microsoft.Graph.DriveItem (EntitySet: driveItems)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'files://recent', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/driveItems', isUri: true }]
       },
       {
         id: 'lg-res-file-item',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'files://{itemId} (DriveItem)',
+        label: 'odata://.../driveItems/{key_id}',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 16, method: 'resources/read', params: { uri: 'files://file-mcp-poc-docx', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/driveItems('file-mcp-poc-docx')?$expand=lastModifiedByUser",
+        payload: { jsonrpc: '2.0', id: 16, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/driveItems/file-mcp-poc-docx', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/driveItems('file-mcp-poc-docx')",
         entity: 'Microsoft.Graph.DriveItem (EntitySet: driveItems)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'files://file-mcp-poc-docx', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/driveItems/file-mcp-poc-docx', isUri: true }]
       },
       {
         id: 'lg-res-teams-all',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'teams://all (Joined Teams)',
+        label: 'odata://.../teams (All Teams)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 17, method: 'resources/read', params: { uri: 'teams://all', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/joinedTeams?$expand=channels',
+        payload: { jsonrpc: '2.0', id: 17, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/teams', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/teams',
         entity: 'Microsoft.Graph.Team (EntitySet: teams)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'teams://all', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/teams', isUri: true }]
       },
       {
         id: 'lg-res-channel-msgs',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'channels://{channelId}/messages',
+        label: 'odata://.../channels/{key_id}',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 18, method: 'resources/read', params: { uri: 'channels://ch-csdl-typespec/messages', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/channels('ch-csdl-typespec')/messages?$top=20",
+        payload: { jsonrpc: '2.0', id: 18, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/channels/ch-csdl-typespec', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/channels('ch-csdl-typespec')",
         entity: 'Microsoft.Graph.Channel (EntitySet: channels)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'channels://ch-csdl-typespec/messages', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/channels/ch-csdl-typespec', isUri: true }]
       },
       {
         id: 'lg-res-chats-all',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'chats://all (Recent Chats)',
+        label: 'odata://.../chats (All Chats)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 19, method: 'resources/read', params: { uri: 'chats://all', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/chats?$expand=members,messages($top=5)',
+        payload: { jsonrpc: '2.0', id: 19, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/chats', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/chats',
         entity: 'Microsoft.Graph.Chat (EntitySet: chats)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'chats://all', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/chats', isUri: true }]
       },
       {
         id: 'lg-res-todo-lists',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'todo://lists (To Do Task Lists)',
+        label: 'odata://.../todoLists (To Do Lists)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 20, method: 'resources/read', params: { uri: 'todo://lists', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/todoLists?$expand=tasks',
+        payload: { jsonrpc: '2.0', id: 20, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/todoLists', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/todoLists',
         entity: 'Microsoft.Graph.TodoTaskList (EntitySet: todoLists)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'todo://lists', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/todoLists', isUri: true }]
       },
       {
         id: 'lg-res-todo-tasks',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'todo://tasks (Pending Tasks)',
+        label: 'odata://.../todoTasks (To Do Tasks)',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 21, method: 'resources/read', params: { uri: 'todo://tasks', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/todoTasks?$filter=status ne 'completed'",
+        payload: { jsonrpc: '2.0', id: 21, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/todoTasks', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/todoTasks',
         entity: 'Microsoft.Graph.TodoTask (EntitySet: todoTasks)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'todo://tasks', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/todoTasks', isUri: true }]
       }
     ]
   },
@@ -220,175 +225,198 @@ const LARGE_SAMPLE_QUERIES = [
     icon: '🛠️',
     items: [
       {
+        id: 'lg-tool-search-intent',
+        badge: ':3005',
+        badgeClass: 'mcp-badge',
+        label: 'search_intent ("last user to modify file")',
+        method: 'tools/call',
+        payload: { jsonrpc: '2.0', id: 28, method: 'tools/call', params: { name: 'search_intent', arguments: { query: 'Who was the last user to modify Script_MCP_POC.docx?' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'Step 1 (:3005): Search @Agent.Prompts, @Agent.Examples & CSDL Schema',
+        entity: 'LargeServer_SearchQuery (:3005) — Intent Identification',
+        args: [{ name: 'query', label: 'Natural Language Question', default: 'Who was the last user to modify Script_MCP_POC.docx?' }]
+      },
+      {
+        id: 'lg-tool-exec-odata',
+        badge: ':3005',
+        badgeClass: 'mcp-badge',
+        label: 'execute_odata_query ("GET driveItems(...)/lastModifiedByUser")',
+        method: 'tools/call',
+        payload: { jsonrpc: '2.0', id: 29, method: 'tools/call', params: { name: 'execute_odata_query', arguments: { odataQuery: "GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department" }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+        entity: 'LargeServer_SearchQuery (:3005) — OData v4.01 Execution',
+        args: [{ name: 'odataQuery', label: 'Canonical OData v4.01 Request', default: "GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department" }]
+      },
+      {
         id: 'lg-tool-my-files',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'list_my_files ("me")',
+        label: 'list_driveItems (All DriveItems)',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 30, method: 'tools/call', params: { name: 'list_my_files', arguments: { userId: 'me' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName',
+        payload: { jsonrpc: '2.0', id: 30, method: 'tools/call', params: { name: 'list_driveItems', arguments: { select: 'id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/driveItems?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName',
         entity: 'Microsoft.Graph.DriveItem (EntitySet: driveItems)',
-        args: [{ name: 'userId', label: 'User ID or me', default: 'me' }]
+        args: [{ name: 'select', label: '$select', default: 'id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName' }]
       },
       {
         id: 'lg-tool-search-files',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'search_files ("CSDL")',
+        label: 'drives_Microsoft_Graph_searchDriveItems ("CSDL")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 31, method: 'tools/call', params: { name: 'search_files', arguments: { query: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')",
+        payload: { jsonrpc: '2.0', id: 31, method: 'tools/call', params: { name: 'drives_Microsoft_Graph_searchDriveItems', arguments: { key_id: 'drive-miriam', q: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='CSDL')",
         entity: 'Bound Function: Microsoft.Graph.searchDriveItems',
-        args: [{ name: 'query', label: 'Search Keyword (q)', default: 'CSDL' }]
+        args: [
+          { name: 'key_id', label: 'Drive ID (key_id)', default: 'drive-miriam' },
+          { name: 'q', label: 'Search Keyword (q)', default: 'CSDL' }
+        ]
       },
       {
         id: 'lg-tool-file-modifier',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'file_last_modified_by ("Script_MCP_POC.docx")',
+        label: 'get_driveItems_lastModifiedByUser ("file-mcp-poc-docx")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 32, method: 'tools/call', params: { name: 'file_last_modified_by', arguments: { fileName: 'Script_MCP_POC.docx' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+        payload: { jsonrpc: '2.0', id: 32, method: 'tools/call', params: { name: 'get_driveItems_lastModifiedByUser', arguments: { key_id: 'file-mcp-poc-docx', select: 'id,displayName,userPrincipalName,jobTitle,department' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
         entity: 'NavigationProperty: DriveItem/lastModifiedByUser',
-        args: [{ name: 'fileName', label: 'File Name or ID', default: 'Script_MCP_POC.docx' }]
+        args: [
+          { name: 'key_id', label: 'DriveItem ID (key_id)', default: 'file-mcp-poc-docx' },
+          { name: 'select', label: '$select', default: 'id,displayName,userPrincipalName,jobTitle,department' }
+        ]
       },
       {
         id: 'lg-tool-list-teams',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'list_teams ("all")',
+        label: 'get_me_joinedTeams ("me")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 33, method: 'tools/call', params: { name: 'list_teams', arguments: { filter: 'all' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels',
-        entity: 'Microsoft.Graph.Team (EntitySet: teams)',
-        args: [{ name: 'filter', label: 'Team Filter', default: 'all' }]
+        payload: { jsonrpc: '2.0', id: 33, method: 'tools/call', params: { name: 'get_me_joinedTeams', arguments: { expand: 'channels' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/joinedTeams?$expand=channels',
+        entity: 'Microsoft.Graph.Team (Singleton Nav: me/joinedTeams)',
+        args: [{ name: 'expand', label: '$expand', default: 'channels' }]
       },
       {
         id: 'lg-tool-channel-messages',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'channel_messages ("CSDL & TypeSpec")',
+        label: 'channels_Microsoft_Graph_deltaChannelMessages ("ch-csdl-typespec")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 34, method: 'tools/call', params: { name: 'channel_messages', arguments: { channelId: 'CSDL & TypeSpec' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20",
+        payload: { jsonrpc: '2.0', id: 34, method: 'tools/call', params: { name: 'channels_Microsoft_Graph_deltaChannelMessages', arguments: { key_id: 'ch-csdl-typespec' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()",
         entity: 'Bound Function: Microsoft.Graph.deltaChannelMessages',
-        args: [{ name: 'channelId', label: 'Channel ID or Name', default: 'CSDL & TypeSpec' }]
+        args: [{ name: 'key_id', label: 'Channel ID (key_id)', default: 'ch-csdl-typespec' }]
       },
       {
         id: 'lg-tool-send-channel-msg',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'send_channel_message ("MCP 2.0 Integration")',
+        label: 'channels_Microsoft_Graph_sendChannelMessage ("ch-mcp-20")',
         method: 'tools/call',
         payload: {
           jsonrpc: '2.0',
           id: 35,
           method: 'tools/call',
           params: {
-            name: 'send_channel_message',
+            name: 'channels_Microsoft_Graph_sendChannelMessage',
             arguments: {
-              channelId: 'MCP 2.0 Integration',
+              key_id: 'ch-mcp-20',
               subject: 'MCP 2.0 LargeServer Update',
-              bodyContent: 'Verified all 10 CSDL entities and 5 bound operations on port 3003.'
+              bodyContent: 'Verified all 59 CSDL-transformed tools and 21 resources on port 3003.'
             },
             _meta: { ...LARGE_MCP_META }
           }
         },
-        graphTarget: "POST https://graph.microsoft.com/v1.0/channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage",
+        graphTarget: "POST https://graph.contoso.com/v1.0/channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage",
         entity: 'Bound Action: Microsoft.Graph.sendChannelMessage',
         args: [
-          { name: 'channelId', label: 'Channel ID or Name', default: 'MCP 2.0 Integration' },
+          { name: 'key_id', label: 'Channel ID (key_id)', default: 'ch-mcp-20' },
           { name: 'subject', label: 'Subject', default: 'MCP 2.0 LargeServer Update' },
-          { name: 'bodyContent', label: 'Message Body', default: 'Verified all 10 CSDL entities and 5 bound operations on port 3003.' }
+          { name: 'bodyContent', label: 'Message Body', default: 'Verified all 59 CSDL-transformed tools and 21 resources on port 3003.' }
         ]
       },
       {
         id: 'lg-tool-list-chats',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'list_chats ("all")',
+        label: 'get_me_chats ("me")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 36, method: 'tools/call', params: { name: 'list_chats', arguments: { filter: 'all' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)',
-        entity: 'Microsoft.Graph.Chat (EntitySet: chats)',
-        args: [{ name: 'filter', label: 'Chat Type or Participant', default: 'all' }]
+        payload: { jsonrpc: '2.0', id: 36, method: 'tools/call', params: { name: 'get_me_chats', arguments: { expand: 'members,messages' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/chats?$expand=members,messages',
+        entity: 'Microsoft.Graph.Chat (Singleton Nav: me/chats)',
+        args: [{ name: 'expand', label: '$expand', default: 'members,messages' }]
       },
       {
         id: 'lg-tool-list-todo',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'list_todo_tasks ("all")',
+        label: 'list_todoTasks ("status ne completed")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 37, method: 'tools/call', params: { name: 'list_todo_tasks', arguments: { filter: 'all' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/me/todoLists?$select=id,displayName,wellknownListName&$expand=tasks($filter=status ne 'completed')",
-        entity: 'Microsoft.Graph.TodoTaskList / TodoTask',
-        args: [{ name: 'filter', label: 'Importance / Status Filter', default: 'all' }]
+        payload: { jsonrpc: '2.0', id: 37, method: 'tools/call', params: { name: 'list_todoTasks', arguments: { filter: "status ne 'completed'" }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/todoTasks?$filter=status ne 'completed'",
+        entity: 'Microsoft.Graph.TodoTask (EntitySet: todoTasks)',
+        args: [{ name: 'filter', label: '$filter', default: "status ne 'completed'" }]
       },
       {
         id: 'lg-tool-complete-todo',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'complete_todo_task ("task-101")',
+        label: 'todoTasks_Microsoft_Graph_completeTodoTask ("task-101")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 38, method: 'tools/call', params: { name: 'complete_todo_task', arguments: { taskId: 'task-101' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "POST https://graph.microsoft.com/v1.0/todoTasks('task-101')/Microsoft.Graph.completeTodoTask",
+        payload: { jsonrpc: '2.0', id: 38, method: 'tools/call', params: { name: 'todoTasks_Microsoft_Graph_completeTodoTask', arguments: { key_id: 'task-101' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "POST https://graph.contoso.com/v1.0/todoTasks('task-101')/Microsoft.Graph.completeTodoTask",
         entity: 'Bound Action: Microsoft.Graph.completeTodoTask',
-        args: [{ name: 'taskId', label: 'Task ID', default: 'task-101' }]
+        args: [{ name: 'key_id', label: 'Task ID (key_id)', default: 'task-101' }]
       },
       {
         id: 'lg-tool-find-user',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'find_user ("Olga")',
+        label: 'list_users ("startswith(displayName,\'Miriam\')")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 39, method: 'tools/call', params: { name: 'find_user', arguments: { query: 'Olga' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga')",
+        payload: { jsonrpc: '2.0', id: 39, method: 'tools/call', params: { name: 'list_users', arguments: { filter: "startswith(displayName,'Miriam')" }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/users?$filter=startswith(displayName,'Miriam')",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
-        args: [{ name: 'query', label: 'Search Query', default: 'Olga' }]
+        args: [{ name: 'filter', label: '$filter', default: "startswith(displayName,'Miriam')" }]
       },
       {
         id: 'lg-tool-user-profile',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'user_profile ("opodolyako@microsoft.com")',
+        label: 'get_users ("miriamg@contoso.com")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 40, method: 'tools/call', params: { name: 'user_profile', arguments: { userId: 'opodolyako@microsoft.com' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')?$expand=manager,directReports",
+        payload: { jsonrpc: '2.0', id: 40, method: 'tools/call', params: { name: 'get_users', arguments: { key_id: 'miriamg@contoso.com', expand: 'manager,directReports' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')?$expand=manager,directReports",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
-        args: [{ name: 'userId', label: 'User ID or UPN', default: 'opodolyako@microsoft.com' }]
+        args: [
+          { name: 'key_id', label: 'User ID or UPN (key_id)', default: 'miriamg@contoso.com' },
+          { name: 'expand', label: '$expand', default: 'manager,directReports' }
+        ]
       },
       {
         id: 'lg-tool-find-group',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'find_group ("Identity")',
+        label: 'list_groups ("startswith(displayName,\'Identity\')")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 41, method: 'tools/call', params: { name: 'find_group', arguments: { query: 'Identity' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/groups?$filter=startswith(displayName,'Identity')",
+        payload: { jsonrpc: '2.0', id: 41, method: 'tools/call', params: { name: 'list_groups', arguments: { filter: "startswith(displayName,'Identity')" }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/groups?$filter=startswith(displayName,'Identity')",
         entity: 'Microsoft.Graph.Group (EntitySet: groups)',
-        args: [{ name: 'query', label: 'Group Search Query', default: 'Identity' }]
+        args: [{ name: 'filter', label: '$filter', default: "startswith(displayName,'Identity')" }]
       },
       {
         id: 'lg-tool-group-details',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'group_details ("Identity Architecture")',
+        label: 'get_groups ("11111111-2222-3333-4444-555555555555")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 42, method: 'tools/call', params: { name: 'group_details', arguments: { groupId: 'Identity Architecture' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members,owners",
+        payload: { jsonrpc: '2.0', id: 42, method: 'tools/call', params: { name: 'get_groups', arguments: { key_id: '11111111-2222-3333-4444-555555555555', expand: 'members,owners' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/groups('11111111-2222-3333-4444-555555555555')?$expand=members,owners",
         entity: 'Microsoft.Graph.Group (EntitySet: groups)',
-        args: [{ name: 'groupId', label: 'Group Name or ID', default: 'Identity Architecture' }]
-      },
-      {
-        id: 'lg-tool-read-resource',
-        badge: 'CALL',
-        badgeClass: 'mcp-badge',
-        label: 'read_resource ("files://recent")',
-        method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 43, method: 'tools/call', params: { name: 'read_resource', arguments: { uri: 'files://recent' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.recentDriveItems()",
-        entity: 'Microsoft.Graph.GraphService (Generic Resource Adapter)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'files://recent' }]
+        args: [
+          { name: 'key_id', label: 'Group GUID (key_id)', default: '11111111-2222-3333-4444-555555555555' },
+          { name: 'expand', label: '$expand', default: 'members,owners' }
+        ]
       }
     ]
   },
@@ -403,7 +431,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'GET my files in OneDrive',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 50, method: 'prompts/get', params: { name: 'my_onedrive_files', arguments: { userId: 'me' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/drive/root/children',
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/drive/root/children',
         entity: 'GraphService/@Agent.Prompts[my_onedrive_files]',
         args: [{ name: 'userId', label: 'User ID or me', default: 'me' }]
       },
@@ -414,7 +442,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'GET last user to modify a file',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 51, method: 'prompts/get', params: { name: 'last_user_to_modify_file', arguments: { fileName: 'Script_MCP_POC.docx' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser",
+        graphTarget: "GET https://graph.contoso.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser",
         entity: 'GraphService/@Agent.Prompts[last_user_to_modify_file]',
         args: [{ name: 'fileName', label: 'File Name', default: 'Script_MCP_POC.docx' }]
       },
@@ -425,7 +453,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'Search OneDrive & SharePoint files',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 52, method: 'prompts/get', params: { name: 'search_files_by_keyword', arguments: { query: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')",
+        graphTarget: "GET https://graph.contoso.com/v1.0/drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='CSDL')",
         entity: 'GraphService/@Agent.Prompts[search_files_by_keyword]',
         args: [{ name: 'query', label: 'Keyword', default: 'CSDL' }]
       },
@@ -436,7 +464,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'List my Microsoft Teams & channels',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 53, method: 'prompts/get', params: { name: 'my_joined_teams_and_channels', arguments: { userId: 'me' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/joinedTeams?$expand=channels',
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/joinedTeams?$expand=channels',
         entity: 'GraphService/@Agent.Prompts[my_joined_teams_and_channels]',
         args: [{ name: 'userId', label: 'User ID or me', default: 'me' }]
       },
@@ -447,7 +475,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'Read messages in a Teams channel',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 54, method: 'prompts/get', params: { name: 'team_channel_messages', arguments: { teamName: 'Identity Architecture', channelName: 'CSDL & TypeSpec' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/channels('ch-csdl-typespec')/messages?$top=20",
+        graphTarget: "GET https://graph.contoso.com/v1.0/channels('ch-csdl-typespec')/messages?$top=20",
         entity: 'GraphService/@Agent.Prompts[team_channel_messages]',
         args: [
           { name: 'teamName', label: 'Team Name', default: 'Identity Architecture' },
@@ -461,7 +489,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'List recent 1:1 and group chats',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 55, method: 'prompts/get', params: { name: 'list_recent_chats', arguments: { chatType: 'all' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/chats?$expand=members,messages($top=5)',
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/chats?$expand=members,messages($top=5)',
         entity: 'GraphService/@Agent.Prompts[list_recent_chats]',
         args: [{ name: 'chatType', label: 'Chat Type', default: 'all' }]
       },
@@ -472,7 +500,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'List open Microsoft To Do tasks',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 56, method: 'prompts/get', params: { name: 'my_pending_todo_tasks', arguments: { importance: 'high' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/me/todoLists?$expand=tasks($filter=status ne 'completed')",
+        graphTarget: "GET https://graph.contoso.com/v1.0/me/todoLists?$expand=tasks($filter=status ne 'completed')",
         entity: 'GraphService/@Agent.Prompts[my_pending_todo_tasks]',
         args: [{ name: 'importance', label: 'Importance', default: 'high' }]
       },
@@ -483,7 +511,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: "GET Microsoft 365 groups I'm a member of",
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 57, method: 'prompts/get', params: { name: 'my_m365_unified_groups', arguments: { userId: 'me' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: 'GET https://graph.microsoft.com/v1.0/me/memberOf?$select=id,displayName,description,mail,groupTypes,visibility',
+        graphTarget: 'GET https://graph.contoso.com/v1.0/me/memberOf?$select=id,displayName,description,mail,groupTypes,visibility',
         entity: 'GraphService/@Agent.Prompts[my_m365_unified_groups]',
         args: [{ name: 'userId', label: 'User ID or me', default: 'me' }]
       },
@@ -493,10 +521,10 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Prepare 360 collaboration brief (Join)',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 58, method: 'prompts/get', params: { name: 'meeting_attendee_collaboration_brief', arguments: { colleagueName: 'Joao Paiva' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 58, method: 'prompts/get', params: { name: 'meeting_attendee_collaboration_brief', arguments: { colleagueName: 'Megan Bowen' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: 'Cross-Resource Join: users + driveItems + chats + todoTasks',
         entity: 'GraphService/@Agent.Prompts[meeting_attendee_collaboration_brief]',
-        args: [{ name: 'colleagueName', label: 'Colleague Name', default: 'Joao Paiva' }]
+        args: [{ name: 'colleagueName', label: 'Colleague Name', default: 'Megan Bowen' }]
       },
       {
         id: 'lg-prompt-collab-synthesis',
@@ -513,12 +541,12 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-prompt-reports-to',
         badge: 'PROMPT',
         badgeClass: 'prompt-badge',
-        label: 'Whom Olga reports to?',
+        label: 'Whom Miriam reports to?',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_olga_reports_to', arguments: { userName: 'Olga Podolyako' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@microsoft.com')/manager",
-        entity: 'GraphService/@Agent.Prompts[whom_olga_reports_to]',
-        args: [{ name: 'userName', label: 'User Name', default: 'Olga Podolyako' }]
+        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_miriam_reports_to', arguments: { userName: 'Miriam Graham' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.contoso.com/v1.0/users('miriamg@contoso.com')/manager",
+        entity: 'GraphService/@Agent.Prompts[whom_miriam_reports_to]',
+        args: [{ name: 'userName', label: 'User Name', default: 'Miriam Graham' }]
       },
       {
         id: 'lg-prompt-peers-in-group',
@@ -526,11 +554,11 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Which user peers belong to a group?',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 61, method: 'prompts/get', params: { name: 'user_peers_in_group', arguments: { userName: 'Olga Podolyako', groupName: 'Identity Architecture' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 61, method: 'prompts/get', params: { name: 'user_peers_in_group', arguments: { userName: 'Miriam Graham', groupName: 'Identity Architecture' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: 'Cross-Resource Join: users/manager/directReports + groups/members',
         entity: 'GraphService/@Agent.Prompts[user_peers_in_group]',
         args: [
-          { name: 'userName', label: 'User Name', default: 'Olga Podolyako' },
+          { name: 'userName', label: 'User Name', default: 'Miriam Graham' },
           { name: 'groupName', label: 'Group Name', default: 'Identity Architecture' }
         ]
       }
@@ -671,11 +699,12 @@ async function executeLargeQuery() {
   let body = editor.value;
 
   try {
+    const targetServer = getSelectedLargeServerUrl();
     const res = await fetch('/mcp-proxy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Target-Url': LARGE_SERVER_URL
+        'X-Target-Url': targetServer
       },
       body
     });
@@ -715,7 +744,7 @@ async function loadLargeTraces() {
   const list = document.getElementById('largeTraceList');
   if (!list) return;
   try {
-    const res = await fetch('/api/traces', { headers: { 'X-Target-Url': LARGE_SERVER_URL } });
+    const res = await fetch('/api/traces', { headers: { 'X-Target-Url': getSelectedLargeServerUrl() } });
     if (!res.ok) return;
     const traces = await res.json();
     list.innerHTML = traces.slice().reverse().map(t => `
@@ -978,9 +1007,11 @@ function renderLargeResultCard(rpcResp, container) {
 
 async function loadLargeMetadataAndExamples() {
   try {
-    const [csdlRes, exRes] = await Promise.all([
-      fetch('/api/csdl', { headers: { 'X-Target-Url': LARGE_SERVER_URL } }),
-      fetch('/api/examples', { headers: { 'X-Target-Url': LARGE_SERVER_URL } })
+    const targetServer = getSelectedLargeServerUrl();
+    const [csdlRes, exRes, healthRes] = await Promise.all([
+      fetch('/api/csdl', { headers: { 'X-Target-Url': targetServer } }),
+      fetch('/api/examples', { headers: { 'X-Target-Url': targetServer } }),
+      fetch('/health', { headers: { 'X-Target-Url': targetServer } })
     ]);
     if (csdlRes.ok) {
       cachedLargeCsdl = await csdlRes.json();
@@ -990,6 +1021,13 @@ async function loadLargeMetadataAndExamples() {
     if (exRes.ok) {
       cachedLargeExamples = await exRes.json();
       renderLargeExamplesTable();
+    }
+    if (healthRes.ok) {
+      const h = await healthRes.json();
+      const summaryEl = document.getElementById('largeProjectionSummary');
+      if (summaryEl) {
+        summaryEl.innerHTML = `Active Server: <code>${escapeLargeHtml(h.mcpEndpoint)}</code> &bull; CSDL: <code>${escapeLargeHtml(h.csdlPath)}</code> &bull; <strong>${h.entityTypesCount || 10} EntityTypes</strong> &bull; <strong>${h.operationsCount || 5} Bound Operations</strong> &bull; <strong>${(h.capabilities?.tools || []).length} Tools</strong> &bull; <strong>${(h.capabilities?.resources || []).length} Resources</strong> &bull; <strong>${(h.capabilities?.prompts || []).length} Prompts</strong> &bull; <strong>${h.examplesCount ?? 0} @Agent.Examples</strong>`;
+      }
     }
   } catch (_) {}
 }
@@ -1069,8 +1107,21 @@ function initLargeExplorer() {
     });
   }
 
+  const serverSelect = document.getElementById('largeMcpEndpointInput');
+  if (serverSelect) {
+    serverSelect.addEventListener('change', async () => {
+      await loadLargeMetadataAndExamples();
+      const selectedUrl = getSelectedLargeServerUrl();
+      if (selectedUrl.endsWith(':3005') && currentLargeQuery.method === 'tools/call' && !['search_intent', 'execute_odata_query'].includes(currentLargeQuery.payload?.params?.name)) {
+        selectLargeQuery(LARGE_SAMPLE_QUERIES[2].items[0], true);
+      } else {
+        executeLargeQuery();
+      }
+    });
+  }
+
   loadLargeMetadataAndExamples();
-  selectLargeQuery(LARGE_SAMPLE_QUERIES[2].items[0], false);
+  selectLargeQuery(LARGE_SAMPLE_QUERIES[2].items[2], false);
 
   const largeTabBtn = document.querySelector('.ge-nav-tab[data-view="large-explorer"]');
   if (largeTabBtn) {

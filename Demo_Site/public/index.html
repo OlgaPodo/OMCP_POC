@@ -49,7 +49,13 @@
         <span class="tab-icon">🗺️</span> End-to-End Mapping
       </button>
       <button class="ge-nav-tab" data-view="experiment">
-        <span class="tab-icon">🔬</span> A/B Experiment
+        <span class="tab-icon">🔬</span> Prompt impact
+      </button>
+      <button class="ge-nav-tab" data-view="examples-impact">
+        <span class="tab-icon">📚</span> Query Examples Impact
+      </button>
+      <button class="ge-nav-tab" data-view="intent-vs-large">
+        <span class="tab-icon">🧭</span> Large MCP vs Intent + Query
       </button>
       <button class="ge-nav-tab" data-view="summary">
         <span class="tab-icon">📊</span> POC Summary
@@ -143,21 +149,21 @@
               <span class="cat-title">3. TOOLS</span>
             </div>
             <ul class="query-list">
-              <li class="query-item" data-query="tool-find-olga">
+              <li class="query-item" data-query="tool-find-miriam">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Olga")</span>
+                <span class="query-label">find_user ("Miriam")</span>
               </li>
-              <li class="query-item" data-query="tool-find-vojtech">
+              <li class="query-item" data-query="tool-find-alex">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Vojtech")</span>
+                <span class="query-label">find_user ("Alex")</span>
               </li>
               <li class="query-item" data-query="tool-profile-me">
                 <span class="http-badge mcp-badge">CALL</span>
                 <span class="query-label">user_profile ("me")</span>
               </li>
-              <li class="query-item" data-query="tool-profile-olga">
+              <li class="query-item" data-query="tool-profile-miriam">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">user_profile ("opodolyako@microsoft.com")</span>
+                <span class="query-label">user_profile ("miriamg@contoso.com")</span>
               </li>
               <li class="query-item" data-query="tool-find-group">
                 <span class="http-badge mcp-badge">CALL</span>
@@ -187,11 +193,11 @@
             <ul class="query-list" id="promptQueryList">
               <li class="query-item" data-query="prompt-reports-to">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Whom Olga reports to?</span>
+                <span class="query-label">Whom Miriam reports to?</span>
               </li>
               <li class="query-item" data-query="prompt-peers">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Who are Olga's peers?</span>
+                <span class="query-label">Who are Miriam's peers?</span>
               </li>
               <li class="query-item" data-query="prompt-direct-reports">
                 <span class="http-badge prompt-badge">PROMPT</span>
@@ -290,7 +296,7 @@
               <div class="mapping-preview-box" id="mappingPreviewBox">
                 <div class="preview-item">
                   <span class="preview-label">Target Microsoft Graph Resource:</span>
-                  <code class="preview-code" id="targetGraphUrl">https://graph.microsoft.com/v1.0/me</code>
+                  <code class="preview-code" id="targetGraphUrl">https://graph.contoso.com/v1.0/me</code>
                 </div>
                 <div class="preview-item">
                   <span class="preview-label">Underlying OData Entity:</span>
@@ -367,7 +373,7 @@
     <div class="doc-view-layout">
       <div class="doc-header">
         <h2>CSDL and annotations</h2>
-        <p class="doc-sub">Standard OData v4.01 metadata (<code>GET https://graph.microsoft.com/v1.0/$metadata</code> per <a href="https://www.oasis-open.org/standard/odata-v4-01-os/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">OASIS OData v4.01 OS &nearr;</a>) projects standard <code>EntitySet</code> and <code>Singleton</code> declarations to MCP tools and resources. Server A includes container-level <code>Agent.Prompts</code> authored with OData queries; Server B has no prompts in CSDL.</p>
+        <p class="doc-sub">Standard OData v4.01 metadata (<code>GET https://graph.contoso.com/v1.0/$metadata</code> per <a href="https://www.oasis-open.org/standard/odata-v4-01-os/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">OASIS OData v4.01 OS &nearr;</a>) projects standard <code>EntitySet</code> and <code>Singleton</code> declarations to MCP tools and resources. Server A includes container-level <code>Agent.Prompts</code> authored with OData queries; Server B has no prompts in CSDL.</p>
         <p class="projection-summary"></p>
       </div>
 
@@ -457,8 +463,8 @@
             </div>
             <p>In the official <a href="https://modelcontextprotocol.io/specification/2026-07-28" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">Model Context Protocol (MCP 2.0 / 2026-07-28)</a>, prompts are designed as user-controlled <strong>slash-command-style templates</strong>:</p>
             <ul>
-              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_olga_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
-              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Olga"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
+              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_miriam_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
+              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Miriam"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
               <li><strong>OData query steps:</strong> Container prompts express workflows using standard OData v4.01 queries against the service schema.</li>
             </ul>
             <div style="margin-top: 12px; padding: 8px 12px; background: #eef6fc; border-radius: 6px; font-size: 11.5px; border-left: 3px solid var(--primary);">
@@ -475,7 +481,7 @@
             <ul>
               <li><strong>Context Window Constraint:</strong> Large tool catalogs can consume context; this demo does not establish a universal tool-count limit.</li>
               <li><strong>Work IQ &amp; Graph Copilot Pattern:</strong> Instead of 1,000 tools, services use a catalog of curated natural-language prompt workflows to index API calls.</li>
-              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Olga's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
+              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Miriam's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
             </ul>
           </div>
         </div>
@@ -503,7 +509,7 @@
           <h3>Prompt catalog text search (illustrative)</h3>
           <p>Search the selected server's container prompts by word overlap. This is not embeddings, LLM routing, argument extraction, or tool execution. No match is a valid result:</p>
           <div class="matcher-input-bar">
-            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Olga's boss? or Who works on the same team as Olga?" value="Who is Olga's boss?">
+            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Miriam's boss? or Who works on the same team as Miriam?" value="Who is Miriam's boss?">
             <button id="testMatchBtn" class="ge-btn-primary">Test Semantic Match</button>
           </div>
           <div class="matcher-results" id="matcherResults">
@@ -528,8 +534,8 @@
           <span class="badge-tag">Initial Prompt Specification (C:\MCP\mcp-poc.docx)</span>
           <h3 style="font-size: 14px; margin-bottom: 6px;">Local HTTP MCP + Graph Explorer Web App</h3>
           <ul style="font-size: 12px; margin-left: 18px;">
-            <li><strong>HTTP MCP Server (<code>C:\MCP\Server</code>):</strong> Calls <code>https://graph.microsoft.com/v1.0/users</code> (extended with <code>/v1.0/groups</code>), exposes tools (<code>find_user</code>, <code>user_profile</code>, <code>find_group</code>, <code>group_details</code>, <code>read_resource</code>), resources (<code>users://me</code>, <code>users://{userId}</code>, <code>groups://all</code>, <code>groups://{groupId}</code>), and <code>prompts/list</code> + <code>prompts/get</code>.</li>
-            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Olga reports to?"</em>, <em>"Who are Olga's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
+            <li><strong>HTTP MCP Server (<code>C:\MCP\Server</code>):</strong> Calls <code>https://graph.contoso.com/v1.0/users</code> (extended with <code>/v1.0/groups</code>), exposes tools (<code>find_user</code>, <code>user_profile</code>, <code>find_group</code>, <code>group_details</code>, <code>read_resource</code>), resources (<code>users://me</code>, <code>users://{userId}</code>, <code>groups://all</code>, <code>groups://{groupId}</code>), and <code>prompts/list</code> + <code>prompts/get</code>.</li>
+            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Miriam reports to?"</em>, <em>"Who are Miriam's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
             <li><strong>Initial Concerns Addressed:</strong> (a) Reconcile MCP reusable prompt templates with semantic retrieval catalogs; (b) Show the exact end-to-end mapping from OData CSDL annotation &rarr; MCP prompt &rarr; tool/resource &rarr; Microsoft Graph API request.</li>
           </ul>
         </div>
@@ -539,7 +545,7 @@
           <ul style="font-size: 12px; margin-left: 18px;">
             <li><strong><code>prompts/list</code> vs <code>prompts/get</code>:</strong> <code>prompts/list</code> returns only prompt signatures and required arguments; <code>prompts/get</code> returns rendered <code>messages</code> after argument extraction.</li>
             <li><strong>Free-Text Utterance vs User Selection:</strong> Clients/LLMs map free-text questions to discovered prompts/tools, extract arguments, and reject out-of-domain queries (such as weather) with zero tool calls.</li>
-            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Olga"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
+            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Miriam"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
           </ul>
         </div>
       </div>
@@ -548,8 +554,8 @@
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <label class="selector-title" for="mappingPromptSelect">Workflow Scenario:</label>
           <select id="mappingPromptSelect" class="args-field-input" style="min-width: 280px; width: auto; font-weight: 600;"></select>
-          <button type="button" class="map-query-btn" data-map-prompt="whom_olga_reports_to">mcp-poc.docx: Whom Olga reports to?</button>
-          <button type="button" class="map-query-btn" data-map-prompt="who_are_olgas_peers">mcp-poc.docx: Who are Olga's peers?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="whom_miriam_reports_to">mcp-poc.docx: Whom Miriam reports to?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="who_are_miriams_peers">mcp-poc.docx: Who are Miriam's peers?</button>
           <button type="button" class="map-query-btn active" data-map-prompt="user_peers_in_group">Composed: Peers in group</button>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -681,6 +687,9 @@
             <h3>Option 1: Baseline (CSDL without Prompts)</h3>
             <p><strong>Server B (Port :3002)</strong></p>
             <p>Exposes standard OData <code>EntitySet</code> and <code>Singleton</code> declarations (<code>users</code>, <code>groups</code>, <code>me</code>) projected to MCP tools and resources, with <strong>0 <code>@Agent.Prompts</code></strong> in CSDL.</p>
+            <div id="promptOpt1TotalPct" style="margin-top:10px;padding:8px 12px;border-radius:6px;background:#f3f2f1;border-left:4px solid #0078d4;font-size:13px;">
+              Total Success Rate: <strong style="font-size:16px;color:#0078d4;">Loading...</strong>
+            </div>
             <span class="server-status-pill online" id="serverBPill" style="display:inline-flex; margin-top:8px;">
               <span class="status-dot"></span> Online (:3002)
             </span>
@@ -691,6 +700,9 @@
             <h3>Option 2: Variant (CSDL with @Agent.Prompts)</h3>
             <p><strong>Server A (Port :3001)</strong></p>
             <p>Exposes the same projected tools and resources, plus container-level <code>@Agent.Prompts</code> authored with standard OData v4.01 queries.</p>
+            <div id="promptOpt2TotalPct" style="margin-top:10px;padding:8px 12px;border-radius:6px;background:#dff6dd;border-left:4px solid #107c41;font-size:13px;">
+              Total Success Rate: <strong style="font-size:16px;color:#107c41;">Loading...</strong>
+            </div>
             <span class="server-status-pill online" id="serverAPill" style="display:inline-flex; margin-top:8px;">
               <span class="status-dot"></span> Online (:3001)
             </span>
@@ -760,7 +772,7 @@
                 <span class="summary-card-num">Queries #1&ndash;#3, #11&ndash;#15, #18, #22, #25, #28</span>
               </div>
               <h3>First-Name Disambiguation Failures</h3>
-              <p>Without prompt defaults (<span class="kw-annot">userName="Olga"</span>, <span class="kw-annot">managerName="Vojtech Vondra"</span>), calling <code class="kw-mcp">find_user("Olga")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
+              <p>Without prompt defaults (<span class="kw-annot">userName="Miriam"</span>, <span class="kw-annot">managerName="Alex Wilbur"</span>), calling <code class="kw-mcp">find_user("Miriam")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
             </div>
 
             <div class="summary-card accent-amber">
@@ -814,9 +826,9 @@
       <!-- SUBTAB 3: Query Inspector & Details -->
       <div class="exp-subtab-panel" id="exp-panel-inspector" style="display: none;">
         <div class="mapping-table-section">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
             <h3><span id="inspectorHeading">Benchmark entries and recorded outcomes</span></h3>
-            <div style="display:flex; gap:6px;" id="experimentCategoryFilters">
+            <div style="display:flex; gap:6px; flex-wrap:wrap;" id="experimentCategoryFilters">
               <button class="map-query-btn active" data-exp-cat="all">All (50)</button>
               <button class="map-query-btn" data-exp-cat="canonical">Canonical (7)</button>
               <button class="map-query-btn" data-exp-cat="paraphrased">Paraphrased (19)</button>
@@ -824,6 +836,14 @@
               <button class="map-query-btn" data-exp-cat="ambiguous">Ambiguous (3)</button>
               <button class="map-query-btn" data-exp-cat="edge_case">Edge Cases (5)</button>
             </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:12px;" id="experimentOutcomeFilters">
+            <span style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-right:4px;">Filter by Outcome:</span>
+            <button class="map-query-btn active" data-exp-status="all">All Outcomes</button>
+            <button class="map-query-btn" data-exp-status="failed_any">❌ Any Failed</button>
+            <button class="map-query-btn" data-exp-status="failed_opt1">❌ Failed Option 1 (w/o Prompts)</button>
+            <button class="map-query-btn" data-exp-status="failed_opt2">❌ Failed Option 2 (With Prompts)</button>
+            <button class="map-query-btn" data-exp-status="fixed">✅ Fixed by Prompts (Fail &rarr; Pass)</button>
           </div>
 
           <table class="matrix-table" id="experimentQueriesTable">
@@ -849,10 +869,16 @@
   <!-- VIEW 6: POC SUMMARY -->
   <main class="view-container" id="view-summary">
     <div class="doc-view-layout">
-      <div class="doc-header">
-        <h2>POC Summary: Architecture, Implementation &amp; Evolution Roadmap</h2>
-        <p class="doc-sub">Deterministic MCP 2.0 projection from <span class="kw-odata">OASIS OData v4.01 CSDL</span> and <span class="kw-annot">@Agent.Prompts</span> annotations.</p>
-        <p id="summaryMetadataStatus" class="summary-status-banner" role="status">Loading inventory from the selected MCP...</p>
+      <div class="doc-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2>POC Summary: Architecture, Implementation &amp; Evolution Roadmap</h2>
+          <p class="doc-sub">Deterministic MCP 2.0 projection from <span class="kw-odata">OASIS OData v4.01 CSDL</span> and <span class="kw-annot">@Agent.Prompts</span> annotations.</p>
+          <p id="summaryMetadataStatus" class="summary-status-banner" role="status">Loading inventory from the selected MCP...</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" id="btnSummaryExpandAll" class="copy-btn" style="padding:6px 12px;font-weight:600;cursor:pointer;">▼ Expand All Tiles</button>
+          <button type="button" id="btnSummaryCollapseAll" class="copy-btn" style="padding:6px 12px;font-weight:600;cursor:pointer;">▶ Collapse All Tiles</button>
+        </div>
       </div>
 
       <!-- Top Articulation Banner: First CSDL Improvement (Prompts) -> Next Improvement (Example Annotations) -->
@@ -876,115 +902,208 @@
         </div>
       </div>
 
-      <div class="summary-grid">
-        <div class="summary-card accent-blue">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-mcp-spec">MCP 2.0 Transport</span>
-            <span class="summary-card-num">#1</span>
-          </div>
-          <h3>1. Two Local HTTP MCP Servers</h3>
-          <p>Built on <strong>.NET 10 / C#</strong> with <code class="kw-mcp">ModelContextProtocol.AspNetCore</code>.</p>
-          <ul>
-            <li><strong>Server A (<code>http://localhost:3001/</code>):</strong> CSDL with <span class="kw-annot">@Agent.Prompts</span> (12 container prompts using <span class="kw-odata">OData v4.01 queries</span>).</li>
-            <li><strong>Server B (<code>http://localhost:3002/</code>):</strong> Baseline CSDL <strong>without</strong> <span class="kw-annot">@Agent.Prompts</span> (0 prompts in CSDL).</li>
-            <li><strong>Stateless Streamable HTTP:</strong> JSON-RPC with JSON / SSE responses; protocol version <span class="kw-mcp">2026-07-28</span>.</li>
-          </ul>
+      <!-- POC Experimental Results Summary Table -->
+      <div class="mapping-table-section" id="pocResultsSummaryTableSection" style="margin-bottom: 22px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+          <h3 style="margin:0;">POC Experimental Results Summary Across All MCP Server Variations</h3>
+          <span class="pill-badge pill-annotation">3 Experiments &bull; 5 MCP Servers (:3001&ndash;:3005)</span>
         </div>
+        <table class="matrix-table" id="pocResultsSummaryTable">
+          <thead>
+            <tr>
+              <th>Experiment / Variation</th>
+              <th>Folder &amp; Port</th>
+              <th>Source CSDL</th>
+              <th>Exposed MCP Surface &amp; Token Footprint</th>
+              <th>Verified Benchmark Success</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Exp 1 &bull; Baseline (CSDL w/o Prompts)</strong></td>
+              <td><code>C:\MCP\Server_Baseline</code> (<code>:3002</code>)</td>
+              <td><code>Server_Baseline.csdl</code> (2 Entities)</td>
+              <td>5 Tools, 4 Resources, <span class="kw-warn">0 Prompts</span>, 0 Examples</td>
+              <td><strong style="color:#d83b01;">55.7%</strong> (<code>34/61</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Exp 1 &bull; Variant (CSDL with <code>@Agent.Prompts</code>)</strong></td>
+              <td><code>C:\MCP\Server</code> (<code>:3001</code>)</td>
+              <td><code>Server_WithPrompts.csdl</code> (2 Entities)</td>
+              <td>5 Tools, 4 Resources, <span class="kw-annot">12 @Agent.Prompts</span>, 0 Examples</td>
+              <td><strong style="color:#107c41;">91.8%</strong> (<code>56/61</code>, <span class="kw-odata">+36.1 pp Prompt Impact</span>)</td>
+            </tr>
+            <tr>
+              <td><strong>Exp 2 &bull; 1. Direct Transform w/o Examples</strong></td>
+              <td><code>C:\MCP\LargeServer_NoExamples</code> (<code>:3004</code>)</td>
+              <td><code>Server_Large.csdl</code> (10 Entities, 5 Ops)</td>
+              <td>59 Tools, 21 Resources, 22 Prompts, <span class="kw-warn">0 Examples</span> (~17,509 catalog tokens)</td>
+              <td><strong style="color:#d83b01;">55.0%</strong> (<code>55/100</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Exp 2 &amp; 3 &bull; 2. Direct Transform with Examples</strong></td>
+              <td><code>C:\MCP\LargeServer</code> (<code>:3003</code>)</td>
+              <td><code>Server_Large_WithExamples.csdl</code> (10 Entities, 5 Ops)</td>
+              <td>59 Tools, 21 Resources, 22 Prompts, <span class="kw-annot">28 @Agent.Examples</span> (~17,509 catalog tokens)</td>
+              <td><strong style="color:#107c41;">91.0%</strong> (<code>91/100</code>, <span class="kw-odata">+36.0 pp Examples Impact</span>)</td>
+            </tr>
+            <tr>
+              <td><strong>Exp 3 &bull; 3. Intent Search + OData Query</strong></td>
+              <td><code>C:\MCP\LargeServer_SearchQuery</code> (<code>:3005</code>)</td>
+              <td><code>Server_Large_WithExamples.csdl</code> (10 Entities, 5 Ops)</td>
+              <td><strong>2 Tools only</strong> (<code class="kw-mcp">search_intent</code>, <code class="kw-mcp">execute_odata_query</code>), <span class="kw-odata">-97.8% catalog tokens</span> (~383 tokens)</td>
+              <td><strong style="color:#107c41;">96.0%</strong> (<code>96/100</code>, <span class="kw-odata">+5.0 pp vs Var 2 / +41.0 pp vs Var 1</span>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div class="summary-card accent-purple">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-annotation">Deterministic Engine</span>
-            <span class="summary-card-num">#2</span>
+      <div class="summary-grid" id="summaryTilesGrid">
+        <details class="summary-card collapsible-summary-tile accent-blue" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-mcp-spec">MCP 2.0 Transport</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #1</span>
+            </div>
+            <h3>1. Local HTTP MCP Servers</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>Built on <strong>.NET 10 / C#</strong> with <code class="kw-mcp">ModelContextProtocol.AspNetCore</code>.</p>
+            <ul>
+              <li><strong>Server A (<code>http://localhost:3001/</code>):</strong> CSDL with <span class="kw-annot">@Agent.Prompts</span> (12 container prompts using <span class="kw-odata">OData v4.01 queries</span>).</li>
+              <li><strong>Server B (<code>http://localhost:3002/</code>):</strong> Baseline CSDL <strong>without</strong> <span class="kw-annot">@Agent.Prompts</span> (0 prompts in CSDL).</li>
+              <li><strong>Large Servers (<code>:3003</code>, <code>:3004</code>, <code>:3005</code>):</strong> 10-Entity M365 CSDL with/without <span class="kw-annot">@Agent.Examples</span> and 2-Tool Intent+Query mode.</li>
+              <li><strong>Stateless Streamable HTTP:</strong> JSON-RPC with JSON / SSE responses; protocol version <span class="kw-mcp">2026-07-28</span>.</li>
+            </ul>
           </div>
-          <h3>2. Deterministic CSDL Projection</h3>
-          <p><span class="kw-annot">No LLM performs the conversion.</span> The same annotated schema always produces the exact same MCP contract.</p>
-          <ul>
-            <li>Standard OData <span class="kw-odata">EntitySet</span> and <span class="kw-odata">Singleton</span> declarations &rarr; <span class="kw-mcp">tools/list</span> schemas, <span class="kw-mcp">resources/list</span> URIs/templates, and operation dispatch (no tool or resource annotations in CSDL).</li>
-            <li>Container <span class="kw-annot">Agent.Prompts</span> &rarr; <span class="kw-mcp">prompts/list</span> discovery and parameter-substituted <span class="kw-mcp">prompts/get</span> OData query instructions.</li>
-            <li>Canonical XML is validated via <code>Microsoft.OData.Edm</code>; CSDL JSON (<code>$Version: "4.01"</code>) is projected from the same XML.</li>
-          </ul>
-        </div>
+        </details>
 
-        <div class="summary-card accent-blue">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-mcp-spec">Projected Primitives</span>
-            <span class="summary-card-num">#3</span>
+        <details class="summary-card collapsible-summary-tile accent-purple" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-annotation">Deterministic Engine</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #2</span>
+            </div>
+            <h3>2. Deterministic CSDL Projection</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p><span class="kw-annot">No LLM performs the conversion.</span> The same annotated schema always produces the exact same MCP contract.</p>
+            <ul>
+              <li>Standard OData <span class="kw-odata">EntitySet</span> and <span class="kw-odata">Singleton</span> declarations &rarr; <span class="kw-mcp">tools/list</span> schemas, <span class="kw-mcp">resources/list</span> URIs/templates, and operation dispatch (no tool or resource annotations in CSDL).</li>
+              <li>Container <span class="kw-annot">Agent.Prompts</span> &rarr; <span class="kw-mcp">prompts/list</span> discovery and parameter-substituted <span class="kw-mcp">prompts/get</span> OData query instructions.</li>
+              <li>Canonical XML is validated via <code>Microsoft.OData.Edm</code>; CSDL JSON (<code>$Version: "4.01"</code>) is projected from the same XML.</li>
+            </ul>
           </div>
-          <h3>3. Projected Tools (<span id="summaryToolCount">loading</span>)</h3>
-          <p>Derived deterministically from standard OData <span class="kw-odata">EntitySet</span> and <span class="kw-odata">EntityContainer</span> declarations.</p>
-          <ul id="summaryTools" class="summary-inventory-list"><li>Loading tool definitions...</li></ul>
-        </div>
+        </details>
 
-        <div class="summary-card accent-blue">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-mcp-spec">Projected Primitives</span>
-            <span class="summary-card-num">#4</span>
+        <details class="summary-card collapsible-summary-tile accent-blue" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-mcp-spec">Projected Primitives</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #3</span>
+            </div>
+            <h3>3. Projected Tools (<span id="summaryToolCount">loading</span>)</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>Derived deterministically from standard OData <span class="kw-odata">EntitySet</span> and <span class="kw-odata">EntityContainer</span> declarations.</p>
+            <ul id="summaryTools" class="summary-inventory-list"><li>Loading tool definitions...</li></ul>
           </div>
-          <h3>4. Projected Resources (<span id="summaryResourceCount">loading</span>)</h3>
-          <p id="summaryResourceKinds">Loading concrete resources and URI templates...</p>
-          <ul id="summaryResources" class="summary-inventory-list"><li>Loading resource definitions...</li></ul>
-          <p><code class="kw-mcp">read_resource</code> provides a CLI tool adapter to the same dispatcher as MCP <code class="kw-mcp">resources/read</code>.</p>
-        </div>
+        </details>
 
-        <div class="summary-card accent-purple">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-annotation">Phase 1 CSDL Improvement</span>
-            <span class="summary-card-num">#5</span>
+        <details class="summary-card collapsible-summary-tile accent-blue" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-mcp-spec">Projected Primitives</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #4</span>
+            </div>
+            <h3>4. Projected Resources (<span id="summaryResourceCount">loading</span>)</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p id="summaryResourceKinds">Loading concrete resources and URI templates...</p>
+            <ul id="summaryResources" class="summary-inventory-list"><li>Loading resource definitions...</li></ul>
+            <p><code class="kw-mcp">read_resource</code> provides a CLI tool adapter to the same dispatcher as MCP <code class="kw-mcp">resources/read</code>.</p>
           </div>
-          <h3>5. Container Prompts (<span id="summaryPromptCount">loading</span>)</h3>
-          <p id="summaryPromptKinds">Loading workflow dependencies...</p>
-          <ul id="summaryPrompts" class="summary-inventory-list"><li>Loading prompt definitions...</li></ul>
-          <p>Prompts express <span class="kw-odata">OData v4.01 query workflows</span> across projected tools and resources.</p>
-        </div>
+        </details>
 
-        <div class="summary-card accent-amber">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-amber">Architectural Boundaries</span>
-            <span class="summary-card-num">#6</span>
+        <details class="summary-card collapsible-summary-tile accent-purple" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-annotation">Phase 1 CSDL Improvement</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #5</span>
+            </div>
+            <h3>5. Container Prompts (<span id="summaryPromptCount">loading</span>)</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p id="summaryPromptKinds">Loading workflow dependencies...</p>
+            <ul id="summaryPrompts" class="summary-inventory-list"><li>Loading prompt definitions...</li></ul>
+            <p>Prompts express <span class="kw-odata">OData v4.01 query workflows</span> across projected tools and resources.</p>
           </div>
-          <h3>6. Execution and Non-Deterministic Parts</h3>
-          <p>This is <span class="kw-warn">not a compiler for arbitrary CSDL or arbitrary REST APIs</span>.</p>
-          <ul>
-            <li><strong>C# Handler Registry:</strong> Supported Microsoft Graph operations remain implemented in C#; schema bindings select those handlers.</li>
-            <li><strong>Probabilistic Agent Reasoning:</strong> LLM intent selection, identity disambiguation, cross-resource joins, and answer synthesis remain model-driven.</li>
-            <li><strong>Live vs Fallback Data:</strong> Authentication uses <span class="kw-odata">Azure CLI</span> against live Graph v1.0 with deterministic fallback when offline.</li>
-          </ul>
-        </div>
+        </details>
 
-        <div class="summary-card accent-teal">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-teal">Phase 1 &rarr; Phase 2 Roadmap</span>
-            <span class="summary-card-num">#7</span>
+        <details class="summary-card collapsible-summary-tile accent-amber" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-amber">Architectural Boundaries</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #6</span>
+            </div>
+            <h3>6. Execution and Non-Deterministic Parts</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>This is <span class="kw-warn">not a compiler for arbitrary CSDL or arbitrary REST APIs</span>.</p>
+            <ul>
+              <li><strong>C# Handler Registry:</strong> Supported Microsoft Graph operations remain implemented in C#; schema bindings select those handlers.</li>
+              <li><strong>Probabilistic Agent Reasoning:</strong> LLM intent selection, identity disambiguation, cross-resource joins, and answer synthesis remain model-driven.</li>
+              <li><strong>Live vs Fallback Data:</strong> Authentication uses <span class="kw-odata">Azure CLI</span> against live Graph v1.0 with deterministic fallback when offline.</li>
+            </ul>
           </div>
-          <h3>7. CSDL Prompt Vocabulary &amp; Next Evolution</h3>
-          <p>Current CSDL focuses strictly on <span class="kw-annot">@Agent.Prompts</span> at the <span class="kw-odata">EntityContainer</span> level.</p>
-          <p id="summaryQueryMetadata">Loading prompt vocabulary metadata...</p>
-          <p><strong>Next Step:</strong> Adding <strong>example annotations</strong> on entity sets will further simplify CSDL consumption by AI agents when constructing complex OData filters.</p>
-        </div>
+        </details>
 
-        <div class="summary-card accent-blue">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-mcp-spec">Empirical A/B Benchmark</span>
-            <span class="summary-card-num">#8</span>
+        <details class="summary-card collapsible-summary-tile accent-teal" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-teal">Phase 1 &rarr; Phase 2 Roadmap</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #7</span>
+            </div>
+            <h3>7. CSDL Prompt Vocabulary &amp; Next Evolution</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>Current CSDL focuses strictly on <span class="kw-annot">@Agent.Prompts</span> at the <span class="kw-odata">EntityContainer</span> level.</p>
+            <p id="summaryQueryMetadata">Loading prompt vocabulary metadata...</p>
+            <p><strong>Next Step:</strong> Adding <strong>example annotations</strong> on entity sets will further simplify CSDL consumption by AI agents when constructing complex OData filters.</p>
           </div>
-          <h3>8. Explorer and A/B Evaluation</h3>
-          <p>Interactive Explorer at <code>http://localhost:3000</code>; global MCP selector switches live requests, <span class="kw-odata">GET /$metadata</span>, and trace inspection.</p>
-          <ul>
-            <li><strong>Isolated CLI Harness:</strong> Each query runs in a fresh Copilot CLI home/workspace connected only to its assigned MCP.</li>
-            <li><strong>Controlled Order:</strong> <span class="kw-warn">Baseline B (CSDL without prompts)</span> completes before <span class="kw-annot">Variant A (CSDL with @Agent.Prompts)</span>.</li>
-            <li><strong>Verified Receipts:</strong> Scores verify real MCP tool/resource calls and arguments rather than unexecuted text strings.</li>
-          </ul>
-        </div>
+        </details>
 
-        <div class="summary-card accent-purple">
-          <div class="summary-card-top">
-            <span class="summary-card-badge badge-annotation">Standards Alignment</span>
-            <span class="summary-card-num">#9</span>
+        <details class="summary-card collapsible-summary-tile accent-blue" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-mcp-spec">Empirical A/B Benchmark</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #8</span>
+            </div>
+            <h3>8. Explorer and A/B Evaluation</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>Interactive Explorer at <code>http://localhost:3000</code>; global MCP selector switches live requests, <span class="kw-odata">GET /$metadata</span>, and trace inspection.</p>
+            <ul>
+              <li><strong>Isolated CLI Harness:</strong> Each query runs in a fresh Copilot CLI home/workspace connected only to its assigned MCP.</li>
+              <li><strong>Controlled Order:</strong> <span class="kw-warn">Baseline B (CSDL without prompts)</span> completes before <span class="kw-annot">Variant A (CSDL with @Agent.Prompts)</span>.</li>
+              <li><strong>Verified Receipts:</strong> Scores verify real MCP tool/resource calls and arguments rather than unexecuted text strings.</li>
+            </ul>
           </div>
-          <h3>9. Source Specification and Transcript Alignment</h3>
-          <p>Grounded in the initial prompt specification <code>C:\MCP\mcp-poc.docx</code> and OData TC review feedback in <code>C:\MCP\transcript-2026-10-28.md</code>.</p>
-          <p>Automated tests verify <span class="kw-odata">OASIS OData v4.01</span> <code>/$metadata</code> parity, projected primitive discovery, collapsible request/response sequences, cross-resource workflows, and error recovery.</p>
-        </div>
+        </details>
+
+        <details class="summary-card collapsible-summary-tile accent-purple" open>
+          <summary class="summary-tile-summary">
+            <div class="summary-card-top">
+              <span class="summary-card-badge badge-annotation">Standards Alignment</span>
+              <span class="summary-card-num"><span class="tile-chevron">▸</span> #9</span>
+            </div>
+            <h3>9. Source Specification and Transcript Alignment</h3>
+          </summary>
+          <div class="summary-tile-body">
+            <p>Grounded in the initial prompt specification <code>C:\MCP\mcp-poc.docx</code> and OData TC review feedback in <code>C:\MCP\transcript-2026-10-28.md</code>.</p>
+            <p>Automated tests verify <span class="kw-odata">OASIS OData v4.01</span> <code>/$metadata</code> parity, projected primitive discovery, collapsible request/response sequences, cross-resource workflows, and error recovery.</p>
+          </div>
+        </details>
       </div>
     </div>
   </main>
@@ -1008,20 +1127,24 @@
 
       <!-- Main Workspace (Identical Layout to Explorer Tab) -->
       <section class="ge-workspace">
-        <!-- Top Command Bar (HTTP Method, URL, Run Button) -->
+        <!-- Top Command Bar (HTTP Method, URL Selector, Run Button) -->
         <div class="ge-command-bar">
           <div class="method-selector">
             <span class="method-tag">POST</span>
           </div>
           <div class="url-input-container">
-            <input id="largeMcpEndpointInput" type="text" class="url-input" value="http://localhost:3003/ — Large M365 Graph MCP Server (Server_Large.csdl)" readonly style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--text-primary); background-color: #faf9f8;">
+            <select id="largeMcpEndpointInput" class="url-input" style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-primary); background-color: #faf9f8;">
+              <option value="http://localhost:3003/">http://localhost:3003/ &mdash; LargeServer (Variation 2: Direct Transform WITH @Agent.Examples &bull; Server_Large_WithExamples.csdl)</option>
+              <option value="http://localhost:3004/">http://localhost:3004/ &mdash; LargeServer_NoExamples (Variation 1: Direct Transform WITHOUT Examples &bull; Server_Large.csdl)</option>
+              <option value="http://localhost:3005/">http://localhost:3005/ &mdash; LargeServer_SearchQuery (Variation 3: 2-Tool Intent Identification + OData Query Construction)</option>
+            </select>
           </div>
           <button id="btnLargeRunQuery" class="ge-btn-primary">
             <span class="btn-icon">▶</span> Run Query
           </button>
         </div>
         <p class="projection-summary" id="largeProjectionSummary">
-          Projected from <code>C:\MCP\Csdl\Server_Large.csdl</code>: <strong>10 EntityTypes</strong> (Users, Groups, Drives, DriveItems, Teams, Channels, Chats, ChatMessages, TodoLists, TodoTasks) &bull; <strong>5 Bound Operations</strong> &bull; <strong>14 Tools</strong> &bull; <strong>14 Resources/Templates</strong> &bull; <strong>22 @Agent.Prompts</strong> &bull; <strong>28 @Agent.Examples</strong>
+          Projected via <code>CsdlToMcpTransformer</code> from <code>C:\MCP\Csdl\Server_Large_WithExamples.csdl</code>: <strong>10 EntityTypes</strong> (Users, Groups, Drives, DriveItems, Teams, Channels, Chats, ChatMessages, TodoLists, TodoTasks) &bull; <strong>5 Bound Operations</strong> &bull; <strong>59 Tools</strong> &bull; <strong>21 Resources/Templates</strong> &bull; <strong>22 @Agent.Prompts</strong> &bull; <strong>28 @Agent.Examples</strong>
         </p>
 
         <!-- Upper Pane: Request Details -->
@@ -1069,7 +1192,7 @@
               <div class="mapping-preview-box">
                 <div class="preview-item">
                   <span class="preview-label">Target Microsoft Graph Resource:</span>
-                  <code class="preview-code" id="largeUnderlyingGraphUrl">GET https://graph.microsoft.com/v1.0/me/drive/root/children</code>
+                  <code class="preview-code" id="largeUnderlyingGraphUrl">GET https://graph.contoso.com/v1.0/me/drive/root/children</code>
                 </div>
                 <div class="preview-item">
                   <span class="preview-label">Underlying OData Entity / Operation:</span>
@@ -1157,8 +1280,23 @@
     </div>
   </main>
 
+  <!-- VIEW 8: EXPERIMENT 2 — QUERY EXAMPLES IMPACT ON LARGE API SURFACE (:3004 w/o Examples vs :3003 with @Agent.Examples) -->
+  <main class="view-container" id="view-examples-impact">
+    <div class="doc-view-layout" id="examplesImpactContent">
+      <p>Loading Query Examples Impact benchmark...</p>
+    </div>
+  </main>
+
+  <!-- VIEW 9: EXPERIMENT 3 — LARGE MCP DIRECT TRANSFORM (:3003) VS INTENT IDENTIFICATION + ODATA QUERY CONSTRUCTION (:3005) -->
+  <main class="view-container" id="view-intent-vs-large">
+    <div class="doc-view-layout" id="intentVsLargeContent">
+      <p>Loading Large MCP vs. Intent + Query benchmark...</p>
+    </div>
+  </main>
+
   <script src="app.js"></script>
   <script src="experiment.js"></script>
   <script src="large-explorer.js"></script>
+  <script src="large-experiments.js"></script>
 </body>
 </html>

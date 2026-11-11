@@ -132,7 +132,7 @@ Check(trace.DurationMs >= 0 && trace.Timestamp <= DateTimeOffset.UtcNow, "Trace 
 CsdlProvider.Initialize(fixture);
 Check(CsdlProvider.GetProjectedTools().Select(t => t.Name).SequenceEqual(tools.Select(t => t.Name)), "Stable names across reloads");
 
-foreach (var (name, prompts, examples) in new[] { ("Server_Baseline.csdl", 0, 0), ("Server_WithPrompts.csdl", 12, 0), ("Server_Large.csdl", 22, 28) })
+foreach (var (name, prompts, examples) in new[] { ("Server_Baseline.csdl", 0, 0), ("Server_WithPrompts.csdl", 12, 0), ("Server_Large.csdl", 22, 0), ("Server_Large_WithExamples.csdl", 22, 28) })
 {
     var path = Path.Combine(args.Length > 0 ? args[0] : @"C:\MCP\Csdl", name);
     CsdlProvider.Initialize(path);

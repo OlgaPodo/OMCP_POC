@@ -7,8 +7,8 @@ Proof-of-Concept aligned with the **MCP 2.0 (`2026-07-28` Specification)** ([spe
 ## 1. Prerequisites
 
 ### A. Microsoft Graph API Access & Authentication (Any Tenant)
-To execute live queries against `https://graph.microsoft.com/v1.0`:
-1. **Microsoft Entra ID / M365 Tenant Access**: Access to Microsoft Graph APIs on any tenant (for example, a [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program) sandbox tenant or test directory) containing users, reporting hierarchies (`manager`, `directReports`), and groups (`members`, `owners`).
+To execute live queries against `https://graph.contoso.com/v1.0`:
+1. **Microsoft Entra ID / M365 Tenant Access**: Access to Microsoft Graph APIs on any tenant (for example, a [Microsoft 365 Developer Program](https://developer.contoso.com/microsoft-365/dev-program) sandbox tenant or test directory) containing users, reporting hierarchies (`manager`, `directReports`), and groups (`members`, `owners`).
 2. **Graph Permissions**: Directory read permissions on the signed-in account:
    - `User.Read.All` (or `Directory.Read.All`) for `/v1.0/me`, `/v1.0/users`, `/v1.0/users('{id}')/manager`, and `/v1.0/users('{id}')/directReports`
    - `Group.Read.All` (or `Directory.Read.All`) for `/v1.0/groups`, `/v1.0/groups('{id}')/members`, and `/v1.0/groups('{id}')/owners`
@@ -96,7 +96,7 @@ Modeled after **Microsoft Graph Explorer (`aka.ms/ge`)**:
 
 1. **Interactive MCP 2.0 Explorer**:
    - Inspects HTTP Request Headers (`MCP-Protocol-Version: 2026-07-28`, `Mcp-Method`, `Mcp-Name`), JSON-RPC payloads, Response Headers, and Response Payloads (`resultType: complete`).
-   - Interactive Org Profile Card rendering and Microsoft Graph REST trace inspection (`https://graph.microsoft.com/v1.0/...`).
+   - Interactive Org Profile Card rendering and Microsoft Graph REST trace inspection (`https://graph.contoso.com/v1.0/...`).
 2. **CSDL & Annotations (`GET /$metadata`)**:
    - Side-by-side CSDL JSON (`$Version: "4.01"`) and CSDL XML (`Version="4.0"`) viewers with toggle between Server A (with `@Agent.Prompts`) and Server B (without prompts).
 3. **Architectural Comparison**:

@@ -82,7 +82,7 @@ class TransformParityTests(unittest.TestCase):
                     self.assertEqual(p_orig, p_trans, f"prompts/get({p['name']}) mismatch for {csdl_name}")
 
                 # 5. Resources read parity
-                uris = ["users://me", "users://opodolyako@microsoft.com", "groups://all", "groups://11111111-2222-3333-4444-555555555555"]
+                uris = ["users://me", "users://miriamg@contoso.com", "groups://all", "groups://11111111-2222-3333-4444-555555555555"]
                 if csdl_name == "Server_Large.csdl":
                     uris.extend(["drives://me", "files://recent", "files://file-mcp-poc-docx", "teams://all", "channels://ch-csdl-typespec/messages", "chats://all", "todo://lists", "todo://tasks"])
                 for uri in uris:
@@ -92,11 +92,11 @@ class TransformParityTests(unittest.TestCase):
 
                 # 6. Tools call parity
                 tool_calls = [
-                    ("find_user", {"query": "Olga"}),
-                    ("user_profile", {"userId": "opodolyako@microsoft.com"}),
+                    ("find_user", {"query": "Miriam"}),
+                    ("user_profile", {"userId": "miriamg@contoso.com"}),
                     ("find_group", {"query": "Identity"}),
                     ("group_details", {"groupId": "Identity Architecture"}),
-                    ("read_resource", {"uri": "users://opodolyako@microsoft.com"}),
+                    ("read_resource", {"uri": "users://miriamg@contoso.com"}),
                 ]
                 if csdl_name == "Server_Large.csdl":
                     tool_calls.extend([
