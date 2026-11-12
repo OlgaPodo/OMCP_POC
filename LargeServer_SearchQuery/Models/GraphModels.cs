@@ -341,6 +341,7 @@ public class GraphListResponse<T>
 public class GraphTraceRecord
 {
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
+    public string? CorrelationId { get; set; }
     public string Method { get; set; } = "GET";
     public string Url { get; set; } = string.Empty;
     public int StatusCode { get; set; }

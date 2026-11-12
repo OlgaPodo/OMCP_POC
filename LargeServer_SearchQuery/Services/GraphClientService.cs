@@ -11,6 +11,7 @@ public class GraphClientService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<GraphClientService> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private string? _cachedToken;
     private DateTimeOffset _tokenExpiresOn = DateTimeOffset.MinValue;
     private readonly List<GraphTraceRecord> _traces = [];
@@ -19,11 +20,15 @@ public class GraphClientService
     private static readonly List<GraphChatMessage> PostedChannelMessages = [];
     private static readonly HashSet<string> CompletedTaskIds = new(StringComparer.OrdinalIgnoreCase);
 
-    public GraphClientService(HttpClient httpClient, ILogger<GraphClientService> logger)
+    public GraphClientService(
+        HttpClient httpClient,
+        ILogger<GraphClientService> logger,
+        IHttpContextAccessor httpContextAccessor)
     {
         _httpClient = httpClient;
         _logger = logger;
-        _httpClient.BaseAddress = new Uri("https://graph.contoso.com/v1.0/");
+        _httpContextAccessor = httpContextAccessor;
+        _httpClient.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
@@ -31,12 +36,14 @@ public class GraphClientService
     {
         lock (_traceLock)
         {
-            return _traces.TakeLast(30).ToList();
+            return _traces.TakeLast(100).ToList();
         }
     }
 
     private void AddTrace(GraphTraceRecord trace)
     {
+        trace.CorrelationId ??= _httpContextAccessor.HttpContext?.Request.Headers[
+            "X-Experiment-Correlation-Id"].FirstOrDefault();
         lock (_traceLock)
         {
             _traces.Add(trace);
@@ -55,7 +62,7 @@ public class GraphClientService
         {
             var credential = new AzureCliCredential();
             var tokenResult = await credential.GetTokenAsync(
-                new TokenRequestContext(["https://graph.contoso.com/.default"]),
+                new TokenRequestContext(["https://graph.microsoft.com/.default"]),
                 cancellationToken);
 
             _cachedToken = tokenResult.Token;
@@ -123,7 +130,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: Bearer [REDACTED]\nAccept: application/json",
                     IsLive = true
                 };
@@ -155,7 +162,7 @@ public class GraphClientService
                 AddTrace(new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/users?$filter=... [FALLBACK]",
+                    Url = $"https://graph.microsoft.com/v1.0/users?$filter=... [FALLBACK]",
                     StatusCode = 500,
                     ResponseSummary = ex.Message,
                     IsLive = false
@@ -192,7 +199,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: Bearer [REDACTED]\nAccept: application/json",
                     IsLive = true
                 };
@@ -295,7 +302,7 @@ public class GraphClientService
             var trace = new GraphTraceRecord
             {
                 Method = "GET",
-                Url = $"https://graph.contoso.com/v1.0/{url}",
+                Url = $"https://graph.microsoft.com/v1.0/{url}",
                 RequestHeaders = "Authorization: Bearer [REDACTED]",
                 IsLive = true
             };
@@ -329,7 +336,7 @@ public class GraphClientService
             var trace = new GraphTraceRecord
             {
                 Method = "GET",
-                Url = $"https://graph.contoso.com/v1.0/{url}",
+                Url = $"https://graph.microsoft.com/v1.0/{url}",
                 RequestHeaders = "Authorization: Bearer [REDACTED]",
                 IsLive = true
             };
@@ -370,7 +377,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -402,7 +409,7 @@ public class GraphClientService
                 AddTrace(new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/groups?$filter=... [FALLBACK]",
+                    Url = $"https://graph.microsoft.com/v1.0/groups?$filter=... [FALLBACK]",
                     StatusCode = 500,
                     ResponseSummary = ex.Message,
                     IsLive = false
@@ -432,7 +439,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -473,7 +480,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -546,8 +553,8 @@ public class GraphClientService
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
         string cleanPath = path.Trim().TrimStart('/');
-        if (cleanPath.StartsWith("https://graph.contoso.com/v1.0/", StringComparison.OrdinalIgnoreCase))
-            cleanPath = cleanPath["https://graph.contoso.com/v1.0/".Length..];
+        if (cleanPath.StartsWith("https://graph.microsoft.com/v1.0/", StringComparison.OrdinalIgnoreCase))
+            cleanPath = cleanPath["https://graph.microsoft.com/v1.0/".Length..];
         else if (cleanPath.StartsWith("v1.0/", StringComparison.OrdinalIgnoreCase))
             cleanPath = cleanPath["v1.0/".Length..];
         else if (cleanPath.StartsWith("users://", StringComparison.OrdinalIgnoreCase))
@@ -569,7 +576,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{cleanPath}",
+                    Url = $"https://graph.microsoft.com/v1.0/{cleanPath}",
                     RequestHeaders = "Authorization: ****** application/json",
                     IsLive = true
                 };
@@ -703,8 +710,8 @@ public class GraphClientService
         {
             Method = "GET",
             Url = userOrDriveId.Equals("me", StringComparison.OrdinalIgnoreCase)
-                ? "https://graph.contoso.com/v1.0/me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName"
-                : $"https://graph.contoso.com/v1.0/drives('{Uri.EscapeDataString(userOrDriveId)}')/root/children",
+                ? "https://graph.microsoft.com/v1.0/me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName"
+                : $"https://graph.microsoft.com/v1.0/drives('{Uri.EscapeDataString(userOrDriveId)}')/root/children",
             StatusCode = 200,
             ResponseSummary = "OneDrive root children and quota",
             IsLive = false
@@ -718,7 +725,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = $"https://graph.contoso.com/v1.0/drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{Uri.EscapeDataString(q)}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName",
+            Url = $"https://graph.microsoft.com/v1.0/drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{Uri.EscapeDataString(q)}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName",
             StatusCode = 200,
             ResponseSummary = $"Bound Function searchDriveItems(q='{q}')",
             IsLive = false
@@ -743,7 +750,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = $"https://graph.contoso.com/v1.0/driveItems('{Uri.EscapeDataString(item.Id)}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            Url = $"https://graph.microsoft.com/v1.0/driveItems('{Uri.EscapeDataString(item.Id)}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
             StatusCode = 200,
             ResponseSummary = $"Resolved lastModifiedByUser={item.LastModifiedByDisplayName}",
             IsLive = false
@@ -758,7 +765,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = "https://graph.contoso.com/v1.0/me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels",
+            Url = "https://graph.microsoft.com/v1.0/me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels",
             StatusCode = 200,
             ResponseSummary = "Joined Microsoft Teams with channels",
             IsLive = false
@@ -786,7 +793,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = $"https://graph.contoso.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.deltaChannelMessages()?$top=20",
+            Url = $"https://graph.microsoft.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.deltaChannelMessages()?$top=20",
             StatusCode = 200,
             ResponseSummary = $"Channel '{channel.DisplayName}' messages ({channel.Messages.Count})",
             IsLive = false
@@ -807,11 +814,11 @@ public class GraphClientService
             Subject = string.IsNullOrWhiteSpace(subject) ? "MCP 2.0 Status Update" : subject,
             Summary = bodyContent.Length > 80 ? bodyContent[..80] + "..." : bodyContent,
             BodyContent = bodyContent,
-            FromDisplayName = "Miriam Graham",
-            FromUpn = "miriamg@contoso.com",
+            FromDisplayName = "Avery Adams",
+            FromUpn = "avery.adams@example.com",
             Importance = "high",
             CreatedDateTime = DateTimeOffset.UtcNow,
-            WebUrl = $"https://teams.contoso.com/l/message/{channel.Id}/msg-posted"
+            WebUrl = $"https://teams.microsoft.com/l/message/{channel.Id}/msg-posted"
         };
         lock (PostedChannelMessages)
         {
@@ -820,7 +827,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "POST",
-            Url = $"https://graph.contoso.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.sendChannelMessage",
+            Url = $"https://graph.microsoft.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.sendChannelMessage",
             StatusCode = 201,
             ResponseSummary = $"Posted message '{msg.Subject}' to {channel.DisplayName}",
             IsLive = false
@@ -835,7 +842,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = "https://graph.contoso.com/v1.0/me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)",
+            Url = "https://graph.microsoft.com/v1.0/me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)",
             StatusCode = 200,
             ResponseSummary = "Recent 1:1 and group chats",
             IsLive = false
@@ -858,7 +865,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "GET",
-            Url = "https://graph.contoso.com/v1.0/me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&$expand=tasks",
+            Url = "https://graph.microsoft.com/v1.0/me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&$expand=tasks",
             StatusCode = 200,
             ResponseSummary = "Microsoft To Do task lists and tasks",
             IsLive = false
@@ -896,7 +903,7 @@ public class GraphClientService
         AddTrace(new GraphTraceRecord
         {
             Method = "POST",
-            Url = $"https://graph.contoso.com/v1.0/todoTasks('{Uri.EscapeDataString(task.Id)}')/Microsoft.Graph.completeTodoTask",
+            Url = $"https://graph.microsoft.com/v1.0/todoTasks('{Uri.EscapeDataString(task.Id)}')/Microsoft.Graph.completeTodoTask",
             StatusCode = 200,
             ResponseSummary = $"Completed To Do task '{task.Title}'",
             IsLive = false
@@ -911,100 +918,100 @@ public class GraphClientService
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000001",
-                DisplayName = "Miriam Graham",
-                UserPrincipalName = "miriamg@contoso.com",
-                Mail = "miriamg@contoso.com",
+                DisplayName = "Avery Adams",
+                UserPrincipalName = "avery.adams@example.com",
+                Mail = "avery.adams@example.com",
                 JobTitle = "PRINCIPAL API ARCHITECT",
-                Department = "Architecture & Standards",
+                Department = "Platform Engineering",
                 OfficeLocation = "Home Office",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000002",
-                DisplayName = "Alex Wilbur",
-                UserPrincipalName = "alexw@contoso.com",
-                Mail = "alexw@contoso.com",
+                DisplayName = "Morgan Reed",
+                UserPrincipalName = "morgan.reed@example.com",
+                Mail = "morgan.reed@example.com",
                 JobTitle = "Partner Director Engineering",
-                Department = "Engineering Leadership",
-                OfficeLocation = "Building 1 / Remote",
+                Department = "Cloud Operations",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000003",
-                DisplayName = "Megan Bowen",
-                UserPrincipalName = "meganb@contoso.com",
-                Mail = "meganb@contoso.com",
+                DisplayName = "Jordan Lee",
+                UserPrincipalName = "jordan.lee@example.com",
+                Mail = "jordan.lee@example.com",
                 JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 2 / 1072",
+                Department = "Platform Engineering",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000004",
-                DisplayName = "Adele Vance",
-                UserPrincipalName = "adelev@contoso.com",
-                Mail = "adelev@contoso.com",
+                DisplayName = "Casey Kim",
+                UserPrincipalName = "casey.kim@example.com",
+                Mail = "casey.kim@example.com",
                 JobTitle = "PRINCIPAL PRODUCT MANAGER",
-                Department = "Product Operations",
-                OfficeLocation = "Building 2 / 1084",
+                Department = "AI Products",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000005",
-                DisplayName = "Diego Siciliani",
-                UserPrincipalName = "diegos@contoso.com",
-                Mail = "diegos@contoso.com",
+                DisplayName = "Taylor Morgan",
+                UserPrincipalName = "taylor.morgan@example.com",
+                Mail = "taylor.morgan@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MANAGER",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 2 / 1086",
+                Department = "Platform Engineering",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000006",
-                DisplayName = "Patti Fernandez",
-                UserPrincipalName = "pattif@contoso.com",
-                Mail = "pattif@contoso.com",
+                DisplayName = "Riley Chen",
+                UserPrincipalName = "riley.chen@example.com",
+                Mail = "riley.chen@example.com",
                 JobTitle = "BUSINESS ADMINISTRATOR",
-                Department = "Engineering Leadership",
-                OfficeLocation = "Building 1 / Remote",
+                Department = "Cloud Operations",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000007",
-                DisplayName = "Lynne Robbins",
-                UserPrincipalName = "lynner@contoso.com",
-                Mail = "lynner@contoso.com",
+                DisplayName = "Jamie Patel",
+                UserPrincipalName = "jamie.patel@example.com",
+                Mail = "jamie.patel@example.com",
                 JobTitle = "GROUP PM MANAGER",
                 Department = "Directory Operations",
-                OfficeLocation = "Building 2 / 1072",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000008",
-                DisplayName = "Joni Sherman",
-                UserPrincipalName = "jonis@contoso.com",
-                Mail = "jonis@contoso.com",
+                DisplayName = "Cameron Brooks",
+                UserPrincipalName = "cameron.brooks@example.com",
+                Mail = "cameron.brooks@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MGR",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 1",
+                Department = "Platform Engineering",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000009",
-                DisplayName = "Henrietta Mueller",
-                UserPrincipalName = "henriettam@contoso.com",
-                Mail = "henriettam@contoso.com",
+                DisplayName = "Drew Parker",
+                UserPrincipalName = "drew.parker@example.com",
+                Mail = "drew.parker@example.com",
                 JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
                 Department = "Data & AI",
-                OfficeLocation = "Building 2",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -1019,7 +1026,7 @@ public class GraphClientService
             string.Equals(u.UserPrincipalName, identifier, StringComparison.OrdinalIgnoreCase) ||
             u.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? users[0];
 
-        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Alex", StringComparison.OrdinalIgnoreCase));
+        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Morgan", StringComparison.OrdinalIgnoreCase));
         var peers = users.Where(u => u.Id != user.Id && u.Id != manager?.Id).ToList();
 
         return new UserProfileDetail
@@ -1045,9 +1052,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "11111111-2222-3333-4444-555555555555",
-                DisplayName = "Identity Architecture",
+                DisplayName = "Platform Engineering",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
-                Mail = "identityarch@contoso.com",
+                Mail = "platform-engineering@example.com",
                 MailNickname = "identityarch",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -1060,7 +1067,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "scimreviewers@contoso.com",
+                Mail = "schema-reviewers@example.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -1071,9 +1078,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "33333333-4444-5555-6666-777777777777",
-                DisplayName = "Microsoft Graph Partners",
+                DisplayName = "API Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "graphpartners@contoso.com",
+                Mail = "api-partners@example.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -1084,9 +1091,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData TC Working Group",
+                DisplayName = "OData Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odatetc@contoso.com",
+                Mail = "odata-working-group@example.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -1108,13 +1115,13 @@ public class GraphClientService
             string.Equals(g.MailNickname, identifier, StringComparison.OrdinalIgnoreCase) ||
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
-        var owners = users.Where(u => u.DisplayName.Contains("Alex") || u.DisplayName.Contains("Michael")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Miriam") || u.DisplayName.Contains("Megan") || u.DisplayName.Contains("Adele") || u.DisplayName.Contains("Diego Siciliani")).ToList();
+        var owners = users.Where(u => u.DisplayName.Contains("Morgan") || u.DisplayName.Contains("Drew")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Casey") || u.DisplayName.Contains("Taylor Morgan")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
-            owners = users.Where(u => u.DisplayName.Contains("Miriam")).ToList();
-            members = users.Where(u => u.DisplayName.Contains("Lynne") || u.DisplayName.Contains("Patti") || u.DisplayName.Contains("Joni")).ToList();
+            owners = users.Where(u => u.DisplayName.Contains("Avery")).ToList();
+            members = users.Where(u => u.DisplayName.Contains("Jamie") || u.DisplayName.Contains("Riley") || u.DisplayName.Contains("Cameron")).ToList();
         }
 
         return new GroupDetail
@@ -1138,81 +1145,81 @@ public class GraphClientService
     public static List<GraphDriveItem> GetMockDriveItems()
     {
         var users = GetMockUsers();
-        var miriam = users[0];
-        var megan = users[2];
-        var henrietta = users[8];
-        var adele = users[3];
+        var avery = users[0];
+        var jordan = users[2];
+        var mike = users[8];
+        var casey = users[3];
 
         return [
             new GraphDriveItem
             {
                 Id = "file-mcp-poc-docx",
-                Name = "Script_MCP_POC.docx",
+                Name = "Agent_Protocol_Demo.docx",
                 Size = 482910,
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents/Script_MCP_POC.docx",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/Agent_Protocol_Demo.docx",
                 FileMimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-18T14:20:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-11-03T18:45:00Z"),
-                LastModifiedByDisplayName = miriam.DisplayName,
-                LastModifiedByUpn = miriam.UserPrincipalName,
-                LastModifiedByUser = miriam
+                LastModifiedByDisplayName = avery.DisplayName,
+                LastModifiedByUpn = avery.UserPrincipalName,
+                LastModifiedByUser = avery
             },
             new GraphDriveItem
             {
                 Id = "file-odata-agent-prompts-pptx",
-                Name = "OData-v4.01-Agent-Prompts-Proposal.pptx",
+                Name = "OData-Agent-Proposal.pptx",
                 Size = 2841920,
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents/OData-v4.01-Agent-Prompts-Proposal.pptx",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/OData-Agent-Proposal.pptx",
                 FileMimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-20T09:00:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-11-04T09:15:00Z"),
-                LastModifiedByDisplayName = henrietta.DisplayName,
-                LastModifiedByUpn = henrietta.UserPrincipalName,
-                LastModifiedByUser = henrietta
+                LastModifiedByDisplayName = mike.DisplayName,
+                LastModifiedByUpn = mike.UserPrincipalName,
+                LastModifiedByUser = mike
             },
             new GraphDriveItem
             {
                 Id = "file-csdl-consistency-xlsx",
-                Name = "Graph-CSDL-Consistency-Benchmark.xlsx",
+                Name = "API-Schema-Validation.xlsx",
                 Size = 918240,
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents/Graph-CSDL-Consistency-Benchmark.xlsx",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/API-Schema-Validation.xlsx",
                 FileMimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-24T11:30:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-11-02T16:10:00Z"),
-                LastModifiedByDisplayName = megan.DisplayName,
-                LastModifiedByUpn = megan.UserPrincipalName,
-                LastModifiedByUser = megan
+                LastModifiedByDisplayName = jordan.DisplayName,
+                LastModifiedByUpn = jordan.UserPrincipalName,
+                LastModifiedByUser = jordan
             },
             new GraphDriveItem
             {
                 Id = "file-mcp-20-spec-pdf",
                 Name = "MCP-2.0-Specification-2026-07-28-Notes.pdf",
                 Size = 1540320,
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents/MCP-2.0-Specification-2026-07-28-Notes.pdf",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/MCP-2.0-Specification-2026-07-28-Notes.pdf",
                 FileMimeType = "application/pdf",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-08-12T10:00:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-10-29T13:25:00Z"),
-                LastModifiedByDisplayName = adele.DisplayName,
-                LastModifiedByUpn = adele.UserPrincipalName,
-                LastModifiedByUser = adele
+                LastModifiedByDisplayName = casey.DisplayName,
+                LastModifiedByUpn = casey.UserPrincipalName,
+                LastModifiedByUser = casey
             },
             new GraphDriveItem
             {
                 Id = "folder-architecture-specs",
                 Name = "Architecture-Specs",
                 Size = 0,
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents/Architecture-Specs",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/Architecture-Specs",
                 FileMimeType = "inode/directory",
                 IsFolder = true,
                 CreatedDateTime = DateTimeOffset.Parse("2026-01-10T08:00:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-11-01T12:00:00Z"),
-                LastModifiedByDisplayName = miriam.DisplayName,
-                LastModifiedByUpn = miriam.UserPrincipalName,
-                LastModifiedByUser = miriam
+                LastModifiedByDisplayName = avery.DisplayName,
+                LastModifiedByUpn = avery.UserPrincipalName,
+                LastModifiedByUser = avery
             }
         ];
     }
@@ -1222,11 +1229,11 @@ public class GraphClientService
         return [
             new GraphDrive
             {
-                Id = "drive-miriam",
-                Name = "OneDrive - Miriam Graham",
+                Id = "drive-avery",
+                Name = "OneDrive - Avery Adams",
                 DriveType = "business",
-                WebUrl = "https://files.contoso.com/personal/miriamg/Documents",
-                OwnerDisplayName = "Miriam Graham",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents",
+                OwnerDisplayName = "Avery Adams",
                 QuotaTotal = 1099511627776,
                 QuotaUsed = 4829103920,
                 Items = GetMockDriveItems()
@@ -1243,8 +1250,8 @@ public class GraphClientService
             DisplayName = "General",
             Description = "General architecture announcements and weekly sync updates",
             MembershipType = "standard",
-            Email = "identityarch-general@contoso.com",
-            WebUrl = "https://teams.contoso.com/l/channel/ch-idarch-general",
+            Email = "platform-general@example.com",
+            WebUrl = "https://teams.microsoft.com/l/channel/ch-idarch-general",
             CreatedDateTime = DateTimeOffset.Parse("2023-01-15T08:05:00Z"),
             Messages = [
                 new GraphChatMessage
@@ -1253,8 +1260,8 @@ public class GraphClientService
                     Subject = "Weekly Architecture Review Agenda",
                     Summary = "Reviewing OData v4.01 $metadata alignment and CSDL consistency gates.",
                     BodyContent = "Team — on Thursday we will review the OData v4.01 $metadata endpoint conventions and the new @Agent.Prompts / @Agent.Examples annotations.",
-                    FromDisplayName = "Alex Wilbur",
-                    FromUpn = "alexw@contoso.com",
+                    FromDisplayName = "Morgan Reed",
+                    FromUpn = "morgan.reed@example.com",
                     Importance = "normal",
                     CreatedDateTime = DateTimeOffset.Parse("2026-11-03T15:00:00Z")
                 }
@@ -1268,8 +1275,8 @@ public class GraphClientService
             DisplayName = "CSDL & TypeSpec",
             Description = "CSDL schema projection, TypeSpec migration, and @Agent.Examples annotations",
             MembershipType = "standard",
-            Email = "csdl-typespec@contoso.com",
-            WebUrl = "https://teams.contoso.com/l/channel/ch-csdl-typespec",
+            Email = "csdl-typespec@example.com",
+            WebUrl = "https://teams.microsoft.com/l/channel/ch-csdl-typespec",
             CreatedDateTime = DateTimeOffset.Parse("2024-03-10T10:00:00Z"),
             Messages = [
                 new GraphChatMessage
@@ -1278,8 +1285,8 @@ public class GraphClientService
                     Subject = "Phase 1 vs Phase 2 CSDL Annotations",
                     Summary = "@Agent.Prompts on EntityContainer (+36.1 pp routing gain) + @Agent.Examples on Entities & Operations",
                     BodyContent = "Phase 1 (@Agent.Prompts on GraphService) raised verified routing accuracy from 55.7% to 91.8%. For LargeServer we added @Agent.Examples on EntityTypes, EntitySets, Functions, and Actions covering Files, Teams, Chats, and To Do.",
-                    FromDisplayName = "Miriam Graham",
-                    FromUpn = "miriamg@contoso.com",
+                    FromDisplayName = "Avery Adams",
+                    FromUpn = "avery.adams@example.com",
                     Importance = "high",
                     CreatedDateTime = DateTimeOffset.Parse("2026-11-04T10:30:00Z")
                 },
@@ -1289,8 +1296,8 @@ public class GraphClientService
                     Subject = "Bound OData Functions & Actions in CSDL",
                     Summary = "Added searchDriveItems, recentDriveItems, deltaChannelMessages, sendChannelMessage, completeTodoTask",
                     BodyContent = "Confirmed that bound Functions and Actions in Microsoft.Graph validate cleanly with Microsoft.OData.Edm 9.0.0 and project deterministically to MCP tools.",
-                    FromDisplayName = "Megan Bowen",
-                    FromUpn = "meganb@contoso.com",
+                    FromDisplayName = "Jordan Lee",
+                    FromUpn = "jordan.lee@example.com",
                     Importance = "high",
                     CreatedDateTime = DateTimeOffset.Parse("2026-11-04T11:45:00Z")
                 }
@@ -1304,8 +1311,8 @@ public class GraphClientService
             DisplayName = "MCP 2.0 Integration",
             Description = "Model Context Protocol 2026-07-28 stateless HTTP transport and discovery",
             MembershipType = "standard",
-            Email = "mcp20@contoso.com",
-            WebUrl = "https://teams.contoso.com/l/channel/ch-mcp-20",
+            Email = "protocol-demo@example.com",
+            WebUrl = "https://teams.microsoft.com/l/channel/ch-mcp-20",
             CreatedDateTime = DateTimeOffset.Parse("2026-08-01T09:00:00Z"),
             Messages = [
                 new GraphChatMessage
@@ -1314,8 +1321,8 @@ public class GraphClientService
                     Subject = "Stateless server/discover & Multi-Workload Projection",
                     Summary = "Removed deprecated initialize; added M365 workloads (Files, Teams, Chats, To Do) on port 3003.",
                     BodyContent = "LargeServer (:3003) exposes 14 tools, 13 resources/templates, 22 @Agent.Prompts, and 28 @Agent.Examples directly projected from Server_Large.csdl.",
-                    FromDisplayName = "Adele Vance",
-                    FromUpn = "adelev@contoso.com",
+                    FromDisplayName = "Casey Kim",
+                    FromUpn = "casey.kim@example.com",
                     Importance = "high",
                     CreatedDateTime = DateTimeOffset.Parse("2026-11-04T14:15:00Z")
                 }
@@ -1331,22 +1338,22 @@ public class GraphClientService
             new GraphTeam
             {
                 Id = "11111111-2222-3333-4444-555555555555",
-                DisplayName = "Identity Architecture",
+                DisplayName = "Platform Engineering",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
                 Visibility = "Public",
                 IsArchived = false,
-                WebUrl = "https://teams.contoso.com/l/team/11111111-2222-3333-4444-555555555555",
+                WebUrl = "https://teams.microsoft.com/l/team/11111111-2222-3333-4444-555555555555",
                 CreatedDateTime = DateTimeOffset.Parse("2023-01-15T08:00:00Z"),
                 Channels = [chGeneral, chCsdl, chMcp]
             },
             new GraphTeam
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData TC Working Group",
+                DisplayName = "OData Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
                 Visibility = "Public",
                 IsArchived = false,
-                WebUrl = "https://teams.contoso.com/l/team/44444444-5555-6666-7777-888888888888",
+                WebUrl = "https://teams.microsoft.com/l/team/44444444-5555-6666-7777-888888888888",
                 CreatedDateTime = DateTimeOffset.Parse("2024-02-01T09:00:00Z"),
                 Channels = [
                     new GraphChannel
@@ -1356,8 +1363,8 @@ public class GraphClientService
                         DisplayName = "Agent-Ready Vocabularies",
                         Description = "OASIS OData TC proposal for @Agent.Prompts and @Agent.Examples",
                         MembershipType = "standard",
-                        Email = "odata-agent-vocab@contoso.com",
-                        WebUrl = "https://teams.contoso.com/l/channel/ch-odata-vocab",
+                        Email = "odata-agent-vocab@example.com",
+                        WebUrl = "https://teams.microsoft.com/l/channel/ch-odata-vocab",
                         CreatedDateTime = DateTimeOffset.Parse("2024-02-05T10:00:00Z"),
                         Messages = [
                             new GraphChatMessage
@@ -1365,9 +1372,9 @@ public class GraphClientService
                                 Id = "msg-401",
                                 Subject = "OData v4.01 $metadata + Agent Vocabulary Alignment",
                                 Summary = "Keeping CSDL pure: project tools/resources from native EntitySets & Operations; use @Agent.Prompts and @Agent.Examples.",
-                                BodyContent = "Updated the proposal deck in OneDrive (OData-v4.01-Agent-Prompts-Proposal.pptx) to show both EntityContainer @Agent.Prompts and entity/operation @Agent.Examples.",
-                                FromDisplayName = "Henrietta Mueller",
-                                FromUpn = "henriettam@contoso.com",
+                                BodyContent = "Updated the proposal deck in OneDrive (OData-Agent-Proposal.pptx) to show both EntityContainer @Agent.Prompts and entity/operation @Agent.Examples.",
+                                FromDisplayName = "Drew Parker",
+                                FromUpn = "drew.parker@example.com",
                                 Importance = "high",
                                 CreatedDateTime = DateTimeOffset.Parse("2026-11-04T09:20:00Z")
                             }
@@ -1381,29 +1388,29 @@ public class GraphClientService
     public static List<GraphChat> GetMockChats()
     {
         var users = GetMockUsers();
-        var miriam = users[0];
-        var alex = users[1];
-        var megan = users[2];
-        var henrietta = users[8];
+        var avery = users[0];
+        var morgan = users[1];
+        var jordan = users[2];
+        var mike = users[8];
 
         return [
             new GraphChat
             {
-                Id = "chat-miriam-megan",
+                Id = "chat-avery-jordan",
                 Topic = "CSDL LargeServer Schema & TypeSpec Sync",
                 ChatType = "oneOnOne",
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-15T09:00:00Z"),
                 LastUpdatedDateTime = DateTimeOffset.Parse("2026-11-04T13:10:00Z"),
-                WebUrl = "https://teams.contoso.com/l/chat/chat-miriam-megan",
-                Members = [miriam, megan],
+                WebUrl = "https://teams.microsoft.com/l/chat/chat-avery-jordan",
+                Members = [avery, jordan],
                 Messages = [
                     new GraphChatMessage
                     {
                         Id = "cmsg-1",
                         Subject = "DriveItem & TodoTask CSDL entities",
-                        BodyContent = "Hey Miriam, I just updated Graph-CSDL-Consistency-Benchmark.xlsx in OneDrive. All 10 EntityTypes and 5 bound operations in Server_Large.csdl validate cleanly.",
-                        FromDisplayName = megan.DisplayName,
-                        FromUpn = megan.UserPrincipalName,
+                        BodyContent = "Hey Avery, I just updated API-Schema-Validation.xlsx in OneDrive. All 10 EntityTypes and 5 bound operations in Server_Large.csdl validate cleanly.",
+                        FromDisplayName = jordan.DisplayName,
+                        FromUpn = jordan.UserPrincipalName,
                         Importance = "normal",
                         CreatedDateTime = DateTimeOffset.Parse("2026-11-04T13:05:00Z")
                     },
@@ -1411,9 +1418,9 @@ public class GraphClientService
                     {
                         Id = "cmsg-2",
                         Subject = "Re: DriveItem & TodoTask CSDL entities",
-                        BodyContent = "Awesome, thanks Megan! Wiring up the Large MCP Explorer tab on :3000 now so we can demo Users, Groups, Files, Teams, Chats, and To Do end-to-end.",
-                        FromDisplayName = miriam.DisplayName,
-                        FromUpn = miriam.UserPrincipalName,
+                        BodyContent = "Awesome, thanks Jordan! Wiring up the Large MCP Explorer tab on :3000 now so we can demo Users, Groups, Files, Teams, Chats, and To Do end-to-end.",
+                        FromDisplayName = avery.DisplayName,
+                        FromUpn = avery.UserPrincipalName,
                         Importance = "normal",
                         CreatedDateTime = DateTimeOffset.Parse("2026-11-04T13:10:00Z")
                     }
@@ -1426,16 +1433,16 @@ public class GraphClientService
                 ChatType = "group",
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-28T16:00:00Z"),
                 LastUpdatedDateTime = DateTimeOffset.Parse("2026-11-04T15:20:00Z"),
-                WebUrl = "https://teams.contoso.com/l/chat/chat-odata-leads",
-                Members = [miriam, alex, henrietta],
+                WebUrl = "https://teams.microsoft.com/l/chat/chat-odata-leads",
+                Members = [avery, morgan, mike],
                 Messages = [
                     new GraphChatMessage
                     {
                         Id = "cmsg-3",
                         Subject = "Demo Readiness Check",
                         BodyContent = "Make sure we highlight how @Agent.Prompts on the container and @Agent.Examples on entities/operations work together without polluting CSDL with tool definitions.",
-                        FromDisplayName = henrietta.DisplayName,
-                        FromUpn = henrietta.UserPrincipalName,
+                        FromDisplayName = mike.DisplayName,
+                        FromUpn = mike.UserPrincipalName,
                         Importance = "high",
                         CreatedDateTime = DateTimeOffset.Parse("2026-11-04T15:20:00Z")
                     }
@@ -1460,36 +1467,36 @@ public class GraphClientService
                 IsReminderOn = true,
                 CreatedDateTime = DateTimeOffset.Parse("2026-11-01T09:00:00Z"),
                 DueDateTime = DateTimeOffset.Parse("2026-11-05T17:00:00Z"),
-                AssignedToUpn = "miriamg@contoso.com"
+                AssignedToUpn = "avery.adams@example.com"
             },
             new GraphTodoTask
             {
                 Id = "task-102",
                 ListId = "list-mcp-poc",
                 ListDisplayName = "Microsoft Graph & MCP 2.0 POC",
-                Title = "Review Graph-CSDL-Consistency-Benchmark.xlsx with Megan Bowen",
+                Title = "Review API-Schema-Validation.xlsx with Jordan Lee",
                 BodyPreview = "Verify multi-workload routing metrics and bound function parameter bindings.",
                 Status = CompletedTaskIds.Contains("task-102") ? "completed" : "notStarted",
                 Importance = "high",
                 IsReminderOn = true,
                 CreatedDateTime = DateTimeOffset.Parse("2026-11-02T11:00:00Z"),
                 DueDateTime = DateTimeOffset.Parse("2026-11-06T17:00:00Z"),
-                AssignedToUpn = "meganb@contoso.com"
+                AssignedToUpn = "jordan.lee@example.com"
             },
             new GraphTodoTask
             {
                 Id = "task-103",
                 ListId = "list-mcp-poc",
                 ListDisplayName = "Microsoft Graph & MCP 2.0 POC",
-                Title = "Publish OData-v4.01-Agent-Prompts-Proposal.pptx to OData TC channel",
-                BodyPreview = "Share final slide deck with Henrietta Mueller and Alex Wilbur.",
+                Title = "Publish OData-Agent-Proposal.pptx to OData TC channel",
+                BodyPreview = "Share final slide deck with Drew Parker and Morgan Reed.",
                 Status = "completed",
                 Importance = "normal",
                 IsReminderOn = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-29T10:00:00Z"),
                 DueDateTime = DateTimeOffset.Parse("2026-11-03T17:00:00Z"),
                 CompletedDateTime = DateTimeOffset.Parse("2026-11-03T16:30:00Z"),
-                AssignedToUpn = "miriamg@contoso.com"
+                AssignedToUpn = "avery.adams@example.com"
             }
         };
 
@@ -1507,7 +1514,7 @@ public class GraphClientService
                 IsReminderOn = true,
                 CreatedDateTime = DateTimeOffset.Parse("2026-11-03T08:30:00Z"),
                 DueDateTime = DateTimeOffset.Parse("2026-11-07T17:00:00Z"),
-                AssignedToUpn = "miriamg@contoso.com"
+                AssignedToUpn = "avery.adams@example.com"
             }
         };
 
@@ -1534,4 +1541,3 @@ public class GraphClientService
     }
     #endregion
 }
-

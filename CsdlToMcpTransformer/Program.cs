@@ -111,21 +111,39 @@ public static class Program
         Directory.CreateDirectory(Path.Combine(target.OutputDir, "Csdl"));
         Directory.CreateDirectory(Path.Combine(target.OutputDir, "Services"));
 
-        // Emit the project-owned CSDL-driven engine source.
+        // Emit a fully static MCP server. CSDL is consumed only here at generation time.
         File.WriteAllText(Path.Combine(target.OutputDir, "GraphMcpServer.csproj"), ReadTemplate("GraphMcpServer.csproj"));
-        var providerCs = ReadTemplate(@"Csdl\CsdlProvider.cs");
-        File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "CsdlProvider.cs"), providerCs);
+        File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "CsdlProvider.cs"), ReadTemplate(@"Csdl\CsdlProvider.cs"));
         File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "CsdlMcpProjection.cs"), ReadTemplate(@"Csdl\CsdlMcpProjection.cs"));
         File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "EdmJsonSchema.cs"), ReadTemplate(@"Csdl\EdmJsonSchema.cs"));
         File.WriteAllText(Path.Combine(target.OutputDir, "Services", "ODataClientService.cs"), ReadTemplate(@"Services\ODataClientService.cs"));
-        File.WriteAllText(Path.Combine(target.OutputDir, "metadata.csdl"), csdlText);
+        StaticModelGenerator.Generate(
+            edmModel,
+            csdlPath,
+            csdlText,
+            Path.Combine(target.OutputDir, "Csdl", "GeneratedModel.cs"));
+        var metadataPath = Path.Combine(target.OutputDir, "metadata.csdl");
+        if (File.Exists(metadataPath)) File.Delete(metadataPath);
         foreach (var legacyFile in new[] { @"Models\GraphModels.cs", @"Services\GraphClientService.cs", @"Csdl\UserCsdlProvider.cs" })
         {
             var legacyPath = Path.Combine(target.OutputDir, legacyFile);
             if (File.Exists(legacyPath)) File.Delete(legacyPath);
         }
 
-        // 2. Write appsettings.json pointing to the target CSDL
+        // 2. Write runtime settings. No CSDL path is required by the generated server.
+        var existingSettingsPath = Path.Combine(target.OutputDir, "appsettings.json");
+        JsonObject? existingOData = null;
+        if (File.Exists(existingSettingsPath))
+        {
+            try
+            {
+                existingOData = JsonNode.Parse(File.ReadAllText(existingSettingsPath))?["OData"]?.DeepClone() as JsonObject;
+            }
+            catch (JsonException)
+            {
+                // Invalid prior settings are replaced with explicit empty defaults.
+            }
+        }
         var appSettings = new JsonObject
         {
             ["Logging"] = new JsonObject
@@ -136,11 +154,7 @@ public static class Program
                     ["Microsoft.AspNetCore"] = "Warning"
                 }
             },
-            ["Csdl"] = new JsonObject
-            {
-                ["FileName"] = "metadata.csdl"
-            },
-            ["OData"] = new JsonObject { ["BaseUrl"] = "", ["Scope"] = "" }
+            ["OData"] = existingOData ?? new JsonObject { ["BaseUrl"] = "", ["Scope"] = "" }
         };
         File.WriteAllText(
             Path.Combine(target.OutputDir, "appsettings.json"),
@@ -156,7 +170,7 @@ public static class Program
         var manifest = new JsonObject
         {
             ["generator"] = "CsdlToMcpTransformer",
-            ["projectionMode"] = "generic-edm",
+            ["projectionMode"] = "static-generated-csharp",
             ["sourceCsdl"] = csdlPath,
             ["outputProject"] = target.OutputDir,
             ["port"] = target.Port,

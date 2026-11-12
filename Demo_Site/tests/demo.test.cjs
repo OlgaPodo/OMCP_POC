@@ -110,7 +110,7 @@ test('startup, tabs, global MCP selection, equivalent metadata and unknown text'
     document.getElementById('matcherInput').value = 'What is the weather tomorrow?';
     window.runMatcher();
     assert.match(document.getElementById('matcherResults').textContent, /No matching prompt/);
-    document.getElementById('matcherInput').value = 'Find the Identity Architecture group';
+    document.getElementById('matcherInput').value = 'Find the Platform Engineering group';
     window.runMatcher();
     assert.match(document.getElementById('matcherResults').textContent, /find_group_by_name/);
   } finally {
@@ -264,7 +264,7 @@ test('canonical XML projects tools/resources and multi-entity-set prompt depende
           assert.ok(!Object.hasOwn(model['@Agent.Prompts'].find(prompt => prompt.Name === name), 'Target'));
         }
       }
-      const userUri = 'users://miriamg@contoso.com';
+      const userUri = 'users://avery.adams@example.com';
       const groupUri = 'groups://11111111-2222-3333-4444-555555555555';
       const user = JSON.parse((await rpc(server, 'resources/read', { uri: userUri })).contents[0].text);
       const group = JSON.parse((await rpc(server, 'resources/read', { uri: groupUri })).contents[0].text);
@@ -369,8 +369,8 @@ test('summary inventories are accurate and runtime discovery is scoped, read-onl
     assert.ok([...document.querySelectorAll('#view-mapping details.tile-request-details, #view-mapping details.tile-response-details')].every(d => d.open === true));
     document.getElementById('btnCollapseAllMappingResponses').click();
     assert.ok([...document.querySelectorAll('#view-mapping details.tile-request-details, #view-mapping details.tile-response-details')].every(d => d.open === false));
-    document.querySelector('[data-map-prompt="whom_miriam_reports_to"]').click();
-    assert.equal(document.getElementById('mappingScenarioTitle').textContent, 'Whom Miriam reports to?');
+    document.querySelector('[data-map-prompt="whom_olga_reports_to"]').click();
+    assert.equal(document.getElementById('mappingScenarioTitle').textContent, 'Whom Avery reports to?');
     assert.match(document.getElementById('view-mapping').textContent, /mcp-poc\.docx/);
     assert.match(document.getElementById('view-mapping').textContent, /transcript-2026-10-28\.md/);
     assert.ok(rpcRequests.every(request => methods.includes(request.method)));

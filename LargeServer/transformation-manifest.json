@@ -1,6 +1,6 @@
 {
   "generator": "CsdlToMcpTransformer",
-  "projectionMode": "generic-edm",
+  "projectionMode": "static-generated-csharp",
   "sourceCsdl": "C:\\MCP\\Csdl\\Server_Large_WithExamples.csdl",
   "outputProject": "C:\\MCP\\LargeServer",
   "port": 3003,

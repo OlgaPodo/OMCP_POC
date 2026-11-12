@@ -20,15 +20,21 @@ public sealed class ODataClientService : IODataClientService
     private readonly HttpClient _client;
     private readonly IConfiguration _configuration;
     private readonly ILogger<ODataClientService> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly List<ODataTrace> _traces = [];
     private readonly object _sync = new();
     private readonly DefaultAzureCredential _credential = new();
 
-    public ODataClientService(HttpClient client, IConfiguration configuration, ILogger<ODataClientService> logger)
+    public ODataClientService(
+        HttpClient client,
+        IConfiguration configuration,
+        ILogger<ODataClientService> logger,
+        IHttpContextAccessor httpContextAccessor)
     {
         _client = client;
         _configuration = configuration;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
     public IReadOnlyList<ODataTrace> GetRecentTraces()
     {
@@ -48,6 +54,10 @@ public sealed class ODataClientService : IODataClientService
         using var request = new HttpRequestMessage(method, uri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Add("OData-Version", "4.0");
+        var correlationId = _httpContextAccessor.HttpContext?.Request.Headers[
+            "X-Experiment-Correlation-Id"].FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(correlationId))
+            request.Headers.Add("X-Experiment-Correlation-Id", correlationId);
         var scope = _configuration["OData:Scope"];
         if (!string.IsNullOrWhiteSpace(scope))
         {

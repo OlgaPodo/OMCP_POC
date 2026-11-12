@@ -21,6 +21,7 @@ builder.Services.AddCors(options =>
 });
 
 // Register Graph Client Service
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient<GraphClientService>();
 builder.Services.AddSingleton<GraphClientService>();
 builder.Services.AddSingleton<CsdlMcpProjection>();

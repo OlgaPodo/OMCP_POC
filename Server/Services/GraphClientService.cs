@@ -20,7 +20,7 @@ public class GraphClientService
     {
         _httpClient = httpClient;
         _logger = logger;
-        _httpClient.BaseAddress = new Uri("https://graph.contoso.com/v1.0/");
+        _httpClient.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
@@ -52,7 +52,7 @@ public class GraphClientService
         {
             var credential = new AzureCliCredential();
             var tokenResult = await credential.GetTokenAsync(
-                new TokenRequestContext(["https://graph.contoso.com/.default"]),
+                new TokenRequestContext(["https://graph.microsoft.com/.default"]),
                 cancellationToken);
 
             _cachedToken = tokenResult.Token;
@@ -120,7 +120,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: Bearer [REDACTED]\nAccept: application/json",
                     IsLive = true
                 };
@@ -152,7 +152,7 @@ public class GraphClientService
                 AddTrace(new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/users?$filter=... [FALLBACK]",
+                    Url = $"https://graph.microsoft.com/v1.0/users?$filter=... [FALLBACK]",
                     StatusCode = 500,
                     ResponseSummary = ex.Message,
                     IsLive = false
@@ -189,7 +189,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: Bearer [REDACTED]\nAccept: application/json",
                     IsLive = true
                 };
@@ -292,7 +292,7 @@ public class GraphClientService
             var trace = new GraphTraceRecord
             {
                 Method = "GET",
-                Url = $"https://graph.contoso.com/v1.0/{url}",
+                Url = $"https://graph.microsoft.com/v1.0/{url}",
                 RequestHeaders = "Authorization: Bearer [REDACTED]",
                 IsLive = true
             };
@@ -326,7 +326,7 @@ public class GraphClientService
             var trace = new GraphTraceRecord
             {
                 Method = "GET",
-                Url = $"https://graph.contoso.com/v1.0/{url}",
+                Url = $"https://graph.microsoft.com/v1.0/{url}",
                 RequestHeaders = "Authorization: Bearer [REDACTED]",
                 IsLive = true
             };
@@ -357,100 +357,100 @@ public class GraphClientService
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000001",
-                DisplayName = "Miriam Graham",
-                UserPrincipalName = "miriamg@contoso.com",
-                Mail = "miriamg@contoso.com",
+                DisplayName = "Avery Adams",
+                UserPrincipalName = "avery.adams@example.com",
+                Mail = "avery.adams@example.com",
                 JobTitle = "PRINCIPAL API ARCHITECT",
-                Department = "Architecture & Standards",
+                Department = "Platform Engineering",
                 OfficeLocation = "Home Office",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000002",
-                DisplayName = "Alex Wilbur",
-                UserPrincipalName = "alexw@contoso.com",
-                Mail = "alexw@contoso.com",
+                DisplayName = "Morgan Reed",
+                UserPrincipalName = "morgan.reed@example.com",
+                Mail = "morgan.reed@example.com",
                 JobTitle = "Partner Director Engineering",
-                Department = "Engineering Leadership",
-                OfficeLocation = "Building 1 / Remote",
+                Department = "Cloud Operations",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000003",
-                DisplayName = "Megan Bowen",
-                UserPrincipalName = "meganb@contoso.com",
-                Mail = "meganb@contoso.com",
+                DisplayName = "Jordan Lee",
+                UserPrincipalName = "jordan.lee@example.com",
+                Mail = "jordan.lee@example.com",
                 JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 2 / 1072",
+                Department = "Platform Engineering",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000004",
-                DisplayName = "Adele Vance",
-                UserPrincipalName = "adelev@contoso.com",
-                Mail = "adelev@contoso.com",
+                DisplayName = "Casey Kim",
+                UserPrincipalName = "casey.kim@example.com",
+                Mail = "casey.kim@example.com",
                 JobTitle = "PRINCIPAL PRODUCT MANAGER",
-                Department = "Product Operations",
-                OfficeLocation = "Building 2 / 1084",
+                Department = "AI Products",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000005",
-                DisplayName = "Diego Siciliani",
-                UserPrincipalName = "diegos@contoso.com",
-                Mail = "diegos@contoso.com",
+                DisplayName = "Taylor Morgan",
+                UserPrincipalName = "taylor.morgan@example.com",
+                Mail = "taylor.morgan@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MANAGER",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 2 / 1086",
+                Department = "Platform Engineering",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000006",
-                DisplayName = "Patti Fernandez",
-                UserPrincipalName = "pattif@contoso.com",
-                Mail = "pattif@contoso.com",
+                DisplayName = "Riley Chen",
+                UserPrincipalName = "riley.chen@example.com",
+                Mail = "riley.chen@example.com",
                 JobTitle = "BUSINESS ADMINISTRATOR",
-                Department = "Engineering Leadership",
-                OfficeLocation = "Building 1 / Remote",
+                Department = "Cloud Operations",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000007",
-                DisplayName = "Lynne Robbins",
-                UserPrincipalName = "lynner@contoso.com",
-                Mail = "lynner@contoso.com",
+                DisplayName = "Jamie Patel",
+                UserPrincipalName = "jamie.patel@example.com",
+                Mail = "jamie.patel@example.com",
                 JobTitle = "GROUP PM MANAGER",
                 Department = "Directory Operations",
-                OfficeLocation = "Building 2 / 1072",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000008",
-                DisplayName = "Joni Sherman",
-                UserPrincipalName = "jonis@contoso.com",
-                Mail = "jonis@contoso.com",
+                DisplayName = "Cameron Brooks",
+                UserPrincipalName = "cameron.brooks@example.com",
+                Mail = "cameron.brooks@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MGR",
-                Department = "Architecture & Standards",
-                OfficeLocation = "Building 1",
+                Department = "Platform Engineering",
+                OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "00000000-0000-0000-0000-000000000009",
-                DisplayName = "Henrietta Mueller",
-                UserPrincipalName = "henriettam@contoso.com",
-                Mail = "henriettam@contoso.com",
+                DisplayName = "Drew Parker",
+                UserPrincipalName = "drew.parker@example.com",
+                Mail = "drew.parker@example.com",
                 JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
                 Department = "Data & AI",
-                OfficeLocation = "Building 2",
+                OfficeLocation = "Building A",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -465,9 +465,9 @@ public class GraphClientService
             string.Equals(u.UserPrincipalName, identifier, StringComparison.OrdinalIgnoreCase) ||
             u.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase));
 
-        if (user == null) user = users[0]; // default to Miriam
+        if (user == null) user = users[0]; // default to Avery
 
-        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Alex", StringComparison.OrdinalIgnoreCase));
+        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Morgan", StringComparison.OrdinalIgnoreCase));
         var peers = users.Where(u => u.Id != user.Id && u.Id != manager?.Id).ToList();
 
         return new UserProfileDetail
@@ -493,9 +493,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "11111111-2222-3333-4444-555555555555",
-                DisplayName = "Identity Architecture",
+                DisplayName = "Platform Engineering",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
-                Mail = "identityarch@contoso.com",
+                Mail = "platform-engineering@example.com",
                 MailNickname = "identityarch",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -508,7 +508,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "scimreviewers@contoso.com",
+                Mail = "schema-reviewers@example.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -519,9 +519,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "33333333-4444-5555-6666-777777777777",
-                DisplayName = "Microsoft Graph Partners",
+                DisplayName = "API Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "graphpartners@contoso.com",
+                Mail = "api-partners@example.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -532,9 +532,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData TC Working Group",
+                DisplayName = "OData Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odatetc@contoso.com",
+                Mail = "odata-working-group@example.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -556,13 +556,13 @@ public class GraphClientService
             string.Equals(g.MailNickname, identifier, StringComparison.OrdinalIgnoreCase) ||
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
-        var owners = users.Where(u => u.DisplayName.Contains("Alex") || u.DisplayName.Contains("Michael")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Miriam") || u.DisplayName.Contains("Megan") || u.DisplayName.Contains("Adele") || u.DisplayName.Contains("Diego Siciliani")).ToList();
+        var owners = users.Where(u => u.DisplayName.Contains("Morgan") || u.DisplayName.Contains("Drew")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Casey") || u.DisplayName.Contains("Taylor Morgan")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
-            owners = users.Where(u => u.DisplayName.Contains("Miriam")).ToList();
-            members = users.Where(u => u.DisplayName.Contains("Lynne") || u.DisplayName.Contains("Patti") || u.DisplayName.Contains("Joni")).ToList();
+            owners = users.Where(u => u.DisplayName.Contains("Avery")).ToList();
+            members = users.Where(u => u.DisplayName.Contains("Jamie") || u.DisplayName.Contains("Riley") || u.DisplayName.Contains("Cameron")).ToList();
         }
 
         return new GroupDetail
@@ -599,7 +599,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -631,7 +631,7 @@ public class GraphClientService
                 AddTrace(new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/groups?$filter=... [FALLBACK]",
+                    Url = $"https://graph.microsoft.com/v1.0/groups?$filter=... [FALLBACK]",
                     StatusCode = 500,
                     ResponseSummary = ex.Message,
                     IsLive = false
@@ -661,7 +661,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -702,7 +702,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{requestUrl}",
+                    Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
                     RequestHeaders = "Authorization: ******",
                     IsLive = true
                 };
@@ -775,8 +775,8 @@ public class GraphClientService
     {
         if (string.IsNullOrWhiteSpace(path)) return null;
         string cleanPath = path.Trim().TrimStart('/');
-        if (cleanPath.StartsWith("https://graph.contoso.com/v1.0/", StringComparison.OrdinalIgnoreCase))
-            cleanPath = cleanPath["https://graph.contoso.com/v1.0/".Length..];
+        if (cleanPath.StartsWith("https://graph.microsoft.com/v1.0/", StringComparison.OrdinalIgnoreCase))
+            cleanPath = cleanPath["https://graph.microsoft.com/v1.0/".Length..];
         else if (cleanPath.StartsWith("v1.0/", StringComparison.OrdinalIgnoreCase))
             cleanPath = cleanPath["v1.0/".Length..];
         else if (cleanPath.StartsWith("users://", StringComparison.OrdinalIgnoreCase))
@@ -798,7 +798,7 @@ public class GraphClientService
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
-                    Url = $"https://graph.contoso.com/v1.0/{cleanPath}",
+                    Url = $"https://graph.microsoft.com/v1.0/{cleanPath}",
                     RequestHeaders = "Authorization: ****** application/json",
                     IsLive = true
                 };

@@ -50,16 +50,16 @@
         <Annotation Term="Agent.Prompts">
           <Collection>
             <Record>
-              <PropertyValue Property="Name" String="whom_miriam_reports_to" />
-              <PropertyValue Property="Title" String="Whom Miriam reports to?" />
-              <PropertyValue Property="Description" String="Find organizational manager for Miriam Graham or any given user." />
+              <PropertyValue Property="Name" String="whom_olga_reports_to" />
+              <PropertyValue Property="Title" String="Whom Avery reports to?" />
+              <PropertyValue Property="Description" String="Find organizational manager for Avery Adams or any given user." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -78,16 +78,16 @@
               </PropertyValue>
             </Record>
             <Record>
-              <PropertyValue Property="Name" String="who_are_miriams_peers" />
-              <PropertyValue Property="Title" String="Who are Miriam's peers?" />
-              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Miriam Graham." />
+              <PropertyValue Property="Name" String="who_are_olgas_peers" />
+              <PropertyValue Property="Title" String="Who are Avery's peers?" />
+              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Avery Adams." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -115,7 +115,7 @@
                     <PropertyValue Property="Name" String="managerNameOrId" />
                     <PropertyValue Property="Description" String="Manager's name, ID, or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Morgan Reed" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -205,7 +205,7 @@
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group name or search keyword" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -233,7 +233,7 @@
                     <PropertyValue Property="Name" String="groupIdOrName" />
                     <PropertyValue Property="Description" String="Group ID or name" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -261,7 +261,7 @@
                     <PropertyValue Property="Name" String="groupIdOrName" />
                     <PropertyValue Property="Description" String="Group ID or name" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -317,13 +317,13 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -351,13 +351,13 @@
                     <PropertyValue Property="Name" String="managerName" />
                     <PropertyValue Property="Description" String="Manager display name, ID or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Morgan Reed" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -385,13 +385,13 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>

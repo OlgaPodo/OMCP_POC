@@ -1,9 +1,9 @@
 # Generic CSDL-to-MCP Transformer
 
-The pipeline is **CSDL XML -> validated OData EDM model -> typed MCP bindings ->
-JSON at the protocol boundary**. There is no custom JSON metadata model or
-Microsoft Graph entity-name dispatcher. Namespaces, containers, keys, navigation
-properties, parameter types, and operation signatures come from `IEdmModel`.
+The generation pipeline is **CSDL XML -> validated OData EDM model -> generated
+static C# MCP bindings -> JSON at the protocol boundary**. `IEdmModel` is used
+only by the transformer process. Generated servers do not load, parse, copy, or
+require CSDL at runtime.
 
 ## Generate a single MCP server
 
@@ -27,13 +27,13 @@ dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- 
 
 Each run generates a single self-contained server project containing:
 - `GraphMcpServer.csproj` - The ASP.NET Core web project targeting `net10.0`
-- `metadata.csdl` - The input CSDL schema, copied to build and publish outputs
 - `Program.cs` - Application bootstrap configured for the target port and title
-- `appsettings.json` - Server settings pointing to `metadata.csdl` and OData backend
+- `appsettings.json` - Runtime OData backend settings
 - `transformation-manifest.json` - Generation summary with schema statistics
-- `Csdl/CsdlProvider.cs` - Generic CSDL parser and EDM projection provider
+- `Csdl/GeneratedModel.cs` - Static generated tools, resources, prompts, examples, argument types, and schemas
+- `Csdl/CsdlProvider.cs` - Runtime access to the generated static model; no CSDL parser
 - `Csdl/CsdlMcpProjection.cs` - MCP protocol handler (tools, resources, templates, prompts)
-- `Csdl/EdmJsonSchema.cs` - EDM type to JSON Schema translator with argument descriptions
+- `Csdl/EdmJsonSchema.cs` - Static argument validation and OData literal formatting
 - `Services/ODataClientService.cs` - Upstream HTTP client with `DefaultAzureCredential` and metrics
 
 Source templates under `Templates` are embedded directly in the transformer assembly.
@@ -52,7 +52,7 @@ Using schemas in `C:\MCP\Csdl` (such as `Server_Large.csdl` and `Server_WithProm
 | Bound function `Microsoft.Graph.searchDriveItems` on `drives` | `drives_Microsoft_Graph_searchDriveItems` |
 | Bound action `Microsoft.Graph.sendChannelMessage` on `channels` | `channels_Microsoft_Graph_sendChannelMessage` |
 | Bound action `Microsoft.Graph.completeTodoTask` on `todoTasks` | `todoTasks_Microsoft_Graph_completeTodoTask` |
-| `@Agent.Prompts` (e.g. `whom_miriam_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
+| `@Agent.Prompts` (e.g. `whom_olga_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
 | `@Agent.Examples` / `@Agent.ExampleQueries` | Examples attached to their EDM annotation targets (e.g. `User`, `DriveItem`) |
 
 For example, for `Server_Large.csdl` in `C:\MCP\Csdl`, resources use `odata://Microsoft.Graph.GraphService/users` and
@@ -79,8 +79,8 @@ Set `OData:BaseUrl` in generated `appsettings.json`, or through an environment
 variable. For Microsoft Graph CSDL schemas in `C:\MCP\Csdl`, configure the Graph endpoint and optional scope for automatic Azure CLI or Managed Identity token acquisition:
 
 ```powershell
-$env:OData__BaseUrl = "https://graph.contoso.com/v1.0/"
-$env:OData__Scope = "https://graph.contoso.com/.default"
+$env:OData__BaseUrl = "https://graph.microsoft.com/v1.0/"
+$env:OData__Scope = "https://graph.microsoft.com/.default"
 dotnet run --project C:\MCP\LargeServer_transform\GraphMcpServer.csproj
 ```
 

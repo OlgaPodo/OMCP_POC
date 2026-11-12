@@ -277,14 +277,14 @@ public static class UserCsdlProvider
             if (GraphSchema["searchDriveItems"] is JsonObject)
             {
                 tools.Add(CreateTool("search_files", "Search OneDrive & SharePoint files (searchDriveItems)", "Invoke bound OData function Microsoft.Graph.searchDriveItems(q='{query}') across OneDrive.", "SearchFiles",
-                    "GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{query}')",
+                    "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{query}')",
                     "Microsoft.Graph.searchDriveItems", "driveItems",
                     ("query", "File name or keyword (e.g. 'CSDL', 'MCP', 'Proposal')", true, "CSDL")));
             }
             tools.Add(CreateTool("file_last_modified_by", "Last user to modify file (lastModifiedByUser)", "Navigate from a DriveItem to its lastModifiedByUser profile.", "GetFileModifier",
                 "GET driveItems('{fileName}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
                 "Microsoft.Graph.GraphService/driveItems", "driveItems",
-                ("fileName", "File ID or name (e.g. 'Script_MCP_POC.docx')", false, "Script_MCP_POC.docx")));
+                ("fileName", "File ID or name (e.g. 'Agent_Protocol_Demo.docx')", false, "Agent_Protocol_Demo.docx")));
         }
 
         if (Container["teams"] is JsonObject && Container["channels"] is JsonObject)
@@ -396,7 +396,7 @@ public static class UserCsdlProvider
                 resources.Add(CreateResource("my_drive", "My OneDrive & root children", "Signed-in user's OneDrive container and root files.", "drives://me", "ListMyFiles", "GET me/drive/root/children", "", "Microsoft.Graph.GraphService/drives", "drives"));
             if (Container["driveItems"] is JsonObject)
             {
-                resources.Add(CreateResource("recent_files", "Recent OneDrive files", "Recently modified files in OneDrive.", "files://recent", "SearchFiles", "GET drives('drive-miriam')/Microsoft.Graph.recentDriveItems()", "", "Microsoft.Graph.GraphService/driveItems", "driveItems"));
+                resources.Add(CreateResource("recent_files", "Recent OneDrive files", "Recently modified files in OneDrive.", "files://recent", "SearchFiles", "GET drives('drive-avery')/Microsoft.Graph.recentDriveItems()", "", "Microsoft.Graph.GraphService/driveItems", "driveItems"));
                 resources.Add(CreateResource("file_item", "DriveItem & lastModifiedByUser", "Single DriveItem metadata and lastModifiedByUser relationship.", "files://{itemId}", "GetFileModifier", "GET driveItems('{itemId}')?$expand=lastModifiedByUser", "itemId", "Microsoft.Graph.GraphService/driveItems", "driveItems"));
             }
             if (Container["teams"] is JsonObject)

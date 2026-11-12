@@ -39,6 +39,9 @@
       <button class="ge-nav-tab" data-view="large-explorer">
         <span class="tab-icon">🚀</span> Large MCP Explorer
       </button>
+      <button class="ge-nav-tab" data-view="llm-client">
+        <span class="tab-icon">🤖</span> LLM Client
+      </button>
       <button class="ge-nav-tab" data-view="csdl">
         <span class="tab-icon">📜</span> CSDL and annotations
       </button>
@@ -149,21 +152,21 @@
               <span class="cat-title">3. TOOLS</span>
             </div>
             <ul class="query-list">
-              <li class="query-item" data-query="tool-find-miriam">
+              <li class="query-item" data-query="tool-find-avery">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Miriam")</span>
+                <span class="query-label">find_user ("Avery")</span>
               </li>
-              <li class="query-item" data-query="tool-find-alex">
+              <li class="query-item" data-query="tool-find-morgan">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Alex")</span>
+                <span class="query-label">find_user ("Morgan")</span>
               </li>
               <li class="query-item" data-query="tool-profile-me">
                 <span class="http-badge mcp-badge">CALL</span>
                 <span class="query-label">user_profile ("me")</span>
               </li>
-              <li class="query-item" data-query="tool-profile-miriam">
+              <li class="query-item" data-query="tool-profile-avery">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">user_profile ("miriamg@contoso.com")</span>
+                <span class="query-label">user_profile ("avery.adams@example.com")</span>
               </li>
               <li class="query-item" data-query="tool-find-group">
                 <span class="http-badge mcp-badge">CALL</span>
@@ -171,7 +174,7 @@
               </li>
               <li class="query-item" data-query="tool-group-details">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">group_details ("Identity Architecture")</span>
+                <span class="query-label">group_details ("Platform Engineering")</span>
               </li>
               <li class="query-item" data-query="tool-read-user-resource">
                 <span class="http-badge mcp-badge">CALL</span>
@@ -193,11 +196,11 @@
             <ul class="query-list" id="promptQueryList">
               <li class="query-item" data-query="prompt-reports-to">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Whom Miriam reports to?</span>
+                <span class="query-label">Whom Avery reports to?</span>
               </li>
               <li class="query-item" data-query="prompt-peers">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Who are Miriam's peers?</span>
+                <span class="query-label">Who are Avery's peers?</span>
               </li>
               <li class="query-item" data-query="prompt-direct-reports">
                 <span class="http-badge prompt-badge">PROMPT</span>
@@ -296,7 +299,7 @@
               <div class="mapping-preview-box" id="mappingPreviewBox">
                 <div class="preview-item">
                   <span class="preview-label">Target Microsoft Graph Resource:</span>
-                  <code class="preview-code" id="targetGraphUrl">https://graph.contoso.com/v1.0/me</code>
+                  <code class="preview-code" id="targetGraphUrl">https://graph.microsoft.com/v1.0/me</code>
                 </div>
                 <div class="preview-item">
                   <span class="preview-label">Underlying OData Entity:</span>
@@ -373,36 +376,104 @@
     <div class="doc-view-layout">
       <div class="doc-header">
         <h2>CSDL and annotations</h2>
-        <p class="doc-sub">Standard OData v4.01 metadata (<code>GET https://graph.contoso.com/v1.0/$metadata</code> per <a href="https://www.oasis-open.org/standard/odata-v4-01-os/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">OASIS OData v4.01 OS &nearr;</a>) projects standard <code>EntitySet</code> and <code>Singleton</code> declarations to MCP tools and resources. Server A includes container-level <code>Agent.Prompts</code> authored with OData queries; Server B has no prompts in CSDL.</p>
+        <p class="doc-sub">Canonical OData v4.01 CSDL XML schemas (EDMX 4.0 per <a href="https://www.oasis-open.org/standard/odata-v4-01-os/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">OASIS OData v4.01 OS &nearr;</a>). Showing all available CSDL files in XML format across the POC MCP servers, including standard entity containers and <code>@Agent.Prompts</code> / <code>@Agent.Examples</code> vocabulary annotations.</p>
         <p class="projection-summary"></p>
       </div>
 
-      <div class="doc-tabs-bar">
-        <button class="doc-subtab active" data-subtab="csdl-json">CSDL JSON ($Version: 4.01)</button>
-        <button class="doc-subtab" data-subtab="csdl-xml">CSDL XML (EDMX 4.0)</button>
-        <button class="doc-subtab" data-subtab="option-comparison">Architectural Comparison</button>
+      <!-- Hidden fallback for backward test compatibility -->
+      <pre id="csdlJsonCode" style="display:none;"></pre>
+
+      <div class="doc-tabs-bar" id="csdlDocTabsBar" style="flex-wrap: wrap;">
+        <button class="doc-subtab active" data-subtab="csdl-with-prompts">📜 Server_WithPrompts.csdl</button>
+        <button class="doc-subtab" data-subtab="csdl-baseline">📄 Server_Baseline.csdl</button>
+        <button class="doc-subtab" data-subtab="csdl-large-with-examples">🚀 Server_Large_WithExamples.csdl</button>
+        <button class="doc-subtab" data-subtab="csdl-large-no-examples">📦 Server_Large.csdl</button>
+        <button class="doc-subtab" data-subtab="csdl-inventory">🧪 Inventory.csdl</button>
+        <button class="doc-subtab" data-subtab="option-comparison">🏛️ Architectural Comparison</button>
       </div>
 
       <div class="doc-subcontent">
-        <!-- CSDL JSON Subtab -->
-        <div class="subtab-panel active" id="subtab-csdl-json">
-          <div class="code-box-header">
-            <span>CSDL JSON: OData schema and container prompts</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlJsonCode').textContent)">Copy JSON</button>
+        <!-- Subtab 1: Server_WithPrompts.csdl -->
+        <div class="subtab-panel active" id="subtab-csdl-with-prompts">
+          <div class="code-box-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="card-badge" style="background: var(--purple-light); color: var(--purple); margin: 0;">Server (:3001)</span>
+              <strong>Server_WithPrompts.csdl</strong>
+              <span style="font-size: 12px; color: var(--text-secondary);" id="metaWithPrompts">EDMX 4.0 &bull; Core 2-Entity with @Agent.Prompts &bull; 28.7 KB</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode').textContent)">Copy XML</button>
+              <a href="/api/csdl/raw?file=Server_WithPrompts.csdl" download="Server_WithPrompts.csdl" class="copy-btn" style="text-decoration: none; color: inherit;">Download .csdl</a>
+            </div>
           </div>
-          <pre class="code-viewer-large" id="csdlJsonCode"><code class="language-json">Loading CSDL JSON...</code></pre>
+          <pre class="code-viewer-large" id="csdlXmlCode"><code class="language-xml">Loading Server_WithPrompts.csdl...</code></pre>
         </div>
 
-        <!-- CSDL XML Subtab -->
-        <div class="subtab-panel" id="subtab-csdl-xml">
-          <div class="code-box-header">
-            <span>CSDL XML: OData schema and container prompts</span>
-            <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode').textContent)">Copy XML</button>
+        <!-- Subtab 2: Server_Baseline.csdl -->
+        <div class="subtab-panel" id="subtab-csdl-baseline">
+          <div class="code-box-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="card-badge neutral" style="margin: 0;">Server_Baseline (:3002)</span>
+              <strong>Server_Baseline.csdl</strong>
+              <span style="font-size: 12px; color: var(--text-secondary);" id="metaBaseline">EDMX 4.0 &bull; Core 2-Entity Baseline &bull; 2.9 KB</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode_Baseline').textContent)">Copy XML</button>
+              <a href="/api/csdl/raw?file=Server_Baseline.csdl" download="Server_Baseline.csdl" class="copy-btn" style="text-decoration: none; color: inherit;">Download .csdl</a>
+            </div>
           </div>
-          <pre class="code-viewer-large" id="csdlXmlCode"><code class="language-xml">Loading CSDL XML...</code></pre>
+          <pre class="code-viewer-large" id="csdlXmlCode_Baseline"><code class="language-xml">Loading Server_Baseline.csdl...</code></pre>
         </div>
 
+        <!-- Subtab 3: Server_Large_WithExamples.csdl -->
+        <div class="subtab-panel" id="subtab-csdl-large-with-examples">
+          <div class="code-box-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="card-badge" style="background: #e8f4fd; color: #0078d4; margin: 0;">LargeServer (:3003 &amp; :3005)</span>
+              <strong>Server_Large_WithExamples.csdl</strong>
+              <span style="font-size: 12px; color: var(--text-secondary);" id="metaLargeWithExamples">EDMX 4.0 &bull; 10 Entities with @Agent.Prompts &amp; @Agent.Examples &bull; 74.9 KB</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode_LargeWithExamples').textContent)">Copy XML</button>
+              <a href="/api/csdl/raw?file=Server_Large_WithExamples.csdl" download="Server_Large_WithExamples.csdl" class="copy-btn" style="text-decoration: none; color: inherit;">Download .csdl</a>
+            </div>
+          </div>
+          <pre class="code-viewer-large" id="csdlXmlCode_LargeWithExamples"><code class="language-xml">Loading Server_Large_WithExamples.csdl...</code></pre>
+        </div>
 
+        <!-- Subtab 4: Server_Large.csdl -->
+        <div class="subtab-panel" id="subtab-csdl-large-no-examples">
+          <div class="code-box-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="card-badge neutral" style="margin: 0;">LargeServer_NoExamples (:3004)</span>
+              <strong>Server_Large.csdl</strong>
+              <span style="font-size: 12px; color: var(--text-secondary);" id="metaLargeNoExamples">EDMX 4.0 &bull; 10 Entities with @Agent.Prompts (No Examples) &bull; 58.9 KB</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode_LargeNoExamples').textContent)">Copy XML</button>
+              <a href="/api/csdl/raw?file=Server_Large.csdl" download="Server_Large.csdl" class="copy-btn" style="text-decoration: none; color: inherit;">Download .csdl</a>
+            </div>
+          </div>
+          <pre class="code-viewer-large" id="csdlXmlCode_LargeNoExamples"><code class="language-xml">Loading Server_Large.csdl...</code></pre>
+        </div>
+
+        <!-- Subtab 5: Inventory.csdl -->
+        <div class="subtab-panel" id="subtab-csdl-inventory">
+          <div class="code-box-header" style="justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="card-badge" style="background: #fff4ce; color: #795e00; margin: 0;">Generic EDM Fixture</span>
+              <strong>Inventory.csdl</strong>
+              <span style="font-size: 12px; color: var(--text-secondary);" id="metaInventory">EDMX 4.0 &bull; Non-Graph EDM Sample &bull; 2.2 KB</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('csdlXmlCode_Inventory').textContent)">Copy XML</button>
+              <a href="/api/csdl/raw?file=Inventory.csdl" download="Inventory.csdl" class="copy-btn" style="text-decoration: none; color: inherit;">Download .csdl</a>
+            </div>
+          </div>
+          <pre class="code-viewer-large" id="csdlXmlCode_Inventory"><code class="language-xml">Loading Inventory.csdl...</code></pre>
+        </div>
+
+        <!-- Subtab 6: Architectural Comparison -->
         <div class="subtab-panel" id="subtab-option-comparison">
           <p>The CSDL below comes from the selected server's canonical XML, without AI rewriting.
             CSDL contains no tool or resource annotations; tool schemas, resource URIs and operation dispatch are projected deterministically from standard OData <code>EntitySet</code>, <code>Singleton</code> and <code>NavigationPropertyBinding</code> declarations.
@@ -463,8 +534,8 @@
             </div>
             <p>In the official <a href="https://modelcontextprotocol.io/specification/2026-07-28" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">Model Context Protocol (MCP 2.0 / 2026-07-28)</a>, prompts are designed as user-controlled <strong>slash-command-style templates</strong>:</p>
             <ul>
-              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_miriam_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
-              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Miriam"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
+              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_olga_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
+              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Avery"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
               <li><strong>OData query steps:</strong> Container prompts express workflows using standard OData v4.01 queries against the service schema.</li>
             </ul>
             <div style="margin-top: 12px; padding: 8px 12px; background: #eef6fc; border-radius: 6px; font-size: 11.5px; border-left: 3px solid var(--primary);">
@@ -481,7 +552,7 @@
             <ul>
               <li><strong>Context Window Constraint:</strong> Large tool catalogs can consume context; this demo does not establish a universal tool-count limit.</li>
               <li><strong>Work IQ &amp; Graph Copilot Pattern:</strong> Instead of 1,000 tools, services use a catalog of curated natural-language prompt workflows to index API calls.</li>
-              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Miriam's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
+              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Avery's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
             </ul>
           </div>
         </div>
@@ -509,7 +580,7 @@
           <h3>Prompt catalog text search (illustrative)</h3>
           <p>Search the selected server's container prompts by word overlap. This is not embeddings, LLM routing, argument extraction, or tool execution. No match is a valid result:</p>
           <div class="matcher-input-bar">
-            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Miriam's boss? or Who works on the same team as Miriam?" value="Who is Miriam's boss?">
+            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Avery's boss? or Who works on the same team as Avery?" value="Who is Avery's boss?">
             <button id="testMatchBtn" class="ge-btn-primary">Test Semantic Match</button>
           </div>
           <div class="matcher-results" id="matcherResults">
@@ -534,8 +605,8 @@
           <span class="badge-tag">Initial Prompt Specification (C:\MCP\mcp-poc.docx)</span>
           <h3 style="font-size: 14px; margin-bottom: 6px;">Local HTTP MCP + Graph Explorer Web App</h3>
           <ul style="font-size: 12px; margin-left: 18px;">
-            <li><strong>HTTP MCP Server (<code>C:\MCP\Server</code>):</strong> Calls <code>https://graph.contoso.com/v1.0/users</code> (extended with <code>/v1.0/groups</code>), exposes tools (<code>find_user</code>, <code>user_profile</code>, <code>find_group</code>, <code>group_details</code>, <code>read_resource</code>), resources (<code>users://me</code>, <code>users://{userId}</code>, <code>groups://all</code>, <code>groups://{groupId}</code>), and <code>prompts/list</code> + <code>prompts/get</code>.</li>
-            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Miriam reports to?"</em>, <em>"Who are Miriam's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
+            <li><strong>HTTP MCP Server (<code>C:\MCP\Server</code>):</strong> Calls <code>https://graph.microsoft.com/v1.0/users</code> (extended with <code>/v1.0/groups</code>), exposes tools (<code>find_user</code>, <code>user_profile</code>, <code>find_group</code>, <code>group_details</code>, <code>read_resource</code>), resources (<code>users://me</code>, <code>users://{userId}</code>, <code>groups://all</code>, <code>groups://{groupId}</code>), and <code>prompts/list</code> + <code>prompts/get</code>.</li>
+            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Avery reports to?"</em>, <em>"Who are Avery's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
             <li><strong>Initial Concerns Addressed:</strong> (a) Reconcile MCP reusable prompt templates with semantic retrieval catalogs; (b) Show the exact end-to-end mapping from OData CSDL annotation &rarr; MCP prompt &rarr; tool/resource &rarr; Microsoft Graph API request.</li>
           </ul>
         </div>
@@ -545,7 +616,7 @@
           <ul style="font-size: 12px; margin-left: 18px;">
             <li><strong><code>prompts/list</code> vs <code>prompts/get</code>:</strong> <code>prompts/list</code> returns only prompt signatures and required arguments; <code>prompts/get</code> returns rendered <code>messages</code> after argument extraction.</li>
             <li><strong>Free-Text Utterance vs User Selection:</strong> Clients/LLMs map free-text questions to discovered prompts/tools, extract arguments, and reject out-of-domain queries (such as weather) with zero tool calls.</li>
-            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Miriam"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
+            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Avery"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
           </ul>
         </div>
       </div>
@@ -554,8 +625,8 @@
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <label class="selector-title" for="mappingPromptSelect">Workflow Scenario:</label>
           <select id="mappingPromptSelect" class="args-field-input" style="min-width: 280px; width: auto; font-weight: 600;"></select>
-          <button type="button" class="map-query-btn" data-map-prompt="whom_miriam_reports_to">mcp-poc.docx: Whom Miriam reports to?</button>
-          <button type="button" class="map-query-btn" data-map-prompt="who_are_miriams_peers">mcp-poc.docx: Who are Miriam's peers?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="whom_olga_reports_to">mcp-poc.docx: Whom Avery reports to?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="who_are_olgas_peers">mcp-poc.docx: Who are Avery's peers?</button>
           <button type="button" class="map-query-btn active" data-map-prompt="user_peers_in_group">Composed: Peers in group</button>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -772,7 +843,7 @@
                 <span class="summary-card-num">Queries #1&ndash;#3, #11&ndash;#15, #18, #22, #25, #28</span>
               </div>
               <h3>First-Name Disambiguation Failures</h3>
-              <p>Without prompt defaults (<span class="kw-annot">userName="Miriam"</span>, <span class="kw-annot">managerName="Alex Wilbur"</span>), calling <code class="kw-mcp">find_user("Miriam")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
+              <p>Without prompt defaults (<span class="kw-annot">userName="Avery"</span>, <span class="kw-annot">managerName="Morgan Reed"</span>), calling <code class="kw-mcp">find_user("Avery")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
             </div>
 
             <div class="summary-card accent-amber">
@@ -1192,7 +1263,7 @@
               <div class="mapping-preview-box">
                 <div class="preview-item">
                   <span class="preview-label">Target Microsoft Graph Resource:</span>
-                  <code class="preview-code" id="largeUnderlyingGraphUrl">GET https://graph.contoso.com/v1.0/me/drive/root/children</code>
+                  <code class="preview-code" id="largeUnderlyingGraphUrl">GET https://graph.microsoft.com/v1.0/me/drive/root/children</code>
                 </div>
                 <div class="preview-item">
                   <span class="preview-label">Underlying OData Entity / Operation:</span>
@@ -1294,9 +1365,134 @@
     </div>
   </main>
 
+  <!-- VIEW 10: LLM CLIENT & TRAJECTORY TRACER -->
+  <main class="view-container" id="view-llm-client">
+    <div class="doc-view-layout">
+      <div class="doc-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
+        <div>
+          <h2>🤖 LLM Agent Client &amp; Trajectory Tracer</h2>
+          <p class="doc-sub">Type any natural language query, select any of the 5 running MCP 2.0 servers, and inspect the complete agent reasoning trajectory with step-by-step MCP JSON-RPC call traces, parameters, latencies, and OData execution.</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="card-badge" style="background: var(--purple-light); color: var(--purple); font-weight: 700; margin: 0;">MCP 2.0 (2026-07-28)</span>
+          <span class="card-badge neutral" style="margin: 0;" id="llmEngineBadge">Engine: Fast Agent / Copilot CLI</span>
+        </div>
+      </div>
+
+      <!-- Controls & Input Bar -->
+      <div class="mapping-selector-bar" style="flex-direction: column; gap: 14px; background: #ffffff; border: 1px solid var(--border-color); padding: 18px; border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; width: 100%;">
+          <!-- Server Selector -->
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <label class="selector-title" for="llmServerSelect" style="margin: 0; font-weight: 700;">Select MCP Server:</label>
+            <select id="llmServerSelect" class="args-field-input" style="min-width: 400px; height: 36px; font-weight: 600; border-color: var(--primary);">
+              <option value="http://localhost:3001">Server (:3001) — Core 2-Entity with @Agent.Prompts</option>
+              <option value="http://localhost:3002">Server_Baseline (:3002) — Core 2-Entity Baseline (No Prompts)</option>
+              <option value="http://localhost:3003">LargeServer (:3003) — M365 (59 Tools) with @Agent.Examples</option>
+              <option value="http://localhost:3004">LargeServer_NoExamples (:3004) — M365 (59 Tools) without Examples</option>
+              <option value="http://localhost:3005">LargeServer_SearchQuery (:3005) — Two-Step Intent + OData Construction</option>
+            </select>
+          </div>
+
+          <!-- Execution Engine Selector -->
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label class="selector-title" for="llmEngineSelect" style="margin: 0; font-weight: 600;">Engine:</label>
+            <select id="llmEngineSelect" class="args-field-input" style="height: 36px; font-weight: 600;">
+              <option value="fast">⚡ Fast MCP Agent (Instant Execution)</option>
+              <option value="copilot">🤖 GitHub Copilot CLI (Live LLM)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Query Input Box with Run Button -->
+        <div style="display: flex; gap: 10px; width: 100%; align-items: stretch;">
+          <input type="text" id="llmQueryInput" class="args-field-input" style="flex: 1; height: 42px; font-size: 14px; padding: 0 14px; border-radius: var(--radius); border: 2px solid var(--primary);" placeholder="Type a natural language query (e.g. 'Who is Avery\'s manager?', 'Find files modified by Megan', 'Show peers in Marketing')..." value="Who is Avery's manager?">
+          <button type="button" id="btnRunLlmQuery" class="copy-btn" style="height: 42px; padding: 0 24px; font-size: 14px; font-weight: 700; background: var(--primary); color: #ffffff; border-color: var(--primary); display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <span class="btn-icon" id="llmRunBtnIcon">🚀</span> Run Query
+          </button>
+        </div>
+
+        <!-- Quick Sample Queries Pills -->
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Suggested Queries:</span>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Whom Avery reports to?">Whom Avery reports to?</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Who are Avery's peers?">Who are Avery's peers?</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Peers of Avery in Marketing group">Peers of Avery in Marketing group</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Search files matching 'POC proposal'">Search files for 'POC proposal'</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Who modified specification.docx?">Who modified specification.docx?</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="What is the weather in Seattle?">Weather in Seattle (Out-of-Scope)</button>
+        </div>
+      </div>
+
+      <!-- Execution Status & Summary Strip -->
+      <div id="llmStatusStrip" style="display: none; margin-bottom: 20px; padding: 12px 18px; border-radius: var(--radius); background: #f3f2f1; border-left: 4px solid var(--primary);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span id="llmStatusSpinner" style="display: inline-block; font-size: 16px;">⏳</span>
+            <strong id="llmStatusText" style="font-size: 13px;">Executing agent query...</strong>
+          </div>
+          <div style="display: flex; gap: 14px; font-size: 12px; color: var(--text-secondary); align-items: center;">
+            <span>MCP Calls: <strong id="llmCallCountText" style="color: var(--primary);">0</strong></span>
+            <span>Duration: <strong id="llmElapsedText" style="color: var(--text);">0 ms</strong></span>
+            <span>Server: <code id="llmActiveServerText">:3001</code></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid: Left: Trajectory & Call Traces; Right: Final Answer & Catalog Insights -->
+      <div class="explorer-body" style="grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start;">
+        <!-- Left: Agent Trajectory Timeline & Call Traces -->
+        <div class="duality-card" style="padding: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">🧭</span>
+              <h3 style="margin: 0; font-size: 15px;">Agent Execution Trajectory</h3>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" id="btnExpandAllLlmTraces" class="copy-btn" style="padding: 4px 10px; font-size: 11px;">Expand Traces</button>
+              <button type="button" id="btnCollapseAllLlmTraces" class="copy-btn" style="padding: 4px 10px; font-size: 11px;">Collapse Traces</button>
+            </div>
+          </div>
+
+          <div id="llmTrajectoryTimeline" style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="padding: 32px 16px; text-align: center; color: var(--text-secondary); font-size: 13px;">
+              No query executed yet. Select an MCP server and click <strong>Run Query</strong> to see the step-by-step LLM trajectory and live call traces.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Final Answer & Context Inspection -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- Final Answer Card -->
+          <div class="duality-card" style="padding: 18px; border-left: 4px solid #107c41;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 18px;">💬</span>
+              <h3 style="margin: 0; font-size: 15px;">Final Agent Answer</h3>
+            </div>
+            <div id="llmFinalAnswerArea" style="font-size: 13px; line-height: 1.6; color: var(--text); overflow-wrap: break-word;">
+              <em>The synthesized agent response will appear here once query execution finishes.</em>
+            </div>
+          </div>
+
+          <!-- Server Context & Vocabulary Card -->
+          <div class="duality-card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 18px;">📐</span>
+              <h3 style="margin: 0; font-size: 15px;">Selected Server Capabilities</h3>
+            </div>
+            <div id="llmServerContextArea" style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+              Loading server details...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
   <script src="app.js"></script>
   <script src="experiment.js"></script>
   <script src="large-explorer.js"></script>
   <script src="large-experiments.js"></script>
+  <script src="llm-client.js"></script>
 </body>
 </html>

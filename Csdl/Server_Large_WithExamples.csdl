@@ -114,7 +114,7 @@
               <PropertyValue Property="Description" String="List files and folders in the signed-in user's OneDrive root (Microsoft Graph Overview popular request)." />
             </Record>
             <Record>
-              <PropertyValue Property="Utterance" String="GET last user to modify file Script_MCP_POC.docx" />
+              <PropertyValue Property="Utterance" String="GET last user to modify file Agent_Protocol_Demo.docx" />
               <PropertyValue Property="Request" String="GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department" />
               <PropertyValue Property="Description" String="Navigate from a DriveItem to the User who last modified it (Microsoft Graph Overview popular request)." />
             </Record>
@@ -166,7 +166,7 @@
         <Annotation Term="Agent.Examples">
           <Collection>
             <Record>
-              <PropertyValue Property="Utterance" String="GET channels and messages for Identity Architecture Team" />
+              <PropertyValue Property="Utterance" String="GET channels and messages for Platform Engineering Team" />
               <PropertyValue Property="Request" String="GET teams('11111111-2222-3333-4444-555555555555')/channels?$expand=messages($top=10)" />
               <PropertyValue Property="Description" String="List channels in a Team and expand recent channel messages." />
             </Record>
@@ -278,7 +278,7 @@
           <Collection>
             <Record>
               <PropertyValue Property="Utterance" String="Search OneDrive for 'CSDL' or 'MCP'" />
-              <PropertyValue Property="Request" String="GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
+              <PropertyValue Property="Request" String="GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
               <PropertyValue Property="Description" String="Bound OData function searching DriveItems by keyword across a Drive." />
             </Record>
           </Collection>
@@ -292,7 +292,7 @@
           <Collection>
             <Record>
               <PropertyValue Property="Utterance" String="List recently modified OneDrive files" />
-              <PropertyValue Property="Request" String="GET drives('drive-miriam')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
+              <PropertyValue Property="Request" String="GET drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName" />
               <PropertyValue Property="Description" String="Bound OData function returning recent DriveItems accessed or edited by the user." />
             </Record>
           </Collection>
@@ -512,16 +512,16 @@
         <Annotation Term="Agent.Prompts">
           <Collection>
             <Record>
-              <PropertyValue Property="Name" String="whom_miriam_reports_to" />
-              <PropertyValue Property="Title" String="Whom Miriam reports to?" />
-              <PropertyValue Property="Description" String="Find organizational manager for Miriam Graham or any given user." />
+              <PropertyValue Property="Name" String="whom_olga_reports_to" />
+              <PropertyValue Property="Title" String="Whom Avery reports to?" />
+              <PropertyValue Property="Description" String="Find organizational manager for Avery Adams or any given user." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -540,16 +540,16 @@
               </PropertyValue>
             </Record>
             <Record>
-              <PropertyValue Property="Name" String="who_are_miriams_peers" />
-              <PropertyValue Property="Title" String="Who are Miriam's peers?" />
-              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Miriam Graham." />
+              <PropertyValue Property="Name" String="who_are_olgas_peers" />
+              <PropertyValue Property="Title" String="Who are Avery's peers?" />
+              <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Avery Adams." />
               <PropertyValue Property="Arguments">
                 <Collection>
                   <Record>
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -577,7 +577,7 @@
                     <PropertyValue Property="Name" String="managerNameOrId" />
                     <PropertyValue Property="Description" String="Manager's name, ID, or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Morgan Reed" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -667,7 +667,7 @@
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group name or search keyword" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -695,7 +695,7 @@
                     <PropertyValue Property="Name" String="groupIdOrName" />
                     <PropertyValue Property="Description" String="Group ID or name" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -723,7 +723,7 @@
                     <PropertyValue Property="Name" String="groupIdOrName" />
                     <PropertyValue Property="Description" String="Group ID or name" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -779,13 +779,13 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -813,13 +813,13 @@
                     <PropertyValue Property="Name" String="managerName" />
                     <PropertyValue Property="Description" String="Manager display name, ID or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Alex Wilbur" />
+                    <PropertyValue Property="Default" String="Morgan Reed" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -847,13 +847,13 @@
                     <PropertyValue Property="Name" String="userName" />
                     <PropertyValue Property="Description" String="User display name, ID, UPN, or me" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Miriam Graham" />
+                    <PropertyValue Property="Default" String="Avery Adams" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="groupName" />
                     <PropertyValue Property="Description" String="Group display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -909,7 +909,7 @@
                     <PropertyValue Property="Name" String="fileName" />
                     <PropertyValue Property="Description" String="File name or keyword" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Script_MCP_POC.docx" />
+                    <PropertyValue Property="Default" String="Agent_Protocol_Demo.docx" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -920,7 +920,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Who was the last user to modify '{fileName}'? 1. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{fileName}')?$select=id,name,lastModifiedDateTime,lastModifiedByDisplayName,lastModifiedByUpn to locate the DriveItem. 2. Navigate to GET driveItems('{itemId}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation to return the modifier's full profile." />
+                        <PropertyValue Property="Text" String="Who was the last user to modify '{fileName}'? 1. Query GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{fileName}')?$select=id,name,lastModifiedDateTime,lastModifiedByDisplayName,lastModifiedByUpn to locate the DriveItem. 2. Navigate to GET driveItems('{itemId}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation to return the modifier's full profile." />
                       </Record>
                     </PropertyValue>
                   </Record>
@@ -948,7 +948,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Search files matching '{query}'. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{query}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName." />
+                        <PropertyValue Property="Text" String="Search files matching '{query}'. Query GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{query}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName." />
                       </Record>
                     </PropertyValue>
                   </Record>
@@ -993,7 +993,7 @@
                     <PropertyValue Property="Name" String="teamName" />
                     <PropertyValue Property="Description" String="Team display name or ID" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Identity Architecture" />
+                    <PropertyValue Property="Default" String="Platform Engineering" />
                   </Record>
                   <Record>
                     <PropertyValue Property="Name" String="channelName" />
@@ -1111,7 +1111,7 @@
                     <PropertyValue Property="Name" String="colleagueName" />
                     <PropertyValue Property="Description" String="Colleague display name or UPN" />
                     <PropertyValue Property="Required" Bool="false" />
-                    <PropertyValue Property="Default" String="Megan Bowen" />
+                    <PropertyValue Property="Default" String="Jordan Lee" />
                   </Record>
                 </Collection>
               </PropertyValue>
@@ -1150,7 +1150,7 @@
                     <PropertyValue Property="Content">
                       <Record>
                         <PropertyValue Property="Type" String="text" />
-                        <PropertyValue Property="Text" String="Synthesize Microsoft 365 activity for topic '{topic}' across Teams, OneDrive, and To Do: 1. Query GET teams?$expand=channels and GET channels('ch-mcp-20')/messages?$top=10 for channel discussions mentioning '{topic}'. 2. Query GET drives('drive-miriam')/Microsoft.Graph.searchDriveItems(q='{topic}') for matching specification files. 3. Query GET todoTasks?$filter=status ne 'completed' for open action items matching '{topic}'." />
+                        <PropertyValue Property="Text" String="Synthesize Microsoft 365 activity for topic '{topic}' across Teams, OneDrive, and To Do: 1. Query GET teams?$expand=channels and GET channels('ch-mcp-20')/messages?$top=10 for channel discussions mentioning '{topic}'. 2. Query GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{topic}') for matching specification files. 3. Query GET todoTasks?$filter=status ne 'completed' for open action items matching '{topic}'." />
                       </Record>
                     </PropertyValue>
                   </Record>

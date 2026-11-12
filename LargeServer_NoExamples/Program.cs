@@ -3,9 +3,6 @@ using GraphMcpServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Initialize CSDL Provider from the generated configuration.
-CsdlProvider.Initialize(builder.Configuration);
-
 builder.WebHost.UseUrls("http://localhost:3004");
 
 // Register CORS for web app
@@ -21,6 +18,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddHttpClient<ODataClientService>()
     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IODataClientService>(services => services.GetRequiredService<ODataClientService>());
 builder.Services.AddSingleton<CsdlMcpProjection>();
 
@@ -59,14 +57,14 @@ app.MapGet("/health", (IODataClientService odataService) =>
         mcpSpecification = "MCP 2.0 (2026-07-28)",
         protocolVersion = "2026-07-28",
         supportedVersions = new[] { "2026-07-28" },
-        odataLibrary = "Microsoft.OData.Edm 9.0.0",
+        projectionMode = "Static generated C# (no runtime CSDL parsing)",
         port = 3004,
         mcpEndpoint = "http://localhost:3004/",
         csdlPath = CsdlProvider.CsdlFilePath,
         hasCsdlPrompts = CsdlProvider.ListPrompts().Prompts.Count > 0,
         hasEntitySetExamples = CsdlProvider.GetExampleQueries().Count > 0,
-        entityTypesCount = CsdlProvider.EdmModel.SchemaElements.OfType<Microsoft.OData.Edm.IEdmEntityType>().Count(),
-        operationsCount = CsdlProvider.EdmModel.SchemaElements.OfType<Microsoft.OData.Edm.IEdmOperation>().Count(),
+        entityTypesCount = GeneratedModel.EntityTypesCount,
+        operationsCount = GeneratedModel.OperationsCount,
         examplesCount = CsdlProvider.GetExampleQueries().Count,
         capabilities = new
         {
@@ -90,7 +88,7 @@ app.MapGet("/api/csdl", () =>
         csdl = CsdlProvider.GetCsdl(),
         csdlJson = CsdlProvider.GetCsdlJson(),
         csdlXml = CsdlProvider.GetCsdlXml(),
-        edmElementsCount = CsdlProvider.EdmModel.SchemaElements.Count()
+        edmElementsCount = GeneratedModel.SchemaElementsCount
     });
 });
 

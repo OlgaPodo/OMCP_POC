@@ -16,12 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.21.0" />
-    <PackageReference Include="Microsoft.OData.Edm" Version="9.0.0" />
     <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="metadata.csdl" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -49,14 +49,14 @@ To test this MCP server from source code locally, configure your MCP client or I
 Refer to the VS Code or Visual Studio documentation for more information on configuring and using MCP servers:
 
 - [Use MCP servers in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
-- [Use MCP servers in Visual Studio](https://learn.contoso.com/visualstudio/ide/mcp-servers)
+- [Use MCP servers in Visual Studio](https://learn.microsoft.com/visualstudio/ide/mcp-servers)
 
 ## Features
 
 - **Protocol Version:** MCP 2.0 (`2026-07-28`)
 - **Tools:** `find_user`, `user_profile`
 - **Resources:** `users://me`, `users://{userId}`
-- **Prompts:** `whom_miriam_reports_to`, `who_are_miriams_peers`, `direct_reports_of_manager`, `search_users_by_dept_title`, `user_quick_lookup`
+- **Prompts:** `whom_olga_reports_to`, `who_are_olgas_peers`, `direct_reports_of_manager`, `search_users_by_dept_title`, `user_quick_lookup`
 
 ## More information
 
