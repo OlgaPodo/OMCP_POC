@@ -50,7 +50,7 @@
         <Annotation Term="Agent.Prompts">
           <Collection>
             <Record>
-              <PropertyValue Property="Name" String="whom_olga_reports_to" />
+              <PropertyValue Property="Name" String="whom_avery_reports_to" />
               <PropertyValue Property="Title" String="Whom Avery reports to?" />
               <PropertyValue Property="Description" String="Find organizational manager for Avery Adams or any given user." />
               <PropertyValue Property="Arguments">
@@ -78,7 +78,7 @@
               </PropertyValue>
             </Record>
             <Record>
-              <PropertyValue Property="Name" String="who_are_olgas_peers" />
+              <PropertyValue Property="Name" String="who_are_averys_peers" />
               <PropertyValue Property="Title" String="Who are Avery's peers?" />
               <PropertyValue Property="Description" String="Discover peer colleagues reporting to the same manager as Avery Adams." />
               <PropertyValue Property="Arguments">

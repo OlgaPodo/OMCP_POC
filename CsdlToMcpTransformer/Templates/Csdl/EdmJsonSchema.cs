@@ -4,6 +4,7 @@ using System.Xml;
 
 namespace GraphMcpServer.Csdl;
 
+/// <summary>Validates generated input types, parses resource keys, and formats OData literals; does not generate schemas.</summary>
 public static class EdmJsonSchema
 {
     public static readonly IReadOnlyDictionary<string, string> QueryOptions = new Dictionary<string, string>
@@ -11,9 +12,6 @@ public static class EdmJsonSchema
         ["filter"] = "$filter", ["select"] = "$select", ["expand"] = "$expand", ["orderby"] = "$orderby",
         ["top"] = "$top", ["skip"] = "$skip", ["count"] = "$count", ["search"] = "$search"
     };
-
-    public static JsonElement ForArguments(ToolBinding tool) =>
-        JsonDocument.Parse(tool.InputSchemaJson).RootElement.Clone();
 
     public static void Validate(StaticTypeDescriptor type, JsonElement value, string name)
     {

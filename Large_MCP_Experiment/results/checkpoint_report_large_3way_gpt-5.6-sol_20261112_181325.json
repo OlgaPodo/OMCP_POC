@@ -1,0 +1,521 @@
+{
+  "version": 1,
+  "run_id": "report_large_3way_gpt-5.6-sol_20261112_181325",
+  "started_at": "2026-11-12T18:13:25.248473",
+  "model": "gpt-5.6-sol",
+  "timeout": 180,
+  "require_live_graph": true,
+  "session_chunk_size": 20,
+  "query_ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "elapsed_seconds": 39.04,
+  "variation_results": {
+    "no_examples": {
+      "1": {
+        "intent": "find Avery's manager",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001",
+          "select": "id,displayName,userPrincipalName,jobTitle"
+        },
+        "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle",
+        "answer": "Avery Adams reports to Morgan Reed, Partner Director Engineering.",
+        "calls": [
+          {
+            "method": "tools/call",
+            "name": "list_users",
+            "arguments": {
+              "filter": "startswith(displayName,'Avery')",
+              "select": "id,displayName,userPrincipalName",
+              "top": 25
+            },
+            "uri": null,
+            "success": true,
+            "entity_set": "users",
+            "odata_query": "users?$filter=startswith%28displayName%2C%27Olga%27%29&$select=id%2CdisplayName%2CuserPrincipalName&$top=25",
+            "examples_count": 0,
+            "source": null,
+            "resolved_identifier": null,
+            "result_count": 20,
+            "resolved_entities": [
+              {
+                "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+                "userPrincipalName": "example.directory.056@example.com",
+                "displayName": "avery"
+              },
+              {
+                "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+                "userPrincipalName": "example.directory.053@example.com",
+                "displayName": "avery"
+              },
+              {
+                "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+                "userPrincipalName": "example.directory.055@example.com",
+                "displayName": "avery"
+              },
+              {
+                "id": "d7b7b6fd-39a4-5c8d-af4a-71dc089dcab9",
+                "userPrincipalName": "example.directory.062@example.com",
+                "displayName": "Example Directory Object 053"
+              },
+              {
+                "id": "0eb1a0c7-dc7e-5a90-8141-d67c2cdf8c76",
+                "userPrincipalName": "example.directory.063@example.com",
+                "displayName": "Example Directory Object 054"
+              },
+              {
+                "id": "d3102e2d-76c9-5b5d-b2c1-fd8d8f0c733b",
+                "userPrincipalName": "example.directory.059@example.com",
+                "displayName": "Example Directory Object 055"
+              },
+              {
+                "id": "691978be-1311-5714-8365-04968e98c5f1",
+                "userPrincipalName": "example.directory.064@example.com",
+                "displayName": "Example Directory Object 056"
+              },
+              {
+                "id": "3b57110e-dc96-5752-ad40-470d786f5c23",
+                "userPrincipalName": "example.directory.061@example.com",
+                "displayName": "Example Directory Object 041"
+              },
+              {
+                "id": "b5862055-9dcc-5806-8359-d0c4249cf823",
+                "userPrincipalName": "example.directory.049@example.com",
+                "displayName": "Example Directory Object 042"
+              },
+              {
+                "id": "9cea1524-1bad-5813-80fd-f87f552a5ffc",
+                "userPrincipalName": "example.directory.050@example.com",
+                "displayName": "Example Directory Object 043"
+              },
+              {
+                "id": "9b116579-ff49-5b7e-9436-bc57b3907cbf",
+                "userPrincipalName": "example.directory.047@example.com",
+                "displayName": "Example Directory Object 044"
+              },
+              {
+                "id": "e6555df9-39a1-5070-91f5-acf34591b8a1",
+                "userPrincipalName": "example.directory.046@example.com",
+                "displayName": "Example Directory Object 045"
+              },
+              {
+                "id": "63cf5d86-5208-5c04-88a2-988159f7ce22",
+                "userPrincipalName": "example.directory.057@example.com",
+                "displayName": "Example Directory Object 045"
+              },
+              {
+                "id": "4380ba80-e390-5ee3-ab62-fffc0ed2bf20",
+                "userPrincipalName": "example.directory.058@example.com",
+                "displayName": "Example Directory Object 046"
+              },
+              {
+                "id": "92221142-bd0f-568d-845b-79e90b336c43",
+                "userPrincipalName": "example.directory.080@example.com",
+                "displayName": "Example Directory Object 047"
+              },
+              {
+                "id": "2b02f3ca-6b02-522b-bd49-f659917172c0",
+                "userPrincipalName": "example.directory.051@example.com",
+                "displayName": "Example Directory Object 048"
+              },
+              {
+                "id": "cfff1df5-1d49-5c04-b2f7-b05ac5c86530",
+                "userPrincipalName": "example.directory.052@example.com",
+                "displayName": "Example Directory Object 049"
+              },
+              {
+                "id": "41287a79-d528-5611-98a2-259af2ae72c1",
+                "userPrincipalName": "example.directory.060@example.com",
+                "displayName": "Example Directory Object 049"
+              },
+              {
+                "id": "8dad8276-f0db-5fc3-a6ea-967de4861ffe",
+                "userPrincipalName": "example.directory.054@example.com",
+                "displayName": "Example Directory Object 050"
+              },
+              {
+                "id": "74b86f4c-ab70-5a05-830f-47df40c796fc",
+                "userPrincipalName": "example.directory.048@example.com",
+                "displayName": "Example Directory Object 051"
+              }
+            ],
+            "correlation_id": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "method": "tools/call",
+            "name": "get_users_manager",
+            "arguments": {
+              "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "select": "id,displayName,userPrincipalName,jobTitle"
+            },
+            "uri": null,
+            "success": true,
+            "entity_set": "users",
+            "odata_query": "users(%277a90d471-2cf9-42a8-8e1d-360ef7d77f0b%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle",
+            "examples_count": 0,
+            "correlation_id": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "method": "tools/call",
+            "name": "get_users_manager",
+            "arguments": {
+              "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "select": "id,displayName,userPrincipalName,jobTitle"
+            },
+            "uri": null,
+            "success": true,
+            "entity_set": "users",
+            "odata_query": "users(%27aa3cc580-1c06-4a30-ba7f-8d2ab01b07ae%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle",
+            "examples_count": 0,
+            "correlation_id": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "method": "tools/call",
+            "name": "list_users",
+            "arguments": {
+              "filter": "startswith(displayName,'Avery') and endswith(userPrincipalName,'@microsoft.com')",
+              "select": "id,displayName,userPrincipalName,jobTitle,department",
+              "top": 50
+            },
+            "uri": null,
+            "success": true,
+            "entity_set": "users",
+            "odata_query": "users?$filter=startswith%28displayName%2C%27Olga%27%29%20and%20endswith%28userPrincipalName%2C%27%40example.com%27%29&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle%2Cdepartment&$top=50",
+            "examples_count": 0,
+            "source": null,
+            "resolved_identifier": null,
+            "result_count": 9,
+            "resolved_entities": [
+              {
+                "id": "10000000-0000-4000-8000-000000000001",
+                "userPrincipalName": "avery.adams@example.com",
+                "displayName": "Avery Adams"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000002",
+                "userPrincipalName": "morgan.reed@example.com",
+                "displayName": "Morgan Reed"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000003",
+                "userPrincipalName": "jordan.lee@example.com",
+                "displayName": "Jordan Lee"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000004",
+                "userPrincipalName": "taylor.morgan@example.com",
+                "displayName": "Taylor Morgan"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000005",
+                "userPrincipalName": "casey.chen@example.com",
+                "displayName": "Casey Chen"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000006",
+                "userPrincipalName": "riley.patel@example.com",
+                "displayName": "Riley Patel"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000007",
+                "userPrincipalName": "jamie.kim@example.com",
+                "displayName": "Jamie Kim"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000008",
+                "userPrincipalName": "sam.rivera@example.com",
+                "displayName": "Sam Rivera"
+              },
+              {
+                "id": "10000000-0000-4000-8000-000000000009",
+                "userPrincipalName": "drew.parker@example.com",
+                "displayName": "Drew Parker"
+              }
+            ],
+            "correlation_id": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "method": "tools/call",
+            "name": "get_users_manager",
+            "arguments": {
+              "key_id": "10000000-0000-4000-8000-000000000001",
+              "select": "id,displayName,userPrincipalName,jobTitle"
+            },
+            "uri": null,
+            "success": true,
+            "entity_set": "users",
+            "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle",
+            "examples_count": 0,
+            "source": null,
+            "resolved_identifier": "morgan.reed@example.com",
+            "resolved_entity": {
+              "id": "10000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "morgan.reed@example.com",
+              "displayName": "Morgan Reed"
+            },
+            "correlation_id": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          }
+        ],
+        "graph_traces": [
+          {
+            "timestamp": "2026-11-12T23:13:49.3541802+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery') or startswith(userPrincipalName,'Avery') or startswith(mail,'Avery')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:54.2000961+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:54.3260815+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 404,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:54.4360376+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:56.5440385+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:56.6476349+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 404,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:56.7584393+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:13:59.8910533+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'%40example.com') or startswith(userPrincipalName,'%40example.com') or startswith(mail,'%40example.com')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:14:01.7131111+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:14:01.8197676+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:14:01.9356268+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          },
+          {
+            "timestamp": "2026-11-12T23:14:02.0531687+00:00",
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+            "statusCode": 200,
+            "isLive": true,
+            "correlationId": "no_examples-q1-da9e033922e64eefbb6e344ca1dcad24"
+          }
+        ],
+        "usage": {
+          "totalPremiumRequestCost": 1,
+          "totalUserRequests": 1,
+          "totalNanoAiu": 17263460000,
+          "aiCreditsStatus": "complete",
+          "tokenDetails": {
+            "input": {
+              "tokenCount": 1667
+            },
+            "cache_read": {
+              "tokenCount": 104129
+            },
+            "cache_write": {
+              "tokenCount": 21143
+            },
+            "output": {
+              "tokenCount": 930
+            }
+          },
+          "totalApiDurationMs": 17691,
+          "sessionStartTime": "2026-11-12T23:13:43.105Z",
+          "codeChanges": {
+            "linesAdded": 0,
+            "linesRemoved": 0,
+            "filesModifiedCount": 0,
+            "filesModified": []
+          },
+          "modelMetrics": {
+            "gpt-5.6-sol": {
+              "requests": {
+                "count": 6,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 126939,
+                "outputTokens": 930,
+                "cacheReadTokens": 104129,
+                "cacheWriteTokens": 21143,
+                "reasoningTokens": 507
+              },
+              "cacheExpiresAt": "2026-11-12T23:44:02.233Z",
+              "totalNanoAiu": 17263460000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 1667
+                },
+                "cache_read": {
+                  "tokenCount": 104129
+                },
+                "cache_write": {
+                  "tokenCount": 21143
+                },
+                "output": {
+                  "tokenCount": 930
+                }
+              }
+            }
+          },
+          "agentMetrics": {
+            "main": {
+              "totalApiDurationMs": 17691,
+              "totalNanoAiu": 17263460000,
+              "modelMetrics": {
+                "gpt-5.6-sol": {
+                  "requests": {
+                    "count": 6,
+                    "cost": 1
+                  },
+                  "usage": {
+                    "inputTokens": 126939,
+                    "outputTokens": 930,
+                    "cacheReadTokens": 104129,
+                    "cacheWriteTokens": 21143,
+                    "reasoningTokens": 507
+                  },
+                  "totalNanoAiu": 17263460000,
+                  "tokenDetails": {
+                    "input": {
+                      "tokenCount": 1667
+                    },
+                    "cache_read": {
+                      "tokenCount": 104129
+                    },
+                    "cache_write": {
+                      "tokenCount": 21143
+                    },
+                    "output": {
+                      "tokenCount": 930
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "providerModelMetrics": [
+            {
+              "provider": {
+                "id": "copilot",
+                "label": "GitHub Copilot",
+                "kind": "copilot"
+              },
+              "modelId": "gpt-5.6-sol",
+              "metrics": {
+                "requests": {
+                  "count": 6,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 126939,
+                  "outputTokens": 930,
+                  "cacheReadTokens": 104129,
+                  "cacheWriteTokens": 21143,
+                  "reasoningTokens": 507
+                },
+                "totalNanoAiu": 17263460000,
+                "aiCreditsStatus": "complete",
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 1667
+                  },
+                  "cache_read": {
+                    "tokenCount": 104129
+                  },
+                  "cache_write": {
+                    "tokenCount": 21143
+                  },
+                  "output": {
+                    "tokenCount": 930
+                  }
+                }
+              },
+              "modelDisplayName": "GPT-5.6 Sol"
+            }
+          ],
+          "currentModel": "gpt-5.6-sol",
+          "lastCallInputTokens": 22795,
+          "lastCallOutputTokens": 153
+        },
+        "error": null,
+        "session_id": "c646f8cb-251c-5a63-852a-b60df1b17599",
+        "session_chunk": "no_examples-chunk1",
+        "session_prompt_index": 1,
+        "elapsed_ms": 38953.0,
+        "eval": {
+          "intent_match": true,
+          "tool_match": true,
+          "parameters_match": true,
+          "odata_match": false,
+          "live_graph_calls": 10,
+          "live_graph_verified": true,
+          "execution_success": true,
+          "failure_reason": null
+        }
+      }
+    },
+    "with_examples": {},
+    "search_query": {}
+  }
+}

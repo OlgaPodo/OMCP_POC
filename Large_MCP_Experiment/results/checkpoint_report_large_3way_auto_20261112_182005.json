@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "run_id": "report_large_3way_auto_20261112_182005",
+  "started_at": "2026-11-12T18:20:05.618074",
+  "model": "auto",
+  "timeout": 180,
+  "require_live_graph": true,
+  "session_chunk_size": 20,
+  "query_ids": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "elapsed_seconds": 0.0,
+  "variation_results": {
+    "no_examples": {},
+    "with_examples": {},
+    "search_query": {}
+  }
+}

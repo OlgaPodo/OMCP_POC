@@ -1,6 +1,7 @@
 using GraphMcpServer.Csdl;
 using GraphMcpServer.Services;
 
+// Configures dependency injection, MCP handlers, and diagnostic HTTP endpoints for the generated server.
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseUrls("http://localhost:__SERVER_PORT__");
@@ -16,9 +17,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddHttpClient<ODataClientService>()
-    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient<GraphClientService>();
+builder.Services.AddSingleton<GraphClientService>();
+builder.Services.AddSingleton<GeneratedGraphExecutor>();
+builder.Services.AddSingleton<ODataClientService>();
 builder.Services.AddSingleton<IODataClientService>(services => services.GetRequiredService<ODataClientService>());
 builder.Services.AddSingleton<CsdlMcpProjection>();
 
@@ -48,7 +51,7 @@ app.UseCors();
 app.MapMcp();
 
 // Diagnostic and exploration API endpoints
-app.MapGet("/health", (IODataClientService odataService) =>
+app.MapGet("/health", (GraphClientService graphService) =>
 {
     return Results.Ok(new
     {
@@ -76,7 +79,8 @@ app.MapGet("/health", (IODataClientService odataService) =>
             resources = CsdlProvider.GetProjectedResources().Select(resource => resource.UriTemplate),
             prompts = CsdlProvider.ListPrompts().Prompts.Select(prompt => prompt.Name)
         },
-        recentTraces = odataService.GetRecentTraces().Count
+        executionMode = "In-process MCP-to-Graph translation",
+        recentTraces = graphService.GetRecentTraces().Count
     });
 });
 
@@ -96,6 +100,6 @@ app.MapGet("/api/examples", () => Results.Ok(CsdlProvider.GetExampleQueries()));
 app.MapGet("/api/analysis", () => Results.Ok(CsdlProvider.GetPromptArchitecturalAnalysis()));
 app.MapGet("/api/catalog", () => Results.Ok(CsdlProvider.GetCatalog()));
 app.MapGet("/api/projection", () => Results.Ok(CsdlProvider.GetProjection()));
-app.MapGet("/api/traces", (IODataClientService odataService) => Results.Ok(odataService.GetRecentTraces()));
+app.MapGet("/api/traces", (GraphClientService graphService) => Results.Ok(graphService.GetRecentTraces()));
 
 app.Run();

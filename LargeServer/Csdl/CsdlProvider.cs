@@ -5,15 +5,24 @@ using ModelContextProtocol.Protocol;
 
 namespace GraphMcpServer.Csdl;
 
+/// <summary>Identifies EDM value categories used by runtime input validation and literal formatting.</summary>
 public enum StaticTypeKind
 {
     String, Boolean, Integer, Number, Guid, Date, DateTimeOffset, TimeOfDay,
     Duration, Binary, Enum, Object, Array
 }
 
+/// <summary>Distinguishes OData reads, functions, and actions when constructing runtime requests.</summary>
 public enum OperationKind { Read, Function, Action }
+/// <summary>Selects direct or workload-specific Graph execution for a generated request binding.</summary>
+public enum GraphExecutionKind
+{
+    Direct, Drive, DriveSearch, DriveItem, Teams, Channel, Chats, Todo, ChannelSend, TodoComplete
+}
 
+/// <summary>Describes a structured input property's name and runtime type.</summary>
 public sealed record StaticProperty(string Name, StaticTypeDescriptor Type);
+/// <summary>Supplies generated type constraints for validating runtime values and formatting OData literals.</summary>
 public sealed record StaticTypeDescriptor(
     string FullName,
     StaticTypeKind Kind,
@@ -24,76 +33,47 @@ public sealed record StaticTypeDescriptor(
     IReadOnlyList<StaticProperty>? Properties = null,
     bool IsOpen = false,
     StaticTypeDescriptor? ElementType = null);
+/// <summary>Describes a request parameter's type, requiredness, key status, and documentation.</summary>
 public sealed record ParameterBinding(
     string Name, StaticTypeDescriptor Type, bool Required, bool IsKey = false, string? Description = null);
-public sealed record ToolBinding(
+/// <summary>Carries generated OData execution metadata and linked examples shared by MCP tools and resources; is not an MCP tool.</summary>
+public sealed record ODataRequestBinding(
     string Name, string Title, string Description, string Path, OperationKind OperationKind,
     IReadOnlyList<ParameterBinding> Arguments, string AnnotationTarget, string? EntitySet,
-    string? EntityType, bool QueryOptions, string InputSchemaJson);
-public sealed record ResourceDefinition(
-    string Name, string Title, string Description, string UriTemplate, string ToolName);
+    string? EntityType, bool QueryOptions, string InputSchemaJson, GraphExecutionKind ExecutionKind,
+    IReadOnlyList<ExampleDefinition> Examples);
+/// <summary>Links an MCP resource URI and generated match pattern to its OData request binding.</summary>
 public sealed record ResourceBinding(
-    string Name, string Title, string Description, string UriTemplate, ToolBinding Tool, Regex MatchPattern);
+    string Name, string Title, string Description, string UriTemplate, ODataRequestBinding RequestBinding, Regex MatchPattern);
+/// <summary>Describes a prompt argument's requiredness, documentation, and default substitution value.</summary>
 public sealed record PromptArgumentDefinition(string Name, string? Description, bool Required, string? Default);
+/// <summary>Stores a prompt message's role and text template for runtime substitution.</summary>
 public sealed record PromptMessageDefinition(Role Role, string Text);
+/// <summary>Stores generated prompt metadata, argument definitions, and message templates.</summary>
 public sealed record PromptDefinition(
     string Name, string Title, string Description,
     IReadOnlyList<PromptArgumentDefinition> Arguments, IReadOnlyList<PromptMessageDefinition> Messages);
+/// <summary>Carries a CSDL-annotated utterance and OData request associated with an EDM target.</summary>
 public sealed record ExampleDefinition(
     string TargetKind, string TargetName, string? EntitySet,
     string Utterance, string Request, string Description);
 
+/// <summary>Exposes transformer-generated metadata and renders prompts from runtime arguments without schema generation.</summary>
 public static class CsdlProvider
 {
-    private static readonly IReadOnlyDictionary<string, ToolBinding> ToolsByName =
-        GeneratedModel.Tools.ToDictionary(tool => tool.Name, StringComparer.Ordinal);
-
-    private static readonly IReadOnlyList<ResourceBinding> Resources =
-        GeneratedModel.Resources.Select(resource =>
-        {
-            var tool = ToolsByName[resource.ToolName];
-            var pattern = Regex.Escape(resource.UriTemplate);
-            foreach (var key in tool.Arguments.Where(argument => argument.IsKey))
-                pattern = pattern.Replace(Regex.Escape("{" + key.Name + "}"), $"(?<{key.Name}>[^/]+)");
-            return new ResourceBinding(
-                resource.Name, resource.Title, resource.Description, resource.UriTemplate,
-                tool, new Regex("^" + pattern + "$", RegexOptions.CultureInvariant | RegexOptions.Compiled));
-        }).ToList();
-
     public static string CsdlFilePath => GeneratedModel.SourceCsdl;
     public static string GetCsdl() => GetCsdlXml();
     public static string GetCsdlXml() =>
         Encoding.UTF8.GetString(Convert.FromBase64String(GeneratedModel.CsdlXmlBase64));
     public static string GetCsdlJson() =>
         Encoding.UTF8.GetString(Convert.FromBase64String(GeneratedModel.CsdlJsonBase64));
-    public static IReadOnlyList<ToolBinding> GetProjectedTools() => GeneratedModel.Tools;
-    public static IReadOnlyList<ResourceBinding> GetProjectedResources() => Resources;
+    public static IReadOnlyList<ODataRequestBinding> GetRequestBindings() => GeneratedModel.RequestBindings;
+    public static IReadOnlyList<ResourceBinding> GetProjectedResources() => GeneratedModel.Resources;
     public static IReadOnlyList<ExampleDefinition> GetExampleQueries() => GeneratedModel.Examples;
 
-    public static IReadOnlyList<ExampleDefinition> GetExamplesFor(ToolBinding tool) =>
-        GeneratedModel.Examples.Where(example =>
-            example.TargetName == tool.AnnotationTarget ||
-            tool.OperationKind != OperationKind.Read && example.TargetName == tool.AnnotationTarget ||
-            tool.EntitySet != null && example.EntitySet == tool.EntitySet ||
-            tool.EntityType != null && example.TargetName == tool.EntityType)
-            .Distinct()
-            .ToList();
+    public static IReadOnlyList<ExampleDefinition> GetExamplesFor(ODataRequestBinding binding) => binding.Examples;
 
-    public static ListPromptsResult ListPrompts() => new()
-    {
-        Prompts = GeneratedModel.Prompts.Select(prompt => new Prompt
-        {
-            Name = prompt.Name,
-            Title = prompt.Title,
-            Description = prompt.Description,
-            Arguments = prompt.Arguments.Select(argument => new PromptArgument
-            {
-                Name = argument.Name,
-                Description = argument.Description,
-                Required = argument.Required
-            }).ToList()
-        }).ToList()
-    };
+    public static ListPromptsResult ListPrompts() => new() { Prompts = GeneratedModel.McpPrompts };
 
     public static GetPromptResult GetPrompt(GetPromptRequestParams request)
     {
@@ -130,88 +110,7 @@ public static class CsdlProvider
         };
     }
 
-    public static IReadOnlyList<string> ExtractODataQueries(string text) =>
-        Regex.Matches(text, @"(?:GET|POST)\s+([^\r\n]+?)(?=\s+(?:and\s+)?(?:GET|POST)\s+|[.]\s|\r?\n|$)")
-            .Select(match => match.Groups[1].Value.TrimEnd('.', ',', ';'))
-            .Distinct(StringComparer.Ordinal)
-            .ToList();
-
-    public static object GetCatalog() => GeneratedModel.Prompts.Select(prompt =>
-    {
-        var queries = prompt.Messages.SelectMany(message => ExtractODataQueries(message.Text)).Distinct().ToList();
-        var sources = GeneratedModel.EntitySets
-            .Where(source => queries.Any(query => Regex.IsMatch(query, $@"^{Regex.Escape(source)}(?:[/('?$]|$)")))
-            .ToList();
-        var bindings = GeneratedModel.Tools
-            .Where(tool => tool.EntitySet != null && sources.Contains(tool.EntitySet))
-            .Select(tool => tool.Name)
-            .ToList();
-        return new
-        {
-            name = prompt.Name,
-            title = prompt.Title,
-            description = prompt.Description,
-            odataQueries = queries,
-            toolBinding = string.Join(", ", bindings),
-            toolBindings = bindings,
-            resourceBindings = Resources
-                .Where(resource => resource.Tool.EntitySet != null && sources.Contains(resource.Tool.EntitySet))
-                .Select(resource => resource.UriTemplate),
-            entitySets = sources,
-            template = prompt.Messages.FirstOrDefault()?.Text ?? "",
-            arguments = prompt.Arguments.Select(argument => new
-            {
-                name = argument.Name,
-                description = argument.Description,
-                required = argument.Required,
-                @default = argument.Default
-            })
-        };
-    }).ToList();
-
-    public static object GetProjection() => new
-    {
-        csdlPath = GeneratedModel.SourceCsdl,
-        projectionMode = "static-generated-csharp",
-        tools = GeneratedModel.Tools.Select(tool => new
-        {
-            tool.Name,
-            tool.Title,
-            tool.Description,
-            Operation = tool.OperationKind.ToString(),
-            ODataQuery = $"{(tool.OperationKind == OperationKind.Action ? "POST" : "GET")} {tool.Path}",
-            annotationTarget = tool.AnnotationTarget,
-            entitySet = tool.EntitySet,
-            Arguments = tool.Arguments.Select(argument => new
-            {
-                argument.Name,
-                Type = argument.Type.FullName,
-                argument.Required
-            })
-        }),
-        resources = Resources.Select(resource => new
-        {
-            resource.Name,
-            resource.Title,
-            resource.Description,
-            resource.UriTemplate,
-            MimeType = "application/json",
-            entitySet = resource.Tool.EntitySet
-        }),
-        prompts = GetCatalog(),
-        exampleQueries = GeneratedModel.Examples,
-        mcpTools = CsdlMcpProjection.ListTools().Tools,
-        mcpResources = CsdlMcpProjection.ListResources().Resources,
-        mcpResourceTemplates = CsdlMcpProjection.ListResourceTemplates().ResourceTemplates
-    };
-
-    public static object GetPromptArchitecturalAnalysis() => new
-    {
-        modelParser = "No runtime CSDL parser. MCP bindings are generated as static C# source.",
-        entityContainer = GeneratedModel.EntityContainer,
-        entityTypes = GeneratedModel.EntityTypesCount,
-        operations = GeneratedModel.OperationsCount,
-        prompts = GeneratedModel.Prompts.Count,
-        examples = GeneratedModel.Examples.Count
-    };
+    public static object GetCatalog() => GeneratedModel.Catalog;
+    public static object GetProjection() => GeneratedModel.Projection;
+    public static object GetPromptArchitecturalAnalysis() => GeneratedModel.Analysis;
 }

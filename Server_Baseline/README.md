@@ -58,7 +58,7 @@ Refer to the VS Code or Visual Studio documentation for more information on conf
 - **Protocol Version:** MCP 2.0 (`2026-07-28`)
 - **Tools:** `find_user`, `user_profile`
 - **Resources:** `users://me`, `users://{userId}`
-- **Prompts:** `whom_olga_reports_to`, `who_are_olgas_peers`, `direct_reports_of_manager`, `search_users_by_dept_title`, `user_quick_lookup`
+- **Prompts:** `whom_avery_reports_to`, `who_are_averys_peers`, `direct_reports_of_manager`, `search_users_by_dept_title`, `user_quick_lookup`
 
 ## More information
 

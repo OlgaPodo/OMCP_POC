@@ -2,12 +2,13 @@ using GraphMcpServer.Csdl;
 using GraphMcpServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var serverPort = builder.Configuration.GetValue<int?>("Server:Port") ?? 3005;
+var instanceName = builder.Configuration["Server:InstanceName"] ?? "search-query";
 
 // Initialize CSDL Provider from configuration (defaults to C:\MCP\Csdl\Server_Large_WithExamples.csdl)
 UserCsdlProvider.Initialize(builder.Configuration);
 
-// Configure port 3005 for LargeServer_SearchQuery (Intent Identification + OData Query Construction)
-builder.WebHost.UseUrls("http://localhost:3005");
+builder.WebHost.UseUrls($"http://localhost:{serverPort}");
 
 // Register CORS for web app
 builder.Services.AddCors(options =>
@@ -62,8 +63,9 @@ app.MapGet("/health", (GraphClientService graphService) =>
         protocolVersion = "2026-07-28",
         supportedVersions = new[] { "2026-07-28" },
         odataLibrary = "Microsoft.OData.Edm 9.0.0",
-        port = 3005,
-        mcpEndpoint = "http://localhost:3005/",
+        port = serverPort,
+        instance = instanceName,
+        mcpEndpoint = $"http://localhost:{serverPort}/",
         csdlPath = UserCsdlProvider.CsdlFilePath,
         hasCsdlPrompts = UserCsdlProvider.ListPrompts().Prompts.Count > 0,
         hasEntitySetExamples = UserCsdlProvider.GetExampleQueries().Count > 0,
@@ -122,7 +124,11 @@ app.MapMethods("/odata/{**odataPath}", ["GET", "POST"], async (HttpContext ctx, 
     {
         return Results.NotFound(new { error = new { code = "ResourceNotFound", message = $"No OData resource matched '{fullQuery}'." } });
     }
-    return Results.Ok(result);
+    var payload = System.Text.Json.JsonSerializer.SerializeToElement(result);
+    return payload.ValueKind == System.Text.Json.JsonValueKind.Object &&
+           payload.TryGetProperty("data", out var data)
+        ? Results.Json(data)
+        : Results.Json(payload);
 });
 
 app.Run();

@@ -1,0 +1,63 @@
+{
+  "id": "report_copilot_copilot_cli_default_20261026_155310",
+  "timestamp": "2026-10-26T15:53:10.775136",
+  "engine": "copilot",
+  "model": "Copilot CLI Default",
+  "elapsed_seconds": 20.99,
+  "total_queries": 1,
+  "is_full_run": false,
+  "metrics": {
+    "server_a_success_rate": 100.0,
+    "server_b_success_rate": 0.0,
+    "delta": 100.0,
+    "intent_accuracy_a": 100.0,
+    "intent_accuracy_b": 100.0,
+    "odata_validity_a": 100.0,
+    "odata_validity_b": 100.0
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 1,
+      "succ_a": 1,
+      "succ_b": 0,
+      "rate_a": 100.0,
+      "rate_b": 0.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "category": "canonical",
+      "query": "Whom Avery reports to?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 20.88
+    }
+  ]
+}

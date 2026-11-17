@@ -4,9 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- The console runner calls server APIs rather than launching the referenced executable. -->
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\CsdlToMcpTransformer.csproj" />
+    <ProjectReference Include="..\..\LargeServer\GraphMcpServer.csproj" />
     <None Update="Fixtures\*.csdl" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

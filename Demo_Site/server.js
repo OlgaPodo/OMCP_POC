@@ -1,4 +1,5 @@
 const http = require('http');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -81,7 +82,12 @@ const server = http.createServer(async (req, res) => {
       const clientReqHeaders = {
         'Content-Type': 'application/json',
         'Accept': 'application/json, text/event-stream',
-        'MCP-Protocol-Version': '2026-07-28'
+        'MCP-Protocol-Version': '2026-07-28',
+        'Cache-Control': 'no-cache, no-store',
+        'Pragma': 'no-cache',
+        'X-Experiment-Correlation-Id': String(
+          req.headers['x-experiment-correlation-id'] ||
+          crypto.randomUUID())
       };
 
       // Set standard Streamable HTTP Mcp-Method header
@@ -146,10 +152,14 @@ const server = http.createServer(async (req, res) => {
           requestPayload: parsedRequest,
           responseHeaders: respHeaders,
           rawResponse: rawText,
-          jsonRpcResponse: parsedPayload
+          jsonRpcResponse: parsedPayload,
+          correlationId: clientReqHeaders['X-Experiment-Correlation-Id']
         };
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store'
+        });
         res.end(JSON.stringify(auditResponse));
       } catch (err) {
         res.writeHead(502, { 'Content-Type': 'application/json' });
@@ -370,7 +380,10 @@ const server = http.createServer(async (req, res) => {
     try {
       const forwardRes = await fetch('http://localhost:3002/health');
       const data = await forwardRes.text();
-      res.writeHead(forwardRes.status, { 'Content-Type': 'application/json' });
+      res.writeHead(forwardRes.status, {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store'
+      });
       res.end(data);
     } catch (e) {
       res.writeHead(502, { 'Content-Type': 'application/json' });
@@ -684,14 +697,14 @@ const server = http.createServer(async (req, res) => {
           // Step 3: Execute OData Query
           const odataTrace = await executeMcpCall(serverUrl, 'tools/call', {
             name: 'execute_odata_query',
-            arguments: { query: odataQuery }
+            arguments: { odataQuery }
           });
 
           trajectory.push({
             step: stepIndex++,
             type: 'tool_call',
             title: `MCP Tool Call: execute_odata_query`,
-            description: `Agent executed constructed OData query '${odataQuery}' against upstream OData endpoint.`,
+            description: `Agent executed constructed OData query '${odataQuery}' through the server's in-process Graph dispatcher.`,
             status: `${odataTrace.statusCode} OK`,
             elapsedMs: odataTrace.elapsedMs,
             callTrace: {
@@ -864,6 +877,25 @@ const server = http.createServer(async (req, res) => {
         }));
       }
     });
+    return;
+  }
+
+  if (req.url.startsWith('/api/traces') && req.method === 'GET') {
+    try {
+      const selected = selectedServer(req);
+      const traceServer = selected;
+      const parsedUrl = new URL(req.url, 'http://localhost:3000');
+      const correlationId = parsedUrl.searchParams.get('correlationId');
+      const forwardRes = await fetch(`${traceServer}/api/traces`);
+      let traces = await forwardRes.json();
+      if (correlationId)
+        traces = traces.filter(trace => trace.correlationId === correlationId);
+      res.writeHead(forwardRes.status, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(traces));
+    } catch (err) {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
     return;
   }
 

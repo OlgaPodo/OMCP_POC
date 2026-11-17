@@ -1,0 +1,489 @@
+{
+  "id": "report_copilot_cli-default_20261103_202357_188214",
+  "result_id": "results_copilot_cli-default_20261103_202357_188214",
+  "timestamp": "2026-11-03T20:23:57.188214",
+  "engine": "copilot",
+  "model": "gpt-6.1-sol",
+  "evaluation_version": 2,
+  "metric_kind": "verified_mcp_routing",
+  "methodology": "Baseline completes before examples. Fresh CLI home/work directory per query; only assigned MCP enabled. Catalogs are fetched from the running servers. Success requires matching intent, actual tool call, expected parameters and non-error MCP response, or correct unsupported-request rejection. Cross-resource cases require all specified tools and confirmed reads from each required entity set. Generated OData strings are not executed or scored. Graph fallback responses are not proof of live Graph success.",
+  "servers": {
+    "a": "http://localhost:3001",
+    "b": "http://localhost:3002"
+  },
+  "catalog_hashes": {
+    "b": "b616ea6b109527e8f30507c248dd5a76edadc9410633cfc23e997f95ad84de93",
+    "a": "623760e2fd32bd5bdcac5fe7863b00a8b1de65b2b0af86ae125435d361c1173c"
+  },
+  "total_queries": 1,
+  "is_full_run": false,
+  "elapsed_seconds": 29.77,
+  "metrics": {
+    "server_a_success_rate": 100.0,
+    "intent_accuracy_a": 100.0,
+    "odata_validity_a": null,
+    "server_b_success_rate": 100.0,
+    "intent_accuracy_b": 100.0,
+    "odata_validity_b": null,
+    "delta": 0.0
+  },
+  "category_breakdown": {
+    "complex": {
+      "count": 1,
+      "succ_a": 1,
+      "rate_a": 100.0,
+      "succ_b": 1,
+      "rate_b": 100.0
+    }
+  },
+  "usage_totals": {
+    "a": {
+      "measured_queries": 1,
+      "input_tokens": 108902,
+      "output_tokens": 315,
+      "ai_credits": 4.85519
+    },
+    "b": {
+      "measured_queries": 1,
+      "input_tokens": 60894,
+      "output_tokens": 291,
+      "ai_credits": 6.20853
+    }
+  },
+  "results": [
+    {
+      "query_id": 59,
+      "category": "complex",
+      "query": "Which peers of Avery belong to Platform Engineering?",
+      "expected_intent": "user_peers_in_group",
+      "expected_tool": "read_resource",
+      "expected_params": {},
+      "required_tools": [
+        "user_profile",
+        "find_group"
+      ],
+      "required_resources": [
+        {
+          "entitySet": "users",
+          "identifier": "avery.adams@example.com"
+        },
+        {
+          "entitySet": "groups",
+          "identifier": "11111111-2222-3333-4444-555555555555"
+        }
+      ],
+      "pred_a": {
+        "intent": "user_peers_in_group",
+        "tool": "read_resource",
+        "parameters": {
+          "userName": "Avery Adams",
+          "groupName": "Platform Engineering"
+        },
+        "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager/directReports; groups('11111111-2222-3333-4444-555555555555')/members"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": null,
+        "resources_match": true,
+        "tool_execution_success": true,
+        "odata_valid": null,
+        "execution_success": true
+      },
+      "calls_a": [
+        {
+          "method": "tools/call",
+          "name": "user_profile",
+          "arguments": {
+            "userId": "Avery Adams"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
+          "resolved_identifier": "avery.adams@example.com"
+        },
+        {
+          "method": "tools/call",
+          "name": "find_group",
+          "arguments": {
+            "query": "Platform Engineering"
+          },
+          "success": true,
+          "source": "not reported",
+          "resolved_identifier": null,
+          "result_count": 1
+        },
+        {
+          "method": "tools/call",
+          "name": "read_resource",
+          "arguments": {
+            "uri": "users://10000000-0000-4000-8000-000000000001"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (Live)",
+          "resource_uri": "users://10000000-0000-4000-8000-000000000001",
+          "entity_set": "users",
+          "resolved_identifier": "avery.adams@example.com"
+        },
+        {
+          "method": "tools/call",
+          "name": "read_resource",
+          "arguments": {
+            "uri": "groups://11111111-2222-3333-4444-555555555555"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (Mock Fallback)",
+          "resource_uri": "groups://11111111-2222-3333-4444-555555555555",
+          "entity_set": "groups",
+          "resolved_identifier": "11111111-2222-3333-4444-555555555555"
+        }
+      ],
+      "usage_a": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 4855190000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 15
+          },
+          "cache_read": {
+            "tokenCount": 94519
+          },
+          "cache_write": {
+            "tokenCount": 14368
+          },
+          "output": {
+            "tokenCount": 315
+          }
+        },
+        "totalApiDurationMs": 10581,
+        "sessionStartTime": "2026-11-04T01:23:41.951Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6.1-sol": {
+            "requests": {
+              "count": 5,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 108902,
+              "outputTokens": 315,
+              "cacheReadTokens": 94519,
+              "cacheWriteTokens": 14368,
+              "reasoningTokens": 88
+            },
+            "cacheExpiresAt": "2026-11-04T01:53:49.822Z",
+            "totalNanoAiu": 4855190000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 15
+              },
+              "cache_read": {
+                "tokenCount": 94519
+              },
+              "cache_write": {
+                "tokenCount": 14368
+              },
+              "output": {
+                "tokenCount": 315
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 10581,
+            "totalNanoAiu": 4855190000,
+            "modelMetrics": {
+              "gpt-6.1-sol": {
+                "requests": {
+                  "count": 5,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 108902,
+                  "outputTokens": 315,
+                  "cacheReadTokens": 94519,
+                  "cacheWriteTokens": 14368,
+                  "reasoningTokens": 88
+                },
+                "totalNanoAiu": 4855190000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 15
+                  },
+                  "cache_read": {
+                    "tokenCount": 94519
+                  },
+                  "cache_write": {
+                    "tokenCount": 14368
+                  },
+                  "output": {
+                    "tokenCount": 315
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6.1-sol",
+            "metrics": {
+              "requests": {
+                "count": 5,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 108902,
+                "outputTokens": 315,
+                "cacheReadTokens": 94519,
+                "cacheWriteTokens": 14368,
+                "reasoningTokens": 88
+              },
+              "totalNanoAiu": 4855190000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 15
+                },
+                "cache_read": {
+                  "tokenCount": 94519
+                },
+                "cache_write": {
+                  "tokenCount": 14368
+                },
+                "output": {
+                  "tokenCount": 315
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6.1 Sol"
+          }
+        ],
+        "currentModel": "gpt-6.1-sol",
+        "lastCallInputTokens": 23484,
+        "lastCallOutputTokens": 183
+      },
+      "error_a": null,
+      "duration_sec_a": 16.22,
+      "pred_b": {
+        "intent": "user_peers_in_group",
+        "tool": "read_resource",
+        "parameters": {
+          "userName": "Avery Adams",
+          "groupName": "Platform Engineering"
+        },
+        "odata_request": "/users/10000000-0000-4000-8000-000000000001?$expand=manager($expand=directReports); /groups/11111111-2222-3333-4444-555555555555/members"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": null,
+        "resources_match": true,
+        "tool_execution_success": true,
+        "odata_valid": null,
+        "execution_success": true
+      },
+      "calls_b": [
+        {
+          "method": "tools/call",
+          "name": "user_profile",
+          "arguments": {
+            "userId": "Avery"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
+          "resolved_identifier": "avery.adams@example.com"
+        },
+        {
+          "method": "tools/call",
+          "name": "find_group",
+          "arguments": {
+            "query": "Platform Engineering"
+          },
+          "success": true,
+          "source": "not reported",
+          "resolved_identifier": null,
+          "result_count": 1
+        },
+        {
+          "method": "tools/call",
+          "name": "read_resource",
+          "arguments": {
+            "uri": "groups://11111111-2222-3333-4444-555555555555"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (Mock Fallback)",
+          "resource_uri": "groups://11111111-2222-3333-4444-555555555555",
+          "entity_set": "groups",
+          "resolved_identifier": "11111111-2222-3333-4444-555555555555"
+        },
+        {
+          "method": "tools/call",
+          "name": "read_resource",
+          "arguments": {
+            "uri": "users://10000000-0000-4000-8000-000000000001"
+          },
+          "success": true,
+          "source": "Microsoft Graph v1.0 (Live)",
+          "resource_uri": "users://10000000-0000-4000-8000-000000000001",
+          "entity_set": "users",
+          "resolved_identifier": "avery.adams@example.com"
+        }
+      ],
+      "usage_b": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 6208530000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 9
+          },
+          "cache_read": {
+            "tokenCount": 38773
+          },
+          "cache_write": {
+            "tokenCount": 22112
+          },
+          "output": {
+            "tokenCount": 291
+          }
+        },
+        "totalApiDurationMs": 7422,
+        "sessionStartTime": "2026-11-04T01:23:28.888Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6.1-sol": {
+            "requests": {
+              "count": 3,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 60894,
+              "outputTokens": 291,
+              "cacheReadTokens": 38773,
+              "cacheWriteTokens": 22112,
+              "reasoningTokens": 38
+            },
+            "cacheExpiresAt": "2026-11-04T01:53:35.458Z",
+            "totalNanoAiu": 6208530000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 9
+              },
+              "cache_read": {
+                "tokenCount": 38773
+              },
+              "cache_write": {
+                "tokenCount": 22112
+              },
+              "output": {
+                "tokenCount": 291
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 7422,
+            "totalNanoAiu": 6208530000,
+            "modelMetrics": {
+              "gpt-6.1-sol": {
+                "requests": {
+                  "count": 3,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 60894,
+                  "outputTokens": 291,
+                  "cacheReadTokens": 38773,
+                  "cacheWriteTokens": 22112,
+                  "reasoningTokens": 38
+                },
+                "totalNanoAiu": 6208530000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 9
+                  },
+                  "cache_read": {
+                    "tokenCount": 38773
+                  },
+                  "cache_write": {
+                    "tokenCount": 22112
+                  },
+                  "output": {
+                    "tokenCount": 291
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6.1-sol",
+            "metrics": {
+              "requests": {
+                "count": 3,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 60894,
+                "outputTokens": 291,
+                "cacheReadTokens": 38773,
+                "cacheWriteTokens": 22112,
+                "reasoningTokens": 38
+              },
+              "totalNanoAiu": 6208530000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 9
+                },
+                "cache_read": {
+                  "tokenCount": 38773
+                },
+                "cache_write": {
+                  "tokenCount": 22112
+                },
+                "output": {
+                  "tokenCount": 291
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6.1 Sol"
+          }
+        ],
+        "currentModel": "gpt-6.1-sol",
+        "lastCallInputTokens": 22115,
+        "lastCallOutputTokens": 138
+      },
+      "error_b": null,
+      "duration_sec_b": 12.92
+    }
+  ]
+}

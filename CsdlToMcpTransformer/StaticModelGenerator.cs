@@ -10,25 +10,34 @@ using Microsoft.OData.Edm.Vocabularies;
 
 namespace CsdlToMcpTransformer;
 
+/// <summary>Transforms a validated EDM model into standalone runtime bindings, discovery metadata, and diagnostics.</summary>
 internal static class StaticModelGenerator
 {
+    /// <summary>Retains an EDM parameter's generation-time type, constraints, and documentation.</summary>
     private sealed record Parameter(
         string Name, IEdmTypeReference Type, bool Required, bool IsKey, string Description);
-    private sealed record Tool(
+    /// <summary>Represents a generation-time OData request plan before runtime source is emitted.</summary>
+    private sealed record ODataRequestBinding(
         string Name, string Title, string Description, string Path, string OperationKind,
         IReadOnlyList<Parameter> Arguments, string AnnotationTarget, string? EntitySet,
-        string? EntityType, bool QueryOptions);
+        string? EntityType, bool QueryOptions, string ExecutionKind = "Direct");
+    /// <summary>Associates a generation-time resource URI with the request plan it will execute.</summary>
     private sealed record Resource(
-        string Name, string Title, string Description, string UriTemplate, Tool Tool);
+        string Name, string Title, string Description, string UriTemplate, ODataRequestBinding RequestBinding);
+    /// <summary>Retains prompt argument annotations for runtime metadata emission.</summary>
     private sealed record PromptArgument(string Name, string Description, bool Required, string? Default);
+    /// <summary>Retains an annotated prompt message's role and unrendered template.</summary>
     private sealed record PromptMessage(string Role, string Text);
+    /// <summary>Collects an annotated prompt's metadata, arguments, and messages during generation.</summary>
     private sealed record Prompt(
         string Name, string Title, string Description,
         IReadOnlyList<PromptArgument> Arguments, IReadOnlyList<PromptMessage> Messages);
+    /// <summary>Retains an example's EDM target and request text for generation-time association.</summary>
     private sealed record Example(
         string TargetKind, string TargetName, string? EntitySet,
         string Utterance, string Request, string Description);
 
+    /// <summary>Reports emitted source and projection counts to transformer callers.</summary>
     internal sealed record Result(
         string Source,
         int ToolCount,
@@ -45,7 +54,7 @@ internal static class StaticModelGenerator
         var container = model.EntityContainer
             ?? throw new InvalidOperationException("CSDL must declare an EntityContainer.");
         var sources = container.Elements.OfType<IEdmNavigationSource>().ToList();
-        var tools = new List<Tool>();
+        var bindings = new List<ODataRequestBinding>();
         var resources = new List<Resource>();
 
         foreach (var source in sources)
@@ -55,24 +64,24 @@ internal static class StaticModelGenerator
             var target = $"{container.FullName()}/{source.Name}";
             var keys = source is IEdmEntitySet ? KeyArguments(model, source.EntityType) : [];
             var description = Description(model, annotatable, $"Read {source.Name}.");
-            var read = new Tool(
+            var read = new ODataRequestBinding(
                 $"get_{source.Name}", source.Name, description, source.Name, "Read", keys,
                 target, source.Name, source.EntityType.FullName(), true);
             if (source is IEdmEntitySet)
             {
                 var list = read with { Name = $"list_{source.Name}", Arguments = [] };
-                tools.Add(list);
+                bindings.Add(list);
                 resources.Add(new Resource(
                     source.Name, source.Name, description, $"odata://{target}", list));
             }
-            tools.Add(read);
+            bindings.Add(read);
             var suffix = string.Concat(keys.Select(key => "/{" + key.Name + "}"));
             resources.Add(new Resource(
                 $"get_{source.Name}", source.Name, description, $"odata://{target}{suffix}", read));
 
             foreach (var navigation in source.EntityType.NavigationProperties())
             {
-                tools.Add(read with
+                bindings.Add(read with
                 {
                     Name = $"get_{source.Name}_{navigation.Name}",
                     Title = $"{source.Name}/{navigation.Name}",
@@ -99,40 +108,40 @@ internal static class StaticModelGenerator
                     ? KeyArguments(model, source.EntityType)
                     : [];
                 var cast = IsOrDerivesFrom(source.EntityType, entityType) ? "" : "/" + entityType.FullName();
-                tools.Add(OperationBinding(
+                bindings.Add(OperationBinding(
                     model, operation, $"{source.Name}{cast}/{operation.FullName()}",
                     $"{source.Name}_{operation.FullName()}", keys, source.Name, source.EntityType.FullName()));
             }
         }
 
         foreach (var import in container.Elements.OfType<IEdmOperationImport>())
-            tools.Add(OperationBinding(model, import.Operation, import.Name, import.Name, [], null, null));
+            bindings.Add(OperationBinding(model, import.Operation, import.Name, import.Name, [], null, null));
 
-        foreach (var group in tools.GroupBy(tool => SafeName(tool.Name)).ToList())
+        foreach (var group in bindings.GroupBy(binding => SafeName(binding.Name)).ToList())
         {
-            foreach (var tool in group)
+            foreach (var binding in group)
             {
-                var index = tools.IndexOf(tool);
-                var signature = tool.Path + "|" + tool.OperationKind + "|" +
-                    string.Join("|", tool.Arguments.Select(argument =>
+                var index = bindings.IndexOf(binding);
+                var signature = binding.Path + "|" + binding.OperationKind + "|" +
+                    string.Join("|", binding.Arguments.Select(argument =>
                         $"{argument.Name}:{argument.Type.FullName()}"));
                 var suffix = group.Count() > 1
                     ? "_" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(signature)))[..12].ToLowerInvariant()
                     : "";
-                var name = SafeName(tool.Name) + suffix;
+                var name = SafeName(binding.Name) + suffix;
                 if (name.Length > 128)
                     name = name[..115] + "_" +
                         Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(name)))[..12].ToLowerInvariant();
-                var renamed = tool with { Name = name };
-                tools[index] = renamed;
+                var renamed = binding with { Name = name, ExecutionKind = GraphExecutionKind(binding) };
+                bindings[index] = renamed;
                 for (var resourceIndex = 0; resourceIndex < resources.Count; resourceIndex++)
-                    if (ReferenceEquals(resources[resourceIndex].Tool, tool))
-                        resources[resourceIndex] = resources[resourceIndex] with { Tool = renamed };
+                    if (ReferenceEquals(resources[resourceIndex].RequestBinding, binding))
+                        resources[resourceIndex] = resources[resourceIndex] with { RequestBinding = renamed };
             }
         }
 
-        if (tools.Select(tool => tool.Name).Distinct(StringComparer.Ordinal).Count() != tools.Count)
-            throw new InvalidOperationException("CSDL produces duplicate tool bindings.");
+        if (bindings.Select(binding => binding.Name).Distinct(StringComparer.Ordinal).Count() != bindings.Count)
+            throw new InvalidOperationException("CSDL produces duplicate OData request bindings.");
         resources = resources.DistinctBy(resource => resource.UriTemplate).ToList();
 
         var prompts = Records(model, container, "Agent.Prompts").Select(ReadPrompt).ToList();
@@ -163,9 +172,9 @@ internal static class StaticModelGenerator
 
         var csdlJson = WriteCsdlJson(model);
         var generatedSource = EmitSource(
-            csdlPath, csdlXml, csdlJson, container, model, tools, resources, prompts, examples);
+            csdlPath, csdlXml, csdlJson, container, model, bindings, resources, prompts, examples);
         File.WriteAllText(outputPath, generatedSource);
-        return new Result(generatedSource, tools.Count, resources.Count, prompts.Count, examples.Count);
+        return new Result(generatedSource, bindings.Count, resources.Count, prompts.Count, examples.Count);
     }
 
     private static string EmitSource(
@@ -174,16 +183,19 @@ internal static class StaticModelGenerator
         string csdlJson,
         IEdmEntityContainer container,
         IEdmModel model,
-        IReadOnlyList<Tool> tools,
+        IReadOnlyList<ODataRequestBinding> bindings,
         IReadOnlyList<Resource> resources,
         IReadOnlyList<Prompt> prompts,
         IReadOnlyList<Example> examples)
     {
         var builder = new StringBuilder();
+        builder.AppendLine("using System.Text.Json;");
+        builder.AppendLine("using System.Text.RegularExpressions;");
         builder.AppendLine("using ModelContextProtocol.Protocol;");
         builder.AppendLine();
         builder.AppendLine("namespace GraphMcpServer.Csdl;");
         builder.AppendLine();
+        builder.AppendLine("/// <summary>Contains transformer-emitted bindings, discovery metadata, prompts, examples, and diagnostics consumed at runtime.</summary>");
         builder.AppendLine("public static class GeneratedModel");
         builder.AppendLine("{");
         builder.AppendLine($"    public const string SourceCsdl = {Quote(Path.GetFileName(csdlPath))};");
@@ -194,30 +206,61 @@ internal static class StaticModelGenerator
         builder.AppendLine($"    public const string CsdlXmlBase64 = {Quote(Convert.ToBase64String(Encoding.UTF8.GetBytes(csdlXml)))};");
         builder.AppendLine($"    public const string CsdlJsonBase64 = {Quote(Convert.ToBase64String(Encoding.UTF8.GetBytes(csdlJson)))};");
         builder.AppendLine();
-        builder.AppendLine("    public static readonly IReadOnlyList<string> EntitySets =");
-        builder.AppendLine($"        new string[] {{ {string.Join(", ", container.EntitySets().Select(set => Quote(set.Name)))} }};");
-        builder.AppendLine();
-        builder.AppendLine("    public static readonly IReadOnlyList<ToolBinding> Tools = new ToolBinding[]");
+        builder.AppendLine("    public static readonly IReadOnlyList<ExampleDefinition> Examples = new ExampleDefinition[]");
         builder.AppendLine("    {");
-        foreach (var tool in tools)
+        foreach (var example in examples)
+            builder.AppendLine($"        new({Quote(example.TargetKind)}, {Quote(example.TargetName)}, {Quote(example.EntitySet)}, {Quote(example.Utterance)}, {Quote(example.Request)}, {Quote(example.Description)}),");
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        builder.AppendLine("    public static readonly IReadOnlyList<ODataRequestBinding> RequestBindings = new ODataRequestBinding[]");
+        builder.AppendLine("    {");
+        foreach (var binding in bindings)
         {
             builder.AppendLine("        new(");
-            builder.AppendLine($"            {Quote(tool.Name)}, {Quote(tool.Title)}, {Quote(tool.Description)}, {Quote(tool.Path)},");
-            builder.AppendLine($"            OperationKind.{tool.OperationKind},");
+            builder.AppendLine($"            {Quote(binding.Name)}, {Quote(binding.Title)}, {Quote(binding.Description)}, {Quote(binding.Path)},");
+            builder.AppendLine($"            OperationKind.{binding.OperationKind},");
             builder.AppendLine("            new ParameterBinding[]");
             builder.AppendLine("            {");
-            foreach (var argument in tool.Arguments)
+            foreach (var argument in binding.Arguments)
                 builder.AppendLine($"                new({Quote(argument.Name)}, {TypeExpression(argument.Type)}, {Bool(argument.Required)}, {Bool(argument.IsKey)}, {Quote(argument.Description)}),");
             builder.AppendLine("            },");
-            builder.AppendLine($"            {Quote(tool.AnnotationTarget)}, {Quote(tool.EntitySet)}, {Quote(tool.EntityType)}, {Bool(tool.QueryOptions)},");
-            builder.AppendLine($"            {Quote(InputSchemaJson(tool))}),");
+            builder.AppendLine($"            {Quote(binding.AnnotationTarget)}, {Quote(binding.EntitySet)}, {Quote(binding.EntityType)}, {Bool(binding.QueryOptions)},");
+            builder.AppendLine($"            {Quote(InputSchemaJson(binding))}, GraphExecutionKind.{binding.ExecutionKind},");
+            builder.AppendLine($"            new ExampleDefinition[] {{ {string.Join(", ", ExampleIndices(binding, examples).Select(index => $"Examples[{index}]"))} }}),");
         }
         builder.AppendLine("    };");
         builder.AppendLine();
-        builder.AppendLine("    public static readonly IReadOnlyList<ResourceDefinition> Resources = new ResourceDefinition[]");
+        builder.AppendLine("    public static readonly List<Tool> McpTools = new()");
+        builder.AppendLine("    {");
+        for (var index = 0; index < bindings.Count; index++)
+        {
+            builder.AppendLine("        new()");
+            builder.AppendLine("        {");
+            builder.AppendLine($"            Name = RequestBindings[{index}].Name, Title = RequestBindings[{index}].Title,");
+            builder.AppendLine($"            Description = RequestBindings[{index}].Description,");
+            builder.AppendLine($"            InputSchema = JsonSerializer.Deserialize<JsonElement>(RequestBindings[{index}].InputSchemaJson)");
+            builder.AppendLine("        },");
+        }
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        var bindingIndices = bindings.Select((binding, index) => (binding.Name, Index: index))
+            .ToDictionary(binding => binding.Name, binding => binding.Index, StringComparer.Ordinal);
+        builder.AppendLine("    public static readonly IReadOnlyList<ResourceBinding> Resources = new ResourceBinding[]");
         builder.AppendLine("    {");
         foreach (var resource in resources)
-            builder.AppendLine($"        new({Quote(resource.Name)}, {Quote(resource.Title)}, {Quote(resource.Description)}, {Quote(resource.UriTemplate)}, {Quote(resource.Tool.Name)}),");
+            builder.AppendLine($"        new({Quote(resource.Name)}, {Quote(resource.Title)}, {Quote(resource.Description)}, {Quote(resource.UriTemplate)}, RequestBindings[{bindingIndices[resource.RequestBinding.Name]}], new Regex({Quote(ResourceMatchPattern(resource))}, RegexOptions.CultureInvariant | RegexOptions.Compiled)),");
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        builder.AppendLine("    public static readonly List<Resource> McpResources = new()");
+        builder.AppendLine("    {");
+        foreach (var resource in resources.Where(resource => !resource.UriTemplate.Contains('{')))
+            builder.AppendLine($"        new() {{ Name = {Quote(resource.Name)}, Title = {Quote(resource.Title)}, Description = {Quote(resource.Description)}, Uri = {Quote(resource.UriTemplate)}, MimeType = \"application/json\" }},");
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        builder.AppendLine("    public static readonly List<ResourceTemplate> McpResourceTemplates = new()");
+        builder.AppendLine("    {");
+        foreach (var resource in resources.Where(resource => resource.UriTemplate.Contains('{')))
+            builder.AppendLine($"        new() {{ Name = {Quote(resource.Name)}, Title = {Quote(resource.Title)}, Description = {Quote(resource.Description)}, UriTemplate = {Quote(resource.UriTemplate)}, MimeType = \"application/json\" }},");
         builder.AppendLine("    };");
         builder.AppendLine();
         builder.AppendLine("    public static readonly IReadOnlyList<PromptDefinition> Prompts = new PromptDefinition[]");
@@ -239,21 +282,143 @@ internal static class StaticModelGenerator
         }
         builder.AppendLine("    };");
         builder.AppendLine();
-        builder.AppendLine("    public static readonly IReadOnlyList<ExampleDefinition> Examples = new ExampleDefinition[]");
+        builder.AppendLine("    public static readonly List<Prompt> McpPrompts = new()");
         builder.AppendLine("    {");
-        foreach (var example in examples)
-            builder.AppendLine($"        new({Quote(example.TargetKind)}, {Quote(example.TargetName)}, {Quote(example.EntitySet)}, {Quote(example.Utterance)}, {Quote(example.Request)}, {Quote(example.Description)}),");
+        foreach (var prompt in prompts)
+        {
+            builder.AppendLine("        new()");
+            builder.AppendLine("        {");
+            builder.AppendLine($"            Name = {Quote(prompt.Name)}, Title = {Quote(prompt.Title)}, Description = {Quote(prompt.Description)},");
+            builder.AppendLine("            Arguments = new List<PromptArgument>");
+            builder.AppendLine("            {");
+            foreach (var argument in prompt.Arguments)
+                builder.AppendLine($"                new() {{ Name = {Quote(argument.Name)}, Description = {Quote(argument.Description)}, Required = {Bool(argument.Required)} }},");
+            builder.AppendLine("            }");
+            builder.AppendLine("        },");
+        }
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        var catalog = PromptCatalog(prompts, container.EntitySets().Select(set => set.Name).ToList(), bindings, resources);
+        builder.AppendLine($"    public static readonly JsonElement Catalog = JsonSerializer.Deserialize<JsonElement>({Quote(JsonSerializer.Serialize(catalog))});");
+        var projectedBindings = bindings.Select(binding => new
+        {
+            binding.Name,
+            binding.Title,
+            binding.Description,
+            Operation = binding.OperationKind,
+            ExecutionKind = binding.ExecutionKind,
+            ODataQuery = $"{(binding.OperationKind == "Action" ? "POST" : "GET")} {binding.Path}",
+            annotationTarget = binding.AnnotationTarget,
+            entitySet = binding.EntitySet,
+            Arguments = binding.Arguments.Select(argument => new
+            {
+                argument.Name,
+                Type = argument.Type.FullName(),
+                argument.Required
+            })
+        });
+        var projectedResources = resources.Select(resource => new
+        {
+            resource.Name,
+            resource.Title,
+            resource.Description,
+            resource.UriTemplate,
+            MimeType = "application/json",
+            entitySet = resource.RequestBinding.EntitySet
+        });
+        builder.AppendLine();
+        builder.AppendLine("    public static readonly object Projection = new");
+        builder.AppendLine("    {");
+        builder.AppendLine("        csdlPath = SourceCsdl,");
+        builder.AppendLine("        projectionMode = \"static-generated-csharp\",");
+        builder.AppendLine($"        tools = JsonSerializer.Deserialize<JsonElement>({Quote(JsonSerializer.Serialize(projectedBindings))}),");
+        builder.AppendLine($"        resources = JsonSerializer.Deserialize<JsonElement>({Quote(JsonSerializer.Serialize(projectedResources))}),");
+        builder.AppendLine("        prompts = Catalog,");
+        builder.AppendLine("        exampleQueries = Examples,");
+        builder.AppendLine("        mcpTools = McpTools,");
+        builder.AppendLine("        mcpResources = McpResources,");
+        builder.AppendLine("        mcpResourceTemplates = McpResourceTemplates");
+        builder.AppendLine("    };");
+        builder.AppendLine();
+        builder.AppendLine("    public static readonly object Analysis = new");
+        builder.AppendLine("    {");
+        builder.AppendLine("        modelParser = \"No runtime CSDL parser. MCP bindings are generated as static C# source.\",");
+        builder.AppendLine("        entityContainer = EntityContainer,");
+        builder.AppendLine("        entityTypes = EntityTypesCount,");
+        builder.AppendLine("        operations = OperationsCount,");
+        builder.AppendLine("        prompts = Prompts.Count,");
+        builder.AppendLine("        examples = Examples.Count");
         builder.AppendLine("    };");
         builder.AppendLine("}");
         return builder.ToString();
     }
 
-    private static string InputSchemaJson(Tool tool)
+    private static IEnumerable<int> ExampleIndices(ODataRequestBinding binding, IReadOnlyList<Example> examples) =>
+        examples.Select((example, index) => (Example: example, Index: index))
+            .Where(item =>
+                item.Example.TargetName == binding.AnnotationTarget ||
+                binding.EntitySet != null && item.Example.EntitySet == binding.EntitySet ||
+                binding.EntityType != null && item.Example.TargetName == binding.EntityType)
+            .DistinctBy(item => item.Example)
+            .Select(item => item.Index);
+
+    private static string ResourceMatchPattern(Resource resource)
+    {
+        var pattern = Regex.Escape(resource.UriTemplate);
+        foreach (var key in resource.RequestBinding.Arguments.Where(argument => argument.IsKey))
+            pattern = pattern.Replace(Regex.Escape("{" + key.Name + "}"), $"(?<{key.Name}>[^/]+)");
+        return "^" + pattern + "$";
+    }
+
+    private static object PromptCatalog(
+        IReadOnlyList<Prompt> prompts,
+        IReadOnlyList<string> entitySets,
+        IReadOnlyList<ODataRequestBinding> bindings,
+        IReadOnlyList<Resource> resources) => prompts.Select(prompt =>
+    {
+        var queries = prompt.Messages.SelectMany(message => ExtractODataQueries(message.Text)).Distinct().ToList();
+        var sources = entitySets
+            .Where(source => queries.Any(query => Regex.IsMatch(query, $@"^{Regex.Escape(source)}(?:[/('?$]|$)")))
+            .ToList();
+        var toolNames = bindings
+            .Where(binding => binding.EntitySet != null && sources.Contains(binding.EntitySet))
+            .Select(binding => binding.Name)
+            .ToList();
+        return new
+        {
+            name = prompt.Name,
+            title = prompt.Title,
+            description = prompt.Description,
+            odataQueries = queries,
+            toolBinding = string.Join(", ", toolNames),
+            toolBindings = toolNames,
+            resourceBindings = resources
+                .Where(resource => resource.RequestBinding.EntitySet != null && sources.Contains(resource.RequestBinding.EntitySet))
+                .Select(resource => resource.UriTemplate),
+            entitySets = sources,
+            template = prompt.Messages.FirstOrDefault()?.Text ?? "",
+            arguments = prompt.Arguments.Select(argument => new
+            {
+                name = argument.Name,
+                description = argument.Description,
+                required = argument.Required,
+                @default = argument.Default
+            })
+        };
+    }).ToList();
+
+    private static IReadOnlyList<string> ExtractODataQueries(string text) =>
+        Regex.Matches(text, @"(?:GET|POST)\s+([^\r\n]+?)(?=\s+(?:and\s+)?(?:GET|POST)\s+|[.]\s|\r?\n|$)")
+            .Select(match => match.Groups[1].Value.TrimEnd('.', ',', ';'))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+    private static string InputSchemaJson(ODataRequestBinding binding)
     {
         var properties = new JsonObject();
         var required = new JsonArray();
         var definitions = new JsonObject();
-        foreach (var argument in tool.Arguments)
+        foreach (var argument in binding.Arguments)
         {
             var property = Schema(argument.Type, definitions, []);
             if (!string.IsNullOrWhiteSpace(argument.Description))
@@ -261,7 +426,7 @@ internal static class StaticModelGenerator
             properties[argument.Name] = property;
             if (argument.Required) required.Add(argument.Name);
         }
-        if (tool.QueryOptions)
+        if (binding.QueryOptions)
         {
             foreach (var (name, description) in QueryOptionDescriptions)
             {
@@ -411,7 +576,7 @@ internal static class StaticModelGenerator
         return $"new StaticTypeDescriptor({Quote(type.FullName())}, StaticTypeKind.{kind}, {Bool(type.IsNullable)}{rangeText})";
     }
 
-    private static Tool OperationBinding(
+    private static ODataRequestBinding OperationBinding(
         IEdmModel model,
         IEdmOperation operation,
         string path,
@@ -428,7 +593,7 @@ internal static class StaticModelGenerator
                 false,
                 Description(model, parameter, $"Parameter '{parameter.Name}'."))))
             .ToList();
-        return new Tool(
+        return new ODataRequestBinding(
             name,
             operation.Name,
             Description(model, operation, $"Invoke {operation.FullName()}."),
@@ -457,6 +622,38 @@ internal static class StaticModelGenerator
     }
 
     private static string SafeName(string name) => Regex.Replace(name, "[^A-Za-z0-9_-]", "_");
+
+    private static string GraphExecutionKind(ODataRequestBinding binding)
+    {
+        if (binding.Path.Contains("searchDriveItems", StringComparison.Ordinal))
+            return "DriveSearch";
+        if (binding.Path.Contains("recentDriveItems", StringComparison.Ordinal))
+            return "Drive";
+        if (binding.Path.Contains("deltaChannelMessages", StringComparison.Ordinal))
+            return "Channel";
+        if (binding.Path.Contains("sendChannelMessage", StringComparison.Ordinal))
+            return "ChannelSend";
+        if (binding.Path.Contains("completeTodoTask", StringComparison.Ordinal))
+            return "TodoComplete";
+        if (binding.Path.Contains("/drive", StringComparison.Ordinal))
+            return "Drive";
+        if (binding.Path.Contains("joinedTeams", StringComparison.Ordinal))
+            return "Teams";
+        if (binding.Path.Contains("/chats", StringComparison.Ordinal))
+            return "Chats";
+        if (binding.Path.Contains("/todoLists", StringComparison.Ordinal))
+            return "Todo";
+        return binding.EntitySet switch
+        {
+            "drives" => "Drive",
+            "driveItems" => binding.Arguments.Any(argument => argument.IsKey) ? "DriveItem" : "Drive",
+            "teams" => "Teams",
+            "channels" or "chatMessages" => "Channel",
+            "chats" => "Chats",
+            "todoLists" or "todoTasks" => "Todo",
+            _ => "Direct"
+        };
+    }
     private static string Description(
         IEdmModel model,
         IEdmVocabularyAnnotatable target,

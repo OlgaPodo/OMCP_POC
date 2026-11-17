@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Azure.Core;
 using Azure.Identity;
@@ -11,15 +13,20 @@ public class GraphClientService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<GraphClientService> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private string? _cachedToken;
     private DateTimeOffset _tokenExpiresOn = DateTimeOffset.MinValue;
     private readonly List<GraphTraceRecord> _traces = [];
     private readonly object _traceLock = new();
 
-    public GraphClientService(HttpClient httpClient, ILogger<GraphClientService> logger)
+    public GraphClientService(
+        HttpClient httpClient,
+        ILogger<GraphClientService> logger,
+        IHttpContextAccessor httpContextAccessor)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
         _httpClient.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
@@ -34,11 +41,73 @@ public class GraphClientService
 
     private void AddTrace(GraphTraceRecord trace)
     {
+        trace.CorrelationId ??= _httpContextAccessor.HttpContext?.Request.Headers[
+            "X-Experiment-Correlation-Id"].FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(trace.CorrelationId))
+        {
+            trace.ClientRequestId ??= GetClientRequestId(trace.CorrelationId).ToString();
+            trace.RequestHeaders = string.Join(
+                "\n",
+                new[]
+                {
+                    trace.RequestHeaders,
+                    $"X-Experiment-Correlation-Id: {trace.CorrelationId}",
+                    $"client-request-id: {trace.ClientRequestId}",
+                    $"user-agent: GraphMcpExperiment/1.0 correlation-id/{trace.CorrelationId}",
+                    "return-client-request-id: true"
+                }.Where(value => !string.IsNullOrWhiteSpace(value)));
+        }
         lock (_traceLock)
         {
             _traces.Add(trace);
             if (_traces.Count > 100) _traces.RemoveAt(0);
         }
+    }
+
+    private void ApplyGraphRequestHeaders(HttpRequestMessage request, string token)
+    {
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        request.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+        request.Headers.Pragma.ParseAdd("no-cache");
+        var correlationId = _httpContextAccessor.HttpContext?.Request.Headers[
+            "X-Experiment-Correlation-Id"].FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(correlationId))
+        {
+            request.Headers.TryAddWithoutValidation("X-Experiment-Correlation-Id", correlationId);
+            request.Headers.TryAddWithoutValidation(
+                "User-Agent",
+                $"GraphMcpExperiment/1.0 correlation-id/{correlationId}");
+        }
+        var clientRequestId = GetClientRequestId(correlationId);
+        request.Headers.TryAddWithoutValidation("client-request-id", clientRequestId.ToString());
+        request.Headers.TryAddWithoutValidation("return-client-request-id", "true");
+    }
+
+    private static Guid GetClientRequestId(string? correlationId)
+    {
+        if (Guid.TryParse(correlationId, out var parsed))
+            return parsed;
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(correlationId ?? Guid.NewGuid().ToString()));
+        return new Guid(hash[..16]);
+    }
+
+    private static void CaptureResponseHeaders(HttpResponseMessage response, GraphTraceRecord trace)
+    {
+        trace.GraphRequestId = response.Headers.TryGetValues("request-id", out var requestIds)
+            ? requestIds.FirstOrDefault()
+            : null;
+        var clientRequestId = response.Headers.TryGetValues("client-request-id", out var clientRequestIds)
+            ? clientRequestIds.FirstOrDefault()
+            : null;
+        trace.ResponseHeaders = string.Join(
+            "\n",
+            new[]
+            {
+                trace.GraphRequestId == null ? null : $"request-id: {trace.GraphRequestId}",
+                clientRequestId == null ? null : $"client-request-id: {clientRequestId}",
+                response.Headers.Date.HasValue ? $"date: {response.Headers.Date.Value:R}" : null,
+                response.Headers.CacheControl == null ? null : $"cache-control: {response.Headers.CacheControl}"
+            }.Where(value => !string.IsNullOrWhiteSpace(value)));
     }
 
     private async Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default)
@@ -115,7 +184,7 @@ public class GraphClientService
                 string requestUrl = $"users?$filter=startswith(displayName,'{safeQuery}') or startswith(userPrincipalName,'{safeQuery}') or startswith(mail,'{safeQuery}')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -127,6 +196,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -184,7 +254,7 @@ public class GraphClientService
                 string requestUrl = $"{userEndpoint}?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -196,6 +266,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -287,7 +358,7 @@ public class GraphClientService
         {
             string url = $"users/{Uri.EscapeDataString(userId)}/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
 
             var trace = new GraphTraceRecord
             {
@@ -299,6 +370,7 @@ public class GraphClientService
 
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
             if (res.IsSuccessStatusCode)
             {
                 var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -321,7 +393,7 @@ public class GraphClientService
         {
             string url = $"users/{Uri.EscapeDataString(userId)}/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
 
             var trace = new GraphTraceRecord
             {
@@ -333,6 +405,7 @@ public class GraphClientService
 
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
             if (res.IsSuccessStatusCode)
             {
                 var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -356,7 +429,7 @@ public class GraphClientService
         return [
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000001",
+                Id = "10000000-0000-4000-8000-000000000001",
                 DisplayName = "Avery Adams",
                 UserPrincipalName = "avery.adams@example.com",
                 Mail = "avery.adams@example.com",
@@ -367,76 +440,76 @@ public class GraphClientService
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000002",
+                Id = "10000000-0000-4000-8000-000000000002",
                 DisplayName = "Morgan Reed",
                 UserPrincipalName = "morgan.reed@example.com",
                 Mail = "morgan.reed@example.com",
                 JobTitle = "Partner Director Engineering",
-                Department = "Cloud Operations",
+                Department = "Platform Engineering",
                 OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000003",
+                Id = "10000000-0000-4000-8000-000000000003",
                 DisplayName = "Jordan Lee",
                 UserPrincipalName = "jordan.lee@example.com",
                 Mail = "jordan.lee@example.com",
                 JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
                 Department = "Platform Engineering",
-                OfficeLocation = "Building A",
+                OfficeLocation = "HQ-101",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000004",
-                DisplayName = "Casey Kim",
-                UserPrincipalName = "casey.kim@example.com",
-                Mail = "casey.kim@example.com",
-                JobTitle = "PRINCIPAL PRODUCT MANAGER",
-                Department = "AI Products",
-                OfficeLocation = "Building A",
-                PreferredLanguage = "en-US"
-            },
-            new GraphUser
-            {
-                Id = "00000000-0000-0000-0000-000000000005",
+                Id = "10000000-0000-4000-8000-000000000004",
                 DisplayName = "Taylor Morgan",
                 UserPrincipalName = "taylor.morgan@example.com",
                 Mail = "taylor.morgan@example.com",
-                JobTitle = "PRINCIPAL GROUP ENG MANAGER",
-                Department = "Platform Engineering",
-                OfficeLocation = "Building A",
+                JobTitle = "PRINCIPAL PRODUCT MANAGER",
+                Department = "AI Platform",
+                OfficeLocation = "HQ-102",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000006",
-                DisplayName = "Riley Chen",
-                UserPrincipalName = "riley.chen@example.com",
-                Mail = "riley.chen@example.com",
+                Id = "10000000-0000-4000-8000-000000000005",
+                DisplayName = "Casey Chen",
+                UserPrincipalName = "casey.chen@example.com",
+                Mail = "casey.chen@example.com",
+                JobTitle = "PRINCIPAL GROUP ENG MANAGER",
+                Department = "Platform Engineering",
+                OfficeLocation = "HQ-103",
+                PreferredLanguage = "en-US"
+            },
+            new GraphUser
+            {
+                Id = "10000000-0000-4000-8000-000000000006",
+                DisplayName = "Riley Patel",
+                UserPrincipalName = "riley.patel@example.com",
+                Mail = "riley.patel@example.com",
                 JobTitle = "BUSINESS ADMINISTRATOR",
-                Department = "Cloud Operations",
+                Department = "Platform Engineering",
                 OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000007",
-                DisplayName = "Jamie Patel",
-                UserPrincipalName = "jamie.patel@example.com",
-                Mail = "jamie.patel@example.com",
+                Id = "10000000-0000-4000-8000-000000000007",
+                DisplayName = "Jamie Kim",
+                UserPrincipalName = "jamie.kim@example.com",
+                Mail = "jamie.kim@example.com",
                 JobTitle = "GROUP PM MANAGER",
-                Department = "Directory Operations",
-                OfficeLocation = "Building A",
+                Department = "Platform Operations",
+                OfficeLocation = "HQ-101",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000008",
-                DisplayName = "Cameron Brooks",
-                UserPrincipalName = "cameron.brooks@example.com",
-                Mail = "cameron.brooks@example.com",
+                Id = "10000000-0000-4000-8000-000000000008",
+                DisplayName = "Sam Rivera",
+                UserPrincipalName = "sam.rivera@example.com",
+                Mail = "sam.rivera@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MGR",
                 Department = "Platform Engineering",
                 OfficeLocation = "Remote",
@@ -444,13 +517,13 @@ public class GraphClientService
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000009",
+                Id = "10000000-0000-4000-8000-000000000009",
                 DisplayName = "Drew Parker",
                 UserPrincipalName = "drew.parker@example.com",
                 Mail = "drew.parker@example.com",
                 JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
                 Department = "Data & AI",
-                OfficeLocation = "Building A",
+                OfficeLocation = "Headquarters",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -496,7 +569,7 @@ public class GraphClientService
                 DisplayName = "Platform Engineering",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
                 Mail = "platform-engineering@example.com",
-                MailNickname = "identityarch",
+                MailNickname = "platformengineering",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
                 SecurityEnabled = true,
@@ -508,7 +581,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "schema-reviewers@example.com",
+                Mail = "api-reviewers@example.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -519,9 +592,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "33333333-4444-5555-6666-777777777777",
-                DisplayName = "API Partners",
+                DisplayName = "Microsoft Graph Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "api-partners@example.com",
+                Mail = "graph-partners@example.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -532,9 +605,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData Working Group",
+                DisplayName = "OData TC Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odata-working-group@example.com",
+                Mail = "odata-community@example.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -557,7 +630,7 @@ public class GraphClientService
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
         var owners = users.Where(u => u.DisplayName.Contains("Morgan") || u.DisplayName.Contains("Drew")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Casey") || u.DisplayName.Contains("Taylor Morgan")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Taylor") || u.DisplayName.Contains("Casey Chen")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
@@ -594,7 +667,7 @@ public class GraphClientService
                 string requestUrl = $"groups?$filter=startswith(displayName,'{safeQuery}') or startswith(mailNickname,'{safeQuery}') or startswith(mail,'{safeQuery}')&$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime&$top=20";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -606,6 +679,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -656,7 +730,7 @@ public class GraphClientService
             {
                 string requestUrl = "groups?$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime&$top=50";
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -668,6 +742,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -697,7 +772,7 @@ public class GraphClientService
             {
                 string requestUrl = $"groups/{Uri.EscapeDataString(target)}?$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime";
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -709,6 +784,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -756,7 +832,7 @@ public class GraphClientService
         {
             string url = $"groups/{Uri.EscapeDataString(groupId)}/{segment}?$select=id,displayName,userPrincipalName,mail,jobTitle,department";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             if (res.IsSuccessStatusCode)
             {
@@ -794,7 +870,7 @@ public class GraphClientService
             try
             {
                 using var req = new HttpRequestMessage(HttpMethod.Get, cleanPath);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
@@ -804,6 +880,7 @@ public class GraphClientService
                 };
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);

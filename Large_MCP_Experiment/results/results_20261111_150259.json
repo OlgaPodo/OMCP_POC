@@ -1,0 +1,831 @@
+{
+  "id": "report_large_3way_gpt-5.6-sol_20261111_150259",
+  "timestamp": "2026-11-11T15:02:59.274570",
+  "model": "gpt-5.6-sol",
+  "engine": "GitHub Copilot CLI with local HTTP MCP servers",
+  "require_live_graph": true,
+  "total_queries": 1,
+  "is_full_run": false,
+  "elapsed_seconds": 51.96,
+  "servers": {
+    "no_examples": "http://localhost:3004",
+    "with_examples": "http://localhost:3003",
+    "search_query": "http://localhost:3005"
+  },
+  "catalog_summary": {
+    "no_examples": {
+      "url": "http://localhost:3004",
+      "csdlPath": "C:\\MCP\\LargeServer_NoExamples\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 0,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "with_examples": {
+      "url": "http://localhost:3003",
+      "csdlPath": "C:\\MCP\\LargeServer\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 28,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "search_query": {
+      "url": "http://localhost:3005",
+      "csdlPath": "C:\\MCP\\Csdl\\Server_Large_WithExamples.csdl",
+      "toolsCount": 2,
+      "resourcesCount": 0,
+      "promptsCount": 0,
+      "examplesCount": 28,
+      "catalogTokens": 383,
+      "catalogHash": "4cceb739d5f086c6"
+    }
+  },
+  "metrics": {
+    "no_examples_success_rate": 0.0,
+    "with_examples_success_rate": 0.0,
+    "search_query_success_rate": 100.0,
+    "no_examples_intent_accuracy": 100.0,
+    "with_examples_intent_accuracy": 100.0,
+    "search_query_intent_accuracy": 100.0,
+    "examples_impact_delta": 0.0,
+    "architecture_impact_delta": 100.0,
+    "search_vs_no_examples_delta": 100.0,
+    "catalog_tokens": {
+      "no_examples": 17509,
+      "with_examples": 17509,
+      "search_query": 383
+    },
+    "catalog_token_reduction_pct": 97.8,
+    "live_graph_calls": {
+      "no_examples": 5,
+      "with_examples": 5,
+      "search_query": 4
+    },
+    "avg_latency_ms": {
+      "no_examples": 19953.0,
+      "with_examples": 17250.0,
+      "search_query": 14750.0
+    }
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 1,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 1,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 100.0
+    }
+  },
+  "workload_breakdown": {
+    "users_groups": {
+      "count": 1,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 1,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 100.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "Whom Avery reports to?",
+      "category": "canonical",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Find Avery Adams's manager",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001",
+          "select": "id,displayName,userPrincipalName,mail,jobTitle,department"
+        },
+        "odata_request": "GET users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 5,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Executed parameters/OData path did not match the benchmark expectation."
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "startswith(displayName,'Avery')",
+            "select": "id,displayName,userPrincipalName,mail",
+            "top": 25
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=startswith(displayName,'Avery')&$select=id,displayName,userPrincipalName,mail&$top=25",
+          "examples_count": 0,
+          "resolved_identifier": null
+        },
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "search": "\"Avery\"",
+            "select": "id,displayName,userPrincipalName,mail,jobTitle,department",
+            "top": 10
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$select=id,displayName,userPrincipalName,mail,jobTitle,department&$top=10&$search=\"Avery\"",
+          "examples_count": 0,
+          "resolved_identifier": null
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000001",
+            "select": "id,displayName,userPrincipalName,mail,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department",
+          "examples_count": 0,
+          "resolved_identifier": "avery.adams@example.com"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-11T20:02:14.5088404+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery') or startswith(userPrincipalName,'Avery') or startswith(mail,'Avery')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:19.6472526+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'') or startswith(userPrincipalName,'') or startswith(mail,'')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "statusCode": 400,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:22.9131558+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:23.0334716+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:23.1694106+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:23.290663+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 15363840000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 1684
+          },
+          "cache_read": {
+            "tokenCount": 61406
+          },
+          "cache_write": {
+            "tokenCount": 21912
+          },
+          "output": {
+            "tokenCount": 639
+          }
+        },
+        "totalApiDurationMs": 14675,
+        "sessionStartTime": "2026-11-11T20:02:08.266Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-5.6-sol": {
+            "requests": {
+              "count": 4,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 85002,
+              "outputTokens": 639,
+              "cacheReadTokens": 61406,
+              "cacheWriteTokens": 21912,
+              "reasoningTokens": 338
+            },
+            "cacheExpiresAt": "2026-11-11T20:32:23.501Z",
+            "totalNanoAiu": 15363840000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 1684
+              },
+              "cache_read": {
+                "tokenCount": 61406
+              },
+              "cache_write": {
+                "tokenCount": 21912
+              },
+              "output": {
+                "tokenCount": 639
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 14675,
+            "totalNanoAiu": 15363840000,
+            "modelMetrics": {
+              "gpt-5.6-sol": {
+                "requests": {
+                  "count": 4,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 85002,
+                  "outputTokens": 639,
+                  "cacheReadTokens": 61406,
+                  "cacheWriteTokens": 21912,
+                  "reasoningTokens": 338
+                },
+                "totalNanoAiu": 15363840000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 1684
+                  },
+                  "cache_read": {
+                    "tokenCount": 61406
+                  },
+                  "cache_write": {
+                    "tokenCount": 21912
+                  },
+                  "output": {
+                    "tokenCount": 639
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-5.6-sol",
+            "metrics": {
+              "requests": {
+                "count": 4,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 85002,
+                "outputTokens": 639,
+                "cacheReadTokens": 61406,
+                "cacheWriteTokens": 21912,
+                "reasoningTokens": 338
+              },
+              "totalNanoAiu": 15363840000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 1684
+                },
+                "cache_read": {
+                  "tokenCount": 61406
+                },
+                "cache_write": {
+                  "tokenCount": 21912
+                },
+                "output": {
+                  "tokenCount": 639
+                }
+              }
+            },
+            "modelDisplayName": "GPT-5.6 Sol"
+          }
+        ],
+        "currentModel": "gpt-5.6-sol",
+        "lastCallInputTokens": 23587,
+        "lastCallOutputTokens": 177
+      },
+      "error_no_examples": null,
+      "latency_no_examples_ms": 19953.0,
+      "pred_with_examples": {
+        "intent": "Find Avery Adams's manager",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001",
+          "select": "id,displayName,userPrincipalName,mail,jobTitle,department"
+        },
+        "odata_request": "GET users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 5,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Executed parameters/OData path did not match the benchmark expectation."
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "startswith(displayName,'Avery')",
+            "select": "id,displayName,userPrincipalName,mail",
+            "top": 25
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=startswith%28displayName%2C%27Olga%27%29&$select=id%2CdisplayName%2CuserPrincipalName%2Cmail&$top=25",
+          "examples_count": 3,
+          "resolved_identifier": null
+        },
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "search": "\"displayName:Avery\"",
+            "select": "id,displayName,userPrincipalName,mail,jobTitle,department",
+            "top": 25
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$select=id%2CdisplayName%2CuserPrincipalName%2Cmail%2CjobTitle%2Cdepartment&$top=25&$search=%22displayName%3AOlga%22",
+          "examples_count": 3,
+          "resolved_identifier": null
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000001",
+            "select": "id,displayName,userPrincipalName,mail,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2Cmail%2CjobTitle%2Cdepartment",
+          "examples_count": 3,
+          "resolved_identifier": null
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-11T20:02:33.921144+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery') or startswith(userPrincipalName,'Avery') or startswith(mail,'Avery')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:37.4959597+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'') or startswith(userPrincipalName,'') or startswith(mail,'')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "statusCode": 400,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:39.9111286+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:40.0102849+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:40.1303285+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:40.3231848+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 11078160000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 1682
+          },
+          "cache_read": {
+            "tokenCount": 71984
+          },
+          "cache_write": {
+            "tokenCount": 12804
+          },
+          "output": {
+            "tokenCount": 562
+          }
+        },
+        "totalApiDurationMs": 11628,
+        "sessionStartTime": "2026-11-11T20:02:28.056Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-5.6-sol": {
+            "requests": {
+              "count": 4,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 86470,
+              "outputTokens": 562,
+              "cacheReadTokens": 71984,
+              "cacheWriteTokens": 12804,
+              "reasoningTokens": 258
+            },
+            "cacheExpiresAt": "2026-11-11T20:32:40.536Z",
+            "totalNanoAiu": 11078160000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 1682
+              },
+              "cache_read": {
+                "tokenCount": 71984
+              },
+              "cache_write": {
+                "tokenCount": 12804
+              },
+              "output": {
+                "tokenCount": 562
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 11628,
+            "totalNanoAiu": 11078160000,
+            "modelMetrics": {
+              "gpt-5.6-sol": {
+                "requests": {
+                  "count": 4,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 86470,
+                  "outputTokens": 562,
+                  "cacheReadTokens": 71984,
+                  "cacheWriteTokens": 12804,
+                  "reasoningTokens": 258
+                },
+                "totalNanoAiu": 11078160000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 1682
+                  },
+                  "cache_read": {
+                    "tokenCount": 71984
+                  },
+                  "cache_write": {
+                    "tokenCount": 12804
+                  },
+                  "output": {
+                    "tokenCount": 562
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-5.6-sol",
+            "metrics": {
+              "requests": {
+                "count": 4,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 86470,
+                "outputTokens": 562,
+                "cacheReadTokens": 71984,
+                "cacheWriteTokens": 12804,
+                "reasoningTokens": 258
+              },
+              "totalNanoAiu": 11078160000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 1682
+                },
+                "cache_read": {
+                  "tokenCount": 71984
+                },
+                "cache_write": {
+                  "tokenCount": 12804
+                },
+                "output": {
+                  "tokenCount": 562
+                }
+              }
+            },
+            "modelDisplayName": "GPT-5.6 Sol"
+          }
+        ],
+        "currentModel": "gpt-5.6-sol",
+        "lastCallInputTokens": 24333,
+        "lastCallOutputTokens": 169
+      },
+      "error_with_examples": null,
+      "latency_with_examples_ms": 17250.0,
+      "pred_search_query": {
+        "intent": "retrieve Avery's manager",
+        "tool": "GraphMcp-execute_odata_query",
+        "parameters": {
+          "user": "avery.adams@example.com"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "live_graph_calls": 4,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Whom Avery reports to?"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "resolved_identifier": null
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "resolved_identifier": "avery.adams@example.com"
+        }
+      ],
+      "graph_traces_search_query": [
+        {
+          "timestamp": "2026-11-11T20:02:52.2084692+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:52.3194675+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:52.452451+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        },
+        {
+          "timestamp": "2026-11-11T20:02:52.5608268+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true
+        }
+      ],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 12015880000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 9
+          },
+          "cache_read": {
+            "tokenCount": 35032
+          },
+          "cache_write": {
+            "tokenCount": 20454
+          },
+          "output": {
+            "tokenCount": 192
+          }
+        },
+        "totalApiDurationMs": 9649,
+        "sessionStartTime": "2026-11-11T20:02:45.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-5.6-sol": {
+            "requests": {
+              "count": 3,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 55495,
+              "outputTokens": 192,
+              "cacheReadTokens": 35032,
+              "cacheWriteTokens": 20454,
+              "reasoningTokens": 26
+            },
+            "cacheExpiresAt": "2026-11-11T20:32:52.743Z",
+            "totalNanoAiu": 12015880000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 9
+              },
+              "cache_read": {
+                "tokenCount": 35032
+              },
+              "cache_write": {
+                "tokenCount": 20454
+              },
+              "output": {
+                "tokenCount": 192
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 9649,
+            "totalNanoAiu": 12015880000,
+            "modelMetrics": {
+              "gpt-5.6-sol": {
+                "requests": {
+                  "count": 3,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 55495,
+                  "outputTokens": 192,
+                  "cacheReadTokens": 35032,
+                  "cacheWriteTokens": 20454,
+                  "reasoningTokens": 26
+                },
+                "totalNanoAiu": 12015880000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 9
+                  },
+                  "cache_read": {
+                    "tokenCount": 35032
+                  },
+                  "cache_write": {
+                    "tokenCount": 20454
+                  },
+                  "output": {
+                    "tokenCount": 192
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-5.6-sol",
+            "metrics": {
+              "requests": {
+                "count": 3,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 55495,
+                "outputTokens": 192,
+                "cacheReadTokens": 35032,
+                "cacheWriteTokens": 20454,
+                "reasoningTokens": 26
+              },
+              "totalNanoAiu": 12015880000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 9
+                },
+                "cache_read": {
+                  "tokenCount": 35032
+                },
+                "cache_write": {
+                  "tokenCount": 20454
+                },
+                "output": {
+                  "tokenCount": 192
+                }
+              }
+            },
+            "modelDisplayName": "GPT-5.6 Sol"
+          }
+        ],
+        "currentModel": "gpt-5.6-sol",
+        "lastCallInputTokens": 20457,
+        "lastCallOutputTokens": 84
+      },
+      "error_search_query": null,
+      "latency_search_query_ms": 14750.0
+    }
+  ]
+}

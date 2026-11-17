@@ -11,7 +11,7 @@ The transformer generates **a single standalone MCP server project for a given C
 
 ```powershell
 # Standard usage with full path from C:\MCP\Csdl:
-dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- C:\MCP\Csdl\Server_Large.csdl C:\MCP\LargeServer_transform 3013
+dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- C:\MCP\Csdl\Server_Large.csdl C:\MCP\LargeServer_transform 3010
 
 # Or using filename relative to C:\MCP\Csdl:
 dotnet run --project C:\MCP\CsdlToMcpTransformer\CsdlToMcpTransformer.csproj -- Server_WithPrompts.csdl C:\MCP\Server_transform 3011
@@ -30,15 +30,31 @@ Each run generates a single self-contained server project containing:
 - `Program.cs` - Application bootstrap configured for the target port and title
 - `appsettings.json` - Runtime OData backend settings
 - `transformation-manifest.json` - Generation summary with schema statistics
-- `Csdl/GeneratedModel.cs` - Static generated tools, resources, prompts, examples, argument types, and schemas
+- `Csdl/GeneratedModel.cs` - Static request bindings, prelinked resources and examples, MCP discovery metadata, prompt catalog, diagnostics, argument types, and schemas
 - `Csdl/CsdlProvider.cs` - Runtime access to the generated static model; no CSDL parser
 - `Csdl/CsdlMcpProjection.cs` - MCP protocol handler (tools, resources, templates, prompts)
 - `Csdl/EdmJsonSchema.cs` - Static argument validation and OData literal formatting
-- `Services/ODataClientService.cs` - Upstream HTTP client with `DefaultAzureCredential` and metrics
+- `Services/GeneratedGraphExecutor.cs` - executes Graph plans selected by OData request bindings emitted by `StaticModelGenerator`
+- `Services/GraphClientService.cs` and `Models/GraphModels.cs` - direct authenticated Microsoft Graph execution and correlated traces
+- `Services/ODataClientService.cs` - in-process bridge from generated MCP bindings to the Graph dispatcher; no local HTTP adapter
 
 Source templates under `Templates` are embedded directly in the transformer assembly.
 Existing server projects are not consulted during generation. Regeneration
 overwrites generated files and removes obsolete legacy code.
+
+All schema-derived generation runs in this project: CSDL parsing and validation,
+request/schema generation, resource linking and URI-pattern construction,
+example association, prompt query extraction and catalog inference, and MCP
+discovery/diagnostic projection. The generated server only serves this metadata,
+renders prompts with request arguments, validates inputs, matches resource URIs,
+and executes requests. It has no reference to the transformer or ODL.
+
+Generated `ODataRequestBinding` records describe OData requests shared by MCP tools
+and resources. `GeneratedModel.RequestBindings` and `CsdlProvider.GetRequestBindings()`
+expose this metadata. Each `ResourceBinding.RequestBinding` directly references
+its generated request binding; matching examples are already attached to that
+binding. A resource read executes it directly, not through an MCP tool.
+Tool names, resource URIs, and external JSON fields remain unchanged.
 
 ## Generic projection
 
@@ -52,7 +68,7 @@ Using schemas in `C:\MCP\Csdl` (such as `Server_Large.csdl` and `Server_WithProm
 | Bound function `Microsoft.Graph.searchDriveItems` on `drives` | `drives_Microsoft_Graph_searchDriveItems` |
 | Bound action `Microsoft.Graph.sendChannelMessage` on `channels` | `channels_Microsoft_Graph_sendChannelMessage` |
 | Bound action `Microsoft.Graph.completeTodoTask` on `todoTasks` | `todoTasks_Microsoft_Graph_completeTodoTask` |
-| `@Agent.Prompts` (e.g. `whom_olga_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
+| `@Agent.Prompts` (e.g. `whom_avery_reports_to`) | Typed prompt definitions, arguments/defaults, and text messages |
 | `@Agent.Examples` / `@Agent.ExampleQueries` | Examples attached to their EDM annotation targets (e.g. `User`, `DriveItem`) |
 
 For example, for `Server_Large.csdl` in `C:\MCP\Csdl`, resources use `odata://Microsoft.Graph.GraphService/users` and
@@ -73,36 +89,29 @@ Unbound operations require an operation import to be callable. Bound operations
 must bind to an entity or entity collection. Prompt content currently supports
 text with `user` or `assistant` roles. Agent annotations are optional.
 
-### Configure the backend
+### Execute against Microsoft Graph
 
-Set `OData:BaseUrl` in generated `appsettings.json`, or through an environment
-variable. For Microsoft Graph CSDL schemas in `C:\MCP\Csdl`, configure the Graph endpoint and optional scope for automatic Azure CLI or Managed Identity token acquisition:
+Generated servers translate MCP calls to Graph operations inside the same process.
+They acquire a delegated Microsoft Graph token through Azure CLI credentials and
+call `https://graph.microsoft.com/v1.0/` directly. No `OData:BaseUrl`, localhost
+proxy, search server, or HTTP adapter is required.
 
-```powershell
-$env:OData__BaseUrl = "https://graph.microsoft.com/v1.0/"
-$env:OData__Scope = "https://graph.microsoft.com/.default"
-dotnet run --project C:\MCP\LargeServer_transform\GraphMcpServer.csproj
-```
-
-The backend must implement the paths/operations declared by the CSDL; the transformer does not map fictional
-schema operations to unrelated service APIs.
-
-Discovery and prompts work without a backend URL. Execution requires a configured
-endpoint and sends real HTTP requests; it never falls back to mock data.
-Invalid inputs and upstream HTTP failures return MCP tool errors and are logged.
-HTTP redirects are disabled so backend credentials cannot follow a redirect.
+Discovery and prompts work without authentication. Tool and resource execution
+requires `az login` with the Graph permissions required by the requested workload.
+Graph failures and missing permissions return MCP errors and correlated traces.
 
 ## Diagnostics and compatibility
 
 The existing `/health`, `/api/csdl`, `/api/examples`, `/api/analysis`,
 `/api/catalog`, `/api/projection`, and `/api/traces` endpoints remain.
-`csdlJson` is an **on-demand export using the OData library's `CsdlWriter`**,
-not an intermediate representation used by the pipeline. The original XML and
-the full EDM model, including overloads, are retained.
+`csdlJson` is exported by the transformer's OData `CsdlWriter` at generation time
+and embedded alongside the original XML. At runtime the endpoint only decodes
+the embedded metadata; no ODL export or schema inference occurs. JSON is not an
+intermediate representation used by the binding-generation pipeline.
 
 This is an intentional behavior change: Graph-specific tool names, resource
 URIs, inferred prompt bindings, expanded response wrappers, and mock execution
-are replaced with generic bindings and upstream OData responses. Existing
+are replaced with generic bindings and in-process Microsoft Graph responses. Existing
 non-transformed servers remain unchanged. `verify_transform_parity.py` is a
 legacy verifier for the previous Graph-specific projection, not this pipeline.
 
@@ -117,3 +126,8 @@ from `C:\MCP\Csdl` (`Server_Large.csdl`, `Server_WithPrompts.csdl`, `Server_Base
 verifying all 34 prompt renderings and example counts. It also exercises edge-case OData
 semantics (composite keys, derived types, enum parameters, structured payloads) using a test
 fixture. HTTP execution uses an in-memory recording handler; tests do not authenticate or call a live service.
+The runner also references `LargeServer` to verify request-binding resolution,
+unchanged MCP discovery, and equivalent tool/resource responses (including examples)
+using a recording OData client without authentication.
+It checks that resource and example links and protocol discovery are precomputed,
+and that generation-only inference is absent from emitted runtime source.

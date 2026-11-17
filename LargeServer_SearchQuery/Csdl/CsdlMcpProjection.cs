@@ -85,34 +85,45 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
 
     public async ValueTask<CallToolResult> CallToolAsync(CallToolRequestParams request, CancellationToken cancellationToken)
     {
-        if (request.Name == "search_intent")
+        try
         {
-            var query = GetRequiredString(request.Arguments, "query");
-            var searchResult = SearchIntentInCsdl(query);
-            return new CallToolResult
+            if (request.Name == "search_intent")
             {
-                IsError = false,
-                Content = [new TextContentBlock { Text = JsonSerializer.Serialize(searchResult, JsonOptions) }]
-            };
-        }
-
-        if (request.Name == "execute_odata_query")
-        {
-            var odataQuery = GetRequiredString(request.Arguments, "odataQuery");
-            var executionResult = await ExecuteODataQueryAsync(odataQuery, cancellationToken);
-            return new CallToolResult
-            {
-                IsError = executionResult == null,
-                Content = [new TextContentBlock
+                var query = GetRequiredString(request.Arguments, "query");
+                var searchResult = SearchIntentInCsdl(query);
+                return new CallToolResult
                 {
-                    Text = executionResult == null
-                        ? JsonSerializer.Serialize(new { error = $"Could not execute OData query: {odataQuery}" }, JsonOptions)
-                        : JsonSerializer.Serialize(executionResult, JsonOptions)
-                }]
+                    IsError = false,
+                    Content = [new TextContentBlock { Text = JsonSerializer.Serialize(searchResult, JsonOptions) }]
+                };
+            }
+
+            if (request.Name == "execute_odata_query")
+            {
+                var odataQuery = GetRequiredString(request.Arguments, "odataQuery");
+                var executionResult = await ExecuteODataQueryAsync(odataQuery, cancellationToken);
+                return new CallToolResult
+                {
+                    IsError = executionResult == null,
+                    Content = [new TextContentBlock
+                    {
+                        Text = executionResult == null
+                            ? JsonSerializer.Serialize(new { error = $"Could not execute OData query: {odataQuery}" }, JsonOptions)
+                            : JsonSerializer.Serialize(executionResult, JsonOptions)
+                    }]
+                };
+            }
+
+            throw new ArgumentException($"Unknown tool '{request.Name}'. Available tools: search_intent, execute_odata_query.");
+        }
+        catch (Exception exception) when (exception is HttpRequestException or InvalidOperationException or ArgumentException)
+        {
+            return new CallToolResult
+            {
+                IsError = true,
+                Content = [new TextContentBlock { Text = exception.Message }]
             };
         }
-
-        throw new ArgumentException($"Unknown tool '{request.Name}'. Available tools: search_intent, execute_odata_query.");
     }
 
     private static string GetRequiredString(IDictionary<string, JsonElement>? args, string key)
@@ -230,14 +241,14 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
             matchedExamples = scoredExamples,
             knownDirectoryDefaults = new
             {
-                olgaUpn = "avery.adams@example.com",
-                vojtechUpn = "morgan.reed@example.com",
-                joaoUpn = "jordan.lee@example.com",
-                lucaUpn = "casey.kim@example.com",
+                averyUpn = "avery.adams@example.com",
+                morganUpn = "morgan.reed@example.com",
+                jordanUpn = "jordan.lee@example.com",
                 taylorUpn = "taylor.morgan@example.com",
-                terezaUpn = "riley.chen@example.com",
-                gitaUpn = "jamie.patel@example.com",
-                cameronUpn = "cameron.brooks@example.com",
+                caseyUpn = "casey.chen@example.com",
+                rileyUpn = "riley.patel@example.com",
+                jamieUpn = "jamie.kim@example.com",
+                samUpn = "sam.rivera@example.com",
                 drewUpn = "drew.parker@example.com",
                 identityArchitectureGroupId = "11111111-2222-3333-4444-555555555555",
                 securityReviewersGroupId = "22222222-3333-4444-5555-666666666666",
@@ -379,6 +390,21 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
         // 7. Users & me queries
         if (q.StartsWith("me", StringComparison.OrdinalIgnoreCase))
         {
+            if (q.StartsWith("me/manager/directReports", StringComparison.OrdinalIgnoreCase))
+            {
+                var peers = await graphService.GetUserPeersAsync("me", cancellationToken);
+                return new { method, odataQuery = q, entitySet = "users", data = new { value = peers } };
+            }
+            if (q.StartsWith("me/manager", StringComparison.OrdinalIgnoreCase))
+            {
+                var manager = await graphService.GetUserManagerAsync("me", cancellationToken);
+                return new { method, odataQuery = q, entitySet = "users", data = manager };
+            }
+            if (q.StartsWith("me/directReports", StringComparison.OrdinalIgnoreCase))
+            {
+                var reports = await graphService.GetDirectReportsAsync("me", cancellationToken);
+                return new { method, odataQuery = q, entitySet = "users", data = new { value = reports } };
+            }
             var profile = await graphService.GetUserProfileAsync("me", cancellationToken);
             return new { method, odataQuery = q, entitySet = "users", data = profile };
         }
@@ -390,6 +416,21 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
             if (usrKeyMatch.Success || usrSlashMatch.Success)
             {
                 var uid = usrKeyMatch.Success ? usrKeyMatch.Groups[1].Value : usrSlashMatch.Groups[1].Value;
+                if (q.Contains("/manager/directReports", StringComparison.OrdinalIgnoreCase))
+                {
+                    var peers = await graphService.GetUserPeersAsync(uid, cancellationToken);
+                    return new { method, odataQuery = q, entitySet = "users", data = new { value = peers } };
+                }
+                if (q.Contains("/manager", StringComparison.OrdinalIgnoreCase))
+                {
+                    var manager = await graphService.GetUserManagerAsync(uid, cancellationToken);
+                    return new { method, odataQuery = q, entitySet = "users", data = manager };
+                }
+                if (q.Contains("/directReports", StringComparison.OrdinalIgnoreCase))
+                {
+                    var reports = await graphService.GetDirectReportsAsync(uid, cancellationToken);
+                    return new { method, odataQuery = q, entitySet = "users", data = new { value = reports } };
+                }
                 var profile = await graphService.GetUserProfileAsync(uid, cancellationToken);
                 return new { method, odataQuery = q, entitySet = "users", data = profile };
             }

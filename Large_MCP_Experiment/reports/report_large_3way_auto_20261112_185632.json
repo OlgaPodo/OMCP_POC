@@ -1,0 +1,4736 @@
+{
+  "id": "report_large_3way_auto_20261112_185632",
+  "timestamp": "2026-11-12T18:56:32.931194",
+  "model": "auto",
+  "engine": "GitHub Copilot CLI with local HTTP MCP servers",
+  "session_strategy": "independent prompts in persistent Copilot sessions, chunked at 20 queries per MCP variation",
+  "session_chunk_size": 20,
+  "pilot_query_ids": null,
+  "require_live_graph": true,
+  "total_queries": 5,
+  "is_full_run": false,
+  "elapsed_seconds": 373.79,
+  "servers": {
+    "no_examples": "http://localhost:3004",
+    "with_examples": "http://localhost:3003",
+    "search_query": "http://localhost:3005"
+  },
+  "catalog_summary": {
+    "no_examples": {
+      "url": "http://localhost:3004",
+      "csdlPath": "Server_Large.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 0,
+      "catalogTokens": 16672,
+      "catalogHash": "e994bcee0e859ff0"
+    },
+    "with_examples": {
+      "url": "http://localhost:3003",
+      "csdlPath": "Server_Large_WithExamples.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 28,
+      "catalogTokens": 16672,
+      "catalogHash": "e994bcee0e859ff0"
+    },
+    "search_query": {
+      "url": "http://localhost:3005",
+      "csdlPath": "C:\\MCP\\Csdl\\Server_Large_WithExamples.csdl",
+      "toolsCount": 2,
+      "resourcesCount": 0,
+      "promptsCount": 0,
+      "examplesCount": 28,
+      "catalogTokens": 383,
+      "catalogHash": "4cceb739d5f086c6"
+    }
+  },
+  "metrics": {
+    "no_examples_success_rate": 40.0,
+    "with_examples_success_rate": 20.0,
+    "search_query_success_rate": 60.0,
+    "no_examples_intent_accuracy": 40.0,
+    "with_examples_intent_accuracy": 20.0,
+    "search_query_intent_accuracy": 80.0,
+    "examples_impact_delta": -20.0,
+    "architecture_impact_delta": 40.0,
+    "search_vs_no_examples_delta": 20.0,
+    "catalog_tokens": {
+      "no_examples": 16672,
+      "with_examples": 16672,
+      "search_query": 383
+    },
+    "catalog_token_reduction_pct": 97.7,
+    "live_graph_calls": {
+      "no_examples": 38,
+      "with_examples": 29,
+      "search_query": 17
+    },
+    "avg_latency_ms": {
+      "no_examples": 26903.0,
+      "with_examples": 34334.4,
+      "search_query": 13221.8
+    }
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 1,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 1,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 100.0
+    },
+    "paraphrased": {
+      "count": 4,
+      "succ_no_ex": 2,
+      "succ_with_ex": 1,
+      "succ_search_q": 2,
+      "rate_no_ex": 50.0,
+      "rate_with_ex": 25.0,
+      "rate_search_q": 50.0,
+      "delta_examples": -25.0,
+      "delta_arch": 25.0
+    }
+  },
+  "workload_breakdown": {
+    "users_groups": {
+      "count": 5,
+      "succ_no_ex": 2,
+      "succ_with_ex": 1,
+      "succ_search_q": 3,
+      "rate_no_ex": 40.0,
+      "rate_with_ex": 20.0,
+      "rate_search_q": 60.0,
+      "delta_examples": -20.0,
+      "delta_arch": 40.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "Whom Avery reports to?",
+      "category": "canonical",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Find Avery's manager",
+        "tool": "GraphMcp-list_users",
+        "parameters": {
+          "filter": "displayName eq 'Avery'",
+          "select": "id,displayName,userPrincipalName",
+          "expand": "manager($select=displayName,userPrincipalName)"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)"
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 8,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName",
+            "expand": "manager($select=displayName,userPrincipalName)"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName&$expand=manager%28%24select%3DdisplayName%2CuserPrincipalName%29",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-12T23:56:57.3225983+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:00.9897311+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:01.1386216+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:01.2465653+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:01.3485722+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:03.4375049+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:03.5386469+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:03.6720391+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:03.771558+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:05.3409665+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:05.4538872+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:05.555061+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:05.6633948+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:08.7853007+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 192096100,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 1360
+          },
+          "cache_read": {
+            "tokenCount": 104598
+          },
+          "cache_write": {
+            "tokenCount": 8594
+          },
+          "output": {
+            "tokenCount": 976
+          }
+        },
+        "totalApiDurationMs": 20225,
+        "sessionStartTime": "2026-11-12T23:56:44.339Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 6,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 114552,
+              "outputTokens": 976,
+              "cacheReadTokens": 104598,
+              "cacheWriteTokens": 8594,
+              "reasoningTokens": 574
+            },
+            "cacheExpiresAt": "2026-11-13T00:27:08.911Z",
+            "totalNanoAiu": 192096100,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 1360
+              },
+              "cache_read": {
+                "tokenCount": 104598
+              },
+              "cache_write": {
+                "tokenCount": 8594
+              },
+              "output": {
+                "tokenCount": 976
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 20225,
+            "totalNanoAiu": 192096100,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 6,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 114552,
+                  "outputTokens": 976,
+                  "cacheReadTokens": 104598,
+                  "cacheWriteTokens": 8594,
+                  "reasoningTokens": 574
+                },
+                "totalNanoAiu": 192096100,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 1360
+                  },
+                  "cache_read": {
+                    "tokenCount": 104598
+                  },
+                  "cache_write": {
+                    "tokenCount": 8594
+                  },
+                  "output": {
+                    "tokenCount": 976
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 6,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 114552,
+                "outputTokens": 976,
+                "cacheReadTokens": 104598,
+                "cacheWriteTokens": 8594,
+                "reasoningTokens": 574
+              },
+              "totalNanoAiu": 192096100,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 1360
+                },
+                "cache_read": {
+                  "tokenCount": 104598
+                },
+                "cache_write": {
+                  "tokenCount": 8594
+                },
+                "output": {
+                  "tokenCount": 976
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 19871,
+        "lastCallOutputTokens": 228
+      },
+      "error_no_examples": null,
+      "session_no_examples": {
+        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "chunk": "no_examples-chunk1",
+        "promptIndex": 1
+      },
+      "latency_no_examples_ms": 38312.0,
+      "pred_with_examples": {
+        "intent": "Find Avery's reporting manager",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=10; users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle; users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle"
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 5,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName",
+            "top": 10
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName&$top=10",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-12T23:58:56.5341957+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=10",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:00.4876247+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:00.6122098+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:00.728436+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:00.9204252+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:05.8539787+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:05.9722747+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:06.0755998+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:06.1732793+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 194012000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 4386
+          },
+          "cache_read": {
+            "tokenCount": 71425
+          },
+          "cache_write": {
+            "tokenCount": 9158
+          },
+          "output": {
+            "tokenCount": 948
+          }
+        },
+        "totalApiDurationMs": 15213,
+        "sessionStartTime": "2026-11-12T23:58:50.165Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 4,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 84969,
+              "outputTokens": 948,
+              "cacheReadTokens": 71425,
+              "cacheWriteTokens": 9158,
+              "reasoningTokens": 564
+            },
+            "cacheExpiresAt": "2026-11-13T00:29:06.310Z",
+            "totalNanoAiu": 194012000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 4386
+              },
+              "cache_read": {
+                "tokenCount": 71425
+              },
+              "cache_write": {
+                "tokenCount": 9158
+              },
+              "output": {
+                "tokenCount": 948
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 15213,
+            "totalNanoAiu": 194012000,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 4,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 84969,
+                  "outputTokens": 948,
+                  "cacheReadTokens": 71425,
+                  "cacheWriteTokens": 9158,
+                  "reasoningTokens": 564
+                },
+                "totalNanoAiu": 194012000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 4386
+                  },
+                  "cache_read": {
+                    "tokenCount": 71425
+                  },
+                  "cache_write": {
+                    "tokenCount": 9158
+                  },
+                  "output": {
+                    "tokenCount": 948
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 4,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 84969,
+                "outputTokens": 948,
+                "cacheReadTokens": 71425,
+                "cacheWriteTokens": 9158,
+                "reasoningTokens": 564
+              },
+              "totalNanoAiu": 194012000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 4386
+                },
+                "cache_read": {
+                  "tokenCount": 71425
+                },
+                "cache_write": {
+                  "tokenCount": 9158
+                },
+                "output": {
+                  "tokenCount": 948
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 23467,
+        "lastCallOutputTokens": 350
+      },
+      "error_with_examples": null,
+      "session_with_examples": {
+        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "chunk": "with_examples-chunk1",
+        "promptIndex": 1
+      },
+      "latency_with_examples_ms": 22000.0,
+      "pred_search_query": {
+        "intent": "user_manager",
+        "tool": "GraphMcp-execute_odata_query",
+        "parameters": {
+          "user": "Avery Adams"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "live_graph_calls": 4,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Whom Avery reports to?"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "correlation_id": "search_query-q1-83b7423248384025b75941bed774e86e"
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "search_query-q1-83b7423248384025b75941bed774e86e"
+        }
+      ],
+      "graph_traces_search_query": [
+        {
+          "timestamp": "2026-11-13T00:01:49.2917748+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q1-83b7423248384025b75941bed774e86e"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:49.4724417+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q1-83b7423248384025b75941bed774e86e"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:49.5917105+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q1-83b7423248384025b75941bed774e86e"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:49.6982901+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q1-83b7423248384025b75941bed774e86e"
+        }
+      ],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 1,
+        "totalUserRequests": 1,
+        "totalNanoAiu": 118390300,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 9
+          },
+          "cache_read": {
+            "tokenCount": 44764
+          },
+          "cache_write": {
+            "tokenCount": 9310
+          },
+          "output": {
+            "tokenCount": 158
+          }
+        },
+        "totalApiDurationMs": 4979,
+        "sessionStartTime": "2026-11-13T00:01:42.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 3,
+              "cost": 1
+            },
+            "usage": {
+              "inputTokens": 54083,
+              "outputTokens": 158,
+              "cacheReadTokens": 44764,
+              "cacheWriteTokens": 9310,
+              "reasoningTokens": 0
+            },
+            "cacheExpiresAt": "2026-11-13T00:31:49.870Z",
+            "totalNanoAiu": 118390300,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 9
+              },
+              "cache_read": {
+                "tokenCount": 44764
+              },
+              "cache_write": {
+                "tokenCount": 9310
+              },
+              "output": {
+                "tokenCount": 158
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 4979,
+            "totalNanoAiu": 118390300,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 3,
+                  "cost": 1
+                },
+                "usage": {
+                  "inputTokens": 54083,
+                  "outputTokens": 158,
+                  "cacheReadTokens": 44764,
+                  "cacheWriteTokens": 9310,
+                  "reasoningTokens": 0
+                },
+                "totalNanoAiu": 118390300,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 9
+                  },
+                  "cache_read": {
+                    "tokenCount": 44764
+                  },
+                  "cache_write": {
+                    "tokenCount": 9310
+                  },
+                  "output": {
+                    "tokenCount": 158
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 3,
+                "cost": 1
+              },
+              "usage": {
+                "inputTokens": 54083,
+                "outputTokens": 158,
+                "cacheReadTokens": 44764,
+                "cacheWriteTokens": 9310,
+                "reasoningTokens": 0
+              },
+              "totalNanoAiu": 118390300,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 9
+                },
+                "cache_read": {
+                  "tokenCount": 44764
+                },
+                "cache_write": {
+                  "tokenCount": 9310
+                },
+                "output": {
+                  "tokenCount": 158
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 19157,
+        "lastCallOutputTokens": 80
+      },
+      "error_search_query": null,
+      "session_search_query": {
+        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "chunk": "search_query-chunk1",
+        "promptIndex": 1
+      },
+      "latency_search_query_ms": 11125.0
+    },
+    {
+      "query_id": 2,
+      "query": "Who is Avery's manager?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Find Avery's manager",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": [
+            "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "65d91890-8dec-591a-abcd-ef9efa247015"
+          ],
+          "select": "id,displayName,userPrincipalName"
+        },
+        "odata_request": "users/{id}/manager?$select=id,displayName,userPrincipalName (three requests; each failed with transport error)"
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 8,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "expand": "manager",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName&$expand=manager",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-12T23:57:22.8042063+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:28.398559+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:28.5137825+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:28.6286222+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:28.7289463+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:30.1296614+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:30.2395401+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:30.3490158+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:30.4606031+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:31.9366355+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:32.0536254+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:32.1500882+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:32.2567285+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:35.6339476+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 2,
+        "totalUserRequests": 2,
+        "totalNanoAiu": 373026500,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 4027
+          },
+          "cache_read": {
+            "tokenCount": 233900
+          },
+          "cache_write": {
+            "tokenCount": 13638
+          },
+          "output": {
+            "tokenCount": 1765
+          }
+        },
+        "totalApiDurationMs": 40710,
+        "sessionStartTime": "2026-11-12T23:56:44.339Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 12,
+              "cost": 2
+            },
+            "usage": {
+              "inputTokens": 251565,
+              "outputTokens": 1765,
+              "cacheReadTokens": 233900,
+              "cacheWriteTokens": 13638,
+              "reasoningTokens": 934
+            },
+            "cacheExpiresAt": "2026-11-13T00:27:35.782Z",
+            "totalNanoAiu": 373026500,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 4027
+              },
+              "cache_read": {
+                "tokenCount": 233900
+              },
+              "cache_write": {
+                "tokenCount": 13638
+              },
+              "output": {
+                "tokenCount": 1765
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 40710,
+            "totalNanoAiu": 373026500,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 12,
+                  "cost": 2
+                },
+                "usage": {
+                  "inputTokens": 251565,
+                  "outputTokens": 1765,
+                  "cacheReadTokens": 233900,
+                  "cacheWriteTokens": 13638,
+                  "reasoningTokens": 934
+                },
+                "totalNanoAiu": 373026500,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 4027
+                  },
+                  "cache_read": {
+                    "tokenCount": 233900
+                  },
+                  "cache_write": {
+                    "tokenCount": 13638
+                  },
+                  "output": {
+                    "tokenCount": 1765
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 12,
+                "cost": 2
+              },
+              "usage": {
+                "inputTokens": 251565,
+                "outputTokens": 1765,
+                "cacheReadTokens": 233900,
+                "cacheWriteTokens": 13638,
+                "reasoningTokens": 934
+              },
+              "totalNanoAiu": 373026500,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 4027
+                },
+                "cache_read": {
+                  "tokenCount": 233900
+                },
+                "cache_write": {
+                  "tokenCount": 13638
+                },
+                "output": {
+                  "tokenCount": 1765
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 23456,
+        "lastCallOutputTokens": 166
+      },
+      "error_no_examples": null,
+      "session_no_examples": {
+        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "chunk": "no_examples-chunk1",
+        "promptIndex": 2
+      },
+      "latency_no_examples_ms": 26047.0,
+      "pred_with_examples": {
+        "intent": "Find Avery's manager",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+          "select": "id,displayName,userPrincipalName,jobTitle",
+          "top": 1
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20; users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle"
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 3,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName",
+            "top": 20
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName&$top=20",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-12T23:59:16.0053989+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:19.4770477+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:19.5884469+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:19.7378422+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:19.8478694+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 2,
+        "totalUserRequests": 2,
+        "totalNanoAiu": 305182500,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 4395
+          },
+          "cache_read": {
+            "tokenCount": 131625
+          },
+          "cache_write": {
+            "tokenCount": 15972
+          },
+          "output": {
+            "tokenCount": 1215
+          }
+        },
+        "totalApiDurationMs": 32614,
+        "sessionStartTime": "2026-11-12T23:58:50.165Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 7,
+              "cost": 2
+            },
+            "usage": {
+              "inputTokens": 151992,
+              "outputTokens": 1215,
+              "cacheReadTokens": 131625,
+              "cacheWriteTokens": 15972,
+              "reasoningTokens": 564
+            },
+            "cacheExpiresAt": "2026-11-13T00:29:19.977Z",
+            "totalNanoAiu": 305182500,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 4395
+              },
+              "cache_read": {
+                "tokenCount": 131625
+              },
+              "cache_write": {
+                "tokenCount": 15972
+              },
+              "output": {
+                "tokenCount": 1215
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 32614,
+            "totalNanoAiu": 305182500,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 7,
+                  "cost": 2
+                },
+                "usage": {
+                  "inputTokens": 151992,
+                  "outputTokens": 1215,
+                  "cacheReadTokens": 131625,
+                  "cacheWriteTokens": 15972,
+                  "reasoningTokens": 564
+                },
+                "totalNanoAiu": 305182500,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 4395
+                  },
+                  "cache_read": {
+                    "tokenCount": 131625
+                  },
+                  "cache_write": {
+                    "tokenCount": 15972
+                  },
+                  "output": {
+                    "tokenCount": 1215
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 7,
+                "cost": 2
+              },
+              "usage": {
+                "inputTokens": 151992,
+                "outputTokens": 1215,
+                "cacheReadTokens": 131625,
+                "cacheWriteTokens": 15972,
+                "reasoningTokens": 564
+              },
+              "totalNanoAiu": 305182500,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 4395
+                },
+                "cache_read": {
+                  "tokenCount": 131625
+                },
+                "cache_write": {
+                  "tokenCount": 15972
+                },
+                "output": {
+                  "tokenCount": 1215
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 22577,
+        "lastCallOutputTokens": 161
+      },
+      "error_with_examples": null,
+      "session_with_examples": {
+        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "chunk": "with_examples-chunk1",
+        "promptIndex": 2
+      },
+      "latency_with_examples_ms": 21875.0,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "GraphMcp-execute_odata_query",
+        "parameters": {
+          "userName": "Avery Adams"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "live_graph_calls": 4,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who is Avery's manager?"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "correlation_id": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        }
+      ],
+      "graph_traces_search_query": [
+        {
+          "timestamp": "2026-11-13T00:01:58.3492854+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:58.461547+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:58.5898322+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:58.6941428+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
+        }
+      ],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 2,
+        "totalUserRequests": 2,
+        "totalNanoAiu": 197722000,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 18
+          },
+          "cache_read": {
+            "tokenCount": 105855
+          },
+          "cache_write": {
+            "tokenCount": 12822
+          },
+          "output": {
+            "tokenCount": 323
+          }
+        },
+        "totalApiDurationMs": 11330,
+        "sessionStartTime": "2026-11-13T00:01:42.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 6,
+              "cost": 2
+            },
+            "usage": {
+              "inputTokens": 118695,
+              "outputTokens": 323,
+              "cacheReadTokens": 105855,
+              "cacheWriteTokens": 12822,
+              "reasoningTokens": 0
+            },
+            "cacheExpiresAt": "2026-11-13T00:31:58.866Z",
+            "totalNanoAiu": 197722000,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 18
+              },
+              "cache_read": {
+                "tokenCount": 105855
+              },
+              "cache_write": {
+                "tokenCount": 12822
+              },
+              "output": {
+                "tokenCount": 323
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 11330,
+            "totalNanoAiu": 197722000,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 6,
+                  "cost": 2
+                },
+                "usage": {
+                  "inputTokens": 118695,
+                  "outputTokens": 323,
+                  "cacheReadTokens": 105855,
+                  "cacheWriteTokens": 12822,
+                  "reasoningTokens": 0
+                },
+                "totalNanoAiu": 197722000,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 18
+                  },
+                  "cache_read": {
+                    "tokenCount": 105855
+                  },
+                  "cache_write": {
+                    "tokenCount": 12822
+                  },
+                  "output": {
+                    "tokenCount": 323
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 6,
+                "cost": 2
+              },
+              "usage": {
+                "inputTokens": 118695,
+                "outputTokens": 323,
+                "cacheReadTokens": 105855,
+                "cacheWriteTokens": 12822,
+                "reasoningTokens": 0
+              },
+              "totalNanoAiu": 197722000,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 18
+                },
+                "cache_read": {
+                  "tokenCount": 105855
+                },
+                "cache_write": {
+                  "tokenCount": 12822
+                },
+                "output": {
+                  "tokenCount": 323
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 22669,
+        "lastCallOutputTokens": 87
+      },
+      "error_search_query": null,
+      "session_search_query": {
+        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "chunk": "search_query-chunk1",
+        "promptIndex": 2
+      },
+      "latency_search_query_ms": 11094.0
+    },
+    {
+      "query_id": 3,
+      "query": "Who is Avery's direct boss?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Find Avery's direct boss",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": [
+            "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "65d91890-8dec-591a-abcd-ef9efa247015"
+          ],
+          "select": "id,displayName,userPrincipalName"
+        },
+        "odata_request": "users/{id}/manager?$select=id,displayName,userPrincipalName (three requests)"
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 7,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-12T23:57:46.998063+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:54.7344753+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:54.8611114+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:54.9550057+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:55.0616012+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:56.3717575+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:56.491404+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:56.5897972+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:56.7064801+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:58.2033283+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:58.3160393+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:58.4338843+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        },
+        {
+          "timestamp": "2026-11-12T23:57:58.5513657+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 3,
+        "totalUserRequests": 3,
+        "totalNanoAiu": 570098200,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 5699
+          },
+          "cache_read": {
+            "tokenCount": 350761
+          },
+          "cache_write": {
+            "tokenCount": 21986
+          },
+          "output": {
+            "tokenCount": 2637
+          }
+        },
+        "totalApiDurationMs": 58097,
+        "sessionStartTime": "2026-11-12T23:56:44.339Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 17,
+              "cost": 3
+            },
+            "usage": {
+              "inputTokens": 378446,
+              "outputTokens": 2637,
+              "cacheReadTokens": 350761,
+              "cacheWriteTokens": 21986,
+              "reasoningTokens": 1423
+            },
+            "cacheExpiresAt": "2026-11-13T00:27:58.681Z",
+            "totalNanoAiu": 570098200,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 5699
+              },
+              "cache_read": {
+                "tokenCount": 350761
+              },
+              "cache_write": {
+                "tokenCount": 21986
+              },
+              "output": {
+                "tokenCount": 2637
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 58097,
+            "totalNanoAiu": 570098200,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 17,
+                  "cost": 3
+                },
+                "usage": {
+                  "inputTokens": 378446,
+                  "outputTokens": 2637,
+                  "cacheReadTokens": 350761,
+                  "cacheWriteTokens": 21986,
+                  "reasoningTokens": 1423
+                },
+                "totalNanoAiu": 570098200,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 5699
+                  },
+                  "cache_read": {
+                    "tokenCount": 350761
+                  },
+                  "cache_write": {
+                    "tokenCount": 21986
+                  },
+                  "output": {
+                    "tokenCount": 2637
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 17,
+                "cost": 3
+              },
+              "usage": {
+                "inputTokens": 378446,
+                "outputTokens": 2637,
+                "cacheReadTokens": 350761,
+                "cacheWriteTokens": 21986,
+                "reasoningTokens": 1423
+              },
+              "totalNanoAiu": 570098200,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 5699
+                },
+                "cache_read": {
+                  "tokenCount": 350761
+                },
+                "cache_write": {
+                  "tokenCount": 21986
+                },
+                "output": {
+                  "tokenCount": 2637
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 25768,
+        "lastCallOutputTokens": 165
+      },
+      "error_no_examples": null,
+      "session_no_examples": {
+        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "chunk": "no_examples-chunk1",
+        "promptIndex": 3
+      },
+      "latency_no_examples_ms": 23500.0,
+      "pred_with_examples": {
+        "intent": "Find Avery's direct manager",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc; 33941ea8-52ee-5882-86e5-7a5c09b213a3; 65d91890-8dec-591a-abcd-ef9efa247015",
+          "select": "id,displayName,userPrincipalName,jobTitle",
+          "top": 1
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20; users/{each returned id}/manager?$select=id,displayName,userPrincipalName,jobTitle"
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 7,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName",
+            "top": 20
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName&$top=20",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-12T23:59:50.9216921+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:53.2437594+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:53.3567932+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:53.461561+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:53.5659696+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:55.3791356+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:55.4904675+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:55.5921385+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:55.7015951+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:58.9092964+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:59.018014+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:59.1186963+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        },
+        {
+          "timestamp": "2026-11-12T23:59:59.3336028+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 3,
+        "totalUserRequests": 3,
+        "totalNanoAiu": 488397350,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 5658
+          },
+          "cache_read": {
+            "tokenCount": 247243
+          },
+          "cache_write": {
+            "tokenCount": 24455
+          },
+          "output": {
+            "tokenCount": 1764
+          }
+        },
+        "totalApiDurationMs": 56158,
+        "sessionStartTime": "2026-11-12T23:58:50.165Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 12,
+              "cost": 3
+            },
+            "usage": {
+              "inputTokens": 277356,
+              "outputTokens": 1764,
+              "cacheReadTokens": 247243,
+              "cacheWriteTokens": 24455,
+              "reasoningTokens": 673
+            },
+            "cacheExpiresAt": "2026-11-13T00:29:59.479Z",
+            "totalNanoAiu": 488397350,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 5658
+              },
+              "cache_read": {
+                "tokenCount": 247243
+              },
+              "cache_write": {
+                "tokenCount": 24455
+              },
+              "output": {
+                "tokenCount": 1764
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 56158,
+            "totalNanoAiu": 488397350,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 12,
+                  "cost": 3
+                },
+                "usage": {
+                  "inputTokens": 277356,
+                  "outputTokens": 1764,
+                  "cacheReadTokens": 247243,
+                  "cacheWriteTokens": 24455,
+                  "reasoningTokens": 673
+                },
+                "totalNanoAiu": 488397350,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 5658
+                  },
+                  "cache_read": {
+                    "tokenCount": 247243
+                  },
+                  "cache_write": {
+                    "tokenCount": 24455
+                  },
+                  "output": {
+                    "tokenCount": 1764
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 12,
+                "cost": 3
+              },
+              "usage": {
+                "inputTokens": 277356,
+                "outputTokens": 1764,
+                "cacheReadTokens": 247243,
+                "cacheWriteTokens": 24455,
+                "reasoningTokens": 673
+              },
+              "totalNanoAiu": 488397350,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 5658
+                },
+                "cache_read": {
+                  "tokenCount": 247243
+                },
+                "cache_write": {
+                  "tokenCount": 24455
+                },
+                "output": {
+                  "tokenCount": 1764
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 25494,
+        "lastCallOutputTokens": 199
+      },
+      "error_with_examples": null,
+      "session_with_examples": {
+        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "chunk": "with_examples-chunk1",
+        "promptIndex": 3
+      },
+      "latency_with_examples_ms": 29687.0,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "GraphMcp-execute_odata_query",
+        "parameters": {
+          "userName": "Avery Adams"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "live_graph_calls": 4,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who is Avery's direct boss?"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "correlation_id": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        }
+      ],
+      "graph_traces_search_query": [
+        {
+          "timestamp": "2026-11-13T00:02:10.7202299+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:10.8393986+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:11.0080175+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:11.1206061+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
+        }
+      ],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 3,
+        "totalUserRequests": 3,
+        "totalNanoAiu": 284532850,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 27
+          },
+          "cache_read": {
+            "tokenCount": 177493
+          },
+          "cache_write": {
+            "tokenCount": 16337
+          },
+          "output": {
+            "tokenCount": 490
+          }
+        },
+        "totalApiDurationMs": 20476,
+        "sessionStartTime": "2026-11-13T00:01:42.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 9,
+              "cost": 3
+            },
+            "usage": {
+              "inputTokens": 193857,
+              "outputTokens": 490,
+              "cacheReadTokens": 177493,
+              "cacheWriteTokens": 16337,
+              "reasoningTokens": 0
+            },
+            "cacheExpiresAt": "2026-11-13T00:32:11.298Z",
+            "totalNanoAiu": 284532850,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 27
+              },
+              "cache_read": {
+                "tokenCount": 177493
+              },
+              "cache_write": {
+                "tokenCount": 16337
+              },
+              "output": {
+                "tokenCount": 490
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 20476,
+            "totalNanoAiu": 284532850,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 9,
+                  "cost": 3
+                },
+                "usage": {
+                  "inputTokens": 193857,
+                  "outputTokens": 490,
+                  "cacheReadTokens": 177493,
+                  "cacheWriteTokens": 16337,
+                  "reasoningTokens": 0
+                },
+                "totalNanoAiu": 284532850,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 27
+                  },
+                  "cache_read": {
+                    "tokenCount": 177493
+                  },
+                  "cache_write": {
+                    "tokenCount": 16337
+                  },
+                  "output": {
+                    "tokenCount": 490
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 9,
+                "cost": 3
+              },
+              "usage": {
+                "inputTokens": 193857,
+                "outputTokens": 490,
+                "cacheReadTokens": 177493,
+                "cacheWriteTokens": 16337,
+                "reasoningTokens": 0
+              },
+              "totalNanoAiu": 284532850,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 27
+                },
+                "cache_read": {
+                  "tokenCount": 177493
+                },
+                "cache_write": {
+                  "tokenCount": 16337
+                },
+                "output": {
+                  "tokenCount": 490
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 26184,
+        "lastCallOutputTokens": 88
+      },
+      "error_search_query": null,
+      "session_search_query": {
+        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "chunk": "search_query-chunk1",
+        "promptIndex": 3
+      },
+      "latency_search_query_ms": 13859.0
+    },
+    {
+      "query_id": 4,
+      "query": "Show me the reporting line for Avery Adams",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Show Avery Adams's reporting line",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001",
+          "select": "id,displayName,userPrincipalName"
+        },
+        "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": false,
+        "live_graph_calls": 2,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery Adams'",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 1,
+          "resolved_entities": [
+            {
+              "id": "10000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "avery.adams@example.com",
+              "displayName": "Avery Adams"
+            }
+          ],
+          "correlation_id": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000001",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-12T23:58:09.5633506+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:10.9515446+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 4,
+        "totalUserRequests": 4,
+        "totalNanoAiu": 718273150,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 5765
+          },
+          "cache_read": {
+            "tokenCount": 417417
+          },
+          "cache_write": {
+            "tokenCount": 31995
+          },
+          "output": {
+            "tokenCount": 3022
+          }
+        },
+        "totalApiDurationMs": 65010,
+        "sessionStartTime": "2026-11-12T23:56:44.339Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 20,
+              "cost": 4
+            },
+            "usage": {
+              "inputTokens": 455177,
+              "outputTokens": 3022,
+              "cacheReadTokens": 417417,
+              "cacheWriteTokens": 31995,
+              "reasoningTokens": 1579
+            },
+            "cacheExpiresAt": "2026-11-13T00:28:11.099Z",
+            "totalNanoAiu": 718273150,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 5765
+              },
+              "cache_read": {
+                "tokenCount": 417417
+              },
+              "cache_write": {
+                "tokenCount": 31995
+              },
+              "output": {
+                "tokenCount": 3022
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 65010,
+            "totalNanoAiu": 718273150,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 20,
+                  "cost": 4
+                },
+                "usage": {
+                  "inputTokens": 455177,
+                  "outputTokens": 3022,
+                  "cacheReadTokens": 417417,
+                  "cacheWriteTokens": 31995,
+                  "reasoningTokens": 1579
+                },
+                "totalNanoAiu": 718273150,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 5765
+                  },
+                  "cache_read": {
+                    "tokenCount": 417417
+                  },
+                  "cache_write": {
+                    "tokenCount": 31995
+                  },
+                  "output": {
+                    "tokenCount": 3022
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 20,
+                "cost": 4
+              },
+              "usage": {
+                "inputTokens": 455177,
+                "outputTokens": 3022,
+                "cacheReadTokens": 417417,
+                "cacheWriteTokens": 31995,
+                "reasoningTokens": 1579
+              },
+              "totalNanoAiu": 718273150,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 5765
+                },
+                "cache_read": {
+                  "tokenCount": 417417
+                },
+                "cache_write": {
+                  "tokenCount": 31995
+                },
+                "output": {
+                  "tokenCount": 3022
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 25829,
+        "lastCallOutputTokens": 128
+      },
+      "error_no_examples": null,
+      "session_no_examples": {
+        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "chunk": "no_examples-chunk1",
+        "promptIndex": 4
+      },
+      "latency_no_examples_ms": 11688.0,
+      "pred_with_examples": {
+        "intent": "Show Avery Adams's reporting line",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001; 10000000-0000-4000-8000-000000000002; e2e6e982-2c77-55f9-a54d-e4d1ead2216e; 114cbc48-26aa-55eb-80d9-3a299110667a; b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users(10000000-0000-4000-8000-000000000001)/manager; users(10000000-0000-4000-8000-000000000002)/manager; users(e2e6e982-2c77-55f9-a54d-e4d1ead2216e)/manager; users(114cbc48-26aa-55eb-80d9-3a299110667a)/manager; users(b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad)/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": false,
+        "live_graph_calls": 6,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery Adams'",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 20
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=20",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 1,
+          "resolved_entities": [
+            {
+              "id": "10000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "avery.adams@example.com",
+              "displayName": "Avery Adams"
+            }
+          ],
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000001",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000002",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%2710000000-0000-4000-8000-000000000002%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": "example.directory.068@example.com",
+          "resolved_entity": {
+            "id": "e2e6e982-2c77-55f9-a54d-e4d1ead2216e",
+            "userPrincipalName": "example.directory.068@example.com",
+            "displayName": "Example Directory Object 060"
+          },
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "e2e6e982-2c77-55f9-a54d-e4d1ead2216e",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%277a19ba9d-16e2-488d-9beb-92d77677a37b%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": "example.directory.045@example.com",
+          "resolved_entity": {
+            "id": "114cbc48-26aa-55eb-80d9-3a299110667a",
+            "userPrincipalName": "example.directory.045@example.com",
+            "displayName": "Example Directory Object 039"
+          },
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "114cbc48-26aa-55eb-80d9-3a299110667a",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%278d63c7a5-09b6-4547-95c1-d579846c25ef%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": "example.directory.021@example.com",
+          "resolved_entity": {
+            "id": "b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad",
+            "userPrincipalName": "example.directory.021@example.com",
+            "displayName": "Example Directory Object 018"
+          },
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%279c4823c8-9d70-4345-94ca-3d1ef5ff77d0%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": "example.directory.070@example.com",
+          "resolved_entity": {
+            "id": "44a1dfbe-688e-5299-9c7b-3bb17ebb416f",
+            "userPrincipalName": "example.directory.070@example.com",
+            "displayName": "Example Directory Object 062"
+          },
+          "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-13T00:00:11.7370396+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "timestamp": "2026-11-13T00:00:15.3813918+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "timestamp": "2026-11-13T00:00:20.3201147+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "timestamp": "2026-11-13T00:00:24.1625239+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/e2e6e982-2c77-55f9-a54d-e4d1ead2216e/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "timestamp": "2026-11-13T00:00:26.0120284+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/114cbc48-26aa-55eb-80d9-3a299110667a/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        },
+        {
+          "timestamp": "2026-11-13T00:00:29.9662458+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 4,
+        "totalUserRequests": 4,
+        "totalNanoAiu": 812120750,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 9190
+          },
+          "cache_read": {
+            "tokenCount": 445735
+          },
+          "cache_write": {
+            "tokenCount": 37443
+          },
+          "output": {
+            "tokenCount": 3090
+          }
+        },
+        "totalApiDurationMs": 84415,
+        "sessionStartTime": "2026-11-12T23:58:50.165Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 19,
+              "cost": 4
+            },
+            "usage": {
+              "inputTokens": 492368,
+              "outputTokens": 3090,
+              "cacheReadTokens": 445735,
+              "cacheWriteTokens": 37443,
+              "reasoningTokens": 1208
+            },
+            "cacheExpiresAt": "2026-11-13T00:30:30.115Z",
+            "totalNanoAiu": 812120750,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 9190
+              },
+              "cache_read": {
+                "tokenCount": 445735
+              },
+              "cache_write": {
+                "tokenCount": 37443
+              },
+              "output": {
+                "tokenCount": 3090
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 84415,
+            "totalNanoAiu": 812120750,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 19,
+                  "cost": 4
+                },
+                "usage": {
+                  "inputTokens": 492368,
+                  "outputTokens": 3090,
+                  "cacheReadTokens": 445735,
+                  "cacheWriteTokens": 37443,
+                  "reasoningTokens": 1208
+                },
+                "totalNanoAiu": 812120750,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 9190
+                  },
+                  "cache_read": {
+                    "tokenCount": 445735
+                  },
+                  "cache_write": {
+                    "tokenCount": 37443
+                  },
+                  "output": {
+                    "tokenCount": 3090
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 19,
+                "cost": 4
+              },
+              "usage": {
+                "inputTokens": 492368,
+                "outputTokens": 3090,
+                "cacheReadTokens": 445735,
+                "cacheWriteTokens": 37443,
+                "reasoningTokens": 1208
+              },
+              "totalNanoAiu": 812120750,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 9190
+                },
+                "cache_read": {
+                  "tokenCount": 445735
+                },
+                "cache_write": {
+                  "tokenCount": 37443
+                },
+                "output": {
+                  "tokenCount": 3090
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 32262,
+        "lastCallOutputTokens": 473
+      },
+      "error_with_examples": null,
+      "session_with_examples": {
+        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "chunk": "with_examples-chunk1",
+        "promptIndex": 4
+      },
+      "latency_with_examples_ms": 33094.0,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "GraphMcp-execute_odata_query",
+        "parameters": {
+          "userName": "Avery Adams",
+          "userId": "10000000-0000-4000-8000-000000000001"
+        },
+        "odata_request": "GET users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 5,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Executed parameters/OData path did not match the benchmark expectation."
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Show me the reporting line for Avery Adams"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "correlation_id": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 2,
+          "resolved_entities": [
+            {
+              "id": "10000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "avery.adams@example.com",
+              "displayName": "Avery Adams"
+            },
+            {
+              "id": "a0336cb4-76f2-5234-8c0a-5386442b5a92",
+              "userPrincipalName": "example.directory.071@example.com",
+              "displayName": "Example Directory Object 052"
+            }
+          ],
+          "correlation_id": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "search_query-q4-f13314748b27438990ec418639b0df66"
+        }
+      ],
+      "graph_traces_search_query": [
+        {
+          "timestamp": "2026-11-13T00:02:27.7085555+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery%20Adams') or startswith(userPrincipalName,'Avery%20Adams') or startswith(mail,'Avery%20Adams')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:29.6643004+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:29.7724286+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:29.8817001+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
+        },
+        {
+          "timestamp": "2026-11-13T00:02:29.9951169+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
+        }
+      ],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 4,
+        "totalUserRequests": 4,
+        "totalNanoAiu": 413360150,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 39
+          },
+          "cache_read": {
+            "tokenCount": 289662
+          },
+          "cache_write": {
+            "tokenCount": 20373
+          },
+          "output": {
+            "tokenCount": 916
+          }
+        },
+        "totalApiDurationMs": 30607,
+        "sessionStartTime": "2026-11-13T00:01:42.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 13,
+              "cost": 4
+            },
+            "usage": {
+              "inputTokens": 310074,
+              "outputTokens": 916,
+              "cacheReadTokens": 289662,
+              "cacheWriteTokens": 20373,
+              "reasoningTokens": 125
+            },
+            "cacheExpiresAt": "2026-11-13T00:32:30.176Z",
+            "totalNanoAiu": 413360150,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 39
+              },
+              "cache_read": {
+                "tokenCount": 289662
+              },
+              "cache_write": {
+                "tokenCount": 20373
+              },
+              "output": {
+                "tokenCount": 916
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 30607,
+            "totalNanoAiu": 413360150,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 13,
+                  "cost": 4
+                },
+                "usage": {
+                  "inputTokens": 310074,
+                  "outputTokens": 916,
+                  "cacheReadTokens": 289662,
+                  "cacheWriteTokens": 20373,
+                  "reasoningTokens": 125
+                },
+                "totalNanoAiu": 413360150,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 39
+                  },
+                  "cache_read": {
+                    "tokenCount": 289662
+                  },
+                  "cache_write": {
+                    "tokenCount": 20373
+                  },
+                  "output": {
+                    "tokenCount": 916
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 13,
+                "cost": 4
+              },
+              "usage": {
+                "inputTokens": 310074,
+                "outputTokens": 916,
+                "cacheReadTokens": 289662,
+                "cacheWriteTokens": 20373,
+                "reasoningTokens": 125
+              },
+              "totalNanoAiu": 413360150,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 39
+                },
+                "cache_read": {
+                  "tokenCount": 289662
+                },
+                "cache_write": {
+                  "tokenCount": 20373
+                },
+                "output": {
+                  "tokenCount": 916
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 30220,
+        "lastCallOutputTokens": 132
+      },
+      "error_search_query": null,
+      "session_search_query": {
+        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "chunk": "search_query-chunk1",
+        "promptIndex": 4
+      },
+      "latency_search_query_ms": 15390.0
+    },
+    {
+      "query_id": 5,
+      "query": "Who approves Avery's expenses and time off?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "Identify Avery Adams's expense and time-off approver",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "10000000-0000-4000-8000-000000000001",
+          "select": "id,displayName,userPrincipalName"
+        },
+        "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": false,
+        "live_graph_calls": 13,
+        "live_graph_verified": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery Adams'",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 1,
+          "resolved_entities": [
+            {
+              "id": "10000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "avery.adams@example.com",
+              "displayName": "Avery Adams"
+            }
+          ],
+          "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "10000000-0000-4000-8000-000000000001",
+            "select": "id,displayName,userPrincipalName"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName",
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_entity": {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "userPrincipalName": "morgan.reed@example.com",
+            "displayName": "Morgan Reed"
+          },
+          "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "method": "tools/call",
+          "name": "list_chatMessages",
+          "arguments": {
+            "search": "Avery expense approval",
+            "select": "id,body,createdDateTime,from",
+            "top": 20
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "method": "tools/call",
+          "name": "list_drives",
+          "arguments": {
+            "select": "id,name,driveType",
+            "top": 20
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        }
+      ],
+      "graph_traces_no_examples": [
+        {
+          "timestamp": "2026-11-12T23:58:29.1126672+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:31.3000001+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/10000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:35.1471217+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/me/joinedTeams?$select=id,displayName,description,visibility,isArchived,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.104052+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/4496040c-45e7-5faf-beb9-db66288bec66/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.103863+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/a2ddcaa2-f6c8-5c23-af37-26a8512d5a67/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.102447+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/6a406f49-feac-59ee-b193-cd234368d0e1/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.103596+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/00ad0752-c2ee-5e59-bf86-bef55f7f075f/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.1037839+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/195fa1e8-cff4-5bd8-a46e-9ea874ea38d0/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.1038892+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/9b83cb8f-3b41-5834-9398-ea310e9a24b1/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.10392+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/cd44c29f-c968-5e24-890b-1878bdd85904/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.103755+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/2455fbf6-3f30-5882-851b-08a22f770dd3/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.1038287+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/a91f9fa8-c132-5914-a524-06140c252054/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:36.103934+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/teams/b8e1511e-aab4-555b-b479-0098c2d684c9/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:45.1554437+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/me/drive?$select=id,name,driveType,webUrl,owner,quota",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        },
+        {
+          "timestamp": "2026-11-12T23:58:45.2745108+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/me/drive/root/children?$select=id,name,size,webUrl,file,folder,createdDateTime,lastModifiedDateTime,lastModifiedBy",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
+        }
+      ],
+      "usage_no_examples": {
+        "totalPremiumRequestCost": 5,
+        "totalUserRequests": 5,
+        "totalNanoAiu": 984350500,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 9991
+          },
+          "cache_read": {
+            "tokenCount": 556630
+          },
+          "cache_write": {
+            "tokenCount": 43506
+          },
+          "output": {
+            "tokenCount": 4117
+          }
+        },
+        "totalApiDurationMs": 88566,
+        "sessionStartTime": "2026-11-12T23:56:44.339Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 25,
+              "cost": 5
+            },
+            "usage": {
+              "inputTokens": 610127,
+              "outputTokens": 4117,
+              "cacheReadTokens": 556630,
+              "cacheWriteTokens": 43506,
+              "reasoningTokens": 2337
+            },
+            "cacheExpiresAt": "2026-11-13T00:28:45.441Z",
+            "totalNanoAiu": 984350500,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 9991
+              },
+              "cache_read": {
+                "tokenCount": 556630
+              },
+              "cache_write": {
+                "tokenCount": 43506
+              },
+              "output": {
+                "tokenCount": 4117
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 88566,
+            "totalNanoAiu": 984350500,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 25,
+                  "cost": 5
+                },
+                "usage": {
+                  "inputTokens": 610127,
+                  "outputTokens": 4117,
+                  "cacheReadTokens": 556630,
+                  "cacheWriteTokens": 43506,
+                  "reasoningTokens": 2337
+                },
+                "totalNanoAiu": 984350500,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 9991
+                  },
+                  "cache_read": {
+                    "tokenCount": 556630
+                  },
+                  "cache_write": {
+                    "tokenCount": 43506
+                  },
+                  "output": {
+                    "tokenCount": 4117
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 25,
+                "cost": 5
+              },
+              "usage": {
+                "inputTokens": 610127,
+                "outputTokens": 4117,
+                "cacheReadTokens": 556630,
+                "cacheWriteTokens": 43506,
+                "reasoningTokens": 2337
+              },
+              "totalNanoAiu": 984350500,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 9991
+                },
+                "cache_read": {
+                  "tokenCount": 556630
+                },
+                "cache_write": {
+                  "tokenCount": 43506
+                },
+                "output": {
+                  "tokenCount": 4117
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 31485,
+        "lastCallOutputTokens": 245
+      },
+      "error_no_examples": null,
+      "session_no_examples": {
+        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "chunk": "no_examples-chunk1",
+        "promptIndex": 5
+      },
+      "latency_no_examples_ms": 34968.0,
+      "pred_with_examples": {
+        "intent": "Identify who approves Avery's expenses and time off",
+        "tool": "GraphMcp-get_users_manager",
+        "parameters": {
+          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc; 33941ea8-52ee-5882-86e5-7a5c09b213a3; 65d91890-8dec-591a-abcd-ef9efa247015",
+          "select": "id,displayName,userPrincipalName,jobTitle",
+          "top": 1
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20; users({each returned id})/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1"
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 8,
+        "live_graph_verified": true,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 20
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=20",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "top": 1
+          },
+          "uri": null,
+          "success": false,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "method": "tools/call",
+          "name": "list_users",
+          "arguments": {
+            "filter": "displayName eq 'Avery'",
+            "select": "id,displayName,userPrincipalName,jobTitle",
+            "expand": "manager($select=id,displayName,userPrincipalName,jobTitle)",
+            "top": 20
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": "users",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%27&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$expand=manager%28%24select%3Did%2CdisplayName%2CuserPrincipalName%2CjobTitle%29&$top=20",
+          "examples_count": 3,
+          "source": null,
+          "resolved_identifier": null,
+          "result_count": 3,
+          "resolved_entities": [
+            {
+              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+              "userPrincipalName": "example.directory.056@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+              "userPrincipalName": "example.directory.053@example.com",
+              "displayName": "avery"
+            },
+            {
+              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
+              "userPrincipalName": "example.directory.055@example.com",
+              "displayName": "avery"
+            }
+          ],
+          "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        }
+      ],
+      "graph_traces_with_examples": [
+        {
+          "timestamp": "2026-11-13T00:01:09.2120522+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:12.8230025+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:12.9406387+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:13.125016+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:13.2349564+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:26.2588044+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:26.4063311+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:26.5047776+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:26.6123143+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:29.0460475+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:29.1604586+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:29.2659034+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 404,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:29.3792556+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        },
+        {
+          "timestamp": "2026-11-13T00:01:34.4253763+00:00",
+          "method": "GET",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20",
+          "statusCode": 200,
+          "isLive": true,
+          "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
+        }
+      ],
+      "usage_with_examples": {
+        "totalPremiumRequestCost": 5,
+        "totalUserRequests": 5,
+        "totalNanoAiu": 1246405300,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 15678
+          },
+          "cache_read": {
+            "tokenCount": 658674
+          },
+          "cache_write": {
+            "tokenCount": 56010
+          },
+          "output": {
+            "tokenCount": 5300
+          }
+        },
+        "totalApiDurationMs": 143259,
+        "sessionStartTime": "2026-11-12T23:58:50.165Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 25,
+              "cost": 5
+            },
+            "usage": {
+              "inputTokens": 730362,
+              "outputTokens": 5300,
+              "cacheReadTokens": 658674,
+              "cacheWriteTokens": 56010,
+              "reasoningTokens": 2840
+            },
+            "cacheExpiresAt": "2026-11-13T00:31:34.570Z",
+            "totalNanoAiu": 1246405300,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 15678
+              },
+              "cache_read": {
+                "tokenCount": 658674
+              },
+              "cache_write": {
+                "tokenCount": 56010
+              },
+              "output": {
+                "tokenCount": 5300
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 143259,
+            "totalNanoAiu": 1246405300,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 25,
+                  "cost": 5
+                },
+                "usage": {
+                  "inputTokens": 730362,
+                  "outputTokens": 5300,
+                  "cacheReadTokens": 658674,
+                  "cacheWriteTokens": 56010,
+                  "reasoningTokens": 2840
+                },
+                "totalNanoAiu": 1246405300,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 15678
+                  },
+                  "cache_read": {
+                    "tokenCount": 658674
+                  },
+                  "cache_write": {
+                    "tokenCount": 56010
+                  },
+                  "output": {
+                    "tokenCount": 5300
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 25,
+                "cost": 5
+              },
+              "usage": {
+                "inputTokens": 730362,
+                "outputTokens": 5300,
+                "cacheReadTokens": 658674,
+                "cacheWriteTokens": 56010,
+                "reasoningTokens": 2840
+              },
+              "totalNanoAiu": 1246405300,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 15678
+                },
+                "cache_read": {
+                  "tokenCount": 658674
+                },
+                "cache_write": {
+                  "tokenCount": 56010
+                },
+                "output": {
+                  "tokenCount": 5300
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 40800,
+        "lastCallOutputTokens": 462
+      },
+      "error_with_examples": null,
+      "session_with_examples": {
+        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "chunk": "with_examples-chunk1",
+        "promptIndex": 5
+      },
+      "latency_with_examples_ms": 65016.0,
+      "pred_search_query": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who approves Avery's expenses and time off?"
+          },
+          "uri": null,
+          "success": true,
+          "entity_set": null,
+          "odata_query": null,
+          "examples_count": 0,
+          "source": null,
+          "resolved_identifier": null,
+          "correlation_id": "search_query-q5-5e8de738ca974a5dbd9e9ca5e8c7a3ae"
+        }
+      ],
+      "graph_traces_search_query": [],
+      "usage_search_query": {
+        "totalPremiumRequestCost": 5,
+        "totalUserRequests": 5,
+        "totalNanoAiu": 493743950,
+        "aiCreditsStatus": "complete",
+        "tokenDetails": {
+          "input": {
+            "tokenCount": 45
+          },
+          "cache_read": {
+            "tokenCount": 349636
+          },
+          "cache_write": {
+            "tokenCount": 24337
+          },
+          "output": {
+            "tokenCount": 1021
+          }
+        },
+        "totalApiDurationMs": 40887,
+        "sessionStartTime": "2026-11-13T00:01:42.330Z",
+        "codeChanges": {
+          "linesAdded": 0,
+          "linesRemoved": 0,
+          "filesModifiedCount": 0,
+          "filesModified": []
+        },
+        "modelMetrics": {
+          "gpt-6-luna": {
+            "requests": {
+              "count": 15,
+              "cost": 5
+            },
+            "usage": {
+              "inputTokens": 374018,
+              "outputTokens": 1021,
+              "cacheReadTokens": 349636,
+              "cacheWriteTokens": 24337,
+              "reasoningTokens": 159
+            },
+            "cacheExpiresAt": "2026-11-13T00:32:40.090Z",
+            "totalNanoAiu": 493743950,
+            "aiCreditsStatus": "complete",
+            "tokenDetails": {
+              "input": {
+                "tokenCount": 45
+              },
+              "cache_read": {
+                "tokenCount": 349636
+              },
+              "cache_write": {
+                "tokenCount": 24337
+              },
+              "output": {
+                "tokenCount": 1021
+              }
+            }
+          }
+        },
+        "agentMetrics": {
+          "main": {
+            "totalApiDurationMs": 40887,
+            "totalNanoAiu": 493743950,
+            "modelMetrics": {
+              "gpt-6-luna": {
+                "requests": {
+                  "count": 15,
+                  "cost": 5
+                },
+                "usage": {
+                  "inputTokens": 374018,
+                  "outputTokens": 1021,
+                  "cacheReadTokens": 349636,
+                  "cacheWriteTokens": 24337,
+                  "reasoningTokens": 159
+                },
+                "totalNanoAiu": 493743950,
+                "tokenDetails": {
+                  "input": {
+                    "tokenCount": 45
+                  },
+                  "cache_read": {
+                    "tokenCount": 349636
+                  },
+                  "cache_write": {
+                    "tokenCount": 24337
+                  },
+                  "output": {
+                    "tokenCount": 1021
+                  }
+                }
+              }
+            }
+          }
+        },
+        "providerModelMetrics": [
+          {
+            "provider": {
+              "id": "copilot",
+              "label": "GitHub Copilot",
+              "kind": "copilot"
+            },
+            "modelId": "gpt-6-luna",
+            "metrics": {
+              "requests": {
+                "count": 15,
+                "cost": 5
+              },
+              "usage": {
+                "inputTokens": 374018,
+                "outputTokens": 1021,
+                "cacheReadTokens": 349636,
+                "cacheWriteTokens": 24337,
+                "reasoningTokens": 159
+              },
+              "totalNanoAiu": 493743950,
+              "aiCreditsStatus": "complete",
+              "tokenDetails": {
+                "input": {
+                  "tokenCount": 45
+                },
+                "cache_read": {
+                  "tokenCount": 349636
+                },
+                "cache_write": {
+                  "tokenCount": 24337
+                },
+                "output": {
+                  "tokenCount": 1021
+                }
+              }
+            },
+            "modelDisplayName": "GPT-6 Luna"
+          }
+        ],
+        "currentModel": "gpt-6-luna",
+        "lastCallInputTokens": 33477,
+        "lastCallOutputTokens": 75
+      },
+      "error_search_query": null,
+      "session_search_query": {
+        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "chunk": "search_query-chunk1",
+        "promptIndex": 5
+      },
+      "latency_search_query_ms": 14641.0
+    }
+  ]
+}

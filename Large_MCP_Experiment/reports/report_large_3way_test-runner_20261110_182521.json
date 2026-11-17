@@ -1,0 +1,721 @@
+{
+  "id": "report_large_3way_test-runner_20261110_182521",
+  "timestamp": "2026-11-10T18:25:21.220391",
+  "model": "test-runner",
+  "total_queries": 5,
+  "is_full_run": false,
+  "elapsed_seconds": 18.25,
+  "servers": {
+    "no_examples": "http://localhost:3004",
+    "with_examples": "http://localhost:3003",
+    "search_query": "http://localhost:3005"
+  },
+  "catalog_summary": {
+    "no_examples": {
+      "url": "http://localhost:3004",
+      "csdlPath": "C:\\MCP\\LargeServer_NoExamples\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 0,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "with_examples": {
+      "url": "http://localhost:3003",
+      "csdlPath": "C:\\MCP\\LargeServer\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 28,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "search_query": {
+      "url": "http://localhost:3005",
+      "csdlPath": "C:\\MCP\\Csdl\\Server_Large_WithExamples.csdl",
+      "toolsCount": 2,
+      "resourcesCount": 0,
+      "promptsCount": 0,
+      "examplesCount": 28,
+      "catalogTokens": 383,
+      "catalogHash": "4cceb739d5f086c6"
+    }
+  },
+  "metrics": {
+    "no_examples_success_rate": 100.0,
+    "with_examples_success_rate": 100.0,
+    "search_query_success_rate": 100.0,
+    "no_examples_intent_accuracy": 100.0,
+    "with_examples_intent_accuracy": 100.0,
+    "search_query_intent_accuracy": 100.0,
+    "examples_impact_delta": 0.0,
+    "architecture_impact_delta": 0.0,
+    "search_vs_no_examples_delta": 0.0,
+    "catalog_tokens": {
+      "no_examples": 17509,
+      "with_examples": 17509,
+      "search_query": 383
+    },
+    "catalog_token_reduction_pct": 97.8,
+    "avg_latency_ms": {
+      "no_examples": 2536.9,
+      "with_examples": 578.53,
+      "search_query": 535.22
+    }
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 1,
+      "succ_no_ex": 1,
+      "succ_with_ex": 1,
+      "succ_search_q": 1,
+      "rate_no_ex": 100.0,
+      "rate_with_ex": 100.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    },
+    "paraphrased": {
+      "count": 4,
+      "succ_no_ex": 4,
+      "succ_with_ex": 4,
+      "succ_search_q": 4,
+      "rate_no_ex": 100.0,
+      "rate_with_ex": 100.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    }
+  },
+  "workload_breakdown": {
+    "users_groups": {
+      "count": 5,
+      "succ_no_ex": 5,
+      "succ_with_ex": 5,
+      "succ_search_q": 5,
+      "rate_no_ex": 100.0,
+      "rate_with_ex": 100.0,
+      "rate_search_q": 100.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "Whom Avery reports to?",
+      "category": "canonical",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 51.18,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 10239.91,
+          "is_error": false
+        }
+      ],
+      "latency_no_examples_ms": 10291.49,
+      "pred_with_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "GET /api/examples",
+          "name": "Agent.Examples",
+          "elapsed_ms": 7.38,
+          "is_error": false
+        },
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 51.88,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 628.96,
+          "is_error": false
+        }
+      ],
+      "latency_with_examples_ms": 688.53,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "execute_odata_query",
+        "parameters": {
+          "odataQuery": "GET users('avery.adams@example.com')/manager"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Whom Avery reports to?"
+          },
+          "elapsed_ms": 64.34,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager"
+          },
+          "elapsed_ms": 519.1,
+          "is_error": false
+        }
+      ],
+      "latency_search_query_ms": 583.88
+    },
+    {
+      "query_id": 2,
+      "query": "Who is Avery's manager?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 5.19,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 576.0,
+          "is_error": false
+        }
+      ],
+      "latency_no_examples_ms": 581.5,
+      "pred_with_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "GET /api/examples",
+          "name": "Agent.Examples",
+          "elapsed_ms": 17.99,
+          "is_error": false
+        },
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 16.68,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 550.71,
+          "is_error": false
+        }
+      ],
+      "latency_with_examples_ms": 585.69,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "execute_odata_query",
+        "parameters": {
+          "odataQuery": "GET users('avery.adams@example.com')/manager"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who is Avery's manager?"
+          },
+          "elapsed_ms": 7.08,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager"
+          },
+          "elapsed_ms": 515.21,
+          "is_error": false
+        }
+      ],
+      "latency_search_query_ms": 522.7
+    },
+    {
+      "query_id": 3,
+      "query": "Who is Avery's direct boss?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 4.93,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 582.62,
+          "is_error": false
+        }
+      ],
+      "latency_no_examples_ms": 587.83,
+      "pred_with_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "GET /api/examples",
+          "name": "Agent.Examples",
+          "elapsed_ms": 5.75,
+          "is_error": false
+        },
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 18.82,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 501.41,
+          "is_error": false
+        }
+      ],
+      "latency_with_examples_ms": 526.26,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "execute_odata_query",
+        "parameters": {
+          "odataQuery": "GET users('avery.adams@example.com')/manager"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who is Avery's direct boss?"
+          },
+          "elapsed_ms": 19.49,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager"
+          },
+          "elapsed_ms": 489.05,
+          "is_error": false
+        }
+      ],
+      "latency_search_query_ms": 509.05
+    },
+    {
+      "query_id": 4,
+      "query": "Show me the reporting line for Avery Adams",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 9.74,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 578.65,
+          "is_error": false
+        }
+      ],
+      "latency_no_examples_ms": 588.75,
+      "pred_with_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "GET /api/examples",
+          "name": "Agent.Examples",
+          "elapsed_ms": 4.15,
+          "is_error": false
+        },
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 4.0,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 536.03,
+          "is_error": false
+        }
+      ],
+      "latency_with_examples_ms": 544.53,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "execute_odata_query",
+        "parameters": {
+          "odataQuery": "GET users('avery.adams@example.com')/manager"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Show me the reporting line for Avery Adams"
+          },
+          "elapsed_ms": 39.79,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager"
+          },
+          "elapsed_ms": 511.51,
+          "is_error": false
+        }
+      ],
+      "latency_search_query_ms": 552.08
+    },
+    {
+      "query_id": 5,
+      "query": "Who approves Avery's expenses and time off?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_no_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_no_examples": [
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 6.11,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 628.43,
+          "is_error": false
+        }
+      ],
+      "latency_no_examples_ms": 634.91,
+      "pred_with_examples": {
+        "intent": "whom_avery_reports_to",
+        "tool": "get_users_manager",
+        "parameters": {
+          "key_id": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_with_examples": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_with_examples": [
+        {
+          "method": "GET /api/examples",
+          "name": "Agent.Examples",
+          "elapsed_ms": 6.06,
+          "is_error": false
+        },
+        {
+          "method": "prompts/get",
+          "name": "whom_avery_reports_to",
+          "elapsed_ms": 7.16,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "get_users_manager",
+          "arguments": {
+            "key_id": "avery.adams@example.com"
+          },
+          "elapsed_ms": 534.09,
+          "is_error": false
+        }
+      ],
+      "latency_with_examples_ms": 547.65,
+      "pred_search_query": {
+        "intent": "whom_avery_reports_to",
+        "tool": "execute_odata_query",
+        "parameters": {
+          "odataQuery": "GET users('avery.adams@example.com')/manager"
+        },
+        "odata_request": "GET users('avery.adams@example.com')/manager"
+      },
+      "eval_search_query": {
+        "intent_match": true,
+        "tool_match": true,
+        "parameters_match": true,
+        "odata_match": true,
+        "execution_success": true,
+        "failure_reason": null
+      },
+      "calls_search_query": [
+        {
+          "method": "tools/call",
+          "name": "search_intent",
+          "arguments": {
+            "query": "Who approves Avery's expenses and time off?"
+          },
+          "elapsed_ms": 9.28,
+          "is_error": false
+        },
+        {
+          "method": "tools/call",
+          "name": "execute_odata_query",
+          "arguments": {
+            "odataQuery": "GET users('avery.adams@example.com')/manager"
+          },
+          "elapsed_ms": 498.63,
+          "is_error": false
+        }
+      ],
+      "latency_search_query_ms": 508.38
+    }
+  ]
+}

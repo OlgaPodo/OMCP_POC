@@ -158,13 +158,13 @@ const SAMPLE_QUERIES = {
       id: 5,
       method: 'prompts/get',
       params: {
-        name: 'whom_olga_reports_to',
+        name: 'whom_avery_reports_to',
         arguments: { userName: 'Avery Adams' },
         _meta: { ...MCP_20_META }
       }
     },
     graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
-    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[whom_olga_reports_to]',
+    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[whom_avery_reports_to]',
     args: [{ name: 'userName', label: 'User Name', default: 'Avery Adams' }]
   },
   'prompt-peers': {
@@ -175,13 +175,13 @@ const SAMPLE_QUERIES = {
       id: 6,
       method: 'prompts/get',
       params: {
-        name: 'who_are_olgas_peers',
+        name: 'who_are_averys_peers',
         arguments: { userName: 'Avery Adams' },
         _meta: { ...MCP_20_META }
       }
     },
     graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')/manager/directReports?$select=id,displayName,userPrincipalName,jobTitle,department",
-    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[who_are_olgas_peers]',
+    entity: 'Microsoft.Graph.GraphService/@Agent.Prompts[who_are_averys_peers]',
     args: [{ name: 'userName', label: 'User Name', default: 'Avery Adams' }]
   },
   'prompt-direct-reports': {
@@ -1583,7 +1583,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
                 peers: [
                   { displayName: 'Alex Wilber', userPrincipalName: 'morgan.reed@example.com', jobTitle: 'Senior Identity Architect' },
                   { displayName: 'Jordan Lee', userPrincipalName: 'jordan.lee@example.com', jobTitle: 'Principal PM Manager' },
-                  { displayName: 'Taylor Morgan', userPrincipalName: 'taylor.morgan@example.com', jobTitle: 'Principal Security Engineer' }
+                  { displayName: 'Casey Chen', userPrincipalName: 'casey.chen@example.com', jobTitle: 'Principal Security Engineer' }
                 ]
               }, null, 2)
             }]
@@ -1717,7 +1717,7 @@ function buildScenarioCallExchanges(prompt, arguments_) {
           peers: [
             { displayName: 'Alex Wilber', userPrincipalName: 'morgan.reed@example.com' },
             { displayName: 'Jordan Lee', userPrincipalName: 'jordan.lee@example.com' },
-            { displayName: 'Taylor Morgan', userPrincipalName: 'taylor.morgan@example.com' }
+            { displayName: 'Casey Chen', userPrincipalName: 'casey.chen@example.com' }
           ]
         };
 
@@ -1986,7 +1986,7 @@ function renderMappingScenario() {
           entitySetsCombined: prompt.entitySets,
           resolvedAnswerSummary: prompt.entitySets.length > 1
             ? ' Avery Adams (reports to Morgan Reed) shares group "Platform Engineering" with peers Alex Wilber (morgan.reed@example.com) and Jordan Lee (jordan.lee@example.com).'
-            : 'Resolved target Microsoft Graph directory records for Avery Adams (Manager: Morgan Reed; Peers: Alex Wilber, Jordan Lee, Taylor Morgan).',
+            : 'Resolved target Microsoft Graph directory records for Avery Adams (Manager: Morgan Reed; Peers: Alex Wilber, Jordan Lee, Casey Chen).',
           provenance: 'Verified via MCP JSON-RPC responses and standard OData v4.01 requests.'
         }
       }
@@ -2178,7 +2178,7 @@ function renderRuntimeSequence() {
           responseTitle: 'Response: Client intent match & extracted arguments (click to expand)',
           statusBadge: 'Matched',
           response: {
-            matchedPrompt: prompt ? prompt.name : 'whom_olga_reports_to',
+            matchedPrompt: prompt ? prompt.name : 'whom_avery_reports_to',
             extractedArguments: args,
             plannedTools: prompt ? prompt.toolBindings : ['find_user', 'user_profile'],
             plannedResources: prompt ? prompt.resourceBindings : ['users://{userId}', 'users://me']
@@ -2282,7 +2282,7 @@ function renderRuntimeSequence() {
             entitySets: prompt ? prompt.entitySets : ['users'],
             joinKey: 'userPrincipalName / id',
             inputs: [
-              'users://avery.adams@example.com -> manager: morgan.reed@example.com, peers: [morgan.reed@example.com, jordan.lee@example.com, taylor.morgan@example.com]',
+              'users://avery.adams@example.com -> manager: morgan.reed@example.com, peers: [morgan.reed@example.com, jordan.lee@example.com, casey.chen@example.com]',
               ...(prompt && prompt.entitySets.includes('groups')
                 ? ['groups://11111111-2222-3333-4444-555555555555 -> owners: [morgan.reed@example.com, avery.adams@example.com], members: [avery.adams@example.com, morgan.reed@example.com, jordan.lee@example.com]']
                 : [])
@@ -2322,7 +2322,7 @@ function renderRuntimeSequence() {
             role: 'assistant',
             text: prompt && prompt.entitySets.length > 1
               ? 'Avery Adams reports to Morgan Reed. Among her peers under Morgan Reed, Alex Wilber (morgan.reed@example.com) and Jordan Lee (jordan.lee@example.com) are members of the "Platform Engineering" group.'
-              : 'Avery Adams (avery.adams@example.com) reports to Morgan Reed (morgan.reed@example.com). Her peer colleagues are Alex Wilber, Jordan Lee, and Taylor Morgan.'
+              : 'Avery Adams (avery.adams@example.com) reports to Morgan Reed (morgan.reed@example.com). Her peer colleagues are Alex Wilber, Jordan Lee, and Casey Chen.'
           }
         },
         {

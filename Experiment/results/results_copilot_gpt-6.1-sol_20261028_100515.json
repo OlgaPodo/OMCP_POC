@@ -1,0 +1,1708 @@
+{
+  "result_id": "results_copilot_gpt-6.1-sol_20261028_100515",
+  "report_id": "report_copilot_gpt-6.1-sol_20261028_100515",
+  "report_markdown": "report_copilot_gpt-6.1-sol_20261028_100515.md",
+  "report_json": "report_copilot_gpt-6.1-sol_20261028_100515.json",
+  "relative_report_path": "../reports/report_copilot_gpt-6.1-sol_20261028_100515.md",
+  "timestamp": "2026-10-28T10:05:15.892016",
+  "engine": "copilot",
+  "model": "gpt-6.1-sol",
+  "elapsed_seconds": 964.01,
+  "total_queries": 50,
+  "is_full_run": true,
+  "metrics": {
+    "server_a_success_rate": 66.0,
+    "server_b_success_rate": 24.0,
+    "delta": 42.0,
+    "intent_accuracy_a": 68.0,
+    "intent_accuracy_b": 60.0,
+    "odata_validity_a": 70.0,
+    "odata_validity_b": 57.99999999999999
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 7,
+      "succ_a": 4,
+      "succ_b": 4,
+      "rate_a": 57.14285714285714,
+      "rate_b": 57.14285714285714
+    },
+    "paraphrased": {
+      "count": 19,
+      "succ_a": 11,
+      "succ_b": 2,
+      "rate_a": 57.89473684210527,
+      "rate_b": 10.526315789473683
+    },
+    "complex": {
+      "count": 16,
+      "succ_a": 10,
+      "succ_b": 1,
+      "rate_a": 62.5,
+      "rate_b": 6.25
+    },
+    "ambiguous": {
+      "count": 3,
+      "succ_a": 3,
+      "succ_b": 0,
+      "rate_a": 100.0,
+      "rate_b": 0.0
+    },
+    "edge_case": {
+      "count": 5,
+      "succ_a": 5,
+      "succ_b": 5,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "category": "canonical",
+      "query": "Whom Avery reports to?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 32.39
+    },
+    {
+      "query_id": 2,
+      "category": "paraphrased",
+      "query": "Who is Avery's manager?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 22.44
+    },
+    {
+      "query_id": 3,
+      "category": "paraphrased",
+      "query": "Who is Avery's direct boss?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: D237:3AFAFC:25D3606:2B82071:6AE1FF35) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')&$select=id,displayName,userPrincipalName"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 18.66
+    },
+    {
+      "query_id": 4,
+      "category": "paraphrased",
+      "query": "Show me the reporting line for Avery Adams",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: D32F:12EAD7:28F680F:2E9E78D:6AE1FF3D) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery Adams"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 17.7
+    },
+    {
+      "query_id": 5,
+      "category": "paraphrased",
+      "query": "Who approves Avery's expenses and time off?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: F0CB:204929:2825FFC:2DD221F:6AE1FF45) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 15.69
+    },
+    {
+      "query_id": 6,
+      "category": "complex",
+      "query": "Who is the manager of Jordan Lee?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: D110:2D377B:295EAEE:2F07ADD:6AE1FF4C) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Jordan Lee"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jordan Lee'&$select=id,displayName&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 14.77
+    },
+    {
+      "query_id": 7,
+      "category": "complex",
+      "query": "Whom does Casey Chen report to?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Casey Chen"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Casey Chen')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 27.86
+    },
+    {
+      "query_id": 8,
+      "category": "complex",
+      "query": "Who manages Taylor Morgan?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "taylor.morgan@example.com"
+        },
+        "odata_request": "users('taylor.morgan@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Taylor Morgan"
+        },
+        "odata_request": "users?$filter=displayName eq 'Taylor Morgan'&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 23.49
+    },
+    {
+      "query_id": 9,
+      "category": "complex",
+      "query": "Find the supervisor of Riley Patel",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Riley Patel"
+        },
+        "odata_request": "users?$filter=displayName eq 'Riley Patel'&$expand=manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Riley Patel"
+        },
+        "odata_request": "users?$filter=displayName eq 'Riley Patel'&$select=id,displayName"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 24.63
+    },
+    {
+      "query_id": 10,
+      "category": "canonical",
+      "query": "Who is my manager?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 21.56
+    },
+    {
+      "query_id": 11,
+      "category": "canonical",
+      "query": "Who are Avery's peers?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 21.52
+    },
+    {
+      "query_id": 12,
+      "category": "paraphrased",
+      "query": "Who works on the same team as Avery?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Avery')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 24.55
+    },
+    {
+      "query_id": 13,
+      "category": "paraphrased",
+      "query": "Find teammates who share a manager with Avery",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: CD0D:85E99:27817FB:2D31A42:6AE1FFAF) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/microsoft.graph.user/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 16.73
+    },
+    {
+      "query_id": 14,
+      "category": "canonical",
+      "query": "Who are my peers?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: D49F:459F8:28B4B35:2E627A6:6AE1FFB7) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 16.16
+    },
+    {
+      "query_id": 15,
+      "category": "paraphrased",
+      "query": "List all colleagues reporting to the same director as Avery",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: FC1A:22E10D:58941EF:5E09CBF:6AE1FFBE) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/microsoft.graph.user/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.01
+    },
+    {
+      "query_id": 16,
+      "category": "complex",
+      "query": "Who are Jordan Lee's peer architects?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: FC33:3DC381:5867257:5DDD5C2:6AE1FFC7) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Jordan Lee"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jordan Lee'&$select=id,displayName,jobTitle"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 20.65
+    },
+    {
+      "query_id": 17,
+      "category": "complex",
+      "query": "Show everyone on Taylor Morgan's peer team",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: FB1B:2C79C7:56600C1:5BD9BA2:6AE1FFD1) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Taylor Morgan"
+        },
+        "odata_request": "users?$filter=displayName eq 'Taylor Morgan'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 18.77
+    },
+    {
+      "query_id": 18,
+      "category": "complex",
+      "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: F889:103B1D:25EFB0B:2BA395D:6AE1FFD8) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users('{resolved_vojtech_id}')/directReports?$select=id, displayName,jobTitle&$filter=contains(jobTitle,'Lead') and id ne '{resolved_z_wang_id}'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.5
+    },
+    {
+      "query_id": 19,
+      "category": "paraphrased",
+      "query": "Who shares an organization level with Avery Adams?",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E9F3:1DE0EE:280DCB1:2DBD591:6AE1FFE0) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Avery Adams"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery Adams'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 16.04
+    },
+    {
+      "query_id": 20,
+      "category": "complex",
+      "query": "Find peer colleagues for Jamie Kim",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E65A:A14DF:28F2FDB:2EA2B83:6AE1FFE8) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users('{resolvedUserId}')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 18.09
+    },
+    {
+      "query_id": 21,
+      "category": "canonical",
+      "query": "Direct reports of a manager",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E672:36368A:2886788:2E359B9:6AE1FFF0) Run /login to sign in again."
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "<managerId>"
+        },
+        "odata_request": "users('<managerId>')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.7
+    },
+    {
+      "query_id": 22,
+      "category": "paraphrased",
+      "query": "Who reports to Morgan?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Morgan')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 23.04
+    },
+    {
+      "query_id": 23,
+      "category": "paraphrased",
+      "query": "List everyone reporting to Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 26.76
+    },
+    {
+      "query_id": 24,
+      "category": "paraphrased",
+      "query": "Show the direct team of Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: D2E7:8672D:D4D175:E271BF:6AE1FE42) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 18.2
+    },
+    {
+      "query_id": 25,
+      "category": "complex",
+      "query": "Does Avery have any direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C34E:A14DF:2866251:2E08972:6AE1FE4B) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 21.34
+    },
+    {
+      "query_id": 26,
+      "category": "complex",
+      "query": "Who are Casey Chen's direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C805:E52DE:278621B:2D29B88:6AE1FE52) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.55
+    },
+    {
+      "query_id": 27,
+      "category": "complex",
+      "query": "List members of Jamie Kim's group",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jamie Kim'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: EA6F:2D377B:2908A9A:2EA9D32:6AE1FE59) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.29
+    },
+    {
+      "query_id": 28,
+      "category": "paraphrased",
+      "query": "Who is currently supervised by Morgan?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: FC66:103B1D:257A0B8:2B21C7C:6AE1FE62) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.14
+    },
+    {
+      "query_id": 29,
+      "category": "complex",
+      "query": "Find all people managed by Sam Rivera",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Sam Rivera"
+        },
+        "odata_request": "users?$filter=displayName eq 'Sam Rivera'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: FC77:B9B49:277BABA:2D20A97:6AE1FE69) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.32
+    },
+    {
+      "query_id": 30,
+      "category": "paraphrased",
+      "query": "Enumerate staff under partner director Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: F4ED:10C345:25FA531:2BA1726:6AE1FE72) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.12
+    },
+    {
+      "query_id": 31,
+      "category": "canonical",
+      "query": "Search users by department and title",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq '{department}' and startswith(jobTitle,'{jobTitle}')"
+        },
+        "odata_request": "users?$filter=department eq '{department}' and startswith(jobTitle,'{jobTitle}')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C663:2E7A7E:275200E:2CF722D:6AE1FE7A) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 18.55
+    },
+    {
+      "query_id": 32,
+      "category": "paraphrased",
+      "query": "Find architects in Identity",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "architects in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: F046:302D50:280DDBC:2DB2250:6AE1FE81) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 15.57
+    },
+    {
+      "query_id": 33,
+      "category": "complex",
+      "query": "Find all Principal Architects in Platform Engineering",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq 'Platform Engineering' and startswith(jobTitle,'Principal Architect')"
+        },
+        "odata_request": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: EAF1:2C36D2:DBD4FD:E99079:6AE1FE88) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 17.57
+    },
+    {
+      "query_id": 34,
+      "category": "complex",
+      "query": "Show me product managers in the AI Platform department",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq 'AI Platform' and startswith(jobTitle,'Architect')"
+        },
+        "odata_request": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: EB0C:34BFF4:DA788D:E8512B:6AE1FE8F) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.82
+    },
+    {
+      "query_id": 35,
+      "category": "complex",
+      "query": "List all business administrators located in Prague",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "business administrators in Prague"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Business Administrator' and city eq 'Prague'"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E3CE:4FE79:DA55C4:E81F38:6AE1FE97) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 18.68
+    },
+    {
+      "query_id": 36,
+      "category": "complex",
+      "query": "Search for engineering managers in Identity",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "engineering managers in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Example Directory Object 017')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: CE83:2A3F94:D5A30F:E3754A:6AE1FEA0) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 17.77
+    },
+    {
+      "query_id": 37,
+      "category": "paraphrased",
+      "query": "Look up all software architects across the company",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Software Architect"
+        },
+        "odata_request": "users?$filter=startswith(jobTitle,'Software Architect')"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: F7F4:6260C:DC5693:EA2A36:6AE1FEA8) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.55
+    },
+    {
+      "query_id": 38,
+      "category": "paraphrased",
+      "query": "Find staff members with Architect in their title",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Architect"
+        },
+        "odata_request": "users?$filter=contains(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C74E:4FE79:DB3782:E90D51:6AE1FEB1) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.05
+    },
+    {
+      "query_id": 39,
+      "category": "ambiguous",
+      "query": "Find all employees named Morgan",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Morgan')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C76A:263EF9:277E08D:2D2557E:6AE1FEB9) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 16.95
+    },
+    {
+      "query_id": 40,
+      "category": "ambiguous",
+      "query": "Search for Jordan in the directory",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Jordan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Jordan')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: C0E5:1081A8:265A5A1:2C058F4:6AE1FEC0) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 17.37
+    },
+    {
+      "query_id": 41,
+      "category": "ambiguous",
+      "query": "Find user with email avery.adams@example.com",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "avery.adams@example.com"
+        },
+        "odata_request": "users?$filter=mail eq  'avery.adams@example.com'"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: EBF3:178C93:273F14B:2CE7040:6AE1FEC9) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.22
+    },
+    {
+      "query_id": 42,
+      "category": "canonical",
+      "query": "User quick lookup",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E405:341CC7:271A3BF:2CC28C0:6AE1FED0) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 27.13
+    },
+    {
+      "query_id": 43,
+      "category": "paraphrased",
+      "query": "Get full profile card for Avery Adams",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "Authorization error. Your credentials may be expired or invalid. (Request ID: E41E:22E236:26AC989:2C54782:6AE1FED6) Run /login to sign in again."
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 18.33
+    },
+    {
+      "query_id": 44,
+      "category": "paraphrased",
+      "query": "Show contact card and office location for Morgan Reed",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$select=id,displayName,mail,userPrincipalName,jobTitle,department,businessPhones,mobilePhone ,officeLocation"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 18.78
+    },
+    {
+      "query_id": 45,
+      "category": "paraphrased",
+      "query": "Look up user profile for Taylor Morgan",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "taylor.morgan@example.com"
+        },
+        "odata_request": "users('taylor.morgan@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Taylor Morgan"
+        },
+        "odata_request": "users?$filter=displayName eq 'Taylor Morgan'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": false,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 16.28
+    },
+    {
+      "query_id": 46,
+      "category": "edge_case",
+      "query": "What projects is Avery currently leading?",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.64
+    },
+    {
+      "query_id": 47,
+      "category": "edge_case",
+      "query": "Check Example Directory Object 054 for open slots tomorrow",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 16.24
+    },
+    {
+      "query_id": 48,
+      "category": "edge_case",
+      "query": "Which Azure subscriptions are active for Identity?",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.11
+    },
+    {
+      "query_id": 49,
+      "category": "edge_case",
+      "query": "List all security groups that Jordan Lee is a member of",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 19.03
+    },
+    {
+      "query_id": 50,
+      "category": "edge_case",
+      "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 21.38
+    }
+  ]
+}

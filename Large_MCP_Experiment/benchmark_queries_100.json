@@ -1,0 +1,1521 @@
+[
+  {
+    "id": 1,
+    "query": "Whom Avery reports to?",
+    "category": "canonical",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 2,
+    "query": "Who is Avery's manager?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 3,
+    "query": "Who is Avery's direct boss?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 4,
+    "query": "Show me the reporting line for Avery Adams",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 5,
+    "query": "Who approves Avery's expenses and time off?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 6,
+    "query": "Who is the manager of Jordan Lee?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager",
+    "expectedParams": {
+      "userId": "jordan.lee@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "jordan.lee@example.com"
+    }
+  },
+  {
+    "id": 7,
+    "query": "Whom does Casey Chen report to?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/manager",
+    "expectedParams": {
+      "userId": "casey.chen@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "casey.chen@example.com"
+    }
+  },
+  {
+    "id": 8,
+    "query": "Who manages Taylor Morgan?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager",
+    "expectedParams": {
+      "userId": "taylor.morgan@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 9,
+    "query": "Find the supervisor of Riley Patel",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_users_manager",
+    "expectedGraphEndpoint": "users('riley.patel@example.com')/manager",
+    "expectedParams": {
+      "userId": "riley.patel@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "riley.patel@example.com"
+    }
+  },
+  {
+    "id": 10,
+    "query": "Who is my manager?",
+    "category": "canonical",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "get_me_manager",
+    "expectedGraphEndpoint": "me/manager",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 11,
+    "query": "Who are Avery's peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 12,
+    "query": "Who works on the same team as Avery?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 13,
+    "query": "Find teammates who share a manager with Avery",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 14,
+    "query": "Who are my peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_me_directReports",
+    "expectedGraphEndpoint": "me/manager/directReports",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 15,
+    "query": "List all colleagues reporting to the same director as Avery",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 16,
+    "query": "Who are Jordan Lee's peer architects?",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "jordan.lee@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "jordan.lee@example.com"
+    }
+  },
+  {
+    "id": 17,
+    "query": "Show everyone on Taylor Morgan's peer team",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "taylor.morgan@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 18,
+    "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "casey.chen@example.com"
+    },
+    "acceptedIntents": [
+      "who_are_averys_peers",
+      "direct_reports_of_manager"
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "casey.chen@example.com"
+    }
+  },
+  {
+    "id": 19,
+    "query": "Who shares an organization level with Avery Adams?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 20,
+    "query": "Find peer colleagues for Jamie Kim",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('jamie.kim@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "jamie.kim@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "jamie.kim@example.com"
+    }
+  },
+  {
+    "id": 21,
+    "query": "Direct reports of a manager",
+    "category": "canonical",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 22,
+    "query": "Who reports to Morgan?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 23,
+    "query": "List everyone reporting to Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 24,
+    "query": "Show the direct team of Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 25,
+    "query": "Does Avery have any direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Avery Adams"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 26,
+    "query": "Who are Casey Chen's direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Casey Chen"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "casey.chen@example.com"
+    }
+  },
+  {
+    "id": 27,
+    "query": "List direct reports of Jamie Kim",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('jamie.kim@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Jamie Kim"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "jamie.kim@example.com"
+    }
+  },
+  {
+    "id": 28,
+    "query": "Who is currently supervised by Morgan?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 29,
+    "query": "Find all people managed by Sam Rivera",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('sam.rivera@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Sam Rivera"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "sam.rivera@example.com"
+    }
+  },
+  {
+    "id": 30,
+    "query": "Enumerate staff under partner director Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "get_users_directReports",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 31,
+    "query": "Search users by department and title",
+    "category": "canonical",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Architect"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "department eq 'Identity' and startswith(jobTitle,'Architect')"
+    }
+  },
+  {
+    "id": 32,
+    "query": "Find architects in Identity",
+    "category": "paraphrased",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Architect"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "department eq 'Identity' and startswith(jobTitle,'Architect')"
+    }
+  },
+  {
+    "id": 33,
+    "query": "Find all Principal Architects in Platform Engineering",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')",
+    "expectedParams": {
+      "department": "Platform Engineering",
+      "jobTitle": "Principal"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+    }
+  },
+  {
+    "id": 34,
+    "query": "Show me product managers in the AI Platform department",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')",
+    "expectedParams": {
+      "department": "AI Platform",
+      "jobTitle": "Principal Architect"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+    }
+  },
+  {
+    "id": 35,
+    "query": "List all business administrators located in Prague",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Business Administrator') and officeLocation eq 'Prague'",
+    "expectedParams": {
+      "department": "Platform Engineering",
+      "jobTitle": "Business Administrator"
+    },
+    "acceptedIntents": [
+      "search_users_by_dept_title",
+      "find_user"
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(jobTitle,'Business Administrator') and officeLocation eq 'Prague'"
+    }
+  },
+  {
+    "id": 36,
+    "query": "Search for engineering managers in Identity",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Principal Group Eng Manager')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Manager"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "department eq 'Identity' and startswith(jobTitle,'Principal Group Eng Manager')"
+    }
+  },
+  {
+    "id": 37,
+    "query": "Look up all software architects across the company",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Software Architect')",
+    "expectedParams": {
+      "query": "Software Architect"
+    },
+    "acceptedIntents": [
+      "find_user",
+      "search_users_by_dept_title"
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(jobTitle,'Software Architect')"
+    }
+  },
+  {
+    "id": 38,
+    "query": "Find staff members with Architect in their title",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "query": "Architect"
+    },
+    "acceptedIntents": [
+      "find_user",
+      "search_users_by_dept_title"
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(jobTitle,'Architect')"
+    }
+  },
+  {
+    "id": 39,
+    "query": "Find all employees named Morgan",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Morgan')",
+    "expectedParams": {
+      "query": "Morgan"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Morgan')"
+    }
+  },
+  {
+    "id": 40,
+    "query": "Search for Jordan in the directory",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Jordan')",
+    "expectedParams": {
+      "query": "Jordan"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Jordan')"
+    }
+  },
+  {
+    "id": 41,
+    "query": "Find user with email avery.adams@example.com",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=mail eq 'avery.adams@example.com'",
+    "expectedParams": {
+      "query": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "mail eq 'avery.adams@example.com'"
+    }
+  },
+  {
+    "id": 42,
+    "query": "User quick lookup",
+    "category": "canonical",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "get_me",
+    "expectedGraphEndpoint": "me",
+    "expectedParams": {
+      "identifier": "me"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 43,
+    "query": "Get full profile card for Avery Adams",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "get_users",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')",
+    "expectedParams": {
+      "identifier": "avery.adams@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 44,
+    "query": "Show contact card and office location for Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "get_users",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')",
+    "expectedParams": {
+      "identifier": "morgan.reed@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 45,
+    "query": "Look up user profile for Taylor Morgan",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "get_users",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')",
+    "expectedParams": {
+      "identifier": "taylor.morgan@example.com"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 46,
+    "query": "What projects is Avery currently leading?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 47,
+    "query": "Check Example Directory Object 054 for open slots tomorrow",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 48,
+    "query": "Which Azure subscriptions are active for Identity?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 49,
+    "query": "List all security groups that Jordan Lee is a member of",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 50,
+    "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 51,
+    "query": "Find the Platform Engineering group",
+    "category": "canonical",
+    "targetIntent": "find_group_by_name",
+    "expectedTool": "list_groups",
+    "expectedParams": {
+      "query": "Platform Engineering"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Platform Engineering')"
+    }
+  },
+  {
+    "id": 52,
+    "query": "Search for Security groups",
+    "category": "paraphrased",
+    "targetIntent": "find_group_by_name",
+    "expectedTool": "list_groups",
+    "expectedParams": {
+      "query": "Security"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Security')"
+    }
+  },
+  {
+    "id": 53,
+    "query": "Who are the members of the Platform Engineering group?",
+    "category": "canonical",
+    "targetIntent": "list_group_members",
+    "expectedTool": "get_groups_members",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 54,
+    "query": "Show members of Platform Engineering",
+    "category": "paraphrased",
+    "targetIntent": "list_group_members",
+    "expectedTool": "get_groups_members",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 55,
+    "query": "Who owns the Platform Engineering group?",
+    "category": "canonical",
+    "targetIntent": "who_owns_group",
+    "expectedTool": "get_groups_owners",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 56,
+    "query": "Find owners of Platform Engineering",
+    "category": "paraphrased",
+    "targetIntent": "who_owns_group",
+    "expectedTool": "get_groups_owners",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 57,
+    "query": "Get details for group Platform Engineering",
+    "category": "complex",
+    "targetIntent": "group_quick_lookup",
+    "expectedTool": "get_groups",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    },
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 58,
+    "query": "Delete the Platform Engineering group",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedParams": {},
+    "workload": "users_groups",
+    "transformerArgs": {}
+  },
+  {
+    "id": 59,
+    "query": "Which peers of Avery belong to Platform Engineering?",
+    "category": "complex",
+    "targetIntent": "user_peers_in_group",
+    "expectedTool": "get_groups_members",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_users_directReports",
+      "get_groups_members"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users",
+        "identifier": "avery.adams@example.com"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 60,
+    "query": "Which Platform Engineering members report to Morgan?",
+    "category": "complex",
+    "targetIntent": "group_members_reporting_to_manager",
+    "expectedTool": "get_groups_members",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_users_directReports",
+      "get_groups_members"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 61,
+    "query": "Does Avery share a manager with Platform Engineering owners?",
+    "category": "complex",
+    "targetIntent": "user_and_group_owners_common_manager",
+    "expectedTool": "get_groups_owners",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_users_directReports",
+      "get_groups_owners"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users",
+        "identifier": "avery.adams@example.com"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ],
+    "workload": "users_groups",
+    "transformerArgs": {
+      "key_id": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 62,
+    "query": "GET my files in OneDrive",
+    "category": "canonical",
+    "workload": "files",
+    "targetIntent": "my_onedrive_files",
+    "expectedTool": "get_me_drive",
+    "expectedGraphEndpoint": "me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 63,
+    "query": "Show all documents and folders in my OneDrive root",
+    "category": "paraphrased",
+    "workload": "files",
+    "targetIntent": "my_onedrive_files",
+    "expectedTool": "get_me_drive",
+    "expectedGraphEndpoint": "me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 64,
+    "query": "List my recently modified OneDrive files",
+    "category": "paraphrased",
+    "workload": "files",
+    "targetIntent": "my_onedrive_files",
+    "expectedTool": "drives_Microsoft_Graph_recentDriveItems",
+    "expectedGraphEndpoint": "drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "acceptedTools": [
+      "list_my_files",
+      "read_resource"
+    ],
+    "transformerArgs": {
+      "key_id": "drive-avery"
+    }
+  },
+  {
+    "id": 65,
+    "query": "Who was the last user to modify Agent_Protocol_Demo.docx?",
+    "category": "canonical",
+    "workload": "files",
+    "targetIntent": "last_user_to_modify_file",
+    "expectedTool": "get_driveItems_lastModifiedByUser",
+    "expectedGraphEndpoint": "driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+    "expectedParams": {
+      "fileName": "Agent_Protocol_Demo.docx"
+    },
+    "transformerArgs": {
+      "key_id": "file-mcp-poc-docx"
+    }
+  },
+  {
+    "id": 66,
+    "query": "Find the last person who edited Example_Document_007.pptx",
+    "category": "paraphrased",
+    "workload": "files",
+    "targetIntent": "last_user_to_modify_file",
+    "expectedTool": "get_driveItems_lastModifiedByUser",
+    "expectedGraphEndpoint": "driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+    "expectedParams": {
+      "fileName": "Example_Document_007.pptx"
+    },
+    "transformerArgs": {
+      "key_id": "file-odata-agent-prompts-pptx"
+    }
+  },
+  {
+    "id": 67,
+    "query": "Show the profile and job title of the last author who modified Example_Document_005.xlsx",
+    "category": "complex",
+    "workload": "files",
+    "targetIntent": "last_user_to_modify_file",
+    "expectedTool": "get_driveItems_lastModifiedByUser",
+    "expectedGraphEndpoint": "driveItems('file-csdl-consistency-xlsx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+    "expectedParams": {
+      "fileName": "Example_Document_005.xlsx"
+    },
+    "transformerArgs": {
+      "key_id": "file-csdl-consistency-xlsx"
+    }
+  },
+  {
+    "id": 68,
+    "query": "Search OneDrive for files matching CSDL",
+    "category": "canonical",
+    "workload": "files",
+    "targetIntent": "search_files_by_keyword",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "query": "CSDL"
+    },
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "CSDL"
+    }
+  },
+  {
+    "id": 69,
+    "query": "Find all presentations or documents mentioning Proposal in OneDrive",
+    "category": "paraphrased",
+    "workload": "files",
+    "targetIntent": "search_files_by_keyword",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "query": "Proposal"
+    },
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "Proposal"
+    }
+  },
+  {
+    "id": 70,
+    "query": "Search my drive for MCP 2.0 specification notes",
+    "category": "ambiguous",
+    "workload": "files",
+    "targetIntent": "search_files_by_keyword",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+    "expectedParams": {
+      "query": "MCP"
+    },
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "MCP"
+    }
+  },
+  {
+    "id": 71,
+    "query": "Check my OneDrive storage quota and root items",
+    "category": "complex",
+    "workload": "files",
+    "targetIntent": "my_onedrive_files",
+    "expectedTool": "get_me_drive",
+    "expectedGraphEndpoint": "me/drive?$select=id,name,driveType,webUrl,ownerDisplayName,quotaTotal,quotaUsed",
+    "expectedParams": {
+      "userId": "me"
+    },
+    "acceptedTools": [
+      "list_my_files",
+      "read_resource"
+    ],
+    "transformerArgs": {}
+  },
+  {
+    "id": 72,
+    "query": "Permanently delete Agent_Protocol_Demo.docx from OneDrive",
+    "category": "edge_case",
+    "workload": "files",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "transformerArgs": {}
+  },
+  {
+    "id": 73,
+    "query": "List Microsoft Teams I have joined and their channels",
+    "category": "canonical",
+    "workload": "teams",
+    "targetIntent": "my_joined_teams_and_channels",
+    "expectedTool": "get_me_joinedTeams",
+    "expectedGraphEndpoint": "me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 74,
+    "query": "Which Microsoft Teams workspaces am I a member of?",
+    "category": "paraphrased",
+    "workload": "teams",
+    "targetIntent": "my_joined_teams_and_channels",
+    "expectedTool": "get_me_joinedTeams",
+    "expectedGraphEndpoint": "me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 75,
+    "query": "Find the OData TC Working Group team and list its channels",
+    "category": "complex",
+    "workload": "teams",
+    "targetIntent": "my_joined_teams_and_channels",
+    "expectedTool": "list_teams",
+    "expectedGraphEndpoint": "teams?$filter=startswith(displayName,'OData TC Working Group')&$expand=channels",
+    "expectedParams": {
+      "filter": "OData TC Working Group"
+    },
+    "transformerArgs": {
+      "filter": "startswith(displayName,'OData TC Working Group')"
+    }
+  },
+  {
+    "id": 76,
+    "query": "Show recent messages in the CSDL & TypeSpec channel of Platform Engineering",
+    "category": "canonical",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "get_channels_messages",
+    "expectedGraphEndpoint": "channels('ch-csdl-typespec')/messages?$top=20",
+    "expectedParams": {
+      "channelId": "CSDL & TypeSpec"
+    },
+    "transformerArgs": {
+      "key_id": "ch-csdl-typespec",
+      "top": 20
+    }
+  },
+  {
+    "id": 77,
+    "query": "Get latest message changes in the CSDL & TypeSpec channel",
+    "category": "paraphrased",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "channels_Microsoft_Graph_deltaChannelMessages",
+    "expectedGraphEndpoint": "channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20",
+    "expectedParams": {
+      "channelId": "CSDL & TypeSpec"
+    },
+    "transformerArgs": {
+      "key_id": "ch-csdl-typespec"
+    }
+  },
+  {
+    "id": 78,
+    "query": "Read high-importance discussions in the MCP 2.0 Integration channel",
+    "category": "complex",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "get_channels_messages",
+    "expectedGraphEndpoint": "channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10",
+    "expectedParams": {
+      "channelId": "MCP 2.0 Integration"
+    },
+    "transformerArgs": {
+      "key_id": "ch-mcp-20",
+      "top": 20
+    }
+  },
+  {
+    "id": 79,
+    "query": "What did Drew Parker post in the Agent-Ready Vocabularies channel?",
+    "category": "complex",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "get_channels_messages",
+    "expectedGraphEndpoint": "channels('ch-odata-vocab')/messages?$top=20",
+    "expectedParams": {
+      "channelId": "Agent-Ready Vocabularies"
+    },
+    "transformerArgs": {
+      "key_id": "ch-odata-vocab",
+      "top": 20
+    }
+  },
+  {
+    "id": 80,
+    "query": "Show announcements in the General channel of Platform Engineering",
+    "category": "paraphrased",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "get_channels_messages",
+    "expectedGraphEndpoint": "channels('ch-idarch-general')/messages?$top=20",
+    "expectedParams": {
+      "channelId": "General"
+    },
+    "transformerArgs": {
+      "key_id": "ch-idarch-general",
+      "top": 20
+    }
+  },
+  {
+    "id": 81,
+    "query": "Post a status update to the MCP 2.0 Integration channel",
+    "category": "canonical",
+    "workload": "teams",
+    "targetIntent": "team_channel_messages",
+    "expectedTool": "channels_Microsoft_Graph_sendChannelMessage",
+    "expectedGraphEndpoint": "channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage",
+    "expectedParams": {
+      "channelId": "MCP 2.0 Integration"
+    },
+    "transformerArgs": {
+      "key_id": "ch-mcp-20",
+      "subject": "MCP 2.0 Status Update",
+      "bodyContent": "Verified transformer-generated server on :3003."
+    }
+  },
+  {
+    "id": 82,
+    "query": "Archive and delete the Platform Engineering Microsoft Team",
+    "category": "edge_case",
+    "workload": "teams",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "transformerArgs": {}
+  },
+  {
+    "id": 83,
+    "query": "List my recent 1:1 and group chats",
+    "category": "canonical",
+    "workload": "chats",
+    "targetIntent": "list_recent_chats",
+    "expectedTool": "get_me_chats",
+    "expectedGraphEndpoint": "me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 84,
+    "query": "Show my 1:1 chat thread with Jordan Lee",
+    "category": "paraphrased",
+    "workload": "chats",
+    "targetIntent": "list_recent_chats",
+    "expectedTool": "list_chats",
+    "expectedGraphEndpoint": "chats?$filter=chatType eq 'oneOnOne'&$expand=members,messages",
+    "expectedParams": {
+      "filter": "Jordan Lee"
+    },
+    "transformerArgs": {
+      "filter": "chatType eq 'oneOnOne'"
+    }
+  },
+  {
+    "id": 85,
+    "query": "Find group chats about the OData TC & MCP 2.0 Demo Dry Run",
+    "category": "complex",
+    "workload": "chats",
+    "targetIntent": "list_recent_chats",
+    "expectedTool": "list_chats",
+    "expectedGraphEndpoint": "chats?$filter=chatType eq 'group'&$expand=members,messages",
+    "expectedParams": {
+      "filter": "group"
+    },
+    "transformerArgs": {
+      "filter": "chatType eq 'group'"
+    }
+  },
+  {
+    "id": 86,
+    "query": "What was the last chat message from Jordan Lee?",
+    "category": "paraphrased",
+    "workload": "chats",
+    "targetIntent": "list_recent_chats",
+    "expectedTool": "get_me_chats",
+    "expectedGraphEndpoint": "me/chats?$expand=members,messages($top=5)",
+    "expectedParams": {
+      "filter": "Jordan"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 87,
+    "query": "Show participants and latest messages in all my Teams chats",
+    "category": "ambiguous",
+    "workload": "chats",
+    "targetIntent": "list_recent_chats",
+    "expectedTool": "get_me_chats",
+    "expectedGraphEndpoint": "chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 88,
+    "query": "Start an audio call in Teams chat with Morgan",
+    "category": "edge_case",
+    "workload": "chats",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "transformerArgs": {}
+  },
+  {
+    "id": 89,
+    "query": "List my Microsoft To Do task lists and open tasks",
+    "category": "canonical",
+    "workload": "todo",
+    "targetIntent": "my_pending_todo_tasks",
+    "expectedTool": "get_me_todoLists",
+    "expectedGraphEndpoint": "me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&$expand=tasks",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 90,
+    "query": "Show open high-importance To Do tasks",
+    "category": "canonical",
+    "workload": "todo",
+    "targetIntent": "my_pending_todo_tasks",
+    "expectedTool": "list_todoTasks",
+    "expectedGraphEndpoint": "todoTasks?$filter=status ne 'completed' and importance eq 'high'&$select=id,title,status,importance,dueDateTime,listDisplayName",
+    "expectedParams": {
+      "filter": "high"
+    },
+    "transformerArgs": {
+      "filter": "status ne 'completed' and importance eq 'high'"
+    }
+  },
+  {
+    "id": 91,
+    "query": "What action items are pending in the Graph API Council Action Items list?",
+    "category": "paraphrased",
+    "workload": "todo",
+    "targetIntent": "my_pending_todo_tasks",
+    "expectedTool": "get_me_todoLists",
+    "expectedGraphEndpoint": "me/todoLists?$select=id,displayName,wellknownListName&$expand=tasks($filter=status ne 'completed')",
+    "expectedParams": {
+      "filter": "all"
+    },
+    "transformerArgs": {}
+  },
+  {
+    "id": 92,
+    "query": "Find incomplete To Do tasks assigned to Jordan Lee",
+    "category": "complex",
+    "workload": "todo",
+    "targetIntent": "my_pending_todo_tasks",
+    "expectedTool": "list_todoTasks",
+    "expectedGraphEndpoint": "todoTasks?$filter=status ne 'completed'",
+    "expectedParams": {
+      "filter": "jordan.lee@example.com"
+    },
+    "transformerArgs": {
+      "filter": "status ne 'completed'"
+    }
+  },
+  {
+    "id": 93,
+    "query": "Mark To Do task task-101 as completed",
+    "category": "canonical",
+    "workload": "todo",
+    "targetIntent": "my_pending_todo_tasks",
+    "expectedTool": "todoTasks_Microsoft_Graph_completeTodoTask",
+    "expectedGraphEndpoint": "todoTasks('task-101')/Microsoft.Graph.completeTodoTask",
+    "expectedParams": {
+      "taskId": "task-101"
+    },
+    "transformerArgs": {
+      "key_id": "task-101"
+    }
+  },
+  {
+    "id": 94,
+    "query": "GET Microsoft 365 unified groups I'm a member of",
+    "category": "canonical",
+    "workload": "users_groups",
+    "targetIntent": "my_m365_unified_groups",
+    "expectedTool": "get_me_memberOf",
+    "expectedGraphEndpoint": "me/memberOf?$select=id,displayName,description,mail,groupTypes,visibility",
+    "expectedParams": {
+      "query": "Identity"
+    },
+    "acceptedTools": [
+      "find_group",
+      "read_resource"
+    ],
+    "transformerArgs": {}
+  },
+  {
+    "id": 95,
+    "query": "Delete the Microsoft Graph & MCP 2.0 POC task list",
+    "category": "edge_case",
+    "workload": "todo",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {},
+    "transformerArgs": {}
+  },
+  {
+    "id": 96,
+    "query": "Prepare a 360 collaboration brief for Jordan Lee including his manager, modified OneDrive files, recent chats, and open To Do tasks",
+    "category": "complex",
+    "workload": "cross_workload",
+    "targetIntent": "meeting_attendee_collaboration_brief",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf",
+    "expectedParams": {},
+    "requiredTools": [
+      "list_users",
+      "list_driveItems",
+      "list_chats",
+      "list_todoTasks"
+    ],
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Jordan Lee')"
+    }
+  },
+  {
+    "id": 97,
+    "query": "Prepare a meeting briefing for Drew Parker with his profile, recent OneDrive decks, and shared group chats",
+    "category": "complex",
+    "workload": "cross_workload",
+    "targetIntent": "meeting_attendee_collaboration_brief",
+    "expectedTool": "list_users",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Drew Parker')&$expand=manager,memberOf",
+    "expectedParams": {},
+    "requiredTools": [
+      "list_users",
+      "list_driveItems",
+      "list_chats",
+      "list_todoTasks"
+    ],
+    "transformerArgs": {
+      "filter": "startswith(displayName,'Jordan Lee')"
+    }
+  },
+  {
+    "id": 98,
+    "query": "Correlate Teams channel messages, OneDrive files, and open To Do tasks for topic MCP",
+    "category": "complex",
+    "workload": "cross_workload",
+    "targetIntent": "team_channel_files_and_action_items",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_channels_messages",
+      "drives_Microsoft_Graph_searchDriveItems",
+      "list_todoTasks"
+    ],
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "MCP"
+    }
+  },
+  {
+    "id": 99,
+    "query": "Synthesize CSDL discussions in Teams channels with matching OneDrive documents and pending To Do action items",
+    "category": "complex",
+    "workload": "cross_workload",
+    "targetIntent": "team_channel_files_and_action_items",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "channels('ch-csdl-typespec')/messages?$top=20",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_channels_messages",
+      "drives_Microsoft_Graph_searchDriveItems",
+      "list_todoTasks"
+    ],
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "MCP"
+    }
+  },
+  {
+    "id": 100,
+    "query": "Find all OData TC channel updates, shared proposal decks in OneDrive, and open To Do tasks",
+    "category": "complex",
+    "workload": "cross_workload",
+    "targetIntent": "team_channel_files_and_action_items",
+    "expectedTool": "drives_Microsoft_Graph_searchDriveItems",
+    "expectedGraphEndpoint": "channels('ch-odata-vocab')/messages?$top=20",
+    "expectedParams": {},
+    "requiredTools": [
+      "get_channels_messages",
+      "drives_Microsoft_Graph_searchDriveItems",
+      "list_todoTasks"
+    ],
+    "transformerArgs": {
+      "key_id": "drive-avery",
+      "q": "MCP"
+    }
+  }
+]

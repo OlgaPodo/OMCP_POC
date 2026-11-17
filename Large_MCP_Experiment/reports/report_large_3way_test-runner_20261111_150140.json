@@ -1,0 +1,488 @@
+{
+  "id": "report_large_3way_test-runner_20261111_150140",
+  "timestamp": "2026-11-11T15:01:40.304124",
+  "model": "test-runner",
+  "engine": "GitHub Copilot CLI with local HTTP MCP servers",
+  "require_live_graph": false,
+  "total_queries": 5,
+  "is_full_run": false,
+  "elapsed_seconds": 0.0,
+  "servers": {
+    "no_examples": "http://localhost:3004",
+    "with_examples": "http://localhost:3003",
+    "search_query": "http://localhost:3005"
+  },
+  "catalog_summary": {
+    "no_examples": {
+      "url": "http://localhost:3004",
+      "csdlPath": "C:\\MCP\\LargeServer_NoExamples\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 0,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "with_examples": {
+      "url": "http://localhost:3003",
+      "csdlPath": "C:\\MCP\\LargeServer\\bin\\Release\\net10.0\\win-x64\\metadata.csdl",
+      "toolsCount": 59,
+      "resourcesCount": 21,
+      "promptsCount": 22,
+      "examplesCount": 28,
+      "catalogTokens": 17509,
+      "catalogHash": "2d87fa71ed0661d5"
+    },
+    "search_query": {
+      "url": "http://localhost:3005",
+      "csdlPath": "C:\\MCP\\Csdl\\Server_Large_WithExamples.csdl",
+      "toolsCount": 2,
+      "resourcesCount": 0,
+      "promptsCount": 0,
+      "examplesCount": 28,
+      "catalogTokens": 383,
+      "catalogHash": "4cceb739d5f086c6"
+    }
+  },
+  "metrics": {
+    "no_examples_success_rate": 0.0,
+    "with_examples_success_rate": 0.0,
+    "search_query_success_rate": 0.0,
+    "no_examples_intent_accuracy": 0.0,
+    "with_examples_intent_accuracy": 0.0,
+    "search_query_intent_accuracy": 0.0,
+    "examples_impact_delta": 0.0,
+    "architecture_impact_delta": 0.0,
+    "search_vs_no_examples_delta": 0.0,
+    "catalog_tokens": {
+      "no_examples": 17509,
+      "with_examples": 17509,
+      "search_query": 383
+    },
+    "catalog_token_reduction_pct": 97.8,
+    "live_graph_calls": {
+      "no_examples": 0,
+      "with_examples": 0,
+      "search_query": 0
+    },
+    "avg_latency_ms": {
+      "no_examples": 1.0,
+      "with_examples": 1.0,
+      "search_query": 1.0
+    }
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 1,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 0,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 0.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    },
+    "paraphrased": {
+      "count": 4,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 0,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 0.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    }
+  },
+  "workload_breakdown": {
+    "users_groups": {
+      "count": 5,
+      "succ_no_ex": 0,
+      "succ_with_ex": 0,
+      "succ_search_q": 0,
+      "rate_no_ex": 0.0,
+      "rate_with_ex": 0.0,
+      "rate_search_q": 0.0,
+      "delta_examples": 0.0,
+      "delta_arch": 0.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "Whom Avery reports to?",
+      "category": "canonical",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [],
+      "graph_traces_no_examples": [],
+      "usage_no_examples": null,
+      "error_no_examples": null,
+      "latency_no_examples_ms": 1.0,
+      "pred_with_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [],
+      "graph_traces_with_examples": [],
+      "usage_with_examples": null,
+      "error_with_examples": null,
+      "latency_with_examples_ms": 1.0,
+      "pred_search_query": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [],
+      "graph_traces_search_query": [],
+      "usage_search_query": null,
+      "error_search_query": null,
+      "latency_search_query_ms": 1.0
+    },
+    {
+      "query_id": 2,
+      "query": "Who is Avery's manager?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [],
+      "graph_traces_no_examples": [],
+      "usage_no_examples": null,
+      "error_no_examples": null,
+      "latency_no_examples_ms": 1.0,
+      "pred_with_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [],
+      "graph_traces_with_examples": [],
+      "usage_with_examples": null,
+      "error_with_examples": null,
+      "latency_with_examples_ms": 1.0,
+      "pred_search_query": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [],
+      "graph_traces_search_query": [],
+      "usage_search_query": null,
+      "error_search_query": null,
+      "latency_search_query_ms": 1.0
+    },
+    {
+      "query_id": 3,
+      "query": "Who is Avery's direct boss?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [],
+      "graph_traces_no_examples": [],
+      "usage_no_examples": null,
+      "error_no_examples": null,
+      "latency_no_examples_ms": 1.0,
+      "pred_with_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [],
+      "graph_traces_with_examples": [],
+      "usage_with_examples": null,
+      "error_with_examples": null,
+      "latency_with_examples_ms": 1.0,
+      "pred_search_query": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [],
+      "graph_traces_search_query": [],
+      "usage_search_query": null,
+      "error_search_query": null,
+      "latency_search_query_ms": 1.0
+    },
+    {
+      "query_id": 4,
+      "query": "Show me the reporting line for Avery Adams",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [],
+      "graph_traces_no_examples": [],
+      "usage_no_examples": null,
+      "error_no_examples": null,
+      "latency_no_examples_ms": 1.0,
+      "pred_with_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [],
+      "graph_traces_with_examples": [],
+      "usage_with_examples": null,
+      "error_with_examples": null,
+      "latency_with_examples_ms": 1.0,
+      "pred_search_query": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [],
+      "graph_traces_search_query": [],
+      "usage_search_query": null,
+      "error_search_query": null,
+      "latency_search_query_ms": 1.0
+    },
+    {
+      "query_id": 5,
+      "query": "Who approves Avery's expenses and time off?",
+      "category": "paraphrased",
+      "workload": "users_groups",
+      "expected_intent": "whom_avery_reports_to",
+      "expected_tool": "get_users_manager",
+      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_params": {
+        "userId": "avery.adams@example.com"
+      },
+      "pred_no_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_no_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_no_examples": [],
+      "graph_traces_no_examples": [],
+      "usage_no_examples": null,
+      "error_no_examples": null,
+      "latency_no_examples_ms": 1.0,
+      "pred_with_examples": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_with_examples": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_with_examples": [],
+      "graph_traces_with_examples": [],
+      "usage_with_examples": null,
+      "error_with_examples": null,
+      "latency_with_examples_ms": 1.0,
+      "pred_search_query": {
+        "intent": "test",
+        "tool": "test",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_search_query": {
+        "intent_match": false,
+        "tool_match": false,
+        "parameters_match": false,
+        "odata_match": false,
+        "live_graph_calls": 0,
+        "live_graph_verified": false,
+        "execution_success": false,
+        "failure_reason": "Copilot returned the wrong intent."
+      },
+      "calls_search_query": [],
+      "graph_traces_search_query": [],
+      "usage_search_query": null,
+      "error_search_query": null,
+      "latency_search_query_ms": 1.0
+    }
+  ]
+}

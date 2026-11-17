@@ -6,38 +6,24 @@ using ModelContextProtocol.Protocol;
 
 namespace GraphMcpServer.Csdl;
 
+/// <summary>Handles MCP discovery, tool calls, and resource reads using generated metadata and shared OData execution.</summary>
 public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMcpProjection> logger)
 {
+    /// <summary>Carries an executed request's method, OData path, and JSON payload for response serialization.</summary>
     private sealed record ODataExecution(HttpMethod Method, string ODataQuery, JsonElement Data);
 
-    public static ListToolsResult ListTools() => new()
-    {
-        Tools = CsdlProvider.GetProjectedTools().Select(t => new Tool
-        {
-            Name = t.Name, Title = t.Title, Description = t.Description, InputSchema = EdmJsonSchema.ForArguments(t)
-        }).ToList()
-    };
-    public static ListResourcesResult ListResources() => new()
-    {
-        Resources = CsdlProvider.GetProjectedResources().Where(r => !r.UriTemplate.Contains('{'))
-            .Select(r => new Resource { Name = r.Name, Title = r.Title, Description = r.Description,
-                Uri = r.UriTemplate, MimeType = "application/json" }).ToList()
-    };
-    public static ListResourceTemplatesResult ListResourceTemplates() => new()
-    {
-        ResourceTemplates = CsdlProvider.GetProjectedResources().Where(r => r.UriTemplate.Contains('{'))
-            .Select(r => new ResourceTemplate { Name = r.Name, Title = r.Title, Description = r.Description,
-                UriTemplate = r.UriTemplate, MimeType = "application/json" }).ToList()
-    };
+    public static ListToolsResult ListTools() => new() { Tools = GeneratedModel.McpTools };
+    public static ListResourcesResult ListResources() => new() { Resources = GeneratedModel.McpResources };
+    public static ListResourceTemplatesResult ListResourceTemplates() => new() { ResourceTemplates = GeneratedModel.McpResourceTemplates };
 
     public async ValueTask<CallToolResult> CallToolAsync(CallToolRequestParams request, CancellationToken cancellationToken)
     {
         try
         {
-            var tool = CsdlProvider.GetProjectedTools().SingleOrDefault(t => t.Name == request.Name)
+            var binding = CsdlProvider.GetRequestBindings().SingleOrDefault(binding => binding.Name == request.Name)
                 ?? throw new ArgumentException($"Unknown CSDL tool: {request.Name}");
-            var execution = await ExecuteAsync(tool, request.Arguments ?? new Dictionary<string, JsonElement>(), cancellationToken);
-            return new() { Content = [new TextContentBlock { Text = SerializeResponse(tool, execution) }] };
+            var execution = await ExecuteAsync(binding, request.Arguments ?? new Dictionary<string, JsonElement>(), cancellationToken);
+            return new() { Content = [new TextContentBlock { Text = SerializeResponse(binding, execution) }] };
         }
         catch (ArgumentException exception)
         {
@@ -51,8 +37,8 @@ public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMc
         }
         catch (InvalidOperationException exception)
         {
-            logger.LogError(exception, "OData configuration is invalid for CSDL tool {Tool}", request.Name);
-            return new() { IsError = true, Content = [new TextContentBlock { Text = "Configure a valid OData:BaseUrl before executing this tool." }] };
+            logger.LogError(exception, "Graph execution configuration is invalid for CSDL tool {Tool}", request.Name);
+            return new() { IsError = true, Content = [new TextContentBlock { Text = exception.Message }] };
         }
         catch (Azure.Identity.AuthenticationFailedException exception)
         {
@@ -68,25 +54,25 @@ public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMc
             var match = resource.MatchPattern.Match(request.Uri);
             if (!match.Success) continue;
             var arguments = new Dictionary<string, JsonElement>();
-            foreach (var key in resource.Tool.Arguments.Where(a => a.IsKey))
+            foreach (var key in resource.RequestBinding.Arguments.Where(a => a.IsKey))
             {
                 var value = Uri.UnescapeDataString(match.Groups[key.Name].Value);
                 arguments[key.Name] = EdmJsonSchema.ParseKey(key.Type, value);
             }
-            var execution = await ExecuteAsync(resource.Tool, arguments, cancellationToken);
+            var execution = await ExecuteAsync(resource.RequestBinding, arguments, cancellationToken);
             return new() { Contents = [new TextResourceContents
             {
                 Uri = request.Uri,
                 MimeType = "application/json",
-                Text = SerializeResponse(resource.Tool, execution)
+                Text = SerializeResponse(resource.RequestBinding, execution)
             }] };
         }
         throw new ArgumentException($"No CSDL resource matches URI: {request.Uri}");
     }
 
-    private static string SerializeResponse(ToolBinding tool, ODataExecution execution)
+    private static string SerializeResponse(ODataRequestBinding binding, ODataExecution execution)
     {
-        var examples = CsdlProvider.GetExamplesFor(tool).Select(example => new
+        var examples = CsdlProvider.GetExamplesFor(binding).Select(example => new
         {
             targetKind = example.TargetKind,
             targetName = example.TargetName,
@@ -99,26 +85,26 @@ public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMc
         {
             method = execution.Method.Method,
             odataQuery = execution.ODataQuery,
-            entitySet = tool.EntitySet,
+            entitySet = binding.EntitySet,
             data = execution.Data,
             examples
         }, new JsonSerializerOptions { WriteIndented = true });
     }
 
-    private async Task<ODataExecution> ExecuteAsync(ToolBinding tool, IDictionary<string, JsonElement> arguments, CancellationToken cancellationToken)
+    private async Task<ODataExecution> ExecuteAsync(ODataRequestBinding binding, IDictionary<string, JsonElement> arguments, CancellationToken cancellationToken)
     {
-        var known = tool.Arguments.Select(a => a.Name).Concat(tool.QueryOptions ? EdmJsonSchema.QueryOptions.Keys : []);
-        if (arguments.Keys.Any(k => !known.Contains(k, StringComparer.Ordinal))) throw new ArgumentException("Unknown tool argument.");
-        foreach (var argument in tool.Arguments)
+        var known = binding.Arguments.Select(a => a.Name).Concat(binding.QueryOptions ? EdmJsonSchema.QueryOptions.Keys : []);
+        if (arguments.Keys.Any(k => !known.Contains(k, StringComparer.Ordinal))) throw new ArgumentException("Unknown OData request argument.");
+        foreach (var argument in binding.Arguments)
         {
             if (!arguments.TryGetValue(argument.Name, out var value))
             {
-                if (argument.Required) throw new ArgumentException($"Missing required tool argument: {argument.Name}");
+                if (argument.Required) throw new ArgumentException($"Missing required OData request argument: {argument.Name}");
             }
             else EdmJsonSchema.Validate(argument.Type, value, argument.Name);
         }
-        var path = tool.Path;
-        var keys = tool.Arguments.Where(a => a.IsKey).ToList();
+        var path = binding.Path;
+        var keys = binding.Arguments.Where(a => a.IsKey).ToList();
         if (keys.Count > 0)
         {
             var predicate = string.Join(",", keys.Select(k =>
@@ -127,13 +113,13 @@ public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMc
             path = separator < 0 ? $"{path}({predicate})" : path.Insert(separator, $"({predicate})");
         }
         var query = new List<string>();
-        var parameters = tool.Arguments.Where(a => !a.IsKey && arguments.ContainsKey(a.Name)).ToList();
-        if (tool.OperationKind == OperationKind.Function)
+        var parameters = binding.Arguments.Where(a => !a.IsKey && arguments.ContainsKey(a.Name)).ToList();
+        if (binding.OperationKind == OperationKind.Function)
         {
             path += "(" + string.Join(",", parameters.Select(p => p.Name + "=@" + p.Name)) + ")";
             query.AddRange(parameters.Select(p => "@" + p.Name + "=" + Uri.EscapeDataString(EdmJsonSchema.Literal(p.Type, arguments[p.Name]))));
         }
-        if (tool.QueryOptions)
+        if (binding.QueryOptions)
         {
             foreach (var (name, odataName) in EdmJsonSchema.QueryOptions)
             {
@@ -152,11 +138,17 @@ public sealed class CsdlMcpProjection(IODataClientService client, ILogger<CsdlMc
             }
         }
         if (query.Count > 0) path += "?" + string.Join("&", query);
-        var body = tool.OperationKind == OperationKind.Action
+        var body = binding.OperationKind == OperationKind.Action
             ? JsonSerializer.SerializeToElement(parameters.ToDictionary(p => p.Name, p => arguments[p.Name]))
             : (JsonElement?)null;
-        var method = tool.OperationKind == OperationKind.Action ? HttpMethod.Post : HttpMethod.Get;
-        var data = await client.SendAsync(method, path, body, cancellationToken);
+        var method = binding.OperationKind == OperationKind.Action ? HttpMethod.Post : HttpMethod.Get;
+        var data = await client.SendAsync(
+            binding,
+            new Dictionary<string, JsonElement>(arguments),
+            method,
+            path,
+            body,
+            cancellationToken);
         return new(method, path, data);
     }
 }

@@ -1,0 +1,707 @@
+[
+  {
+    "id": 1,
+    "query": "Whom Avery reports to?",
+    "category": "canonical",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 2,
+    "query": "Who is Avery's manager?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 3,
+    "query": "Who is Avery's direct boss?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 4,
+    "query": "Show me the reporting line for Avery Adams",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 5,
+    "query": "Who approves Avery's expenses and time off?",
+    "category": "paraphrased",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 6,
+    "query": "Who is the manager of Jordan Lee?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager",
+    "expectedParams": {
+      "userId": "jordan.lee@example.com"
+    }
+  },
+  {
+    "id": 7,
+    "query": "Whom does Casey Chen report to?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/manager",
+    "expectedParams": {
+      "userId": "casey.chen@example.com"
+    }
+  },
+  {
+    "id": 8,
+    "query": "Who manages Taylor Morgan?",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager",
+    "expectedParams": {
+      "userId": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 9,
+    "query": "Find the supervisor of Riley Patel",
+    "category": "complex",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('riley.patel@example.com')/manager",
+    "expectedParams": {
+      "userId": "riley.patel@example.com"
+    }
+  },
+  {
+    "id": 10,
+    "query": "Who is my manager?",
+    "category": "canonical",
+    "targetIntent": "whom_avery_reports_to",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "me/manager",
+    "expectedParams": {
+      "userId": "me"
+    }
+  },
+  {
+    "id": 11,
+    "query": "Who are Avery's peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 12,
+    "query": "Who works on the same team as Avery?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 13,
+    "query": "Find teammates who share a manager with Avery",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 14,
+    "query": "Who are my peers?",
+    "category": "canonical",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "me/manager/directReports",
+    "expectedParams": {
+      "userId": "me"
+    }
+  },
+  {
+    "id": 15,
+    "query": "List all colleagues reporting to the same director as Avery",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 16,
+    "query": "Who are Jordan Lee's peer architects?",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "jordan.lee@example.com"
+    }
+  },
+  {
+    "id": 17,
+    "query": "Show everyone on Taylor Morgan's peer team",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 18,
+    "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "casey.chen@example.com"
+    },
+    "acceptedIntents": [
+      "who_are_averys_peers",
+      "direct_reports_of_manager"
+    ]
+  },
+  {
+    "id": 19,
+    "query": "Who shares an organization level with Avery Adams?",
+    "category": "paraphrased",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 20,
+    "query": "Find peer colleagues for Jamie Kim",
+    "category": "complex",
+    "targetIntent": "who_are_averys_peers",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('jamie.kim@example.com')/manager/directReports",
+    "expectedParams": {
+      "userId": "jamie.kim@example.com"
+    }
+  },
+  {
+    "id": 21,
+    "query": "Direct reports of a manager",
+    "category": "canonical",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 22,
+    "query": "Who reports to Morgan?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 23,
+    "query": "List everyone reporting to Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 24,
+    "query": "Show the direct team of Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 25,
+    "query": "Does Avery have any direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Avery Adams"
+    }
+  },
+  {
+    "id": 26,
+    "query": "Who are Casey Chen's direct reports?",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('casey.chen@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Casey Chen"
+    }
+  },
+  {
+    "id": 27,
+    "query": "List direct reports of Jamie Kim",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('jamie.kim@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Jamie Kim"
+    }
+  },
+  {
+    "id": 28,
+    "query": "Who is currently supervised by Morgan?",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 29,
+    "query": "Find all people managed by Sam Rivera",
+    "category": "complex",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('sam.rivera@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Sam Rivera"
+    }
+  },
+  {
+    "id": 30,
+    "query": "Enumerate staff under partner director Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "direct_reports_of_manager",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedParams": {
+      "managerNameOrId": "Morgan Reed"
+    }
+  },
+  {
+    "id": 31,
+    "query": "Search users by department and title",
+    "category": "canonical",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Architect"
+    }
+  },
+  {
+    "id": 32,
+    "query": "Find architects in Identity",
+    "category": "paraphrased",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Architect"
+    }
+  },
+  {
+    "id": 33,
+    "query": "Find all Principal Architects in Platform Engineering",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')",
+    "expectedParams": {
+      "department": "Platform Engineering",
+      "jobTitle": "Principal"
+    }
+  },
+  {
+    "id": 34,
+    "query": "Show me product managers in the AI Platform department",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')",
+    "expectedParams": {
+      "department": "AI Platform",
+      "jobTitle": "Principal Architect"
+    }
+  },
+  {
+    "id": 35,
+    "query": "List all business administrators located in Prague",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Business Administrator') and officeLocation eq 'Prague'",
+    "expectedParams": {
+      "department": "Platform Engineering",
+      "jobTitle": "Business Administrator"
+    },
+    "acceptedIntents": [
+      "search_users_by_dept_title",
+      "find_user"
+    ]
+  },
+  {
+    "id": 36,
+    "query": "Search for engineering managers in Identity",
+    "category": "complex",
+    "targetIntent": "search_users_by_dept_title",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Principal Group Eng Manager')",
+    "expectedParams": {
+      "department": "Identity",
+      "jobTitle": "Manager"
+    }
+  },
+  {
+    "id": 37,
+    "query": "Look up all software architects across the company",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Software Architect')",
+    "expectedParams": {
+      "query": "Software Architect"
+    },
+    "acceptedIntents": [
+      "find_user",
+      "search_users_by_dept_title"
+    ]
+  },
+  {
+    "id": 38,
+    "query": "Find staff members with Architect in their title",
+    "category": "paraphrased",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Architect')",
+    "expectedParams": {
+      "query": "Architect"
+    },
+    "acceptedIntents": [
+      "find_user",
+      "search_users_by_dept_title"
+    ]
+  },
+  {
+    "id": 39,
+    "query": "Find all employees named Morgan",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Morgan')",
+    "expectedParams": {
+      "query": "Morgan"
+    }
+  },
+  {
+    "id": 40,
+    "query": "Search for Jordan in the directory",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Jordan')",
+    "expectedParams": {
+      "query": "Jordan"
+    }
+  },
+  {
+    "id": 41,
+    "query": "Find user with email avery.adams@example.com",
+    "category": "ambiguous",
+    "targetIntent": "find_user",
+    "expectedTool": "find_user",
+    "expectedGraphEndpoint": "users?$filter=mail eq 'avery.adams@example.com'",
+    "expectedParams": {
+      "query": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 42,
+    "query": "User quick lookup",
+    "category": "canonical",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "me",
+    "expectedParams": {
+      "identifier": "me"
+    }
+  },
+  {
+    "id": 43,
+    "query": "Get full profile card for Avery Adams",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('avery.adams@example.com')",
+    "expectedParams": {
+      "identifier": "avery.adams@example.com"
+    }
+  },
+  {
+    "id": 44,
+    "query": "Show contact card and office location for Morgan Reed",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('morgan.reed@example.com')",
+    "expectedParams": {
+      "identifier": "morgan.reed@example.com"
+    }
+  },
+  {
+    "id": 45,
+    "query": "Look up user profile for Taylor Morgan",
+    "category": "paraphrased",
+    "targetIntent": "user_quick_lookup",
+    "expectedTool": "user_profile",
+    "expectedGraphEndpoint": "users('taylor.morgan@example.com')",
+    "expectedParams": {
+      "identifier": "taylor.morgan@example.com"
+    }
+  },
+  {
+    "id": 46,
+    "query": "What projects is Avery currently leading?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 47,
+    "query": "Check Example Directory Object 054 for open slots tomorrow",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 48,
+    "query": "Which Azure subscriptions are active for Identity?",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 49,
+    "query": "List all security groups that Jordan Lee is a member of",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 50,
+    "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedGraphEndpoint": "N/A",
+    "expectedParams": {}
+  },
+  {
+    "id": 51,
+    "query": "Find the Platform Engineering group",
+    "category": "canonical",
+    "targetIntent": "find_group_by_name",
+    "expectedTool": "find_group",
+    "expectedParams": {
+      "query": "Platform Engineering"
+    }
+  },
+  {
+    "id": 52,
+    "query": "Search for Security groups",
+    "category": "paraphrased",
+    "targetIntent": "find_group_by_name",
+    "expectedTool": "find_group",
+    "expectedParams": {
+      "query": "Security"
+    }
+  },
+  {
+    "id": 53,
+    "query": "Who are the members of the Platform Engineering group?",
+    "category": "canonical",
+    "targetIntent": "list_group_members",
+    "expectedTool": "group_details",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 54,
+    "query": "Show members of Platform Engineering",
+    "category": "paraphrased",
+    "targetIntent": "list_group_members",
+    "expectedTool": "group_details",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 55,
+    "query": "Who owns the Platform Engineering group?",
+    "category": "canonical",
+    "targetIntent": "who_owns_group",
+    "expectedTool": "group_details",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 56,
+    "query": "Find owners of Platform Engineering",
+    "category": "paraphrased",
+    "targetIntent": "who_owns_group",
+    "expectedTool": "group_details",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 57,
+    "query": "Get details for group Platform Engineering",
+    "category": "complex",
+    "targetIntent": "group_quick_lookup",
+    "expectedTool": "group_details",
+    "expectedParams": {
+      "groupId": "11111111-2222-3333-4444-555555555555"
+    }
+  },
+  {
+    "id": 58,
+    "query": "Delete the Platform Engineering group",
+    "category": "edge_case",
+    "targetIntent": "out_of_scope",
+    "expectedTool": "none",
+    "expectedParams": {}
+  },
+  {
+    "id": 59,
+    "query": "Which peers of Avery belong to Platform Engineering?",
+    "category": "complex",
+    "targetIntent": "user_peers_in_group",
+    "expectedTool": "read_resource",
+    "expectedParams": {},
+    "requiredTools": [
+      "user_profile",
+      "find_group"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users",
+        "identifier": "avery.adams@example.com"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "query": "Which Platform Engineering members report to Morgan?",
+    "category": "complex",
+    "targetIntent": "group_members_reporting_to_manager",
+    "expectedTool": "read_resource",
+    "expectedParams": {},
+    "requiredTools": [
+      "user_profile",
+      "find_group"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "query": "Does Avery share a manager with Platform Engineering owners?",
+    "category": "complex",
+    "targetIntent": "user_and_group_owners_common_manager",
+    "expectedTool": "read_resource",
+    "expectedParams": {},
+    "requiredTools": [
+      "user_profile",
+      "find_group"
+    ],
+    "requiredResources": [
+      {
+        "entitySet": "users",
+        "identifier": "avery.adams@example.com"
+      },
+      {
+        "entitySet": "groups",
+        "identifier": "11111111-2222-3333-4444-555555555555"
+      }
+    ]
+  }
+]

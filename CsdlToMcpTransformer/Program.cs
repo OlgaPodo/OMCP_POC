@@ -7,8 +7,10 @@ using Microsoft.OData.Edm.Validation;
 
 namespace CsdlToMcpTransformer;
 
+/// <summary>Parses and validates input CSDL, configures generation, and writes a standalone MCP server project.</summary>
 public static class Program
 {
+    /// <summary>Defines the source schema, output directory, port, and server title for one generation run.</summary>
     public record TransformTarget(string CsdlFileName, string OutputDir, int Port, string ServerTitle);
 
     public static int Main(string[] args)
@@ -109,6 +111,7 @@ public static class Program
         // Create output directory structure
         Directory.CreateDirectory(target.OutputDir);
         Directory.CreateDirectory(Path.Combine(target.OutputDir, "Csdl"));
+        Directory.CreateDirectory(Path.Combine(target.OutputDir, "Models"));
         Directory.CreateDirectory(Path.Combine(target.OutputDir, "Services"));
 
         // Emit a fully static MCP server. CSDL is consumed only here at generation time.
@@ -117,6 +120,9 @@ public static class Program
         File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "CsdlMcpProjection.cs"), ReadTemplate(@"Csdl\CsdlMcpProjection.cs"));
         File.WriteAllText(Path.Combine(target.OutputDir, "Csdl", "EdmJsonSchema.cs"), ReadTemplate(@"Csdl\EdmJsonSchema.cs"));
         File.WriteAllText(Path.Combine(target.OutputDir, "Services", "ODataClientService.cs"), ReadTemplate(@"Services\ODataClientService.cs"));
+        File.WriteAllText(Path.Combine(target.OutputDir, "Models", "GraphModels.cs"), ReadTemplate(@"Models\GraphModels.cs"));
+        File.WriteAllText(Path.Combine(target.OutputDir, "Services", "GraphClientService.cs"), ReadTemplate(@"Services\GraphClientService.cs"));
+        File.WriteAllText(Path.Combine(target.OutputDir, "Services", "GeneratedGraphExecutor.cs"), ReadTemplate(@"Services\GeneratedGraphExecutor.cs"));
         StaticModelGenerator.Generate(
             edmModel,
             csdlPath,
@@ -124,26 +130,13 @@ public static class Program
             Path.Combine(target.OutputDir, "Csdl", "GeneratedModel.cs"));
         var metadataPath = Path.Combine(target.OutputDir, "metadata.csdl");
         if (File.Exists(metadataPath)) File.Delete(metadataPath);
-        foreach (var legacyFile in new[] { @"Models\GraphModels.cs", @"Services\GraphClientService.cs", @"Csdl\UserCsdlProvider.cs" })
+        foreach (var legacyFile in new[] { @"Csdl\UserCsdlProvider.cs" })
         {
             var legacyPath = Path.Combine(target.OutputDir, legacyFile);
             if (File.Exists(legacyPath)) File.Delete(legacyPath);
         }
 
         // 2. Write runtime settings. No CSDL path is required by the generated server.
-        var existingSettingsPath = Path.Combine(target.OutputDir, "appsettings.json");
-        JsonObject? existingOData = null;
-        if (File.Exists(existingSettingsPath))
-        {
-            try
-            {
-                existingOData = JsonNode.Parse(File.ReadAllText(existingSettingsPath))?["OData"]?.DeepClone() as JsonObject;
-            }
-            catch (JsonException)
-            {
-                // Invalid prior settings are replaced with explicit empty defaults.
-            }
-        }
         var appSettings = new JsonObject
         {
             ["Logging"] = new JsonObject
@@ -154,7 +147,11 @@ public static class Program
                     ["Microsoft.AspNetCore"] = "Warning"
                 }
             },
-            ["OData"] = existingOData ?? new JsonObject { ["BaseUrl"] = "", ["Scope"] = "" }
+            ["Graph"] = new JsonObject
+            {
+                ["ExecutionMode"] = "InProcess",
+                ["ServiceRoot"] = "https://graph.microsoft.com/v1.0/"
+            }
         };
         File.WriteAllText(
             Path.Combine(target.OutputDir, "appsettings.json"),

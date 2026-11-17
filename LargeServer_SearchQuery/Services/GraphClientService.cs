@@ -1,5 +1,8 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Azure.Core;
 using Azure.Identity;
@@ -44,11 +47,121 @@ public class GraphClientService
     {
         trace.CorrelationId ??= _httpContextAccessor.HttpContext?.Request.Headers[
             "X-Experiment-Correlation-Id"].FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(trace.CorrelationId))
+        {
+            trace.ClientRequestId ??= GetClientRequestId(trace.CorrelationId).ToString();
+            trace.RequestHeaders = string.Join(
+                "\n",
+                new[]
+                {
+                    trace.RequestHeaders,
+                    $"X-Experiment-Correlation-Id: {trace.CorrelationId}",
+                    $"client-request-id: {trace.ClientRequestId}",
+                    $"user-agent: GraphMcpExperiment/1.0 correlation-id/{trace.CorrelationId}",
+                    "return-client-request-id: true"
+                }.Where(value => !string.IsNullOrWhiteSpace(value)));
+        }
         lock (_traceLock)
         {
             _traces.Add(trace);
             if (_traces.Count > 100) _traces.RemoveAt(0);
         }
+    }
+
+    private async Task<(bool Success, JsonElement? Payload)> SendGraphAsync(
+        HttpMethod method,
+        string requestUrl,
+        string token,
+        object? body,
+        CancellationToken cancellationToken)
+    {
+        using var request = new HttpRequestMessage(method, requestUrl);
+        ApplyGraphRequestHeaders(request, token);
+        if (body != null)
+            request.Content = JsonContent.Create(body);
+
+        var trace = new GraphTraceRecord
+        {
+            Method = method.Method,
+            Url = $"https://graph.microsoft.com/v1.0/{requestUrl}",
+            RequestHeaders = "Authorization: Bearer [REDACTED]\nAccept: application/json",
+            IsLive = true
+        };
+
+        try
+        {
+            using var response = await _httpClient.SendAsync(request, cancellationToken);
+            trace.StatusCode = (int)response.StatusCode;
+            CaptureResponseHeaders(response, trace);
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            trace.ResponseSummary = content.Length > 200 ? content[..200] + "..." : content;
+            AddTrace(trace);
+            if (!response.IsSuccessStatusCode)
+                return (false, null);
+            if (string.IsNullOrWhiteSpace(content))
+                return (true, null);
+            using var document = JsonDocument.Parse(content);
+            return (true, document.RootElement.Clone());
+        }
+
+        catch (Exception exception)
+        {
+            trace.StatusCode = 0;
+            trace.ResponseSummary = exception.Message;
+            AddTrace(trace);
+            _logger.LogWarning(exception, "Microsoft Graph request failed: {Method} {RequestUrl}", method, requestUrl);
+            return (false, null);
+        }
+    }
+
+    private void ApplyGraphRequestHeaders(HttpRequestMessage request, string token)
+    {
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        request.Headers.CacheControl = new CacheControlHeaderValue
+        {
+            NoCache = true,
+            NoStore = true
+        };
+        request.Headers.Pragma.ParseAdd("no-cache");
+        var correlationId = _httpContextAccessor.HttpContext?.Request.Headers[
+            "X-Experiment-Correlation-Id"].FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(correlationId))
+        {
+            request.Headers.TryAddWithoutValidation("X-Experiment-Correlation-Id", correlationId);
+            request.Headers.TryAddWithoutValidation(
+                "User-Agent",
+                $"GraphMcpExperiment/1.0 correlation-id/{correlationId}");
+        }
+        var clientRequestId = GetClientRequestId(correlationId);
+        request.Headers.TryAddWithoutValidation("client-request-id", clientRequestId.ToString());
+        request.Headers.TryAddWithoutValidation("return-client-request-id", "true");
+    }
+
+    private static Guid GetClientRequestId(string? correlationId)
+    {
+        if (Guid.TryParse(correlationId, out var parsed))
+            return parsed;
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(correlationId ?? Guid.NewGuid().ToString()));
+        return new Guid(hash[..16]);
+    }
+
+    private static void CaptureResponseHeaders(HttpResponseMessage response, GraphTraceRecord trace)
+    {
+        trace.GraphRequestId = response.Headers.TryGetValues("request-id", out var requestIds)
+            ? requestIds.FirstOrDefault()
+            : null;
+        var clientRequestId = response.Headers.TryGetValues("client-request-id", out var clientRequestIds)
+            ? clientRequestIds.FirstOrDefault()
+            : null;
+        trace.ResponseHeaders = string.Join(
+            "\n",
+            new[]
+            {
+                trace.GraphRequestId == null ? null : $"request-id: {trace.GraphRequestId}",
+                clientRequestId == null ? null : $"client-request-id: {clientRequestId}",
+                response.Headers.Date.HasValue ? $"date: {response.Headers.Date.Value:R}" : null,
+                response.Headers.CacheControl == null ? null : $"cache-control: {response.Headers.CacheControl}"
+            }.Where(value => !string.IsNullOrWhiteSpace(value)));
     }
 
     private async Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default)
@@ -125,7 +238,7 @@ public class GraphClientService
                 string requestUrl = $"users?$filter=startswith(displayName,'{safeQuery}') or startswith(userPrincipalName,'{safeQuery}') or startswith(mail,'{safeQuery}')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -137,6 +250,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -194,7 +308,7 @@ public class GraphClientService
                 string requestUrl = $"{userEndpoint}?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -206,6 +320,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -297,7 +412,7 @@ public class GraphClientService
         {
             string url = $"users/{Uri.EscapeDataString(userId)}/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
 
             var trace = new GraphTraceRecord
             {
@@ -309,6 +424,7 @@ public class GraphClientService
 
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             trace.StatusCode = (int)res.StatusCode;
+            CaptureResponseHeaders(res, trace);
             if (res.IsSuccessStatusCode)
             {
                 var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -331,7 +447,7 @@ public class GraphClientService
         {
             string url = $"users/{Uri.EscapeDataString(userId)}/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
 
             var trace = new GraphTraceRecord
             {
@@ -343,6 +459,7 @@ public class GraphClientService
 
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             trace.StatusCode = (int)res.StatusCode;
+            CaptureResponseHeaders(res, trace);
             if (res.IsSuccessStatusCode)
             {
                 var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -372,7 +489,7 @@ public class GraphClientService
                 string requestUrl = $"groups?$filter=startswith(displayName,'{safeQuery}') or startswith(mailNickname,'{safeQuery}') or startswith(mail,'{safeQuery}')&$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime&$top=20";
 
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -384,6 +501,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
 
                 if (res.IsSuccessStatusCode)
                 {
@@ -434,7 +552,7 @@ public class GraphClientService
             {
                 string requestUrl = "groups?$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime&$top=50";
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -446,6 +564,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -475,7 +594,7 @@ public class GraphClientService
             {
                 string requestUrl = $"groups/{Uri.EscapeDataString(target)}?$select=id,displayName,description,mail,mailNickname,groupTypes,mailEnabled,securityEnabled,visibility,createdDateTime";
                 using var req = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
 
                 var trace = new GraphTraceRecord
                 {
@@ -487,6 +606,7 @@ public class GraphClientService
 
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -534,7 +654,7 @@ public class GraphClientService
         {
             string url = $"groups/{Uri.EscapeDataString(groupId)}/{segment}?$select=id,displayName,userPrincipalName,mail,jobTitle,department";
             using var req = new HttpRequestMessage(HttpMethod.Get, url);
-            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            ApplyGraphRequestHeaders(req, token);
             using var res = await _httpClient.SendAsync(req, cancellationToken);
             if (res.IsSuccessStatusCode)
             {
@@ -572,7 +692,7 @@ public class GraphClientService
             try
             {
                 using var req = new HttpRequestMessage(HttpMethod.Get, cleanPath);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                ApplyGraphRequestHeaders(req, token);
                 var trace = new GraphTraceRecord
                 {
                     Method = "GET",
@@ -582,6 +702,7 @@ public class GraphClientService
                 };
                 using var res = await _httpClient.SendAsync(req, cancellationToken);
                 trace.StatusCode = (int)res.StatusCode;
+                CaptureResponseHeaders(res, trace);
                 if (res.IsSuccessStatusCode)
                 {
                     var content = await res.Content.ReadAsStringAsync(cancellationToken);
@@ -704,211 +825,460 @@ public class GraphClientService
     }
 
     // Files & OneDrive Operations
-    public Task<GraphDrive> GetDriveAsync(string userOrDriveId = "me", CancellationToken cancellationToken = default)
+    public async Task<GraphDrive> GetDriveAsync(string userOrDriveId = "me", CancellationToken cancellationToken = default)
     {
-        AddTrace(new GraphTraceRecord
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = userOrDriveId.Equals("me", StringComparison.OrdinalIgnoreCase)
-                ? "https://graph.microsoft.com/v1.0/me/drive/root/children?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName"
-                : $"https://graph.microsoft.com/v1.0/drives('{Uri.EscapeDataString(userOrDriveId)}')/root/children",
-            StatusCode = 200,
-            ResponseSummary = "OneDrive root children and quota",
-            IsLive = false
-        });
-        return Task.FromResult(GetMockDrives().First());
+            var root = userOrDriveId.Equals("me", StringComparison.OrdinalIgnoreCase)
+                ? "me/drive"
+                : $"drives/{Uri.EscapeDataString(userOrDriveId)}";
+            var driveResult = await SendGraphAsync(
+                HttpMethod.Get, $"{root}?$select=id,name,driveType,webUrl,owner,quota",
+                token, null, cancellationToken);
+            var itemsResult = await SendGraphAsync(
+                HttpMethod.Get,
+                $"{root}/root/children?$select=id,name,size,webUrl,file,folder,createdDateTime,lastModifiedDateTime,lastModifiedBy",
+                token, null, cancellationToken);
+            if (driveResult.Success && driveResult.Payload is JsonElement driveJson &&
+                itemsResult.Success && itemsResult.Payload is JsonElement itemsJson)
+            {
+                var drive = new GraphDrive
+                {
+                    Id = GetString(driveJson, "id"),
+                    Name = GetString(driveJson, "name"),
+                    DriveType = GetString(driveJson, "driveType", "business"),
+                    WebUrl = GetNullableString(driveJson, "webUrl"),
+                    OwnerDisplayName = GetNestedString(driveJson, "owner", "user", "displayName"),
+                    QuotaTotal = GetNestedInt64(driveJson, "quota", "total"),
+                    QuotaUsed = GetNestedInt64(driveJson, "quota", "used"),
+                    Items = ParseDriveItems(itemsJson)
+                };
+                return drive;
+            }
+        }
+
+        throw new HttpRequestException("Live Microsoft Graph OneDrive request failed. Check Files.Read permissions and OneDrive provisioning.");
     }
 
-    public Task<List<GraphDriveItem>> SearchDriveItemsAsync(string query, CancellationToken cancellationToken = default)
+    public async Task<List<GraphDriveItem>> SearchDriveItemsAsync(string query, CancellationToken cancellationToken = default)
     {
-        string q = (query ?? "").Trim();
-        AddTrace(new GraphTraceRecord
+        var q = (query ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = $"https://graph.microsoft.com/v1.0/drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='{Uri.EscapeDataString(q)}')?$select=id,name,size,webUrl,fileMimeType,lastModifiedDateTime,lastModifiedByDisplayName",
-            StatusCode = 200,
-            ResponseSummary = $"Bound Function searchDriveItems(q='{q}')",
-            IsLive = false
-        });
-        var items = GetMockDriveItems()
-            .Where(f => string.IsNullOrWhiteSpace(q) ||
-                        f.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-                        (f.LastModifiedByDisplayName != null && f.LastModifiedByDisplayName.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
-                        (f.FileMimeType != null && f.FileMimeType.Contains(q, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
-        return Task.FromResult(items);
+            var escaped = Uri.EscapeDataString(q.Replace("'", "''", StringComparison.Ordinal));
+            var result = await SendGraphAsync(
+                HttpMethod.Get,
+                $"me/drive/root/search(q='{escaped}')?$select=id,name,size,webUrl,file,folder,createdDateTime,lastModifiedDateTime,lastModifiedBy",
+                token, null, cancellationToken);
+            if (result.Success && result.Payload is JsonElement json)
+                return ParseDriveItems(json);
+        }
+
+        throw new HttpRequestException("Live Microsoft Graph file search failed. Check Files.Read permissions and OneDrive provisioning.");
     }
 
-    public Task<GraphDriveItem?> GetDriveItemWithModifierAsync(string fileIdOrName, CancellationToken cancellationToken = default)
+    public async Task<GraphDriveItem?> GetDriveItemWithModifierAsync(string fileIdOrName, CancellationToken cancellationToken = default)
     {
-        string target = (fileIdOrName ?? "").Trim();
-        var item = GetMockDriveItems().FirstOrDefault(f =>
-            string.Equals(f.Id, target, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(f.Name, target, StringComparison.OrdinalIgnoreCase) ||
-            f.Name.Contains(target, StringComparison.OrdinalIgnoreCase)) ?? GetMockDriveItems()[0];
-
-        AddTrace(new GraphTraceRecord
+        var target = (fileIdOrName ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = $"https://graph.microsoft.com/v1.0/driveItems('{Uri.EscapeDataString(item.Id)}')/lastModifiedByUser?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
-            StatusCode = 200,
-            ResponseSummary = $"Resolved lastModifiedByUser={item.LastModifiedByDisplayName}",
-            IsLive = false
-        });
-        return Task.FromResult<GraphDriveItem?>(item);
+            GraphDriveItem? item = null;
+            var direct = await SendGraphAsync(
+                HttpMethod.Get,
+                $"me/drive/items/{Uri.EscapeDataString(target)}?$select=id,name,size,webUrl,file,folder,createdDateTime,lastModifiedDateTime,lastModifiedBy",
+                token, null, cancellationToken);
+            if (direct.Success && direct.Payload is JsonElement directJson)
+                item = ParseDriveItem(directJson);
+            if (item == null)
+                item = (await SearchDriveItemsAsync(target, cancellationToken)).FirstOrDefault(candidate =>
+                    string.Equals(candidate.Name, target, StringComparison.OrdinalIgnoreCase) ||
+                    candidate.Name.Contains(target, StringComparison.OrdinalIgnoreCase));
+            if (item != null && !string.IsNullOrWhiteSpace(item.LastModifiedByUser?.Id))
+                item.LastModifiedByUser = await GetUserProfileAsync(item.LastModifiedByUser.Id, cancellationToken);
+            if (item != null)
+                return item;
+        }
+
+        throw new HttpRequestException("Live Microsoft Graph drive item lookup failed. Check the item identifier and Files.Read permissions.");
     }
 
     // Teams & Channels Operations
-    public Task<List<GraphTeam>> GetTeamsAsync(string? filter = null, CancellationToken cancellationToken = default)
+    public async Task<List<GraphTeam>> GetTeamsAsync(string? filter = null, CancellationToken cancellationToken = default)
     {
-        string q = (filter ?? "").Trim();
-        AddTrace(new GraphTraceRecord
+        var q = (filter ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = "https://graph.microsoft.com/v1.0/me/joinedTeams?$select=id,displayName,description,visibility,webUrl&$expand=channels",
-            StatusCode = 200,
-            ResponseSummary = "Joined Microsoft Teams with channels",
-            IsLive = false
-        });
-        var teams = GetMockTeams()
-            .Where(t => string.IsNullOrWhiteSpace(q) ||
-                        q.Equals("me", StringComparison.OrdinalIgnoreCase) ||
-                        q.Equals("all", StringComparison.OrdinalIgnoreCase) ||
-                        t.Id.Equals(q, StringComparison.OrdinalIgnoreCase) ||
-                        t.DisplayName.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-                        (t.Description != null && t.Description.Contains(q, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
-        return Task.FromResult(teams);
-    }
-
-    public Task<GraphChannel?> GetChannelMessagesAsync(string channelIdOrName, CancellationToken cancellationToken = default)
-    {
-        string q = (channelIdOrName ?? "").Trim();
-        var allChannels = GetMockTeams().SelectMany(t => t.Channels).ToList();
-        var channel = allChannels.FirstOrDefault(c =>
-            string.Equals(c.Id, q, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(c.DisplayName, q, StringComparison.OrdinalIgnoreCase) ||
-            c.DisplayName.Contains(q, StringComparison.OrdinalIgnoreCase)) ?? allChannels[1];
-
-        AddTrace(new GraphTraceRecord
-        {
-            Method = "GET",
-            Url = $"https://graph.microsoft.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.deltaChannelMessages()?$top=20",
-            StatusCode = 200,
-            ResponseSummary = $"Channel '{channel.DisplayName}' messages ({channel.Messages.Count})",
-            IsLive = false
-        });
-        return Task.FromResult<GraphChannel?>(channel);
-    }
-
-    public Task<GraphChatMessage> SendChannelMessageAsync(string channelIdOrName, string subject, string bodyContent, CancellationToken cancellationToken = default)
-    {
-        var allChannels = GetMockTeams().SelectMany(t => t.Channels).ToList();
-        var channel = allChannels.FirstOrDefault(c =>
-            string.Equals(c.Id, channelIdOrName, StringComparison.OrdinalIgnoreCase) ||
-            c.DisplayName.Contains(channelIdOrName ?? "", StringComparison.OrdinalIgnoreCase)) ?? allChannels[1];
-
-        var msg = new GraphChatMessage
-        {
-            Id = $"msg-posted-{ PostedChannelMessages.Count + 100 }",
-            Subject = string.IsNullOrWhiteSpace(subject) ? "MCP 2.0 Status Update" : subject,
-            Summary = bodyContent.Length > 80 ? bodyContent[..80] + "..." : bodyContent,
-            BodyContent = bodyContent,
-            FromDisplayName = "Avery Adams",
-            FromUpn = "avery.adams@example.com",
-            Importance = "high",
-            CreatedDateTime = DateTimeOffset.UtcNow,
-            WebUrl = $"https://teams.microsoft.com/l/message/{channel.Id}/msg-posted"
-        };
-        lock (PostedChannelMessages)
-        {
-            PostedChannelMessages.Add(msg);
+            var result = await SendGraphAsync(
+                HttpMethod.Get,
+                "me/joinedTeams?$select=id,displayName,description,visibility,isArchived,webUrl,createdDateTime",
+                token, null, cancellationToken);
+            if (result.Success && result.Payload is JsonElement json)
+            {
+                var teams = new List<GraphTeam>();
+                foreach (var teamJson in GetValues(json))
+                {
+                    teams.Add(new GraphTeam
+                    {
+                        Id = GetString(teamJson, "id"),
+                        DisplayName = GetString(teamJson, "displayName"),
+                        Description = GetNullableString(teamJson, "description"),
+                        Visibility = GetString(teamJson, "visibility", "Public"),
+                        IsArchived = GetBoolean(teamJson, "isArchived"),
+                        WebUrl = GetNullableString(teamJson, "webUrl"),
+                        CreatedDateTime = GetDateTimeOffset(teamJson, "createdDateTime")
+                    });
+                }
+                var filtered = FilterTeams(teams, q);
+                var teamsToHydrate = filtered.Take(10).ToList();
+                await Task.WhenAll(teamsToHydrate.Select(async team =>
+                {
+                    var channelsResult = await SendGraphAsync(
+                        HttpMethod.Get,
+                        $"teams/{Uri.EscapeDataString(team.Id)}/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+                        token, null, cancellationToken);
+                    if (channelsResult.Success && channelsResult.Payload is JsonElement channelsJson)
+                    {
+                        team.Channels = GetValues(channelsJson).Select(channel => ParseChannel(channel, team.Id)).ToList();
+                    }
+                }));
+                return filtered;
+            }
         }
-        AddTrace(new GraphTraceRecord
+
+        throw new HttpRequestException("Live Microsoft Graph joined Teams request failed. Check Team.ReadBasic.All permissions.");
+    }
+
+    public async Task<GraphChannel?> GetChannelMessagesAsync(string channelIdOrName, CancellationToken cancellationToken = default)
+    {
+        var q = (channelIdOrName ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "POST",
-            Url = $"https://graph.microsoft.com/v1.0/channels('{Uri.EscapeDataString(channel.Id)}')/Microsoft.Graph.sendChannelMessage",
-            StatusCode = 201,
-            ResponseSummary = $"Posted message '{msg.Subject}' to {channel.DisplayName}",
-            IsLive = false
-        });
-        return Task.FromResult(msg);
+            var channel = (await GetTeamsAsync("all", cancellationToken))
+                .SelectMany(team => team.Channels)
+                .FirstOrDefault(candidate =>
+                    string.Equals(candidate.Id, q, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(candidate.DisplayName, q, StringComparison.OrdinalIgnoreCase) ||
+                    candidate.DisplayName.Contains(q, StringComparison.OrdinalIgnoreCase));
+            if (channel != null)
+            {
+                var result = await SendGraphAsync(
+                    HttpMethod.Get,
+                    $"teams/{Uri.EscapeDataString(channel.TeamId)}/channels/{Uri.EscapeDataString(channel.Id)}/messages?$top=20",
+                    token, null, cancellationToken);
+                if (result.Success && result.Payload is JsonElement json)
+                {
+                    channel.Messages = GetValues(json).Select(ParseChatMessage).ToList();
+                    return channel;
+                }
+            }
+        }
+
+        throw new HttpRequestException("Live Microsoft Graph channel lookup failed. Check Channel.ReadBasic.All and ChannelMessage.Read.All permissions.");
+    }
+
+    public async Task<GraphChatMessage> SendChannelMessageAsync(
+        string channelIdOrName,
+        string subject,
+        string bodyContent,
+        CancellationToken cancellationToken = default)
+    {
+        var token = await GetAccessTokenAsync(cancellationToken)
+            ?? throw new InvalidOperationException("Microsoft Graph authentication is required to send a channel message.");
+        var channel = (await GetTeamsAsync("all", cancellationToken))
+            .SelectMany(team => team.Channels)
+            .FirstOrDefault(candidate =>
+                string.Equals(candidate.Id, channelIdOrName, StringComparison.OrdinalIgnoreCase) ||
+                candidate.DisplayName.Contains(channelIdOrName ?? "", StringComparison.OrdinalIgnoreCase))
+            ?? throw new InvalidOperationException($"Channel '{channelIdOrName}' was not found.");
+        var result = await SendGraphAsync(
+            HttpMethod.Post,
+            $"teams/{Uri.EscapeDataString(channel.TeamId)}/channels/{Uri.EscapeDataString(channel.Id)}/messages",
+            token,
+            new
+            {
+                subject = string.IsNullOrWhiteSpace(subject) ? null : subject,
+                body = new { contentType = "html", content = bodyContent }
+            },
+            cancellationToken);
+        if (!result.Success || result.Payload is not JsonElement json)
+            throw new HttpRequestException("Microsoft Graph did not accept the channel message.");
+        return ParseChatMessage(json);
     }
 
     // Chats Operations
-    public Task<List<GraphChat>> GetChatsAsync(string? filter = null, CancellationToken cancellationToken = default)
+    public async Task<List<GraphChat>> GetChatsAsync(string? filter = null, CancellationToken cancellationToken = default)
     {
-        string q = (filter ?? "").Trim();
-        AddTrace(new GraphTraceRecord
+        var q = (filter ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = "https://graph.microsoft.com/v1.0/me/chats?$select=id,topic,chatType,lastUpdatedDateTime,webUrl&$expand=members,messages($top=5)",
-            StatusCode = 200,
-            ResponseSummary = "Recent 1:1 and group chats",
-            IsLive = false
-        });
-        var chats = GetMockChats()
-            .Where(c => string.IsNullOrWhiteSpace(q) ||
-                        q.Equals("all", StringComparison.OrdinalIgnoreCase) ||
-                        c.Id.Equals(q, StringComparison.OrdinalIgnoreCase) ||
-                        c.ChatType.Equals(q, StringComparison.OrdinalIgnoreCase) ||
-                        (c.Topic != null && c.Topic.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
-                        c.Members.Any(m => m.DisplayName.Contains(q, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
-        return Task.FromResult(chats);
+            var result = await SendGraphAsync(
+                HttpMethod.Get,
+                "me/chats?$select=id,topic,chatType,createdDateTime,lastUpdatedDateTime,webUrl&$expand=members",
+                token, null, cancellationToken);
+            if (result.Success && result.Payload is JsonElement json)
+            {
+                var chats = new List<GraphChat>();
+                foreach (var chatJson in GetValues(json))
+                {
+                    chats.Add(new GraphChat
+                    {
+                        Id = GetString(chatJson, "id"),
+                        Topic = GetNullableString(chatJson, "topic"),
+                        ChatType = GetString(chatJson, "chatType", "oneOnOne"),
+                        CreatedDateTime = GetDateTimeOffset(chatJson, "createdDateTime"),
+                        LastUpdatedDateTime = GetDateTimeOffset(chatJson, "lastUpdatedDateTime"),
+                        WebUrl = GetNullableString(chatJson, "webUrl"),
+                        Members = ParseChatMembers(chatJson)
+                    });
+                }
+                var filtered = FilterChats(chats, q).Take(20).ToList();
+                await Task.WhenAll(filtered.Take(10).Select(async chat =>
+                {
+                    var messages = await SendGraphAsync(
+                        HttpMethod.Get,
+                        $"chats/{Uri.EscapeDataString(chat.Id)}/messages?$top=5",
+                        token, null, cancellationToken);
+                    if (messages.Success && messages.Payload is JsonElement messagesJson)
+                        chat.Messages = GetValues(messagesJson).Select(ParseChatMessage).ToList();
+                }));
+                return filtered;
+            }
+        }
+
+        throw new HttpRequestException("Live Microsoft Graph chats request failed. The signed-in token requires Chat.ReadBasic or Chat.Read.");
     }
 
     // To Do Tasks Operations
-    public Task<List<GraphTodoTaskList>> GetTodoTaskListsAsync(string? filter = null, CancellationToken cancellationToken = default)
+    public async Task<List<GraphTodoTaskList>> GetTodoTaskListsAsync(string? filter = null, CancellationToken cancellationToken = default)
     {
-        string q = (filter ?? "").Trim();
-        AddTrace(new GraphTraceRecord
+        var q = (filter ?? "").Trim();
+        var token = await GetAccessTokenAsync(cancellationToken);
+        if (!string.IsNullOrEmpty(token))
         {
-            Method = "GET",
-            Url = "https://graph.microsoft.com/v1.0/me/todoLists?$select=id,displayName,isOwner,isShared,wellknownListName&$expand=tasks",
-            StatusCode = 200,
-            ResponseSummary = "Microsoft To Do task lists and tasks",
-            IsLive = false
-        });
-        var lists = GetMockTodoLists();
-        if (!string.IsNullOrWhiteSpace(q) && !q.Equals("all", StringComparison.OrdinalIgnoreCase))
-        {
-            foreach (var list in lists)
+            var result = await SendGraphAsync(
+                HttpMethod.Get,
+                "me/todo/lists?$select=id,displayName,isOwner,isShared,wellknownListName",
+                token, null, cancellationToken);
+            if (result.Success && result.Payload is JsonElement json)
             {
-                list.Tasks = list.Tasks.Where(t =>
-                    t.Importance.Equals(q, StringComparison.OrdinalIgnoreCase) ||
-                    t.Status.Equals(q, StringComparison.OrdinalIgnoreCase) ||
-                    t.Title.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-                    (t.BodyPreview != null && t.BodyPreview.Contains(q, StringComparison.OrdinalIgnoreCase)) ||
-                    (t.AssignedToUpn != null && t.AssignedToUpn.Contains(q, StringComparison.OrdinalIgnoreCase))).ToList();
+                var lists = new List<GraphTodoTaskList>();
+                foreach (var listJson in GetValues(json))
+                {
+                    var list = new GraphTodoTaskList
+                    {
+                        Id = GetString(listJson, "id"),
+                        DisplayName = GetString(listJson, "displayName"),
+                        IsOwner = GetBoolean(listJson, "isOwner", true),
+                        IsShared = GetBoolean(listJson, "isShared"),
+                        WellknownListName = GetString(listJson, "wellknownListName", "none")
+                    };
+                    var tasks = await SendGraphAsync(
+                        HttpMethod.Get,
+                        $"me/todo/lists/{Uri.EscapeDataString(list.Id)}/tasks",
+                        token, null, cancellationToken);
+                    if (tasks.Success && tasks.Payload is JsonElement tasksJson)
+                    {
+                        list.Tasks = GetValues(tasksJson)
+                            .Select(task => ParseTodoTask(task, list.Id, list.DisplayName))
+                            .ToList();
+                    }
+                    lists.Add(list);
+                }
+                FilterTodoTasks(lists, q);
+                return lists;
             }
         }
-        return Task.FromResult(lists);
+
+        throw new HttpRequestException("Live Microsoft Graph To Do request failed. Check Tasks.Read permissions and service availability.");
     }
 
-    public Task<GraphTodoTask> CompleteTodoTaskAsync(string taskIdOrTitle, CancellationToken cancellationToken = default)
+    public async Task<GraphTodoTask> CompleteTodoTaskAsync(string taskIdOrTitle, CancellationToken cancellationToken = default)
     {
-        string q = (taskIdOrTitle ?? "").Trim();
-        var task = GetMockTodoLists().SelectMany(l => l.Tasks).FirstOrDefault(t =>
-            string.Equals(t.Id, q, StringComparison.OrdinalIgnoreCase) ||
-            t.Title.Contains(q, StringComparison.OrdinalIgnoreCase)) ?? GetMockTodoLists()[0].Tasks[0];
+        var token = await GetAccessTokenAsync(cancellationToken)
+            ?? throw new InvalidOperationException("Microsoft Graph authentication is required to complete a task.");
+        var q = (taskIdOrTitle ?? "").Trim();
+        var task = (await GetTodoTaskListsAsync("all", cancellationToken))
+            .SelectMany(list => list.Tasks)
+            .FirstOrDefault(candidate =>
+                string.Equals(candidate.Id, q, StringComparison.OrdinalIgnoreCase) ||
+                candidate.Title.Contains(q, StringComparison.OrdinalIgnoreCase))
+            ?? throw new InvalidOperationException($"To Do task '{taskIdOrTitle}' was not found.");
+        var result = await SendGraphAsync(
+            HttpMethod.Patch,
+            $"me/todo/lists/{Uri.EscapeDataString(task.ListId)}/tasks/{Uri.EscapeDataString(task.Id)}",
+            token, new { status = "completed" }, cancellationToken);
+        if (!result.Success || result.Payload is not JsonElement json)
+            throw new HttpRequestException("Microsoft Graph did not complete the To Do task.");
+        return ParseTodoTask(json, task.ListId, task.ListDisplayName);
+    }
 
-        lock (CompletedTaskIds)
+    private static IReadOnlyList<JsonElement> GetValues(JsonElement root)
+    {
+        if (root.ValueKind == JsonValueKind.Object &&
+            root.TryGetProperty("value", out var value) &&
+            value.ValueKind == JsonValueKind.Array)
+            return value.EnumerateArray().Select(item => item.Clone()).ToList();
+        return [];
+    }
+
+    private static string GetString(JsonElement element, string propertyName, string fallback = "")
+        => element.ValueKind == JsonValueKind.Object &&
+           element.TryGetProperty(propertyName, out var value) &&
+           value.ValueKind == JsonValueKind.String
+            ? value.GetString() ?? fallback
+            : fallback;
+
+    private static string? GetNullableString(JsonElement element, string propertyName)
+    {
+        var value = GetString(element, propertyName);
+        return string.IsNullOrWhiteSpace(value) ? null : value;
+    }
+
+    private static bool GetBoolean(JsonElement element, string propertyName, bool fallback = false)
+        => element.ValueKind == JsonValueKind.Object &&
+           element.TryGetProperty(propertyName, out var value) &&
+           value.ValueKind is JsonValueKind.True or JsonValueKind.False
+            ? value.GetBoolean()
+            : fallback;
+
+    private static DateTimeOffset? GetDateTimeOffset(JsonElement element, string propertyName)
+        => DateTimeOffset.TryParse(GetString(element, propertyName), out var value) ? value : null;
+
+    private static string? GetNestedString(JsonElement element, params string[] path)
+    {
+        var current = element;
+        foreach (var segment in path)
         {
-            CompletedTaskIds.Add(task.Id);
+            if (current.ValueKind != JsonValueKind.Object ||
+                !current.TryGetProperty(segment, out current))
+                return null;
         }
-        task.Status = "completed";
-        task.CompletedDateTime = DateTimeOffset.UtcNow;
+        return current.ValueKind == JsonValueKind.String ? current.GetString() : null;
+    }
 
-        AddTrace(new GraphTraceRecord
+    private static long GetNestedInt64(JsonElement element, string parent, string propertyName)
+        => element.ValueKind == JsonValueKind.Object &&
+           element.TryGetProperty(parent, out var parentValue) &&
+           parentValue.ValueKind == JsonValueKind.Object &&
+           parentValue.TryGetProperty(propertyName, out var value) &&
+           value.TryGetInt64(out var number)
+            ? number
+            : 0;
+
+    private static List<GraphDriveItem> ParseDriveItems(JsonElement root)
+        => GetValues(root).Select(ParseDriveItem).ToList();
+
+    private static GraphDriveItem ParseDriveItem(JsonElement item)
+    {
+        var modifierId = GetNestedString(item, "lastModifiedBy", "user", "id");
+        var modifierName = GetNestedString(item, "lastModifiedBy", "user", "displayName");
+        return new GraphDriveItem
         {
-            Method = "POST",
-            Url = $"https://graph.microsoft.com/v1.0/todoTasks('{Uri.EscapeDataString(task.Id)}')/Microsoft.Graph.completeTodoTask",
-            StatusCode = 200,
-            ResponseSummary = $"Completed To Do task '{task.Title}'",
-            IsLive = false
-        });
-        return Task.FromResult(task);
+            Id = GetString(item, "id"),
+            Name = GetString(item, "name"),
+            Size = item.TryGetProperty("size", out var size) && size.TryGetInt64(out var bytes) ? bytes : 0,
+            WebUrl = GetNullableString(item, "webUrl"),
+            FileMimeType = GetNestedString(item, "file", "mimeType"),
+            IsFolder = item.TryGetProperty("folder", out var folder) && folder.ValueKind == JsonValueKind.Object,
+            CreatedDateTime = GetDateTimeOffset(item, "createdDateTime"),
+            LastModifiedDateTime = GetDateTimeOffset(item, "lastModifiedDateTime"),
+            LastModifiedByDisplayName = modifierName,
+            LastModifiedByUser = string.IsNullOrWhiteSpace(modifierId) && string.IsNullOrWhiteSpace(modifierName)
+                ? null
+                : new GraphUser { Id = modifierId ?? "", DisplayName = modifierName ?? "" }
+        };
+    }
+
+    private static GraphChannel ParseChannel(JsonElement channel, string teamId) => new()
+    {
+        Id = GetString(channel, "id"),
+        TeamId = teamId,
+        DisplayName = GetString(channel, "displayName"),
+        Description = GetNullableString(channel, "description"),
+        MembershipType = GetString(channel, "membershipType", "standard"),
+        Email = GetNullableString(channel, "email"),
+        WebUrl = GetNullableString(channel, "webUrl"),
+        CreatedDateTime = GetDateTimeOffset(channel, "createdDateTime")
+    };
+
+    private static GraphChatMessage ParseChatMessage(JsonElement message) => new()
+    {
+        Id = GetString(message, "id"),
+        Subject = GetNullableString(message, "subject"),
+        Summary = GetNullableString(message, "summary"),
+        BodyContent = GetNestedString(message, "body", "content") ?? "",
+        FromDisplayName = GetNestedString(message, "from", "user", "displayName") ?? "",
+        FromUpn = GetNestedString(message, "from", "user", "userIdentityType") ?? "",
+        Importance = GetString(message, "importance", "normal"),
+        CreatedDateTime = GetDateTimeOffset(message, "createdDateTime"),
+        WebUrl = GetNullableString(message, "webUrl")
+    };
+
+    private static List<GraphUser> ParseChatMembers(JsonElement chat)
+    {
+        if (!chat.TryGetProperty("members", out var members) || members.ValueKind != JsonValueKind.Array)
+            return [];
+        return members.EnumerateArray().Select(member => new GraphUser
+        {
+            Id = GetString(member, "userId", GetString(member, "id")),
+            DisplayName = GetString(member, "displayName"),
+            UserPrincipalName = GetString(member, "email"),
+            Mail = GetNullableString(member, "email")
+        }).ToList();
+    }
+
+    private static GraphTodoTask ParseTodoTask(JsonElement task, string listId, string listName) => new()
+    {
+        Id = GetString(task, "id"),
+        ListId = listId,
+        ListDisplayName = listName,
+        Title = GetString(task, "title"),
+        BodyPreview = GetNestedString(task, "body", "content"),
+        Status = GetString(task, "status", "notStarted"),
+        Importance = GetString(task, "importance", "normal"),
+        IsReminderOn = GetBoolean(task, "isReminderOn"),
+        CreatedDateTime = GetDateTimeOffset(task, "createdDateTime"),
+        DueDateTime = DateTimeOffset.TryParse(GetNestedString(task, "dueDateTime", "dateTime"), out var due) ? due : null,
+        CompletedDateTime = GetDateTimeOffset(task, "completedDateTime")
+    };
+
+    private static List<GraphTeam> FilterTeams(List<GraphTeam> teams, string query)
+        => teams.Where(team =>
+            string.IsNullOrWhiteSpace(query) ||
+            query.Equals("me", StringComparison.OrdinalIgnoreCase) ||
+            query.Equals("all", StringComparison.OrdinalIgnoreCase) ||
+            team.Id.Equals(query, StringComparison.OrdinalIgnoreCase) ||
+            team.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+            (team.Description?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
+
+    private static List<GraphChat> FilterChats(List<GraphChat> chats, string query)
+        => chats.Where(chat =>
+            string.IsNullOrWhiteSpace(query) ||
+            query.Equals("all", StringComparison.OrdinalIgnoreCase) ||
+            chat.Id.Equals(query, StringComparison.OrdinalIgnoreCase) ||
+            chat.ChatType.Equals(query, StringComparison.OrdinalIgnoreCase) ||
+            (chat.Topic?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            chat.Members.Any(member => member.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase))).ToList();
+
+    private static void FilterTodoTasks(List<GraphTodoTaskList> lists, string query)
+    {
+        if (string.IsNullOrWhiteSpace(query) || query.Equals("all", StringComparison.OrdinalIgnoreCase))
+            return;
+        foreach (var list in lists)
+        {
+            list.Tasks = list.Tasks.Where(task =>
+                task.Importance.Equals(query, StringComparison.OrdinalIgnoreCase) ||
+                task.Status.Equals(query, StringComparison.OrdinalIgnoreCase) ||
+                task.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                (task.BodyPreview?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (task.AssignedToUpn?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
+        }
     }
 
     #region Mock High-Fidelity M365 Dataset
@@ -917,7 +1287,7 @@ public class GraphClientService
         return [
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000001",
+                Id = "10000000-0000-4000-8000-000000000001",
                 DisplayName = "Avery Adams",
                 UserPrincipalName = "avery.adams@example.com",
                 Mail = "avery.adams@example.com",
@@ -928,76 +1298,76 @@ public class GraphClientService
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000002",
+                Id = "10000000-0000-4000-8000-000000000002",
                 DisplayName = "Morgan Reed",
                 UserPrincipalName = "morgan.reed@example.com",
                 Mail = "morgan.reed@example.com",
                 JobTitle = "Partner Director Engineering",
-                Department = "Cloud Operations",
+                Department = "Platform Engineering",
                 OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000003",
+                Id = "10000000-0000-4000-8000-000000000003",
                 DisplayName = "Jordan Lee",
                 UserPrincipalName = "jordan.lee@example.com",
                 Mail = "jordan.lee@example.com",
                 JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
                 Department = "Platform Engineering",
-                OfficeLocation = "Building A",
+                OfficeLocation = "HQ-101",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000004",
-                DisplayName = "Casey Kim",
-                UserPrincipalName = "casey.kim@example.com",
-                Mail = "casey.kim@example.com",
-                JobTitle = "PRINCIPAL PRODUCT MANAGER",
-                Department = "AI Products",
-                OfficeLocation = "Building A",
-                PreferredLanguage = "en-US"
-            },
-            new GraphUser
-            {
-                Id = "00000000-0000-0000-0000-000000000005",
+                Id = "10000000-0000-4000-8000-000000000004",
                 DisplayName = "Taylor Morgan",
                 UserPrincipalName = "taylor.morgan@example.com",
                 Mail = "taylor.morgan@example.com",
-                JobTitle = "PRINCIPAL GROUP ENG MANAGER",
-                Department = "Platform Engineering",
-                OfficeLocation = "Building A",
+                JobTitle = "PRINCIPAL PRODUCT MANAGER",
+                Department = "AI Platform",
+                OfficeLocation = "HQ-102",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000006",
-                DisplayName = "Riley Chen",
-                UserPrincipalName = "riley.chen@example.com",
-                Mail = "riley.chen@example.com",
+                Id = "10000000-0000-4000-8000-000000000005",
+                DisplayName = "Casey Chen",
+                UserPrincipalName = "casey.chen@example.com",
+                Mail = "casey.chen@example.com",
+                JobTitle = "PRINCIPAL GROUP ENG MANAGER",
+                Department = "Platform Engineering",
+                OfficeLocation = "HQ-103",
+                PreferredLanguage = "en-US"
+            },
+            new GraphUser
+            {
+                Id = "10000000-0000-4000-8000-000000000006",
+                DisplayName = "Riley Patel",
+                UserPrincipalName = "riley.patel@example.com",
+                Mail = "riley.patel@example.com",
                 JobTitle = "BUSINESS ADMINISTRATOR",
-                Department = "Cloud Operations",
+                Department = "Platform Engineering",
                 OfficeLocation = "Remote",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000007",
-                DisplayName = "Jamie Patel",
-                UserPrincipalName = "jamie.patel@example.com",
-                Mail = "jamie.patel@example.com",
+                Id = "10000000-0000-4000-8000-000000000007",
+                DisplayName = "Jamie Kim",
+                UserPrincipalName = "jamie.kim@example.com",
+                Mail = "jamie.kim@example.com",
                 JobTitle = "GROUP PM MANAGER",
-                Department = "Directory Operations",
-                OfficeLocation = "Building A",
+                Department = "Platform Operations",
+                OfficeLocation = "HQ-101",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000008",
-                DisplayName = "Cameron Brooks",
-                UserPrincipalName = "cameron.brooks@example.com",
-                Mail = "cameron.brooks@example.com",
+                Id = "10000000-0000-4000-8000-000000000008",
+                DisplayName = "Sam Rivera",
+                UserPrincipalName = "sam.rivera@example.com",
+                Mail = "sam.rivera@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MGR",
                 Department = "Platform Engineering",
                 OfficeLocation = "Remote",
@@ -1005,13 +1375,13 @@ public class GraphClientService
             },
             new GraphUser
             {
-                Id = "00000000-0000-0000-0000-000000000009",
+                Id = "10000000-0000-4000-8000-000000000009",
                 DisplayName = "Drew Parker",
                 UserPrincipalName = "drew.parker@example.com",
                 Mail = "drew.parker@example.com",
                 JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
                 Department = "Data & AI",
-                OfficeLocation = "Building A",
+                OfficeLocation = "Headquarters",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -1055,7 +1425,7 @@ public class GraphClientService
                 DisplayName = "Platform Engineering",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
                 Mail = "platform-engineering@example.com",
-                MailNickname = "identityarch",
+                MailNickname = "platformengineering",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
                 SecurityEnabled = true,
@@ -1067,7 +1437,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "schema-reviewers@example.com",
+                Mail = "api-reviewers@example.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -1078,9 +1448,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "33333333-4444-5555-6666-777777777777",
-                DisplayName = "API Partners",
+                DisplayName = "Microsoft Graph Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "api-partners@example.com",
+                Mail = "graph-partners@example.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -1091,9 +1461,9 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData Working Group",
+                DisplayName = "OData TC Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odata-working-group@example.com",
+                Mail = "odata-community@example.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -1116,7 +1486,7 @@ public class GraphClientService
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
         var owners = users.Where(u => u.DisplayName.Contains("Morgan") || u.DisplayName.Contains("Drew")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Casey") || u.DisplayName.Contains("Taylor Morgan")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Taylor") || u.DisplayName.Contains("Casey Chen")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
@@ -1148,7 +1518,7 @@ public class GraphClientService
         var avery = users[0];
         var jordan = users[2];
         var mike = users[8];
-        var casey = users[3];
+        var taylor = users[3];
 
         return [
             new GraphDriveItem
@@ -1168,9 +1538,9 @@ public class GraphClientService
             new GraphDriveItem
             {
                 Id = "file-odata-agent-prompts-pptx",
-                Name = "OData-Agent-Proposal.pptx",
+                Name = "OData-Agent-Examples-Proposal.pptx",
                 Size = 2841920,
-                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/OData-Agent-Proposal.pptx",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/OData-Agent-Examples-Proposal.pptx",
                 FileMimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-20T09:00:00Z"),
@@ -1182,9 +1552,9 @@ public class GraphClientService
             new GraphDriveItem
             {
                 Id = "file-csdl-consistency-xlsx",
-                Name = "API-Schema-Validation.xlsx",
+                Name = "API-Schema-Consistency-Benchmark.xlsx",
                 Size = 918240,
-                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/API-Schema-Validation.xlsx",
+                WebUrl = "https://contoso-my.sharepoint.com/personal/avery_adams_example_com/Documents/API-Schema-Consistency-Benchmark.xlsx",
                 FileMimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-10-24T11:30:00Z"),
@@ -1203,9 +1573,9 @@ public class GraphClientService
                 IsFolder = false,
                 CreatedDateTime = DateTimeOffset.Parse("2026-08-12T10:00:00Z"),
                 LastModifiedDateTime = DateTimeOffset.Parse("2026-10-29T13:25:00Z"),
-                LastModifiedByDisplayName = casey.DisplayName,
-                LastModifiedByUpn = casey.UserPrincipalName,
-                LastModifiedByUser = casey
+                LastModifiedByDisplayName = taylor.DisplayName,
+                LastModifiedByUpn = taylor.UserPrincipalName,
+                LastModifiedByUser = taylor
             },
             new GraphDriveItem
             {
@@ -1245,13 +1615,13 @@ public class GraphClientService
     {
         var chGeneral = new GraphChannel
         {
-            Id = "ch-idarch-general",
+            Id = "ch-platform-general",
             TeamId = "11111111-2222-3333-4444-555555555555",
             DisplayName = "General",
             Description = "General architecture announcements and weekly sync updates",
             MembershipType = "standard",
             Email = "platform-general@example.com",
-            WebUrl = "https://teams.microsoft.com/l/channel/ch-idarch-general",
+            WebUrl = "https://teams.microsoft.com/l/channel/ch-platform-general",
             CreatedDateTime = DateTimeOffset.Parse("2023-01-15T08:05:00Z"),
             Messages = [
                 new GraphChatMessage
@@ -1311,7 +1681,7 @@ public class GraphClientService
             DisplayName = "MCP 2.0 Integration",
             Description = "Model Context Protocol 2026-07-28 stateless HTTP transport and discovery",
             MembershipType = "standard",
-            Email = "protocol-demo@example.com",
+            Email = "mcp-demo@example.com",
             WebUrl = "https://teams.microsoft.com/l/channel/ch-mcp-20",
             CreatedDateTime = DateTimeOffset.Parse("2026-08-01T09:00:00Z"),
             Messages = [
@@ -1321,8 +1691,8 @@ public class GraphClientService
                     Subject = "Stateless server/discover & Multi-Workload Projection",
                     Summary = "Removed deprecated initialize; added M365 workloads (Files, Teams, Chats, To Do) on port 3003.",
                     BodyContent = "LargeServer (:3003) exposes 14 tools, 13 resources/templates, 22 @Agent.Prompts, and 28 @Agent.Examples directly projected from Server_Large.csdl.",
-                    FromDisplayName = "Casey Kim",
-                    FromUpn = "casey.kim@example.com",
+                    FromDisplayName = "Taylor Morgan",
+                    FromUpn = "taylor.morgan@example.com",
                     Importance = "high",
                     CreatedDateTime = DateTimeOffset.Parse("2026-11-04T14:15:00Z")
                 }
@@ -1349,7 +1719,7 @@ public class GraphClientService
             new GraphTeam
             {
                 Id = "44444444-5555-6666-7777-888888888888",
-                DisplayName = "OData Working Group",
+                DisplayName = "OData TC Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
                 Visibility = "Public",
                 IsArchived = false,
@@ -1363,7 +1733,7 @@ public class GraphClientService
                         DisplayName = "Agent-Ready Vocabularies",
                         Description = "OASIS OData TC proposal for @Agent.Prompts and @Agent.Examples",
                         MembershipType = "standard",
-                        Email = "odata-agent-vocab@example.com",
+                        Email = "odata-demo@example.com",
                         WebUrl = "https://teams.microsoft.com/l/channel/ch-odata-vocab",
                         CreatedDateTime = DateTimeOffset.Parse("2024-02-05T10:00:00Z"),
                         Messages = [
@@ -1372,7 +1742,7 @@ public class GraphClientService
                                 Id = "msg-401",
                                 Subject = "OData v4.01 $metadata + Agent Vocabulary Alignment",
                                 Summary = "Keeping CSDL pure: project tools/resources from native EntitySets & Operations; use @Agent.Prompts and @Agent.Examples.",
-                                BodyContent = "Updated the proposal deck in OneDrive (OData-Agent-Proposal.pptx) to show both EntityContainer @Agent.Prompts and entity/operation @Agent.Examples.",
+                                BodyContent = "Updated the proposal deck in OneDrive (OData-Agent-Examples-Proposal.pptx) to show both EntityContainer @Agent.Prompts and entity/operation @Agent.Examples.",
                                 FromDisplayName = "Drew Parker",
                                 FromUpn = "drew.parker@example.com",
                                 Importance = "high",
@@ -1408,7 +1778,7 @@ public class GraphClientService
                     {
                         Id = "cmsg-1",
                         Subject = "DriveItem & TodoTask CSDL entities",
-                        BodyContent = "Hey Avery, I just updated API-Schema-Validation.xlsx in OneDrive. All 10 EntityTypes and 5 bound operations in Server_Large.csdl validate cleanly.",
+                        BodyContent = "Hey Avery, I just updated API-Schema-Consistency-Benchmark.xlsx in OneDrive. All 10 EntityTypes and 5 bound operations in Server_Large.csdl validate cleanly.",
                         FromDisplayName = jordan.DisplayName,
                         FromUpn = jordan.UserPrincipalName,
                         Importance = "normal",
@@ -1474,7 +1844,7 @@ public class GraphClientService
                 Id = "task-102",
                 ListId = "list-mcp-poc",
                 ListDisplayName = "Microsoft Graph & MCP 2.0 POC",
-                Title = "Review API-Schema-Validation.xlsx with Jordan Lee",
+                Title = "Review API-Schema-Consistency-Benchmark.xlsx with Jordan Lee",
                 BodyPreview = "Verify multi-workload routing metrics and bound function parameter bindings.",
                 Status = CompletedTaskIds.Contains("task-102") ? "completed" : "notStarted",
                 Importance = "high",
@@ -1488,7 +1858,7 @@ public class GraphClientService
                 Id = "task-103",
                 ListId = "list-mcp-poc",
                 ListDisplayName = "Microsoft Graph & MCP 2.0 POC",
-                Title = "Publish OData-Agent-Proposal.pptx to OData TC channel",
+                Title = "Publish OData-Agent-Examples-Proposal.pptx to OData TC channel",
                 BodyPreview = "Share final slide deck with Drew Parker and Morgan Reed.",
                 Status = "completed",
                 Importance = "normal",

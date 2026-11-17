@@ -1,0 +1,1736 @@
+{
+  "result_id": "results_copilot_gpt-6.1-sol_20261028_223255",
+  "report_id": "report_copilot_gpt-6.1-sol_20261028_223255",
+  "report_markdown": "report_copilot_gpt-6.1-sol_20261028_223255.md",
+  "report_json": "report_copilot_gpt-6.1-sol_20261028_223255.json",
+  "relative_report_path": "../reports/report_copilot_gpt-6.1-sol_20261028_223255.md",
+  "timestamp": "2026-10-28T22:32:55.994711",
+  "engine": "copilot",
+  "model": "gpt-6.1-sol",
+  "elapsed_seconds": 763.6,
+  "total_queries": 50,
+  "is_full_run": true,
+  "metrics": {
+    "server_a_success_rate": 90.0,
+    "server_b_success_rate": 88.0,
+    "delta": 2.0,
+    "intent_accuracy_a": 92.0,
+    "intent_accuracy_b": 92.0,
+    "odata_validity_a": 94.0,
+    "odata_validity_b": 94.0
+  },
+  "category_breakdown": {
+    "canonical": {
+      "count": 7,
+      "succ_a": 6,
+      "succ_b": 6,
+      "rate_a": 85.71428571428571,
+      "rate_b": 85.71428571428571
+    },
+    "paraphrased": {
+      "count": 19,
+      "succ_a": 17,
+      "succ_b": 16,
+      "rate_a": 89.47368421052632,
+      "rate_b": 84.21052631578947
+    },
+    "complex": {
+      "count": 16,
+      "succ_a": 14,
+      "succ_b": 14,
+      "rate_a": 87.5,
+      "rate_b": 87.5
+    },
+    "ambiguous": {
+      "count": 3,
+      "succ_a": 3,
+      "succ_b": 3,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    },
+    "edge_case": {
+      "count": 5,
+      "succ_a": 5,
+      "succ_b": 5,
+      "rate_a": 100.0,
+      "rate_b": 100.0
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "category": "canonical",
+      "query": "Whom Avery reports to?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 22.32
+    },
+    {
+      "query_id": 2,
+      "category": "paraphrased",
+      "query": "Who is Avery's manager?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users('{resolved-user-id}')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.15
+    },
+    {
+      "query_id": 3,
+      "category": "paraphrased",
+      "query": "Who is Avery's direct boss?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.47
+    },
+    {
+      "query_id": 4,
+      "category": "paraphrased",
+      "query": "Show me the reporting line for Avery Adams",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users('{resolved-user-id}')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.4
+    },
+    {
+      "query_id": 5,
+      "category": "paraphrased",
+      "query": "Who approves Avery's expenses and time off?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users('{resolved-user-id}')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.54
+    },
+    {
+      "query_id": 6,
+      "category": "complex",
+      "query": "Who is the manager of Jordan Lee?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jordan Lee"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jordan Lee'&$expand=manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jordan Lee"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jordan Lee'&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.29
+    },
+    {
+      "query_id": 7,
+      "category": "complex",
+      "query": "Whom does Casey Chen report to?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.59
+    },
+    {
+      "query_id": 8,
+      "category": "complex",
+      "query": "Who manages Taylor Morgan?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "taylor.morgan@example.com"
+        },
+        "odata_request": "users('taylor.morgan@example.com')/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Taylor Morgan"
+        },
+        "odata_request": "users('<resolved-user-id>')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.99
+    },
+    {
+      "query_id": 9,
+      "category": "complex",
+      "query": "Find the supervisor of Riley Patel",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Riley Patel"
+        },
+        "odata_request": "users?$filter=displayName eq 'Riley Patel'&$expand=manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Riley Patel"
+        },
+        "odata_request": "users('{resolved-user-id}')/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.32
+    },
+    {
+      "query_id": 10,
+      "category": "canonical",
+      "query": "Who is my manager?",
+      "pred_a": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "whom_avery_reports_to",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.31
+    },
+    {
+      "query_id": 11,
+      "category": "canonical",
+      "query": "Who are Avery's peers?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.75
+    },
+    {
+      "query_id": 12,
+      "category": "paraphrased",
+      "query": "Who works on the same team as Avery?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.39
+    },
+    {
+      "query_id": 13,
+      "category": "paraphrased",
+      "query": "Find teammates who share a manager with Avery",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.28
+    },
+    {
+      "query_id": 14,
+      "category": "canonical",
+      "query": "Who are my peers?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.78
+    },
+    {
+      "query_id": 15,
+      "category": "paraphrased",
+      "query": "List all colleagues reporting to the same director as Avery",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery"
+        },
+        "odata_request": "users('Avery')/manager/microsoft.graph.user/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.38
+    },
+    {
+      "query_id": 16,
+      "category": "complex",
+      "query": "Who are Jordan Lee's peer architects?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jordan Lee"
+        },
+        "odata_request": "users('<resolved-Jordan-Paiva-id>')/manager/directRepo rts/microsoft.graph.user?$filter=startswith(jobTitle,'Architect') and id ne '<resolved-Jordan-Paiva-id>'"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jordan Lee"
+        },
+        "odata_request": "users('{resolvedJoaoPaivaId}')/manager/directReports?$select=id,displayName,jobTitle"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 22.29
+    },
+    {
+      "query_id": 17,
+      "category": "complex",
+      "query": "Show everyone on Taylor Morgan's peer team",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "taylor.morgan@example.com"
+        },
+        "odata_request": "users('taylor.morgan@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Taylor Morgan"
+        },
+        "odata_request": "users('{resolvedUserId}')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 16.4
+    },
+    {
+      "query_id": 18,
+      "category": "complex",
+      "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan"
+        },
+        "odata_request": "users('Morgan')/directReports"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 18.19
+    },
+    {
+      "query_id": 19,
+      "category": "paraphrased",
+      "query": "Who shares an organization level with Avery Adams?",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users('{resolvedUserId}')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.09
+    },
+    {
+      "query_id": 20,
+      "category": "complex",
+      "query": "Find peer colleagues for Jamie Kim",
+      "pred_a": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jamie Kim'&$expand=manager($expand=directReports)"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "who_are_averys_peers",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users('{resolvedUserId}')/manager/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.77
+    },
+    {
+      "query_id": 21,
+      "category": "canonical",
+      "query": "Direct reports of a manager",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "<managerNameOrId>"
+        },
+        "odata_request": "users('<managerNameOrId>')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "<managerNameOrId>"
+        },
+        "odata_request": "users('<managerNameOrId>')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.87
+    },
+    {
+      "query_id": 22,
+      "category": "paraphrased",
+      "query": "Who reports to Morgan?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan"
+        },
+        "odata_request": "users('{resolved-user-id}')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.19
+    },
+    {
+      "query_id": 23,
+      "category": "paraphrased",
+      "query": "List everyone reporting to Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.71
+    },
+    {
+      "query_id": 24,
+      "category": "paraphrased",
+      "query": "Show the direct team of Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.4
+    },
+    {
+      "query_id": 25,
+      "category": "complex",
+      "query": "Does Avery have any direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users?$filter=displayName eq 'Avery Adams'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.15
+    },
+    {
+      "query_id": 26,
+      "category": "complex",
+      "query": "Who are Casey Chen's direct reports?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Casey Chen"
+        },
+        "odata_request": "users?$filter=displayName eq 'Casey Chen'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.31
+    },
+    {
+      "query_id": 27,
+      "category": "complex",
+      "query": "List members of Jamie Kim's group",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jamie Kim'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Jamie Kim"
+        },
+        "odata_request": "users?$filter=displayName eq 'Jamie Kim'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.87
+    },
+    {
+      "query_id": 28,
+      "category": "paraphrased",
+      "query": "Who is currently supervised by Morgan?",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan"
+        },
+        "odata_request": "users('Morgan')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.21
+    },
+    {
+      "query_id": 29,
+      "category": "complex",
+      "query": "Find all people managed by Sam Rivera",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Sam Rivera"
+        },
+        "odata_request": "users?$filter=displayName eq 'Sam Rivera'&$expand=directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Sam Rivera"
+        },
+        "odata_request": "users('Sam Rivera')/directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 15.26
+    },
+    {
+      "query_id": 30,
+      "category": "paraphrased",
+      "query": "Enumerate staff under partner director Morgan Reed",
+      "pred_a": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')/directReports"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "direct_reports_of_manager",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$expand=directReports"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.08
+    },
+    {
+      "query_id": 31,
+      "category": "canonical",
+      "query": "Search users by department and title",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {},
+        "odata_request": "users"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq '{department}' and jobTitle eq '{jobTitle}'"
+        },
+        "odata_request": "users?$filter=department eq '{department}' and jobTitle eq '{jobTitle}'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 20.25
+    },
+    {
+      "query_id": 32,
+      "category": "paraphrased",
+      "query": "Find architects in Identity",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Find architects in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "architects in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and contains(jobTitle,'Architect')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 18.49
+    },
+    {
+      "query_id": 33,
+      "category": "complex",
+      "query": "Find all Principal Architects in Platform Engineering",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq 'Platform Engineering' and startswith(jobTitle,'Principal Architect')"
+        },
+        "odata_request": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Principal Architect Platform Engineering"
+        },
+        "odata_request": "users?$filter=department eq 'Platform Engineering' and jobTitle eq 'Principal Architect'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.04
+    },
+    {
+      "query_id": 34,
+      "category": "complex",
+      "query": "Show me product managers in the AI Platform department",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "department eq 'AI Platform' and startswith(jobTitle,'Architect')"
+        },
+        "odata_request": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Architect')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Product managers in the AI Platform department"
+        },
+        "odata_request": "users?$filter=department eq 'AI Platform' and jobTitle eq 'Architect'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.44
+    },
+    {
+      "query_id": 35,
+      "category": "complex",
+      "query": "List all business administrators located in Prague",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "business administrators located in Prague"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Business Administrator' and city eq 'Prague'"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "business administrators located in Prague"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Business Administrator' and city eq 'Prague'"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 15.42
+    },
+    {
+      "query_id": 36,
+      "category": "complex",
+      "query": "Search for engineering managers in Identity",
+      "pred_a": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "engineering managers in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Example Directory Object 017')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "engineering managers in Identity"
+        },
+        "odata_request": "users?$filter=department eq 'Identity' and jobTitle eq 'Example Directory Object 017'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 16.94
+    },
+    {
+      "query_id": 37,
+      "category": "paraphrased",
+      "query": "Look up all software architects across the company",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "{ \"intent\": \"search_users_by_dept_title\", \"tool\": \"find_user\", \"parameters\": {\n    \"query\": \"software architect\" }, \"odata_request\": \"users?$search=\"jobTitle:Software\nArchitect\"&$count=true\"\n}"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "search_users_by_dept_title",
+        "tool": "find_user",
+        "parameters": {
+          "query": "software architect"
+        },
+        "odata_request": "users?$filter=jobTitle eq 'Software Architect'"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": false
+      },
+      "duration_sec": 17.47
+    },
+    {
+      "query_id": 38,
+      "category": "paraphrased",
+      "query": "Find staff members with Architect in their title",
+      "pred_a": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "{ \"intent\": \"search_users_by_dept_title\", \"tool\": \"find_user\", \"parameters\": {\n    \"query\": \"Architect\" }, \"odata_request\": \"users?$search=\"jobTitle:Architect\"\"\n}"
+      },
+      "eval_a": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "parse_error",
+        "tool": "parse_error",
+        "parameters": {},
+        "odata_request": "",
+        "raw": "{ \"intent\": \"search_users_by_dept_title\", \"tool\": \"find_user\", \"parameters\": {\n    \"query\": \"Architect\" }, \"odata_request\": \"users?$search=\"jobTitle:Architect\"&$count=true\"\n}"
+      },
+      "eval_b": {
+        "intent_match": false,
+        "tool_match": false,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 19.82
+    },
+    {
+      "query_id": 39,
+      "category": "ambiguous",
+      "query": "Find all employees named Morgan",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan"
+        },
+        "odata_request": "users?$filter=startswith(givenName,'Morgan')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Morgan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Morgan')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.9
+    },
+    {
+      "query_id": 40,
+      "category": "ambiguous",
+      "query": "Search for Jordan in the directory",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Jordan"
+        },
+        "odata_request": "users?$filter=startswith(displayName,'Jordan')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "Jordan"
+        },
+        "odata_request": "users?$filte r=startswith(displayName,'Jordan')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.0
+    },
+    {
+      "query_id": 41,
+      "category": "ambiguous",
+      "query": "Find user with email avery.adams@example.com",
+      "pred_a": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "avery.adams@example.com"
+        },
+        "odata_request": "users?$filter=mail eq  'avery.adams@example.com'"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "find_user",
+        "tool": "find_user",
+        "parameters": {
+          "query": "avery.adams@example.com"
+        },
+        "odata_request": "users?$filter=mail eq  'avery.adams@example.com'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 14.22
+    },
+    {
+      "query_id": 42,
+      "category": "canonical",
+      "query": "User quick lookup",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "me"
+        },
+        "odata_request": "me"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": false,
+        "execution_success": false
+      },
+      "duration_sec": 14.58
+    },
+    {
+      "query_id": 43,
+      "category": "paraphrased",
+      "query": "Get full profile card for Avery Adams",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "avery.adams@example.com"
+        },
+        "odata_request": "users('avery.adams@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Avery Adams"
+        },
+        "odata_request": "users('Avery Adams')"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.24
+    },
+    {
+      "query_id": 44,
+      "category": "paraphrased",
+      "query": "Show contact card and office location for Morgan Reed",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "morgan.reed@example.com"
+        },
+        "odata_request": "users('morgan.reed@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Morgan Reed"
+        },
+        "odata_request": "users?$filter=displayName eq 'Morgan Reed'&$select=id,displayName,jobTitle,department,mail,userPrincipalName,businessPhones,mobilePhone ,officeLocation"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 18.12
+    },
+    {
+      "query_id": 45,
+      "category": "paraphrased",
+      "query": "Look up user profile for Taylor Morgan",
+      "pred_a": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "taylor.morgan@example.com"
+        },
+        "odata_request": "users('taylor.morgan@example.com')"
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "user_quick_lookup",
+        "tool": "user_profile",
+        "parameters": {
+          "userId": "Taylor Morgan"
+        },
+        "odata_request": "users?$filter=displayName eq 'Taylor Morgan'"
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.82
+    },
+    {
+      "query_id": 46,
+      "category": "edge_case",
+      "query": "What projects is Avery currently leading?",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 13.47
+    },
+    {
+      "query_id": 47,
+      "category": "edge_case",
+      "query": "Check Example Directory Object 054 for open slots tomorrow",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 11.57
+    },
+    {
+      "query_id": 48,
+      "category": "edge_case",
+      "query": "Which Azure subscriptions are active for Identity?",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.93
+    },
+    {
+      "query_id": 49,
+      "category": "edge_case",
+      "query": "List all security groups that Jordan Lee is a member of",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 17.45
+    },
+    {
+      "query_id": 50,
+      "category": "edge_case",
+      "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+      "pred_a": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_a": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "pred_b": {
+        "intent": "out_of_scope",
+        "tool": "none",
+        "parameters": {},
+        "odata_request": ""
+      },
+      "eval_b": {
+        "intent_match": true,
+        "tool_match": true,
+        "odata_valid": true,
+        "execution_success": true
+      },
+      "duration_sec": 12.23
+    }
+  ]
+}

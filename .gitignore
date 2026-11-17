@@ -39,8 +39,4 @@ temp_*
 __pycache__/
 *.pyc
 
-## Experiment folder and all content (Do Not Commit)
-Experiment/
-Experiment/**
-Large_MCP_Experiment/
-Large_MCP_Experiment/**
+## Experiment data is sanitized and intended for publication.

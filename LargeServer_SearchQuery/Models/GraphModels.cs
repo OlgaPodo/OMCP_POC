@@ -342,10 +342,13 @@ public class GraphTraceRecord
 {
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
     public string? CorrelationId { get; set; }
+    public string? ClientRequestId { get; set; }
+    public string? GraphRequestId { get; set; }
     public string Method { get; set; } = "GET";
     public string Url { get; set; } = string.Empty;
     public int StatusCode { get; set; }
     public string? RequestHeaders { get; set; }
+    public string? ResponseHeaders { get; set; }
     public string? ResponseSummary { get; set; }
     public bool IsLive { get; set; }
 }

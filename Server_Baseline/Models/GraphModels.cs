@@ -107,10 +107,14 @@ public class GroupDetail : GraphGroup
 public class GraphTraceRecord
 {
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+    public string? CorrelationId { get; set; }
+    public string? ClientRequestId { get; set; }
+    public string? GraphRequestId { get; set; }
     public string Method { get; set; } = "GET";
     public string Url { get; set; } = string.Empty;
     public int StatusCode { get; set; } = 200;
     public string? RequestHeaders { get; set; }
+    public string? ResponseHeaders { get; set; }
     public string? ResponseSummary { get; set; }
     public bool IsLive { get; set; } = true;
 }

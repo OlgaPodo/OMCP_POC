@@ -543,9 +543,9 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Whom Avery reports to?',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_olga_reports_to', arguments: { userName: 'Avery Adams' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_avery_reports_to', arguments: { userName: 'Avery Adams' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')/manager",
-        entity: 'GraphService/@Agent.Prompts[whom_olga_reports_to]',
+        entity: 'GraphService/@Agent.Prompts[whom_avery_reports_to]',
         args: [{ name: 'userName', label: 'User Name', default: 'Avery Adams' }]
       },
       {
@@ -569,6 +569,7 @@ const LARGE_SAMPLE_QUERIES = [
 let currentLargeQuery = LARGE_SAMPLE_QUERIES[2].items[0];
 let cachedLargeCsdl = null;
 let cachedLargeExamples = [];
+let lastLargeCorrelationId = null;
 
 function escapeLargeHtml(str) {
   return String(str ?? '')
@@ -702,6 +703,7 @@ async function executeLargeQuery() {
     const targetServer = getSelectedLargeServerUrl();
     const res = await fetch('/mcp-proxy', {
       method: 'POST',
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
         'X-Target-Url': targetServer
@@ -709,6 +711,7 @@ async function executeLargeQuery() {
       body
     });
     const audit = await res.json();
+    lastLargeCorrelationId = audit.correlationId || null;
     const ok = (audit.statusCode || 200) < 400 && !audit.jsonRpcResponse?.error && !audit.jsonRpcResponse?.result?.isError;
     if (statusContainer) {
       statusContainer.classList.toggle('status-ok', ok);
@@ -732,7 +735,7 @@ async function executeLargeQuery() {
     }
 
     renderLargeResultCard(audit.jsonRpcResponse || audit, cardContainer);
-    loadLargeTraces();
+    loadLargeTraces(lastLargeCorrelationId);
   } catch (err) {
     if (cardContainer) {
       cardContainer.innerHTML = `<div class="org-card" style="color:#a4262c;">Failed to query Large MCP Server on ${LARGE_SERVER_URL}: ${escapeLargeHtml(err.message)}</div>`;
@@ -740,20 +743,31 @@ async function executeLargeQuery() {
   }
 }
 
-async function loadLargeTraces() {
+async function loadLargeTraces(correlationId = null) {
   const list = document.getElementById('largeTraceList');
   if (!list) return;
   try {
-    const res = await fetch('/api/traces', { headers: { 'X-Target-Url': getSelectedLargeServerUrl() } });
+    const query = correlationId ? `?correlationId=${encodeURIComponent(correlationId)}` : '';
+    const res = await fetch(`/api/traces${query}`, {
+      cache: 'no-store',
+      headers: { 'X-Target-Url': getSelectedLargeServerUrl() }
+    });
     if (!res.ok) return;
     const traces = await res.json();
     list.innerHTML = traces.slice().reverse().map(t => `
       <div class="trace-item" style="border:1px solid #edebe9;border-radius:4px;padding:8px;margin-bottom:6px;background:#fff;font-size:12px;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span><strong>${escapeLargeHtml(t.method)}</strong> <code>${escapeLargeHtml(t.url)}</code></span>
-          <span class="pill-badge ${t.statusCode < 300 ? 'pill-mcp-spec' : 'pill-annotation'}">HTTP ${escapeLargeHtml(t.statusCode)}</span>
+          <span>
+            <span class="pill-badge ${t.isLive ? 'pill-mcp-spec' : 'pill-annotation'}">${t.isLive ? 'LIVE GRAPH' : 'FALLBACK'}</span>
+            <span class="pill-badge ${t.statusCode < 300 ? 'pill-mcp-spec' : 'pill-annotation'}">HTTP ${escapeLargeHtml(t.statusCode)}</span>
+          </span>
         </div>
         <div style="color:#605e5c;font-size:11px;margin-top:4px;">${escapeLargeHtml(t.responseSummary || '')}</div>
+        <div style="color:#605e5c;font-size:11px;margin-top:4px;">
+          Correlation: <code>${escapeLargeHtml(t.correlationId || '')}</code>
+          &nbsp; Graph request-id: <code>${escapeLargeHtml(t.graphRequestId || '')}</code>
+        </div>
       </div>
     `).join('');
   } catch (_) {}
