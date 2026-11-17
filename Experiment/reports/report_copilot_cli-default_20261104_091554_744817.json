@@ -91,21 +91,21 @@
     {
       "query_id": 1,
       "category": "canonical",
-      "query": "Whom Avery reports to?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Whom Olga reports to?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -120,11 +120,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -287,7 +287,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -440,21 +440,21 @@
     {
       "query_id": 2,
       "category": "paraphrased",
-      "query": "Who is Avery's manager?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Who is Olga's manager?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -469,11 +469,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -636,7 +636,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -789,21 +789,21 @@
     {
       "query_id": 3,
       "category": "paraphrased",
-      "query": "Who is Avery's direct boss?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Who is Olga's direct boss?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -818,11 +818,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -985,7 +985,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -1138,21 +1138,21 @@
     {
       "query_id": 4,
       "category": "paraphrased",
-      "query": "Show me the reporting line for Avery Adams",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Show me the reporting line for Olga Podolyako",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -1167,11 +1167,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -1319,7 +1319,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000001?$expand=manager,directReports"
       },
@@ -1336,11 +1336,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {
@@ -1488,11 +1488,11 @@
     {
       "query_id": 5,
       "category": "paraphrased",
-      "query": "Who approves Avery's expenses and time off?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Who approves Olga's expenses and time off?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
@@ -1812,21 +1812,21 @@
     {
       "query_id": 6,
       "category": "complex",
-      "query": "Who is the manager of Jordan Lee?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Who is the manager of Joao Paiva?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "jordan.lee@example.com"
+        "userId": "jpaiva@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Jordan Lee"
+          "userId": "Joao Paiva"
         },
-        "odata_request": "users('jordan.lee@example.com')/manager"
+        "odata_request": "users('jpaiva@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -1841,11 +1841,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Jordan Lee"
+            "userId": "Joao Paiva"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "jordan.lee@example.com"
+          "resolved_identifier": "jpaiva@example.com"
         }
       ],
       "usage_a": {
@@ -1993,7 +1993,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Jordan Lee"
+          "userId": "Joao Paiva"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000003/manager"
       },
@@ -2010,11 +2010,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Jordan Lee"
+            "userId": "Joao Paiva"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "jordan.lee@example.com"
+          "resolved_identifier": "jpaiva@example.com"
         }
       ],
       "usage_b": {
@@ -2163,7 +2163,7 @@
       "query_id": 7,
       "category": "complex",
       "query": "Whom does Casey Chen report to?",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "casey.chen@example.com"
@@ -2171,7 +2171,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
           "userId": "Casey Chen"
@@ -2513,7 +2513,7 @@
       "query_id": 8,
       "category": "complex",
       "query": "Who manages Taylor Morgan?",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "taylor.morgan@example.com"
@@ -2521,7 +2521,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
           "userId": "Taylor Morgan"
@@ -2863,7 +2863,7 @@
       "query_id": 9,
       "category": "complex",
       "query": "Find the supervisor of Riley Patel",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "riley.patel@example.com"
@@ -2871,7 +2871,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
           "userId": "Riley Patel"
@@ -3213,7 +3213,7 @@
       "query_id": 10,
       "category": "canonical",
       "query": "Who is my manager?",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "me"
@@ -3221,7 +3221,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
           "userId": "me"
@@ -3245,7 +3245,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -3414,7 +3414,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {
@@ -3562,21 +3562,21 @@
     {
       "query_id": 11,
       "category": "canonical",
-      "query": "Who are Avery's peers?",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Who are Olga's peers?",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -3591,11 +3591,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -3758,7 +3758,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -3911,21 +3911,21 @@
     {
       "query_id": 12,
       "category": "paraphrased",
-      "query": "Who works on the same team as Avery?",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Who works on the same team as Olga?",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -3940,11 +3940,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -4092,7 +4092,7 @@
         "intent": "needs_clarification",
         "tool": "find_user",
         "parameters": {
-          "query": "Avery"
+          "query": "Olga"
         },
         "odata_request": ""
       },
@@ -4109,7 +4109,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -4262,21 +4262,21 @@
     {
       "query_id": 13,
       "category": "paraphrased",
-      "query": "Find teammates who share a manager with Avery",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Find teammates who share a manager with Olga",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -4291,11 +4291,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -4443,7 +4443,7 @@
         "intent": "needs_clarification",
         "tool": "GraphMcp-find_user",
         "parameters": {
-          "query": "Avery"
+          "query": "Olga"
         },
         "odata_request": ""
       },
@@ -4460,7 +4460,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -4614,7 +4614,7 @@
       "query_id": 14,
       "category": "canonical",
       "query": "Who are my peers?",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "me"
@@ -4622,7 +4622,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
           "userId": "me"
@@ -4646,7 +4646,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -4815,7 +4815,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {
@@ -4963,21 +4963,21 @@
     {
       "query_id": 15,
       "category": "paraphrased",
-      "query": "List all colleagues reporting to the same director as Avery",
-      "expected_intent": "who_are_averys_peers",
+      "query": "List all colleagues reporting to the same director as Olga",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -4992,11 +4992,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -5159,7 +5159,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -5312,19 +5312,19 @@
     {
       "query_id": 16,
       "category": "complex",
-      "query": "Who are Jordan Lee's peer architects?",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Who are Joao Paiva's peer architects?",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "jordan.lee@example.com"
+        "userId": "jpaiva@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Jordan Lee"
+          "userId": "Joao Paiva"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000003')/manager/directReports?$filter=id ne '10000000-0000-4000-8000-000000000003' and contains(tolower(jobTitle),'architect')&$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -5341,11 +5341,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Jordan Lee"
+            "userId": "Joao Paiva"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "jordan.lee@example.com"
+          "resolved_identifier": "jpaiva@example.com"
         }
       ],
       "usage_a": {
@@ -5510,7 +5510,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Jordan Lee"
+            "query": "Joao Paiva"
           },
           "success": true,
           "source": "not reported",
@@ -5525,7 +5525,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "jordan.lee@example.com"
+          "resolved_identifier": "jpaiva@example.com"
         }
       ],
       "usage_b": {
@@ -5674,7 +5674,7 @@
       "query_id": 17,
       "category": "complex",
       "query": "Show everyone on Taylor Morgan's peer team",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "taylor.morgan@example.com"
@@ -5682,7 +5682,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
           "userId": "Taylor Morgan"
@@ -6023,8 +6023,8 @@
     {
       "query_id": 18,
       "category": "complex",
-      "query": "Who are the other leads working under Morgan alongside Casey Chen?",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Who are the other leads working under Vojtech alongside Casey Chen?",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "casey.chen@example.com"
@@ -6032,7 +6032,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
           "userId": "Casey Chen"
@@ -6219,7 +6219,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Morgan"
+            "query": "Vojtech"
           },
           "success": true,
           "source": "not reported",
@@ -6372,21 +6372,21 @@
     {
       "query_id": 19,
       "category": "paraphrased",
-      "query": "Who shares an organization level with Avery Adams?",
-      "expected_intent": "who_are_averys_peers",
+      "query": "Who shares an organization level with Olga Podolyako?",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -6401,11 +6401,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -6553,7 +6553,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000001?$expand=manager,peers,directReports"
       },
@@ -6570,11 +6570,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {
@@ -6723,7 +6723,7 @@
       "query_id": 20,
       "category": "complex",
       "query": "Find peer colleagues for Jamie Kim",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "user_profile",
       "expected_params": {
         "userId": "jamie.kim@example.com"
@@ -6731,7 +6731,7 @@
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "user_profile",
         "parameters": {
           "userId": "Jamie Kim"
@@ -7076,7 +7076,7 @@
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -7084,7 +7084,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -7101,11 +7101,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -7409,11 +7409,11 @@
     {
       "query_id": 22,
       "category": "paraphrased",
-      "query": "Who reports to Morgan?",
+      "query": "Who reports to Vojtech?",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -7421,7 +7421,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan"
+          "userId": "Vojtech"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -7438,11 +7438,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan"
+            "userId": "Vojtech"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -7605,7 +7605,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Morgan"
+            "query": "Vojtech"
           },
           "success": true,
           "source": "not reported",
@@ -7758,11 +7758,11 @@
     {
       "query_id": 23,
       "category": "paraphrased",
-      "query": "List everyone reporting to Morgan Reed",
+      "query": "List everyone reporting to Vojtech Vondra",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -7770,7 +7770,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -7787,11 +7787,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -7939,7 +7939,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000002/directReports"
       },
@@ -7956,11 +7956,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_b": {
@@ -8108,11 +8108,11 @@
     {
       "query_id": 24,
       "category": "paraphrased",
-      "query": "Show the direct team of Morgan Reed",
+      "query": "Show the direct team of Vojtech Vondra",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -8120,7 +8120,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -8137,11 +8137,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -8289,7 +8289,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000002/directReports"
       },
@@ -8306,11 +8306,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_b": {
@@ -8458,11 +8458,11 @@
     {
       "query_id": 25,
       "category": "complex",
-      "query": "Does Avery have any direct reports?",
+      "query": "Does Olga have any direct reports?",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Avery Adams"
+        "managerNameOrId": "Olga Podolyako"
       },
       "required_tools": [],
       "required_resources": [],
@@ -8470,9 +8470,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/directReports"
+        "odata_request": "users('opodolyako@example.com')/directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -8487,11 +8487,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -8654,7 +8654,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -9020,7 +9020,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "example.directory.099@example.com"
+          "resolved_identifier": "zhwa@example.com"
         }
       ],
       "usage_b": {
@@ -9518,11 +9518,11 @@
     {
       "query_id": 28,
       "category": "paraphrased",
-      "query": "Who is currently supervised by Morgan?",
+      "query": "Who is currently supervised by Vojtech?",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -9530,7 +9530,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -9547,11 +9547,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -9714,7 +9714,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Morgan"
+            "query": "Vojtech"
           },
           "success": true,
           "source": "not reported",
@@ -10217,11 +10217,11 @@
     {
       "query_id": 30,
       "category": "paraphrased",
-      "query": "Enumerate staff under partner director Morgan Reed",
+      "query": "Enumerate staff under partner director Vojtech Vondra",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "user_profile",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "required_tools": [],
       "required_resources": [],
@@ -10229,7 +10229,7 @@
         "intent": "direct_reports_of_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -10246,11 +10246,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -10398,7 +10398,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000002/directReports"
       },
@@ -10415,11 +10415,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_b": {
@@ -10572,7 +10572,7 @@
       "expected_tool": "find_user",
       "expected_params": {
         "department": "Identity",
-        "jobTitle": "Architect"
+        "jobTitle": "Example Directory Object 089"
       },
       "required_tools": [],
       "required_resources": [],
@@ -10911,7 +10911,7 @@
       "expected_tool": "find_user",
       "expected_params": {
         "department": "Identity",
-        "jobTitle": "Architect"
+        "jobTitle": "Example Directory Object 089"
       },
       "required_tools": [],
       "required_resources": [],
@@ -11259,11 +11259,11 @@
     {
       "query_id": 33,
       "category": "complex",
-      "query": "Find all Principal Architects in Platform Engineering",
+      "query": "Find all Principal Architects in IDM Services ENG",
       "expected_intent": "search_users_by_dept_title",
       "expected_tool": "find_user",
       "expected_params": {
-        "department": "Platform Engineering",
+        "department": "IDM Services ENG",
         "jobTitle": "Principal"
       },
       "required_tools": [],
@@ -11272,9 +11272,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "find_user",
         "parameters": {
-          "query": "Principal Architects in Platform Engineering"
+          "query": "Principal Architects in IDM Services ENG"
         },
-        "odata_request": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal Architect')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
+        "odata_request": "users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal Architect')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
       },
       "eval_a": {
         "intent_match": true,
@@ -11289,7 +11289,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Principal Architects in Platform Engineering"
+            "query": "Principal Architects in IDM Services ENG"
           },
           "success": true,
           "source": "not reported",
@@ -11457,7 +11457,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "IDM Services ENG"
           },
           "success": true,
           "source": "not reported",
@@ -11610,12 +11610,12 @@
     {
       "query_id": 34,
       "category": "complex",
-      "query": "Show me product managers in the AI Platform department",
+      "query": "Show me product managers in the IDNA AI Innovations department",
       "expected_intent": "search_users_by_dept_title",
       "expected_tool": "find_user",
       "expected_params": {
-        "department": "AI Platform",
-        "jobTitle": "Principal Architect"
+        "department": "IDNA AI Innovations",
+        "jobTitle": "Principal Product Manager"
       },
       "required_tools": [],
       "required_resources": [],
@@ -11623,9 +11623,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "find_user",
         "parameters": {
-          "query": "product managers in the AI Platform department"
+          "query": "product managers in the IDNA AI Innovations department"
         },
-        "odata_request": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Architect')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
+        "odata_request": "users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Product Manager')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
       },
       "eval_a": {
         "intent_match": true,
@@ -11640,7 +11640,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "product managers in the AI Platform department"
+            "query": "product managers in the IDNA AI Innovations department"
           },
           "success": true,
           "source": "not reported",
@@ -11953,7 +11953,7 @@
       "expected_intent": "search_users_by_dept_title",
       "expected_tool": "find_user",
       "expected_params": {
-        "department": "Platform Engineering",
+        "department": "IDM MAP COGS 1908 Prague",
         "jobTitle": "Business Administrator"
       },
       "required_tools": [],
@@ -12289,7 +12289,7 @@
         "parameters": {
           "query": "engineering managers in Identity"
         },
-        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Example Directory Object 017')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
+        "odata_request": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Engineering Manager')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation"
       },
       "eval_a": {
         "intent_match": true,
@@ -12955,7 +12955,7 @@
       "expected_intent": "find_user",
       "expected_tool": "find_user",
       "expected_params": {
-        "query": "Architect"
+        "query": "Example Directory Object 089"
       },
       "required_tools": [],
       "required_resources": [],
@@ -12963,7 +12963,7 @@
         "intent": "search_users_by_dept_title",
         "tool": "find_user",
         "parameters": {
-          "query": "Architect"
+          "query": "Example Directory Object 089"
         },
         "odata_request": "users?$filter=contains(jobTitle,'Architect')&$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -12980,7 +12980,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Architect"
+            "query": "Example Directory Object 089"
           },
           "success": true,
           "source": "not reported",
@@ -13289,11 +13289,11 @@
     {
       "query_id": 39,
       "category": "ambiguous",
-      "query": "Find all employees named Morgan",
+      "query": "Find all employees named Vojtech",
       "expected_intent": "find_user",
       "expected_tool": "find_user",
       "expected_params": {
-        "query": "Morgan"
+        "query": "Vojtech"
       },
       "required_tools": [],
       "required_resources": [],
@@ -13301,9 +13301,9 @@
         "intent": "find_user",
         "tool": "find_user",
         "parameters": {
-          "query": "Morgan"
+          "query": "Vojtech"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Morgan') or startswith(mail,'Morgan') or startswith(userPrincipalName,'Morgan')"
+        "odata_request": "users?$filter=startswith(displayName,'Vojtech') or startswith(mail,'Vojtech') or startswith(userPrincipalName,'Vojtech')"
       },
       "eval_a": {
         "intent_match": true,
@@ -13318,7 +13318,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Morgan"
+            "query": "Vojtech"
           },
           "success": true,
           "source": "not reported",
@@ -13471,9 +13471,9 @@
         "intent": "find_user",
         "tool": "find_user",
         "parameters": {
-          "query": "Morgan"
+          "query": "Vojtech"
         },
-        "odata_request": "/users?$search=\"Morgan\""
+        "odata_request": "/users?$search=\"Vojtech\""
       },
       "eval_b": {
         "intent_match": true,
@@ -13488,7 +13488,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Morgan"
+            "query": "Vojtech"
           },
           "success": true,
           "source": "not reported",
@@ -13641,11 +13641,11 @@
     {
       "query_id": 40,
       "category": "ambiguous",
-      "query": "Search for Jordan in the directory",
+      "query": "Search for Joao in the directory",
       "expected_intent": "find_user",
       "expected_tool": "find_user",
       "expected_params": {
-        "query": "Jordan"
+        "query": "Joao"
       },
       "required_tools": [],
       "required_resources": [],
@@ -13653,9 +13653,9 @@
         "intent": "find_user",
         "tool": "find_user",
         "parameters": {
-          "query": "Jordan"
+          "query": "Joao"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Jordan') or startswith(mail,'Jordan') or startswith(userPrincipalName,'Jordan')"
+        "odata_request": "users?$filter=startswith(displayName,'Joao') or startswith(mail,'Joao') or startswith(userPrincipalName,'Joao')"
       },
       "eval_a": {
         "intent_match": true,
@@ -13670,7 +13670,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Jordan"
+            "query": "Joao"
           },
           "success": true,
           "source": "not reported",
@@ -13823,9 +13823,9 @@
         "intent": "needs_clarification",
         "tool": "find_user",
         "parameters": {
-          "query": "Jordan"
+          "query": "Joao"
         },
-        "odata_request": "/users?$filter=startswith(displayName,'Jordan')"
+        "odata_request": "/users?$filter=startswith(displayName,'Joao')"
       },
       "eval_b": {
         "intent_match": false,
@@ -13840,7 +13840,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Jordan"
+            "query": "Joao"
           },
           "success": true,
           "source": "not reported",
@@ -13993,11 +13993,11 @@
     {
       "query_id": 41,
       "category": "ambiguous",
-      "query": "Find user with email avery.adams@example.com",
+      "query": "Find user with email opodolyako@example.com",
       "expected_intent": "find_user",
       "expected_tool": "find_user",
       "expected_params": {
-        "query": "avery.adams@example.com"
+        "query": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
@@ -14005,9 +14005,9 @@
         "intent": "user_quick_lookup",
         "tool": "user_profile",
         "parameters": {
-          "userId": "avery.adams@example.com"
+          "userId": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')"
+        "odata_request": "users('opodolyako@example.com')"
       },
       "eval_a": {
         "intent_match": false,
@@ -14022,11 +14022,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "avery.adams@example.com"
+            "userId": "opodolyako@example.com"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -14174,9 +14174,9 @@
         "intent": "find_user",
         "tool": "find_user",
         "parameters": {
-          "query": "avery.adams@example.com"
+          "query": "opodolyako@example.com"
         },
-        "odata_request": "/users?$filter=mail eq 'avery.adams@example.com'"
+        "odata_request": "/users?$filter=mail eq 'opodolyako@example.com'"
       },
       "eval_b": {
         "intent_match": true,
@@ -14191,7 +14191,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "avery.adams@example.com"
+            "query": "opodolyako@example.com"
           },
           "success": true,
           "source": "not reported",
@@ -14377,7 +14377,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -14681,11 +14681,11 @@
     {
       "query_id": 43,
       "category": "paraphrased",
-      "query": "Get full profile card for Avery Adams",
+      "query": "Get full profile card for Olga Podolyako",
       "expected_intent": "user_quick_lookup",
       "expected_tool": "user_profile",
       "expected_params": {
-        "identifier": "avery.adams@example.com"
+        "identifier": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
@@ -14693,9 +14693,9 @@
         "intent": "user_quick_lookup",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager,directReports"
+        "odata_request": "users('opodolyako@example.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager,directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -14710,11 +14710,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -14862,7 +14862,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000001?$expand=manager,directReports"
       },
@@ -14879,11 +14879,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {
@@ -15031,11 +15031,11 @@
     {
       "query_id": 44,
       "category": "paraphrased",
-      "query": "Show contact card and office location for Morgan Reed",
+      "query": "Show contact card and office location for Vojtech Vondra",
       "expected_intent": "user_quick_lookup",
       "expected_tool": "user_profile",
       "expected_params": {
-        "identifier": "morgan.reed@example.com"
+        "identifier": "vvondra@example.com"
       },
       "required_tools": [],
       "required_resources": [],
@@ -15043,9 +15043,9 @@
         "intent": "user_quick_lookup",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
-        "odata_request": "users('morgan.reed@example.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager,directReports"
+        "odata_request": "users('vvondra@example.com')?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$expand=manager,directReports"
       },
       "eval_a": {
         "intent_match": true,
@@ -15060,11 +15060,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -15212,7 +15212,7 @@
         "intent": "user_profile",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan Reed"
+          "userId": "Vojtech Vondra"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000002"
       },
@@ -15229,11 +15229,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan Reed"
+            "userId": "Vojtech Vondra"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_b": {
@@ -15731,7 +15731,7 @@
     {
       "query_id": 46,
       "category": "edge_case",
-      "query": "What projects is Avery currently leading?",
+      "query": "What projects is Olga currently leading?",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -16053,7 +16053,7 @@
     {
       "query_id": 47,
       "category": "edge_case",
-      "query": "Check Example Directory Object 054 for open slots tomorrow",
+      "query": "Check Olga's calendar for open slots tomorrow",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -16697,7 +16697,7 @@
     {
       "query_id": 49,
       "category": "edge_case",
-      "query": "List all security groups that Jordan Lee is a member of",
+      "query": "List all security groups that Joao Paiva is a member of",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -17019,7 +17019,7 @@
     {
       "query_id": 50,
       "category": "edge_case",
-      "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+      "query": "Send a Teams message to Vojtech Vondra regarding API guidelines",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -17341,11 +17341,11 @@
     {
       "query_id": 51,
       "category": "canonical",
-      "query": "Find the Platform Engineering group",
+      "query": "Find the Identity Architecture group",
       "expected_intent": "find_group_by_name",
       "expected_tool": "find_group",
       "expected_params": {
-        "query": "Platform Engineering"
+        "query": "Identity Architecture"
       },
       "required_tools": [],
       "required_resources": [],
@@ -17353,9 +17353,9 @@
         "intent": "find_group_by_name",
         "tool": "find_group",
         "parameters": {
-          "query": "Platform Engineering"
+          "query": "Identity Architecture"
         },
-        "odata_request": "groups?$filter=startswith(displayName,'Platform Engineering') or startswith(mailNickname,'Platform Engineering')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility"
+        "odata_request": "groups?$filter=startswith(displayName,'Identity Architecture') or startswith(mailNickname,'Identity Architecture')&$select=id,displayName,description,mail,mailNickname,groupTypes,securityEnabled,visibility"
       },
       "eval_a": {
         "intent_match": true,
@@ -17370,7 +17370,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -17523,9 +17523,9 @@
         "intent": "find_group",
         "tool": "find_group",
         "parameters": {
-          "query": "Platform Engineering"
+          "query": "Identity Architecture"
         },
-        "odata_request": "/groups?$filter=startswith(displayName,'Platform Engineering') or startswith(mail,'Platform Engineering')"
+        "odata_request": "/groups?$filter=startswith(displayName,'Identity Architecture') or startswith(mail,'Identity Architecture')"
       },
       "eval_b": {
         "intent_match": false,
@@ -17540,7 +17540,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -18045,7 +18045,7 @@
     {
       "query_id": 53,
       "category": "canonical",
-      "query": "Who are the members of the Platform Engineering group?",
+      "query": "Who are the members of the Identity Architecture group?",
       "expected_intent": "list_group_members",
       "expected_tool": "group_details",
       "expected_params": {
@@ -18057,7 +18057,7 @@
         "intent": "list_group_members",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "groups('11111111-2222-3333-4444-555555555555')/members?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
@@ -18074,7 +18074,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -18226,7 +18226,7 @@
         "intent": "group_details",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "/groups/11111111-2222-3333-4444-555555555555/members"
       },
@@ -18243,7 +18243,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -18395,7 +18395,7 @@
     {
       "query_id": 54,
       "category": "paraphrased",
-      "query": "Show members of Platform Engineering",
+      "query": "Show members of Identity Architecture",
       "expected_intent": "list_group_members",
       "expected_tool": "group_details",
       "expected_params": {
@@ -18407,7 +18407,7 @@
         "intent": "list_group_members",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "groups('11111111-2222-3333-4444-555555555555')/members"
       },
@@ -18424,7 +18424,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -18576,7 +18576,7 @@
         "intent": "group_details",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "/groups/11111111-2222-3333-4444-555555555555/members"
       },
@@ -18593,7 +18593,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -18745,7 +18745,7 @@
     {
       "query_id": 55,
       "category": "canonical",
-      "query": "Who owns the Platform Engineering group?",
+      "query": "Who owns the Identity Architecture group?",
       "expected_intent": "who_owns_group",
       "expected_tool": "group_details",
       "expected_params": {
@@ -18757,7 +18757,7 @@
         "intent": "who_owns_group",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "groups('11111111-2222-3333-4444-555555555555')/owners"
       },
@@ -18774,7 +18774,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -18926,7 +18926,7 @@
         "intent": "group_details",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "/groups/11111111-2222-3333-4444-555555555555/owners"
       },
@@ -18943,7 +18943,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -19095,7 +19095,7 @@
     {
       "query_id": 56,
       "category": "paraphrased",
-      "query": "Find owners of Platform Engineering",
+      "query": "Find owners of Identity Architecture",
       "expected_intent": "who_owns_group",
       "expected_tool": "group_details",
       "expected_params": {
@@ -19107,7 +19107,7 @@
         "intent": "who_owns_group",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "groups('11111111-2222-3333-4444-555555555555')/owners"
       },
@@ -19124,7 +19124,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -19293,7 +19293,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -19456,7 +19456,7 @@
     {
       "query_id": 57,
       "category": "complex",
-      "query": "Get details for group Platform Engineering",
+      "query": "Get details for group Identity Architecture",
       "expected_intent": "group_quick_lookup",
       "expected_tool": "group_details",
       "expected_params": {
@@ -19468,7 +19468,7 @@
         "intent": "group_quick_lookup",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "groups('11111111-2222-3333-4444-555555555555')?$expand=members,owners"
       },
@@ -19485,7 +19485,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -19637,7 +19637,7 @@
         "intent": "group_details",
         "tool": "group_details",
         "parameters": {
-          "groupId": "Platform Engineering"
+          "groupId": "Identity Architecture"
         },
         "odata_request": "/groups/11111111-2222-3333-4444-555555555555?$expand=members,owners"
       },
@@ -19654,7 +19654,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -19806,7 +19806,7 @@
     {
       "query_id": 58,
       "category": "edge_case",
-      "query": "Delete the Platform Engineering group",
+      "query": "Delete the Identity Architecture group",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -20128,7 +20128,7 @@
     {
       "query_id": 59,
       "category": "complex",
-      "query": "Which peers of Avery belong to Platform Engineering?",
+      "query": "Which peers of Olga belong to Identity Architecture?",
       "expected_intent": "user_peers_in_group",
       "expected_tool": "read_resource",
       "expected_params": {},
@@ -20139,7 +20139,7 @@
       "required_resources": [
         {
           "entitySet": "users",
-          "identifier": "avery.adams@example.com"
+          "identifier": "opodolyako@example.com"
         },
         {
           "entitySet": "groups",
@@ -20150,8 +20150,8 @@
         "intent": "user_peers_in_group",
         "tool": "read_resource",
         "parameters": {
-          "userName": "Avery Adams",
-          "groupName": "Platform Engineering"
+          "userName": "Olga Podolyako",
+          "groupName": "Identity Architecture"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager/directReports?$select=id,userPrincipalName; groups('11111111-2222-3333-4444-555555555555')/members?$select=id,userPrincipalName"
       },
@@ -20169,17 +20169,17 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -20196,7 +20196,7 @@
           "source": "Microsoft Graph v1.0 (Live)",
           "resource_uri": "users://10000000-0000-4000-8000-000000000001",
           "entity_set": "users",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
@@ -20356,7 +20356,7 @@
         "intent": "needs_clarification",
         "tool": "GraphMcp-find_user",
         "parameters": {
-          "query": "Avery"
+          "query": "Olga"
         },
         "odata_request": ""
       },
@@ -20374,7 +20374,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -20527,7 +20527,7 @@
     {
       "query_id": 60,
       "category": "complex",
-      "query": "Which Platform Engineering members report to Morgan?",
+      "query": "Which Identity Architecture members report to Vojtech?",
       "expected_intent": "group_members_reporting_to_manager",
       "expected_tool": "read_resource",
       "expected_params": {},
@@ -20548,7 +20548,7 @@
         "intent": "group_members_reporting_to_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Morgan"
+          "userId": "Vojtech"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000002')/directReports; groups('11111111-2222-3333-4444-555555555555')/members"
       },
@@ -20566,17 +20566,17 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Morgan"
+            "userId": "Vojtech"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         },
         {
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -20593,7 +20593,7 @@
           "source": "Microsoft Graph v1.0 (Live)",
           "resource_uri": "users://10000000-0000-4000-8000-000000000002",
           "entity_set": "users",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         },
         {
           "method": "tools/call",
@@ -20771,7 +20771,7 @@
           "method": "tools/call",
           "name": "group_details",
           "arguments": {
-            "groupId": "Platform Engineering"
+            "groupId": "Identity Architecture"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Mock Fallback)",
@@ -20785,7 +20785,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_b": {
@@ -20933,7 +20933,7 @@
     {
       "query_id": 61,
       "category": "complex",
-      "query": "Does Avery share a manager with Platform Engineering owners?",
+      "query": "Does Olga share a manager with Identity Architecture owners?",
       "expected_intent": "user_and_group_owners_common_manager",
       "expected_tool": "read_resource",
       "expected_params": {},
@@ -20944,7 +20944,7 @@
       "required_resources": [
         {
           "entitySet": "users",
-          "identifier": "avery.adams@example.com"
+          "identifier": "opodolyako@example.com"
         },
         {
           "entitySet": "groups",
@@ -20955,7 +20955,7 @@
         "intent": "user_and_group_owners_common_manager",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager; groups('11111111-2222-3333-4444-555555555555')/owners; users('10000000-0000-4000-8000-000000000002')/manager; users('10000000-0000-4000-8000-000000000009')/manager"
       },
@@ -20973,17 +20973,17 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -21000,7 +21000,7 @@
           "source": "Microsoft Graph v1.0 (Live)",
           "resource_uri": "users://10000000-0000-4000-8000-000000000001",
           "entity_set": "users",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
@@ -21022,7 +21022,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         },
         {
           "method": "tools/call",
@@ -21032,7 +21032,7 @@
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (Live)",
-          "resolved_identifier": "drew.parker@example.com"
+          "resolved_identifier": "b-mpizzo@example.com"
         }
       ],
       "usage_a": {
@@ -21196,7 +21196,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",

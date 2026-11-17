@@ -61,7 +61,7 @@
     {
       "query_id": 46,
       "category": "edge_case",
-      "query": "What projects is Avery currently leading?",
+      "query": "What projects is Olga currently leading?",
       "expected_intent": "out_of_scope",
       "expected_tool": "none",
       "expected_params": {},
@@ -381,19 +381,19 @@
     {
       "query_id": 51,
       "category": "canonical",
-      "query": "Find the Platform Engineering group",
+      "query": "Find the Identity Architecture group",
       "expected_intent": "find_group_by_name",
       "expected_tool": "find_group",
       "expected_params": {
-        "query": "Platform Engineering"
+        "query": "Identity Architecture"
       },
       "pred_a": {
         "intent": "find_group_by_name",
         "tool": "find_group",
         "parameters": {
-          "query": "Platform Engineering"
+          "query": "Identity Architecture"
         },
-        "odata_request": "groups?$filter=startswith(displayName,'Platform Engineering')"
+        "odata_request": "groups?$filter=startswith(displayName,'Identity Architecture')"
       },
       "eval_a": {
         "intent_match": true,
@@ -408,7 +408,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -561,9 +561,9 @@
         "intent": "find_group_by_name",
         "tool": "find_group",
         "parameters": {
-          "query": "Platform Engineering"
+          "query": "Identity Architecture"
         },
-        "odata_request": "/groups?$filter=startswith(displayName,'Platform Engineering')"
+        "odata_request": "/groups?$filter=startswith(displayName,'Identity Architecture')"
       },
       "eval_b": {
         "intent_match": true,
@@ -578,7 +578,7 @@
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",

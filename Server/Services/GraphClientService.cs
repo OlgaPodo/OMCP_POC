@@ -430,34 +430,34 @@ public class GraphClientService
             new GraphUser
             {
                 Id = "10000000-0000-4000-8000-000000000001",
-                DisplayName = "Avery Adams",
-                UserPrincipalName = "avery.adams@example.com",
-                Mail = "avery.adams@example.com",
+                DisplayName = "Olga Podolyako",
+                UserPrincipalName = "opodolyako@example.com",
+                Mail = "opodolyako@example.com",
                 JobTitle = "PRINCIPAL API ARCHITECT",
-                Department = "Platform Engineering",
+                Department = "IDM Services ENG",
                 OfficeLocation = "Home Office",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "10000000-0000-4000-8000-000000000002",
-                DisplayName = "Morgan Reed",
-                UserPrincipalName = "morgan.reed@example.com",
-                Mail = "morgan.reed@example.com",
+                DisplayName = "Vojtech Vondra",
+                UserPrincipalName = "vvondra@example.com",
+                Mail = "vvondra@example.com",
                 JobTitle = "Partner Director Engineering",
-                Department = "Platform Engineering",
-                OfficeLocation = "Remote",
+                Department = "IDM MAP COGS 1908 Prague",
+                OfficeLocation = "PRAGUE-BBC/Mobile",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
             {
                 Id = "10000000-0000-4000-8000-000000000003",
-                DisplayName = "Jordan Lee",
-                UserPrincipalName = "jordan.lee@example.com",
-                Mail = "jordan.lee@example.com",
+                DisplayName = "Joao Paiva",
+                UserPrincipalName = "jpaiva@example.com",
+                Mail = "jpaiva@example.com",
                 JobTitle = "PRINCIPAL SOFTWARE ARCHITECT",
-                Department = "Platform Engineering",
-                OfficeLocation = "HQ-101",
+                Department = "IDM Services ENG",
+                OfficeLocation = "REDW-B/1072",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -467,8 +467,8 @@ public class GraphClientService
                 UserPrincipalName = "taylor.morgan@example.com",
                 Mail = "taylor.morgan@example.com",
                 JobTitle = "PRINCIPAL PRODUCT MANAGER",
-                Department = "AI Platform",
-                OfficeLocation = "HQ-102",
+                Department = "IDNA AI Innovations",
+                OfficeLocation = "REDW-B/1084",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -478,8 +478,8 @@ public class GraphClientService
                 UserPrincipalName = "casey.chen@example.com",
                 Mail = "casey.chen@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MANAGER",
-                Department = "Platform Engineering",
-                OfficeLocation = "HQ-103",
+                Department = "IDM Services ENG",
+                OfficeLocation = "REDW-B/1086",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -489,8 +489,8 @@ public class GraphClientService
                 UserPrincipalName = "riley.patel@example.com",
                 Mail = "riley.patel@example.com",
                 JobTitle = "BUSINESS ADMINISTRATOR",
-                Department = "Platform Engineering",
-                OfficeLocation = "Remote",
+                Department = "IDM MAP COGS 1908 Prague",
+                OfficeLocation = "PRAGUE-BBC/Mobile",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -500,8 +500,8 @@ public class GraphClientService
                 UserPrincipalName = "jamie.kim@example.com",
                 Mail = "jamie.kim@example.com",
                 JobTitle = "GROUP PM MANAGER",
-                Department = "Platform Operations",
-                OfficeLocation = "HQ-101",
+                Department = "IDM AD Ops COGS",
+                OfficeLocation = "REDW-B/1072",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -511,8 +511,8 @@ public class GraphClientService
                 UserPrincipalName = "sam.rivera@example.com",
                 Mail = "sam.rivera@example.com",
                 JobTitle = "PRINCIPAL GROUP ENG MGR",
-                Department = "Platform Engineering",
-                OfficeLocation = "Remote",
+                Department = "IDM Services ENG",
+                OfficeLocation = "PRAGUE-BBC",
                 PreferredLanguage = "en-US"
             },
             new GraphUser
@@ -523,7 +523,7 @@ public class GraphClientService
                 Mail = "drew.parker@example.com",
                 JobTitle = "PARTNER ARCHITECT (OData Co-Chair)",
                 Department = "Data & AI",
-                OfficeLocation = "Headquarters",
+                OfficeLocation = "REDW-B",
                 PreferredLanguage = "en-US"
             }
         ];
@@ -538,9 +538,9 @@ public class GraphClientService
             string.Equals(u.UserPrincipalName, identifier, StringComparison.OrdinalIgnoreCase) ||
             u.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase));
 
-        if (user == null) user = users[0]; // default to Avery
+        if (user == null) user = users[0]; // default to Olga
 
-        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Morgan", StringComparison.OrdinalIgnoreCase));
+        var manager = users.FirstOrDefault(u => u.DisplayName.Contains("Vojtech", StringComparison.OrdinalIgnoreCase));
         var peers = users.Where(u => u.Id != user.Id && u.Id != manager?.Id).ToList();
 
         return new UserProfileDetail
@@ -566,10 +566,10 @@ public class GraphClientService
             new GraphGroup
             {
                 Id = "11111111-2222-3333-4444-555555555555",
-                DisplayName = "Platform Engineering",
+                DisplayName = "Identity Architecture",
                 Description = "Microsoft Entra ID & Microsoft Graph core architecture, design, and standards",
-                Mail = "platform-engineering@example.com",
-                MailNickname = "platformengineering",
+                Mail = "identityarch@example.com",
+                MailNickname = "identityarch",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
                 SecurityEnabled = true,
@@ -581,7 +581,7 @@ public class GraphClientService
                 Id = "22222222-3333-4444-5555-666666666666",
                 DisplayName = "Security API Reviewers",
                 Description = "Review board for Security and Identity division Graph APIs",
-                Mail = "api-reviewers@example.com",
+                Mail = "scimreviewers@example.com",
                 MailNickname = "scimreviewers",
                 GroupTypes = [],
                 MailEnabled = false,
@@ -594,7 +594,7 @@ public class GraphClientService
                 Id = "33333333-4444-5555-6666-777777777777",
                 DisplayName = "Microsoft Graph Partners",
                 Description = "Partner onboarding, documentation, and API gateway guidance",
-                Mail = "graph-partners@example.com",
+                Mail = "graphpartners@example.com",
                 MailNickname = "graphpartners",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -607,7 +607,7 @@ public class GraphClientService
                 Id = "44444444-5555-6666-7777-888888888888",
                 DisplayName = "OData TC Working Group",
                 Description = "OASIS OData Technical Committee standards and Agent-Ready extensions",
-                Mail = "odata-community@example.com",
+                Mail = "odatetc@example.com",
                 MailNickname = "odatetc",
                 GroupTypes = ["Unified"],
                 MailEnabled = true,
@@ -629,12 +629,12 @@ public class GraphClientService
             string.Equals(g.MailNickname, identifier, StringComparison.OrdinalIgnoreCase) ||
             g.DisplayName.Contains(identifier, StringComparison.OrdinalIgnoreCase)) ?? groups[0];
 
-        var owners = users.Where(u => u.DisplayName.Contains("Morgan") || u.DisplayName.Contains("Drew")).ToList();
-        var members = users.Where(u => u.DisplayName.Contains("Avery") || u.DisplayName.Contains("Jordan") || u.DisplayName.Contains("Taylor") || u.DisplayName.Contains("Casey Chen")).ToList();
+        var owners = users.Where(u => u.DisplayName.Contains("Vojtech") || u.DisplayName.Contains("Drew")).ToList();
+        var members = users.Where(u => u.DisplayName.Contains("Olga") || u.DisplayName.Contains("Joao") || u.DisplayName.Contains("Taylor") || u.DisplayName.Contains("Casey Chen")).ToList();
 
         if (group.DisplayName.Contains("Partners"))
         {
-            owners = users.Where(u => u.DisplayName.Contains("Avery")).ToList();
+            owners = users.Where(u => u.DisplayName.Contains("Olga")).ToList();
             members = users.Where(u => u.DisplayName.Contains("Jamie") || u.DisplayName.Contains("Riley") || u.DisplayName.Contains("Cameron")).ToList();
         }
 

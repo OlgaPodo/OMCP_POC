@@ -43,7 +43,7 @@ public sealed class GeneratedGraphExecutor(GraphClientService graphService)
                 };
 
             case GraphExecutionKind.DriveItem:
-                var itemId = Key(arguments, "Agent_Protocol_Demo.docx");
+                var itemId = Key(arguments, "Script_MCP_POC.docx");
                 return new
                 {
                     method = method.Method,

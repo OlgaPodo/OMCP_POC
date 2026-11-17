@@ -48,7 +48,7 @@ class LargeExperimentTests(unittest.TestCase):
     def test_scoring_accepts_later_correct_tool_call(self):
         item = {
             "expectedTool": "get_users_manager",
-            "transformerArgs": {"key_id": "avery.adams@example.com"},
+            "transformerArgs": {"key_id": "opodolyako@example.com"},
         }
         successful = [
             {
@@ -56,7 +56,7 @@ class LargeExperimentTests(unittest.TestCase):
                 "arguments": {"key_id": "wrong-id"},
                 "resolved_entity": {
                     "id": "wrong-id",
-                    "userPrincipalName": "example.directory.077@example.com",
+                    "userPrincipalName": "someone@example.com",
                 },
             },
             {
@@ -64,31 +64,31 @@ class LargeExperimentTests(unittest.TestCase):
                 "arguments": {"key_id": "correct-id"},
                 "resolved_entity": {
                     "id": "correct-id",
-                    "userPrincipalName": "avery.adams@example.com",
+                    "userPrincipalName": "opodolyako@example.com",
                 },
             },
         ]
         self.assertTrue(runner.direct_parameters_match(item, successful))
         self.assertTrue(runner.direct_parameters_match(item, [{
             "name": "get_users_manager",
-            "arguments": {"key_id": "Avery"},
+            "arguments": {"key_id": "Olga"},
             "resolved_entity": {
                 "id": "correct-id",
-                "userPrincipalName": "avery.adams@example.com",
+                "userPrincipalName": "opodolyako@example.com",
             },
         }]))
 
     def test_scoring_accepts_current_user_tool_equivalent(self):
         item = {
-            "targetIntent": "whom_avery_reports_to",
+            "targetIntent": "whom_olga_reports_to",
             "expectedTool": "get_users_manager",
-            "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
-            "transformerArgs": {"key_id": "avery.adams@example.com"},
+            "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
+            "transformerArgs": {"key_id": "opodolyako@example.com"},
         }
         evaluation = runner.evaluate_live_result(
             item,
             "no_examples",
-            {"intent": "whom_avery_reports_to", "tool": "get_me_manager"},
+            {"intent": "whom_olga_reports_to", "tool": "get_me_manager"},
             [{
                 "name": "get_me_manager",
                 "success": True,
@@ -102,15 +102,15 @@ class LargeExperimentTests(unittest.TestCase):
 
     def test_scoring_accepts_current_user_odata_path_equivalent(self):
         item = {
-            "targetIntent": "whom_avery_reports_to",
+            "targetIntent": "whom_olga_reports_to",
             "expectedTool": "get_users_manager",
-            "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
-            "transformerArgs": {"key_id": "avery.adams@example.com"},
+            "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
+            "transformerArgs": {"key_id": "opodolyako@example.com"},
         }
         evaluation = runner.evaluate_live_result(
             item,
             "search_query",
-            {"intent": "whom_avery_reports_to", "tool": "execute_odata_query"},
+            {"intent": "whom_olga_reports_to", "tool": "execute_odata_query"},
             [
                 {"name": "search_intent", "success": True, "arguments": {}},
                 {
@@ -190,7 +190,7 @@ class LargeExperimentTests(unittest.TestCase):
                 "query": "Who is my manager?",
                 "targetIntent": "manager",
                 "expectedTool": "get_users_manager",
-                "transformerArgs": {"key_id": "avery.adams@example.com"},
+                "transformerArgs": {"key_id": "opodolyako@example.com"},
             },
             "no_examples",
             FailingSession(),
@@ -203,10 +203,10 @@ class LargeExperimentTests(unittest.TestCase):
     def test_rescore_report_updates_incorrect_failure(self):
         query = {
             "id": 1,
-            "targetIntent": "whom_avery_reports_to",
+            "targetIntent": "whom_olga_reports_to",
             "expectedTool": "get_users_manager",
-            "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
-            "transformerArgs": {"key_id": "avery.adams@example.com"},
+            "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
+            "transformerArgs": {"key_id": "opodolyako@example.com"},
             "category": "canonical",
             "workload": "users_groups",
         }
@@ -217,7 +217,7 @@ class LargeExperimentTests(unittest.TestCase):
             "odata_query": "users('correct-id')/manager",
             "resolved_entity": {
                 "id": "correct-id",
-                "userPrincipalName": "avery.adams@example.com",
+                "userPrincipalName": "opodolyako@example.com",
             },
         }
         report = {
@@ -248,7 +248,7 @@ class LargeExperimentTests(unittest.TestCase):
                 "eval_with_examples": {"execution_success": False},
                 "latency_with_examples_ms": 10,
                 "pred_search_query": {
-                    "intent": "whom_avery_reports_to",
+                    "intent": "whom_olga_reports_to",
                     "tool": "execute_odata_query",
                 },
                 "calls_search_query": [
@@ -258,7 +258,7 @@ class LargeExperimentTests(unittest.TestCase):
                         "success": True,
                         "arguments": {
                             "odataQuery":
-                                "GET users('avery.adams@example.com')/manager",
+                                "GET users('opodolyako@example.com')/manager",
                         },
                     },
                 ],

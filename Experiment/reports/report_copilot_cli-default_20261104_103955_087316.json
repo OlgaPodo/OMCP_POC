@@ -70,16 +70,16 @@
     {
       "query_id": 1,
       "category": "canonical",
-      "query": "Whom Avery reports to?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Whom Olga reports to?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "query",
         "parameters": {
           "path": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
@@ -99,7 +99,7 @@
           "method": "tools/call",
           "name": "query",
           "arguments": {
-            "path": "users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department"
+            "path": "users?$filter=startswith(displayName,'Olga Podolyako') or startswith(userPrincipalName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "success": true,
           "source": "not reported",
@@ -113,7 +113,7 @@
           },
           "success": true,
           "source": "not reported",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -276,7 +276,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",
@@ -429,16 +429,16 @@
     {
       "query_id": 2,
       "category": "paraphrased",
-      "query": "Who is Avery's manager?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Who is Olga's manager?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "required_tools": [],
       "required_resources": [],
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "query",
         "parameters": {
           "path": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
@@ -458,7 +458,7 @@
           "method": "tools/call",
           "name": "query",
           "arguments": {
-            "path": "users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department"
+            "path": "users?$filter=startswith(displayName,'Olga Podolyako') or startswith(userPrincipalName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "success": true,
           "source": "not reported",
@@ -472,7 +472,7 @@
           },
           "success": true,
           "source": "not reported",
-          "resolved_identifier": "morgan.reed@example.com"
+          "resolved_identifier": "vvondra@example.com"
         }
       ],
       "usage_a": {
@@ -620,7 +620,7 @@
         "intent": "needs_clarification",
         "tool": "find_user",
         "parameters": {
-          "query": "Avery"
+          "query": "Olga"
         },
         "odata_request": ""
       },
@@ -637,7 +637,7 @@
           "method": "tools/call",
           "name": "find_user",
           "arguments": {
-            "query": "Avery"
+            "query": "Olga"
           },
           "success": true,
           "source": "not reported",

@@ -584,7 +584,7 @@ def equivalent_tools(item: dict):
         item.get("transformerArgs", {}).get("key_id")
         or item.get("expectedParams", {}).get("userId")
     )
-    if normalize(expected_identity) == "avery.adams@example.com":
+    if normalize(expected_identity) == "opodolyako@example.com":
         equivalents["get_users_manager"].add("get_me_manager")
         equivalents["get_users_directReports"].add("get_me_directReports")
         equivalents["get_users"].add("get_me")
@@ -606,11 +606,11 @@ def odata_request_matches(item: dict, receipt: dict):
         item.get("transformerArgs", {}).get("key_id")
         or item.get("expectedParams", {}).get("userId")
     )
-    if normalize(expected_identity) == "avery.adams@example.com":
+    if normalize(expected_identity) == "opodolyako@example.com":
         candidates.add(expected.replace(
-            "users('avery.adams@example.com')", "me"))
+            "users('opodolyako@example.com')", "me"))
         candidates.add(expected.replace(
-            "users/avery.adams@example.com", "me"))
+            "users/opodolyako@example.com", "me"))
     return any(candidate and candidate in actual for candidate in candidates)
 
 
@@ -949,7 +949,7 @@ def generate_markdown_report(summary: dict) -> str:
         "",
         "## 2. Experiment 2: Query Examples Impact on Large API Surface (Variation 1 vs Variation 2)",
         f"- Adding 28 `@Agent.Examples` on entities, entity sets, singletons, functions, and actions increased verified success on the 100-question M365 benchmark from **{m['no_examples_success_rate']}%** to **{m['with_examples_success_rate']}%** (**+{m['examples_impact_delta']} pp**).",
-        "- **Biggest gains from `@Agent.Examples`**: bound OData functions (`searchDriveItems`, `recentDriveItems`, `deltaChannelMessages`), navigation-property lookups (`driveItems('{id}')/lastModifiedByUser`), and key/GUID resolution (`channels('ch-csdl-typespec')`, `groups('11111111-...')`).",
+        "- **Biggest gains from `@Agent.Examples`**: bound OData functions (`searchDriveItems`, `recentDriveItems`, `deltaChannelMessages`), navigation-property lookups (`driveItems('{id}')/lastModifiedByUser`), and key/GUID resolution (`channels('20000000-0000-4000-8000-000000000027')`, `groups('11111111-...')`).",
         "",
         "## 3. Experiment 3: Direct Transformation vs Intent Identification + OData Query Construction (Variation 2 vs Variation 3)",
         f"- **Tool Surface & Context Compression**: Direct CSDL transformation (`CsdlToMcpTransformer`) exposes **59 tools, 21 resources, and 22 prompts** (~{m['catalog_tokens']['with_examples']} tokens upfront on every turn), whereas `LargeServer_SearchQuery` (`:3005`) exposes **only 2 tools** (`search_intent` and `execute_odata_query`, ~{m['catalog_tokens']['search_query']} tokens — a **{m['catalog_token_reduction_pct']}% reduction** in upfront tool schema overhead).",

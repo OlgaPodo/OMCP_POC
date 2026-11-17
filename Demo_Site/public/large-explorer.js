@@ -103,10 +103,10 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'res-badge',
         label: 'odata://.../users/{key_id}',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 11, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/users/avery.adams@example.com', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')",
+        payload: { jsonrpc: '2.0', id: 11, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/users/opodolyako@example.com', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@example.com')",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/users/avery.adams@example.com', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/users/opodolyako@example.com', isUri: true }]
       },
       {
         id: 'lg-res-groups-all',
@@ -134,12 +134,12 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-res-drives-me',
         badge: 'READ',
         badgeClass: 'res-badge',
-        label: 'odata://.../drives/drive-avery',
+        label: 'odata://.../drives/drive-olga',
         method: 'resources/read',
-        payload: { jsonrpc: '2.0', id: 14, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/drives/drive-avery', _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-avery')",
+        payload: { jsonrpc: '2.0', id: 14, method: 'resources/read', params: { uri: 'odata://Microsoft.Graph.GraphService/drives/drive-olga', _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')",
         entity: 'Microsoft.Graph.Drive (EntitySet: drives)',
-        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/drives/drive-avery', isUri: true }]
+        args: [{ name: 'uri', label: 'Resource URI', default: 'odata://Microsoft.Graph.GraphService/drives/drive-olga', isUri: true }]
       },
       {
         id: 'lg-res-files-recent',
@@ -230,10 +230,10 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'mcp-badge',
         label: 'search_intent ("last user to modify file")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 28, method: 'tools/call', params: { name: 'search_intent', arguments: { query: 'Who was the last user to modify Agent_Protocol_Demo.docx?' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 28, method: 'tools/call', params: { name: 'search_intent', arguments: { query: 'Who was the last user to modify Script_MCP_POC.docx?' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: 'Step 1 (:3005): Search @Agent.Prompts, @Agent.Examples & CSDL Schema',
         entity: 'LargeServer_SearchQuery (:3005) — Intent Identification',
-        args: [{ name: 'query', label: 'Natural Language Question', default: 'Who was the last user to modify Agent_Protocol_Demo.docx?' }]
+        args: [{ name: 'query', label: 'Natural Language Question', default: 'Who was the last user to modify Script_MCP_POC.docx?' }]
       },
       {
         id: 'lg-tool-exec-odata',
@@ -263,11 +263,11 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'mcp-badge',
         label: 'drives_Microsoft_Graph_searchDriveItems ("CSDL")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 31, method: 'tools/call', params: { name: 'drives_Microsoft_Graph_searchDriveItems', arguments: { key_id: 'drive-avery', q: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')",
+        payload: { jsonrpc: '2.0', id: 31, method: 'tools/call', params: { name: 'drives_Microsoft_Graph_searchDriveItems', arguments: { key_id: 'drive-olga', q: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')",
         entity: 'Bound Function: Microsoft.Graph.searchDriveItems',
         args: [
-          { name: 'key_id', label: 'Drive ID (key_id)', default: 'drive-avery' },
+          { name: 'key_id', label: 'Drive ID (key_id)', default: 'drive-olga' },
           { name: 'q', label: 'Search Keyword (q)', default: 'CSDL' }
         ]
       },
@@ -372,24 +372,24 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-tool-find-user',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'list_users ("startswith(displayName,\'Avery\')")',
+        label: 'list_users ("startswith(displayName,\'Olga\')")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 39, method: 'tools/call', params: { name: 'list_users', arguments: { filter: "startswith(displayName,'Avery')" }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery')",
+        payload: { jsonrpc: '2.0', id: 39, method: 'tools/call', params: { name: 'list_users', arguments: { filter: "startswith(displayName,'Olga')" }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga')",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
-        args: [{ name: 'filter', label: '$filter', default: "startswith(displayName,'Avery')" }]
+        args: [{ name: 'filter', label: '$filter', default: "startswith(displayName,'Olga')" }]
       },
       {
         id: 'lg-tool-user-profile',
         badge: 'CALL',
         badgeClass: 'mcp-badge',
-        label: 'get_users ("avery.adams@example.com")',
+        label: 'get_users ("opodolyako@example.com")',
         method: 'tools/call',
-        payload: { jsonrpc: '2.0', id: 40, method: 'tools/call', params: { name: 'get_users', arguments: { key_id: 'avery.adams@example.com', expand: 'manager,directReports' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')?$expand=manager,directReports",
+        payload: { jsonrpc: '2.0', id: 40, method: 'tools/call', params: { name: 'get_users', arguments: { key_id: 'opodolyako@example.com', expand: 'manager,directReports' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@example.com')?$expand=manager,directReports",
         entity: 'Microsoft.Graph.User (EntitySet: users)',
         args: [
-          { name: 'key_id', label: 'User ID or UPN (key_id)', default: 'avery.adams@example.com' },
+          { name: 'key_id', label: 'User ID or UPN (key_id)', default: 'opodolyako@example.com' },
           { name: 'expand', label: '$expand', default: 'manager,directReports' }
         ]
       },
@@ -441,10 +441,10 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'GET last user to modify a file',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 51, method: 'prompts/get', params: { name: 'last_user_to_modify_file', arguments: { fileName: 'Agent_Protocol_Demo.docx' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 51, method: 'prompts/get', params: { name: 'last_user_to_modify_file', arguments: { fileName: 'Script_MCP_POC.docx' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: "GET https://graph.microsoft.com/v1.0/driveItems('file-mcp-poc-docx')/lastModifiedByUser",
         entity: 'GraphService/@Agent.Prompts[last_user_to_modify_file]',
-        args: [{ name: 'fileName', label: 'File Name', default: 'Agent_Protocol_Demo.docx' }]
+        args: [{ name: 'fileName', label: 'File Name', default: 'Script_MCP_POC.docx' }]
       },
       {
         id: 'lg-prompt-search-files',
@@ -453,7 +453,7 @@ const LARGE_SAMPLE_QUERIES = [
         label: 'Search OneDrive & SharePoint files',
         method: 'prompts/get',
         payload: { jsonrpc: '2.0', id: 52, method: 'prompts/get', params: { name: 'search_files_by_keyword', arguments: { query: 'CSDL' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')",
+        graphTarget: "GET https://graph.microsoft.com/v1.0/drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')",
         entity: 'GraphService/@Agent.Prompts[search_files_by_keyword]',
         args: [{ name: 'query', label: 'Keyword', default: 'CSDL' }]
       },
@@ -474,11 +474,11 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Read messages in a Teams channel',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 54, method: 'prompts/get', params: { name: 'team_channel_messages', arguments: { teamName: 'Platform Engineering', channelName: 'CSDL & TypeSpec' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 54, method: 'prompts/get', params: { name: 'team_channel_messages', arguments: { teamName: 'Identity Architecture', channelName: 'CSDL & TypeSpec' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: "GET https://graph.microsoft.com/v1.0/channels('ch-csdl-typespec')/messages?$top=20",
         entity: 'GraphService/@Agent.Prompts[team_channel_messages]',
         args: [
-          { name: 'teamName', label: 'Team Name', default: 'Platform Engineering' },
+          { name: 'teamName', label: 'Team Name', default: 'Identity Architecture' },
           { name: 'channelName', label: 'Channel Name', default: 'CSDL & TypeSpec' }
         ]
       },
@@ -521,10 +521,10 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Prepare 360 collaboration brief (Join)',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 58, method: 'prompts/get', params: { name: 'meeting_attendee_collaboration_brief', arguments: { colleagueName: 'Jordan Lee' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 58, method: 'prompts/get', params: { name: 'meeting_attendee_collaboration_brief', arguments: { colleagueName: 'Joao Paiva' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: 'Cross-Resource Join: users + driveItems + chats + todoTasks',
         entity: 'GraphService/@Agent.Prompts[meeting_attendee_collaboration_brief]',
-        args: [{ name: 'colleagueName', label: 'Colleague Name', default: 'Jordan Lee' }]
+        args: [{ name: 'colleagueName', label: 'Colleague Name', default: 'Joao Paiva' }]
       },
       {
         id: 'lg-prompt-collab-synthesis',
@@ -541,12 +541,12 @@ const LARGE_SAMPLE_QUERIES = [
         id: 'lg-prompt-reports-to',
         badge: 'PROMPT',
         badgeClass: 'prompt-badge',
-        label: 'Whom Avery reports to?',
+        label: 'Whom Olga reports to?',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_avery_reports_to', arguments: { userName: 'Avery Adams' }, _meta: { ...LARGE_MCP_META } } },
-        graphTarget: "GET https://graph.microsoft.com/v1.0/users('avery.adams@example.com')/manager",
-        entity: 'GraphService/@Agent.Prompts[whom_avery_reports_to]',
-        args: [{ name: 'userName', label: 'User Name', default: 'Avery Adams' }]
+        payload: { jsonrpc: '2.0', id: 60, method: 'prompts/get', params: { name: 'whom_olga_reports_to', arguments: { userName: 'Olga Podolyako' }, _meta: { ...LARGE_MCP_META } } },
+        graphTarget: "GET https://graph.microsoft.com/v1.0/users('opodolyako@example.com')/manager",
+        entity: 'GraphService/@Agent.Prompts[whom_olga_reports_to]',
+        args: [{ name: 'userName', label: 'User Name', default: 'Olga Podolyako' }]
       },
       {
         id: 'lg-prompt-peers-in-group',
@@ -554,12 +554,12 @@ const LARGE_SAMPLE_QUERIES = [
         badgeClass: 'prompt-badge',
         label: 'Which user peers belong to a group?',
         method: 'prompts/get',
-        payload: { jsonrpc: '2.0', id: 61, method: 'prompts/get', params: { name: 'user_peers_in_group', arguments: { userName: 'Avery Adams', groupName: 'Platform Engineering' }, _meta: { ...LARGE_MCP_META } } },
+        payload: { jsonrpc: '2.0', id: 61, method: 'prompts/get', params: { name: 'user_peers_in_group', arguments: { userName: 'Olga Podolyako', groupName: 'Identity Architecture' }, _meta: { ...LARGE_MCP_META } } },
         graphTarget: 'Cross-Resource Join: users/manager/directReports + groups/members',
         entity: 'GraphService/@Agent.Prompts[user_peers_in_group]',
         args: [
-          { name: 'userName', label: 'User Name', default: 'Avery Adams' },
-          { name: 'groupName', label: 'Group Name', default: 'Platform Engineering' }
+          { name: 'userName', label: 'User Name', default: 'Olga Podolyako' },
+          { name: 'groupName', label: 'Group Name', default: 'Identity Architecture' }
         ]
       }
     ]

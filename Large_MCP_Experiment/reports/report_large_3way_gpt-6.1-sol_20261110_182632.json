@@ -192,22 +192,22 @@
   "results": [
     {
       "query_id": 1,
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -220,7 +220,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 16.31,
           "is_error": false
         },
@@ -228,7 +228,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 600.88,
           "is_error": false
@@ -236,12 +236,12 @@
       ],
       "latency_no_examples_ms": 617.47,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -260,7 +260,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 16.92,
           "is_error": false
         },
@@ -268,7 +268,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 515.05,
           "is_error": false
@@ -276,12 +276,12 @@
       ],
       "latency_with_examples_ms": 555.45,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -296,7 +296,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Whom Avery reports to?"
+            "query": "Whom Olga reports to?"
           },
           "elapsed_ms": 15.95,
           "is_error": false
@@ -305,7 +305,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 550.19,
           "is_error": false
@@ -315,22 +315,22 @@
     },
     {
       "query_id": 2,
-      "query": "Who is Avery's manager?",
+      "query": "Who is Olga's manager?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -343,7 +343,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 19.41,
           "is_error": false
         },
@@ -351,7 +351,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 524.88,
           "is_error": false
@@ -359,12 +359,12 @@
       ],
       "latency_no_examples_ms": 544.54,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -383,7 +383,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 17.88,
           "is_error": false
         },
@@ -391,7 +391,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 540.92,
           "is_error": false
@@ -399,12 +399,12 @@
       ],
       "latency_with_examples_ms": 561.74,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -419,7 +419,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's manager?"
+            "query": "Who is Olga's manager?"
           },
           "elapsed_ms": 35.31,
           "is_error": false
@@ -428,7 +428,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 567.15,
           "is_error": false
@@ -438,22 +438,22 @@
     },
     {
       "query_id": 3,
-      "query": "Who is Avery's direct boss?",
+      "query": "Who is Olga's direct boss?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -466,7 +466,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 31.04,
           "is_error": false
         },
@@ -474,7 +474,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 527.31,
           "is_error": false
@@ -482,12 +482,12 @@
       ],
       "latency_no_examples_ms": 558.8,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -506,7 +506,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 16.86,
           "is_error": false
         },
@@ -514,7 +514,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 522.2,
           "is_error": false
@@ -522,12 +522,12 @@
       ],
       "latency_with_examples_ms": 551.82,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -542,7 +542,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's direct boss?"
+            "query": "Who is Olga's direct boss?"
           },
           "elapsed_ms": 38.55,
           "is_error": false
@@ -551,7 +551,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 519.89,
           "is_error": false
@@ -561,22 +561,22 @@
     },
     {
       "query_id": 4,
-      "query": "Show me the reporting line for Avery Adams",
+      "query": "Show me the reporting line for Olga Podolyako",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -589,7 +589,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 24.36,
           "is_error": false
         },
@@ -597,7 +597,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 493.87,
           "is_error": false
@@ -605,12 +605,12 @@
       ],
       "latency_no_examples_ms": 518.51,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -629,7 +629,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 38.85,
           "is_error": false
         },
@@ -637,7 +637,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 556.67,
           "is_error": false
@@ -645,12 +645,12 @@
       ],
       "latency_with_examples_ms": 598.82,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -665,7 +665,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show me the reporting line for Avery Adams"
+            "query": "Show me the reporting line for Olga Podolyako"
           },
           "elapsed_ms": 8.52,
           "is_error": false
@@ -674,7 +674,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 506.59,
           "is_error": false
@@ -684,22 +684,22 @@
     },
     {
       "query_id": 5,
-      "query": "Who approves Avery's expenses and time off?",
+      "query": "Who approves Olga's expenses and time off?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -712,7 +712,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 28.52,
           "is_error": false
         },
@@ -720,7 +720,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 522.87,
           "is_error": false
@@ -728,12 +728,12 @@
       ],
       "latency_no_examples_ms": 551.69,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -752,7 +752,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 6.48,
           "is_error": false
         },
@@ -760,7 +760,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 486.13,
           "is_error": false
@@ -768,12 +768,12 @@
       ],
       "latency_with_examples_ms": 496.48,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -788,7 +788,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who approves Avery's expenses and time off?"
+            "query": "Who approves Olga's expenses and time off?"
           },
           "elapsed_ms": 5.4,
           "is_error": false
@@ -797,7 +797,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 566.32,
           "is_error": false
@@ -807,22 +807,22 @@
     },
     {
       "query_id": 6,
-      "query": "Who is the manager of Jordan Lee?",
+      "query": "Who is the manager of Joao Paiva?",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('jordan.lee@example.com')/manager",
+      "expected_odata": "users('jpaiva@example.com')/manager",
       "expected_params": {
-        "userId": "jordan.lee@example.com"
+        "userId": "jpaiva@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "jordan.lee@example.com"
+          "key_id": "jpaiva@example.com"
         },
-        "odata_request": "users('jordan.lee@example.com')/manager"
+        "odata_request": "users('jpaiva@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -835,7 +835,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 18.8,
           "is_error": false
         },
@@ -843,7 +843,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "jordan.lee@example.com"
+            "key_id": "jpaiva@example.com"
           },
           "elapsed_ms": 492.1,
           "is_error": false
@@ -851,12 +851,12 @@
       ],
       "latency_no_examples_ms": 511.2,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "jordan.lee@example.com"
+          "key_id": "jpaiva@example.com"
         },
-        "odata_request": "users('jordan.lee@example.com')/manager"
+        "odata_request": "users('jpaiva@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -875,7 +875,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 5.99,
           "is_error": false
         },
@@ -883,7 +883,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "jordan.lee@example.com"
+            "key_id": "jpaiva@example.com"
           },
           "elapsed_ms": 545.43,
           "is_error": false
@@ -891,12 +891,12 @@
       ],
       "latency_with_examples_ms": 554.54,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('jordan.lee@example.com')/manager"
+          "odataQuery": "GET users('jpaiva@example.com')/manager"
         },
-        "odata_request": "GET users('jordan.lee@example.com')/manager"
+        "odata_request": "GET users('jpaiva@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -911,7 +911,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is the manager of Jordan Lee?"
+            "query": "Who is the manager of Joao Paiva?"
           },
           "elapsed_ms": 30.1,
           "is_error": false
@@ -920,7 +920,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('jordan.lee@example.com')/manager"
+            "odataQuery": "GET users('jpaiva@example.com')/manager"
           },
           "elapsed_ms": 571.78,
           "is_error": false
@@ -933,7 +933,7 @@
       "query": "Whom does Casey Chen report to?",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
       "expected_odata": "users('casey.chen@example.com')/manager",
       "expected_params": {
@@ -958,7 +958,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 3.69,
           "is_error": false
         },
@@ -974,7 +974,7 @@
       ],
       "latency_no_examples_ms": 198.94,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
           "key_id": "casey.chen@example.com"
@@ -998,7 +998,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 22.27,
           "is_error": false
         },
@@ -1014,7 +1014,7 @@
       ],
       "latency_with_examples_ms": 173.52,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users('casey.chen@example.com')/manager"
@@ -1056,7 +1056,7 @@
       "query": "Who manages Taylor Morgan?",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
       "expected_odata": "users('taylor.morgan@example.com')/manager",
       "expected_params": {
@@ -1081,7 +1081,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 19.77,
           "is_error": false
         },
@@ -1097,7 +1097,7 @@
       ],
       "latency_no_examples_ms": 134.31,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
           "key_id": "taylor.morgan@example.com"
@@ -1121,7 +1121,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 13.33,
           "is_error": false
         },
@@ -1137,7 +1137,7 @@
       ],
       "latency_with_examples_ms": 140.97,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users('taylor.morgan@example.com')/manager"
@@ -1179,7 +1179,7 @@
       "query": "Find the supervisor of Riley Patel",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
       "expected_odata": "users('riley.patel@example.com')/manager",
       "expected_params": {
@@ -1204,7 +1204,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 3.9,
           "is_error": false
         },
@@ -1220,7 +1220,7 @@
       ],
       "latency_no_examples_ms": 143.56,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
           "key_id": "riley.patel@example.com"
@@ -1244,7 +1244,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 25.78,
           "is_error": false
         },
@@ -1260,7 +1260,7 @@
       ],
       "latency_with_examples_ms": 692.53,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users('riley.patel@example.com')/manager"
@@ -1302,14 +1302,14 @@
       "query": "Who is my manager?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_me_manager",
       "expected_odata": "me/manager",
       "expected_params": {
         "userId": "me"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_me_manager",
         "parameters": {},
         "odata_request": "me/manager"
@@ -1325,7 +1325,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 2.78,
           "is_error": false
         },
@@ -1339,7 +1339,7 @@
       ],
       "latency_no_examples_ms": 595.77,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_me_manager",
         "parameters": {},
         "odata_request": "me/manager"
@@ -1361,7 +1361,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 14.22,
           "is_error": false
         },
@@ -1375,7 +1375,7 @@
       ],
       "latency_with_examples_ms": 572.16,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET me/manager"
@@ -1414,22 +1414,22 @@
     },
     {
       "query_id": 11,
-      "query": "Who are Avery's peers?",
+      "query": "Who are Olga's peers?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/manager/directReports",
+      "expected_odata": "users('opodolyako@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -1442,7 +1442,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 2.96,
           "is_error": false
         },
@@ -1450,7 +1450,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 475.55,
           "is_error": false
@@ -1458,12 +1458,12 @@
       ],
       "latency_no_examples_ms": 478.76,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -1482,7 +1482,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 2.84,
           "is_error": false
         },
@@ -1490,7 +1490,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 502.85,
           "is_error": false
@@ -1498,12 +1498,12 @@
       ],
       "latency_with_examples_ms": 518.11,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -1518,7 +1518,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who are Avery's peers?"
+            "query": "Who are Olga's peers?"
           },
           "elapsed_ms": 3.29,
           "is_error": false
@@ -1527,7 +1527,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
           },
           "elapsed_ms": 678.74,
           "is_error": false
@@ -1537,22 +1537,22 @@
     },
     {
       "query_id": 12,
-      "query": "Who works on the same team as Avery?",
+      "query": "Who works on the same team as Olga?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/manager/directReports",
+      "expected_odata": "users('opodolyako@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -1565,7 +1565,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.53,
           "is_error": false
         },
@@ -1573,7 +1573,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 528.13,
           "is_error": false
@@ -1581,12 +1581,12 @@
       ],
       "latency_no_examples_ms": 544.89,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -1605,7 +1605,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 15.54,
           "is_error": false
         },
@@ -1613,7 +1613,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 551.3,
           "is_error": false
@@ -1621,12 +1621,12 @@
       ],
       "latency_with_examples_ms": 589.07,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -1641,7 +1641,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who works on the same team as Avery?"
+            "query": "Who works on the same team as Olga?"
           },
           "elapsed_ms": 11.12,
           "is_error": false
@@ -1650,7 +1650,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
           },
           "elapsed_ms": 541.84,
           "is_error": false
@@ -1660,22 +1660,22 @@
     },
     {
       "query_id": 13,
-      "query": "Find teammates who share a manager with Avery",
+      "query": "Find teammates who share a manager with Olga",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/manager/directReports",
+      "expected_odata": "users('opodolyako@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -1688,7 +1688,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 18.46,
           "is_error": false
         },
@@ -1696,7 +1696,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 547.6,
           "is_error": false
@@ -1704,12 +1704,12 @@
       ],
       "latency_no_examples_ms": 566.26,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -1728,7 +1728,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 15.72,
           "is_error": false
         },
@@ -1736,7 +1736,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 532.64,
           "is_error": false
@@ -1744,12 +1744,12 @@
       ],
       "latency_with_examples_ms": 561.87,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -1764,7 +1764,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find teammates who share a manager with Avery"
+            "query": "Find teammates who share a manager with Olga"
           },
           "elapsed_ms": 21.31,
           "is_error": false
@@ -1773,7 +1773,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
           },
           "elapsed_ms": 541.8,
           "is_error": false
@@ -1786,14 +1786,14 @@
       "query": "Who are my peers?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_me_directReports",
       "expected_odata": "me/manager/directReports",
       "expected_params": {
         "userId": "me"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_me_directReports",
         "parameters": {},
         "odata_request": "me/manager/directReports"
@@ -1809,7 +1809,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.06,
           "is_error": false
         },
@@ -1823,7 +1823,7 @@
       ],
       "latency_no_examples_ms": 517.5,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_me_directReports",
         "parameters": {},
         "odata_request": "me/manager/directReports"
@@ -1845,7 +1845,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.95,
           "is_error": false
         },
@@ -1859,7 +1859,7 @@
       ],
       "latency_with_examples_ms": 539.18,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET me/manager/directReports"
@@ -1898,22 +1898,22 @@
     },
     {
       "query_id": 15,
-      "query": "List all colleagues reporting to the same director as Avery",
+      "query": "List all colleagues reporting to the same director as Olga",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/manager/directReports",
+      "expected_odata": "users('opodolyako@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -1926,7 +1926,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 18.04,
           "is_error": false
         },
@@ -1934,7 +1934,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 525.34,
           "is_error": false
@@ -1942,12 +1942,12 @@
       ],
       "latency_no_examples_ms": 543.62,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -1966,7 +1966,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 12.47,
           "is_error": false
         },
@@ -1974,7 +1974,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 608.84,
           "is_error": false
@@ -1982,12 +1982,12 @@
       ],
       "latency_with_examples_ms": 636.17,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2002,7 +2002,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "List all colleagues reporting to the same director as Avery"
+            "query": "List all colleagues reporting to the same director as Olga"
           },
           "elapsed_ms": 29.09,
           "is_error": false
@@ -2011,7 +2011,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
           },
           "elapsed_ms": 502.39,
           "is_error": false
@@ -2021,14 +2021,14 @@
     },
     {
       "query_id": 16,
-      "query": "Who are Jordan Lee's peer architects?",
+      "query": "Who are Joao Paiva's peer architects?",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('jordan.lee@example.com')/manager/directReports",
+      "expected_odata": "users('jpaiva@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "jordan.lee@example.com"
+        "userId": "jpaiva@example.com"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -2049,7 +2049,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 25.78,
           "is_error": false
         },
@@ -2065,12 +2065,12 @@
       ],
       "latency_no_examples_ms": 146.59,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "jordan.lee@example.com"
+          "key_id": "jpaiva@example.com"
         },
-        "odata_request": "users('jordan.lee@example.com')/manager/directReports"
+        "odata_request": "users('jpaiva@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -2089,7 +2089,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.21,
           "is_error": false
         },
@@ -2097,7 +2097,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "jordan.lee@example.com"
+            "key_id": "jpaiva@example.com"
           },
           "elapsed_ms": 515.93,
           "is_error": false
@@ -2105,12 +2105,12 @@
       ],
       "latency_with_examples_ms": 552.53,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('jordan.lee@example.com')/manager/directReports"
+          "odataQuery": "GET users('jpaiva@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('jordan.lee@example.com')/manager/directReports"
+        "odata_request": "GET users('jpaiva@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2125,7 +2125,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who are Jordan Lee's peer architects?"
+            "query": "Who are Joao Paiva's peer architects?"
           },
           "elapsed_ms": 20.45,
           "is_error": false
@@ -2134,7 +2134,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('jordan.lee@example.com')/manager/directReports"
+            "odataQuery": "GET users('jpaiva@example.com')/manager/directReports"
           },
           "elapsed_ms": 536.08,
           "is_error": false
@@ -2147,7 +2147,7 @@
       "query": "Show everyone on Taylor Morgan's peer team",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
       "expected_odata": "users('taylor.morgan@example.com')/manager/directReports",
       "expected_params": {
@@ -2172,7 +2172,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.19,
           "is_error": false
         },
@@ -2188,7 +2188,7 @@
       ],
       "latency_no_examples_ms": 146.53,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
           "key_id": "taylor.morgan@example.com"
@@ -2212,7 +2212,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.65,
           "is_error": false
         },
@@ -2228,7 +2228,7 @@
       ],
       "latency_with_examples_ms": 160.12,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users('taylor.morgan@example.com')/manager/directReports"
@@ -2267,10 +2267,10 @@
     },
     {
       "query_id": 18,
-      "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+      "query": "Who are the other leads working under Vojtech alongside Casey Chen?",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
       "expected_odata": "users('casey.chen@example.com')/manager/directReports",
       "expected_params": {
@@ -2295,7 +2295,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 2.3,
           "is_error": false
         },
@@ -2311,7 +2311,7 @@
       ],
       "latency_no_examples_ms": 142.58,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "list_users",
         "parameters": {
           "filter": "startswith(displayName,'Wang')"
@@ -2335,7 +2335,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.26,
           "is_error": false
         },
@@ -2351,7 +2351,7 @@
       ],
       "latency_with_examples_ms": 151.01,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users?$filter=startswith(displayName,'Unknown')"
@@ -2371,7 +2371,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who are the other leads working under Morgan alongside Casey Chen?"
+            "query": "Who are the other leads working under Vojtech alongside Casey Chen?"
           },
           "elapsed_ms": 21.83,
           "is_error": false
@@ -2390,22 +2390,22 @@
     },
     {
       "query_id": 19,
-      "query": "Who shares an organization level with Avery Adams?",
+      "query": "Who shares an organization level with Olga Podolyako?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/manager/directReports",
+      "expected_odata": "users('opodolyako@example.com')/manager/directReports",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -2418,7 +2418,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 16.76,
           "is_error": false
         },
@@ -2426,7 +2426,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 540.47,
           "is_error": false
@@ -2434,12 +2434,12 @@
       ],
       "latency_no_examples_ms": 557.43,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "users('opodolyako@example.com')/manager/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -2458,7 +2458,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 15.19,
           "is_error": false
         },
@@ -2466,7 +2466,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 518.06,
           "is_error": false
@@ -2474,12 +2474,12 @@
       ],
       "latency_with_examples_ms": 554.1,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/manager/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2494,7 +2494,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who shares an organization level with Avery Adams?"
+            "query": "Who shares an organization level with Olga Podolyako?"
           },
           "elapsed_ms": 13.27,
           "is_error": false
@@ -2503,7 +2503,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/manager/directReports"
           },
           "elapsed_ms": 512.3,
           "is_error": false
@@ -2516,7 +2516,7 @@
       "query": "Find peer colleagues for Jamie Kim",
       "category": "complex",
       "workload": "users_groups",
-      "expected_intent": "who_are_averys_peers",
+      "expected_intent": "who_are_olgas_peers",
       "expected_tool": "get_users_directReports",
       "expected_odata": "users('jamie.kim@example.com')/manager/directReports",
       "expected_params": {
@@ -2526,7 +2526,7 @@
         "intent": "ambiguous_intent",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Kannan')"
+          "filter": "startswith(displayName,'Kim')"
         },
         "odata_request": "users?$search=..."
       },
@@ -2541,7 +2541,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 17.35,
           "is_error": false
         },
@@ -2549,7 +2549,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Kannan')"
+            "filter": "startswith(displayName,'Kim')"
           },
           "elapsed_ms": 128.21,
           "is_error": false
@@ -2557,7 +2557,7 @@
       ],
       "latency_no_examples_ms": 145.83,
       "pred_with_examples": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "get_users_directReports",
         "parameters": {
           "key_id": "jamie.kim@example.com"
@@ -2581,7 +2581,7 @@
         },
         {
           "method": "prompts/get",
-          "name": "who_are_averys_peers",
+          "name": "who_are_olgas_peers",
           "elapsed_ms": 12.47,
           "is_error": false
         },
@@ -2597,7 +2597,7 @@
       ],
       "latency_with_examples_ms": 141.15,
       "pred_search_query": {
-        "intent": "who_are_averys_peers",
+        "intent": "who_are_olgas_peers",
         "tool": "execute_odata_query",
         "parameters": {
           "odataQuery": "GET users('jamie.kim@example.com')/manager/directReports"
@@ -2641,17 +2641,17 @@
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -2672,7 +2672,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 553.18,
           "is_error": false
@@ -2683,9 +2683,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -2712,7 +2712,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 576.21,
           "is_error": false
@@ -2723,9 +2723,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2749,7 +2749,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 535.15,
           "is_error": false
@@ -2759,22 +2759,22 @@
     },
     {
       "query_id": 22,
-      "query": "Who reports to Morgan?",
+      "query": "Who reports to Vojtech?",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -2795,7 +2795,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 574.9,
           "is_error": false
@@ -2806,9 +2806,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -2835,7 +2835,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 535.35,
           "is_error": false
@@ -2846,9 +2846,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2863,7 +2863,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who reports to Morgan?"
+            "query": "Who reports to Vojtech?"
           },
           "elapsed_ms": 19.58,
           "is_error": false
@@ -2872,7 +2872,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 616.79,
           "is_error": false
@@ -2882,22 +2882,22 @@
     },
     {
       "query_id": 23,
-      "query": "List everyone reporting to Morgan Reed",
+      "query": "List everyone reporting to Vojtech Vondra",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -2918,7 +2918,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 642.81,
           "is_error": false
@@ -2929,9 +2929,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -2958,7 +2958,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 578.13,
           "is_error": false
@@ -2969,9 +2969,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2986,7 +2986,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "List everyone reporting to Morgan Reed"
+            "query": "List everyone reporting to Vojtech Vondra"
           },
           "elapsed_ms": 27.33,
           "is_error": false
@@ -2995,7 +2995,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 581.96,
           "is_error": false
@@ -3005,22 +3005,22 @@
     },
     {
       "query_id": 24,
-      "query": "Show the direct team of Morgan Reed",
+      "query": "Show the direct team of Vojtech Vondra",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -3041,7 +3041,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 773.48,
           "is_error": false
@@ -3052,9 +3052,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -3081,7 +3081,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 620.43,
           "is_error": false
@@ -3092,9 +3092,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -3109,7 +3109,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show the direct team of Morgan Reed"
+            "query": "Show the direct team of Vojtech Vondra"
           },
           "elapsed_ms": 16.94,
           "is_error": false
@@ -3118,7 +3118,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 598.17,
           "is_error": false
@@ -3128,22 +3128,22 @@
     },
     {
       "query_id": 25,
-      "query": "Does Avery have any direct reports?",
+      "query": "Does Olga have any direct reports?",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('avery.adams@example.com')/directReports",
+      "expected_odata": "users('opodolyako@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Avery Adams"
+        "managerNameOrId": "Olga Podolyako"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/directReports"
+        "odata_request": "users('opodolyako@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -3164,7 +3164,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 514.47,
           "is_error": false
@@ -3175,9 +3175,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/directReports"
+        "odata_request": "users('opodolyako@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -3204,7 +3204,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 515.58,
           "is_error": false
@@ -3215,9 +3215,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/directReports"
+          "odataQuery": "GET users('opodolyako@example.com')/directReports"
         },
-        "odata_request": "GET users('avery.adams@example.com')/directReports"
+        "odata_request": "GET users('opodolyako@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -3232,7 +3232,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Does Avery have any direct reports?"
+            "query": "Does Olga have any direct reports?"
           },
           "elapsed_ms": 14.15,
           "is_error": false
@@ -3241,7 +3241,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/directReports"
+            "odataQuery": "GET users('opodolyako@example.com')/directReports"
           },
           "elapsed_ms": 518.51,
           "is_error": false
@@ -3387,7 +3387,7 @@
         "intent": "ambiguous_intent",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Kannan')"
+          "filter": "startswith(displayName,'Kim')"
         },
         "odata_request": "users?$search=..."
       },
@@ -3410,7 +3410,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Kannan')"
+            "filter": "startswith(displayName,'Kim')"
           },
           "elapsed_ms": 128.41,
           "is_error": false
@@ -3497,22 +3497,22 @@
     },
     {
       "query_id": 28,
-      "query": "Who is currently supervised by Morgan?",
+      "query": "Who is currently supervised by Vojtech?",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -3533,7 +3533,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 607.62,
           "is_error": false
@@ -3544,9 +3544,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -3573,7 +3573,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 607.32,
           "is_error": false
@@ -3584,9 +3584,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -3601,7 +3601,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is currently supervised by Morgan?"
+            "query": "Who is currently supervised by Vojtech?"
           },
           "elapsed_ms": 14.85,
           "is_error": false
@@ -3610,7 +3610,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 549.53,
           "is_error": false
@@ -3743,22 +3743,22 @@
     },
     {
       "query_id": 30,
-      "query": "Enumerate staff under partner director Morgan Reed",
+      "query": "Enumerate staff under partner director Vojtech Vondra",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "direct_reports_of_manager",
       "expected_tool": "get_users_directReports",
-      "expected_odata": "users('morgan.reed@example.com')/directReports",
+      "expected_odata": "users('vvondra@example.com')/directReports",
       "expected_params": {
-        "managerNameOrId": "Morgan Reed"
+        "managerNameOrId": "Vojtech Vondra"
       },
       "pred_no_examples": {
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -3779,7 +3779,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 553.45,
           "is_error": false
@@ -3790,9 +3790,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "get_users_directReports",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')/directReports"
+        "odata_request": "users('vvondra@example.com')/directReports"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -3819,7 +3819,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 718.1,
           "is_error": false
@@ -3830,9 +3830,9 @@
         "intent": "direct_reports_of_manager",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+          "odataQuery": "GET users('vvondra@example.com')/directReports"
         },
-        "odata_request": "GET users('morgan.reed@example.com')/directReports"
+        "odata_request": "GET users('vvondra@example.com')/directReports"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -3847,7 +3847,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Enumerate staff under partner director Morgan Reed"
+            "query": "Enumerate staff under partner director Vojtech Vondra"
           },
           "elapsed_ms": 15.73,
           "is_error": false
@@ -3856,7 +3856,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')/directReports"
+            "odataQuery": "GET users('vvondra@example.com')/directReports"
           },
           "elapsed_ms": 514.3,
           "is_error": false
@@ -3874,7 +3874,7 @@
       "expected_odata": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
       "expected_params": {
         "department": "Identity",
-        "jobTitle": "Architect"
+        "jobTitle": "Example Directory Object 089"
       },
       "pred_no_examples": {
         "intent": "search_users_by_dept_title",
@@ -3998,7 +3998,7 @@
       "expected_odata": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
       "expected_params": {
         "department": "Identity",
-        "jobTitle": "Architect"
+        "jobTitle": "Example Directory Object 089"
       },
       "pred_no_examples": {
         "intent": "search_users_by_dept_title",
@@ -4114,14 +4114,14 @@
     },
     {
       "query_id": 33,
-      "query": "Find all Principal Architects in Platform Engineering",
+      "query": "Find all Principal Architects in IDM Services ENG",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "search_users_by_dept_title",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')",
+      "expected_odata": "users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')",
       "expected_params": {
-        "department": "Platform Engineering",
+        "department": "IDM Services ENG",
         "jobTitle": "Principal"
       },
       "pred_no_examples": {
@@ -4162,9 +4162,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "list_users",
         "parameters": {
-          "filter": "department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+          "filter": "department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
         },
-        "odata_request": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+        "odata_request": "users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -4191,7 +4191,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+            "filter": "department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
           },
           "elapsed_ms": 124.64,
           "is_error": false
@@ -4202,9 +4202,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+          "odataQuery": "GET users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
         },
-        "odata_request": "GET users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+        "odata_request": "GET users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -4219,7 +4219,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find all Principal Architects in Platform Engineering"
+            "query": "Find all Principal Architects in IDM Services ENG"
           },
           "elapsed_ms": 17.46,
           "is_error": false
@@ -4228,7 +4228,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')"
+            "odataQuery": "GET users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')"
           },
           "elapsed_ms": 119.05,
           "is_error": false
@@ -4238,15 +4238,15 @@
     },
     {
       "query_id": 34,
-      "query": "Show me product managers in the AI Platform department",
+      "query": "Show me product managers in the IDNA AI Innovations department",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "search_users_by_dept_title",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')",
+      "expected_odata": "users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')",
       "expected_params": {
-        "department": "AI Platform",
-        "jobTitle": "Principal Architect"
+        "department": "IDNA AI Innovations",
+        "jobTitle": "Principal Product Manager"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -4286,9 +4286,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "list_users",
         "parameters": {
-          "filter": "department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+          "filter": "department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
         },
-        "odata_request": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+        "odata_request": "users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -4315,7 +4315,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+            "filter": "department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
           },
           "elapsed_ms": 167.4,
           "is_error": false
@@ -4326,9 +4326,9 @@
         "intent": "search_users_by_dept_title",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+          "odataQuery": "GET users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
         },
-        "odata_request": "GET users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+        "odata_request": "GET users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -4343,7 +4343,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show me product managers in the AI Platform department"
+            "query": "Show me product managers in the IDNA AI Innovations department"
           },
           "elapsed_ms": 22.02,
           "is_error": false
@@ -4352,7 +4352,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')"
+            "odataQuery": "GET users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')"
           },
           "elapsed_ms": 118.16,
           "is_error": false
@@ -4369,7 +4369,7 @@
       "expected_tool": "list_users",
       "expected_odata": "users?$filter=startswith(jobTitle,'Business Administrator') and officeLocation eq 'Prague'",
       "expected_params": {
-        "department": "Platform Engineering",
+        "department": "IDM MAP COGS 1908 Prague",
         "jobTitle": "Business Administrator"
       },
       "pred_no_examples": {
@@ -4740,7 +4740,7 @@
       "expected_tool": "list_users",
       "expected_odata": "users?$filter=startswith(jobTitle,'Architect')",
       "expected_params": {
-        "query": "Architect"
+        "query": "Example Directory Object 089"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -4856,22 +4856,22 @@
     },
     {
       "query_id": 39,
-      "query": "Find all employees named Morgan",
+      "query": "Find all employees named Vojtech",
       "category": "ambiguous",
       "workload": "users_groups",
       "expected_intent": "find_user",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=startswith(displayName,'Morgan')",
+      "expected_odata": "users?$filter=startswith(displayName,'Vojtech')",
       "expected_params": {
-        "query": "Morgan"
+        "query": "Vojtech"
       },
       "pred_no_examples": {
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Morgan')"
+          "filter": "startswith(displayName,'Vojtech')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Morgan')"
+        "odata_request": "users?$filter=startswith(displayName,'Vojtech')"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -4892,7 +4892,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Morgan')"
+            "filter": "startswith(displayName,'Vojtech')"
           },
           "elapsed_ms": 123.63,
           "is_error": false
@@ -4903,9 +4903,9 @@
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Morgan')"
+          "filter": "startswith(displayName,'Vojtech')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Morgan')"
+        "odata_request": "users?$filter=startswith(displayName,'Vojtech')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -4932,7 +4932,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Morgan')"
+            "filter": "startswith(displayName,'Vojtech')"
           },
           "elapsed_ms": 121.68,
           "is_error": false
@@ -4943,9 +4943,9 @@
         "intent": "find_user",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=startswith(displayName,'Morgan')"
+          "odataQuery": "GET users?$filter=startswith(displayName,'Vojtech')"
         },
-        "odata_request": "GET users?$filter=startswith(displayName,'Morgan')"
+        "odata_request": "GET users?$filter=startswith(displayName,'Vojtech')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -4960,7 +4960,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find all employees named Morgan"
+            "query": "Find all employees named Vojtech"
           },
           "elapsed_ms": 17.78,
           "is_error": false
@@ -4969,7 +4969,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=startswith(displayName,'Morgan')"
+            "odataQuery": "GET users?$filter=startswith(displayName,'Vojtech')"
           },
           "elapsed_ms": 123.87,
           "is_error": false
@@ -4979,22 +4979,22 @@
     },
     {
       "query_id": 40,
-      "query": "Search for Jordan in the directory",
+      "query": "Search for Joao in the directory",
       "category": "ambiguous",
       "workload": "users_groups",
       "expected_intent": "find_user",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=startswith(displayName,'Jordan')",
+      "expected_odata": "users?$filter=startswith(displayName,'Joao')",
       "expected_params": {
-        "query": "Jordan"
+        "query": "Joao"
       },
       "pred_no_examples": {
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Jordan')"
+          "filter": "startswith(displayName,'Joao')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Jordan')"
+        "odata_request": "users?$filter=startswith(displayName,'Joao')"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -5015,7 +5015,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Jordan')"
+            "filter": "startswith(displayName,'Joao')"
           },
           "elapsed_ms": 145.3,
           "is_error": false
@@ -5026,9 +5026,9 @@
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Jordan')"
+          "filter": "startswith(displayName,'Joao')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Jordan')"
+        "odata_request": "users?$filter=startswith(displayName,'Joao')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -5055,7 +5055,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Jordan')"
+            "filter": "startswith(displayName,'Joao')"
           },
           "elapsed_ms": 125.42,
           "is_error": false
@@ -5066,9 +5066,9 @@
         "intent": "find_user",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=startswith(displayName,'Jordan')"
+          "odataQuery": "GET users?$filter=startswith(displayName,'Joao')"
         },
-        "odata_request": "GET users?$filter=startswith(displayName,'Jordan')"
+        "odata_request": "GET users?$filter=startswith(displayName,'Joao')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -5083,7 +5083,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Search for Jordan in the directory"
+            "query": "Search for Joao in the directory"
           },
           "elapsed_ms": 17.24,
           "is_error": false
@@ -5092,7 +5092,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=startswith(displayName,'Jordan')"
+            "odataQuery": "GET users?$filter=startswith(displayName,'Joao')"
           },
           "elapsed_ms": 121.34,
           "is_error": false
@@ -5102,22 +5102,22 @@
     },
     {
       "query_id": 41,
-      "query": "Find user with email avery.adams@example.com",
+      "query": "Find user with email opodolyako@example.com",
       "category": "ambiguous",
       "workload": "users_groups",
       "expected_intent": "find_user",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=mail eq 'avery.adams@example.com'",
+      "expected_odata": "users?$filter=mail eq 'opodolyako@example.com'",
       "expected_params": {
-        "query": "avery.adams@example.com"
+        "query": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "mail eq 'avery.adams@example.com'"
+          "filter": "mail eq 'opodolyako@example.com'"
         },
-        "odata_request": "users?$filter=mail eq 'avery.adams@example.com'"
+        "odata_request": "users?$filter=mail eq 'opodolyako@example.com'"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -5138,7 +5138,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "mail eq 'avery.adams@example.com'"
+            "filter": "mail eq 'opodolyako@example.com'"
           },
           "elapsed_ms": 132.16,
           "is_error": false
@@ -5149,9 +5149,9 @@
         "intent": "find_user",
         "tool": "list_users",
         "parameters": {
-          "filter": "mail eq 'avery.adams@example.com'"
+          "filter": "mail eq 'opodolyako@example.com'"
         },
-        "odata_request": "users?$filter=mail eq 'avery.adams@example.com'"
+        "odata_request": "users?$filter=mail eq 'opodolyako@example.com'"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -5178,7 +5178,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "mail eq 'avery.adams@example.com'"
+            "filter": "mail eq 'opodolyako@example.com'"
           },
           "elapsed_ms": 124.57,
           "is_error": false
@@ -5189,9 +5189,9 @@
         "intent": "find_user",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=mail eq 'avery.adams@example.com'"
+          "odataQuery": "GET users?$filter=mail eq 'opodolyako@example.com'"
         },
-        "odata_request": "GET users?$filter=mail eq 'avery.adams@example.com'"
+        "odata_request": "GET users?$filter=mail eq 'opodolyako@example.com'"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -5206,7 +5206,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find user with email avery.adams@example.com"
+            "query": "Find user with email opodolyako@example.com"
           },
           "elapsed_ms": 2.67,
           "is_error": false
@@ -5215,7 +5215,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=mail eq 'avery.adams@example.com'"
+            "odataQuery": "GET users?$filter=mail eq 'opodolyako@example.com'"
           },
           "elapsed_ms": 183.59,
           "is_error": false
@@ -5340,22 +5340,22 @@
     },
     {
       "query_id": 43,
-      "query": "Get full profile card for Avery Adams",
+      "query": "Get full profile card for Olga Podolyako",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "user_quick_lookup",
       "expected_tool": "get_users",
-      "expected_odata": "users('avery.adams@example.com')",
+      "expected_odata": "users('opodolyako@example.com')",
       "expected_params": {
-        "identifier": "avery.adams@example.com"
+        "identifier": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "user_quick_lookup",
         "tool": "get_users",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')"
+        "odata_request": "users('opodolyako@example.com')"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -5376,7 +5376,7 @@
           "method": "tools/call",
           "name": "get_users",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 513.05,
           "is_error": false
@@ -5387,9 +5387,9 @@
         "intent": "user_quick_lookup",
         "tool": "get_users",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')"
+        "odata_request": "users('opodolyako@example.com')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -5416,7 +5416,7 @@
           "method": "tools/call",
           "name": "get_users",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 537.74,
           "is_error": false
@@ -5427,9 +5427,9 @@
         "intent": "user_quick_lookup",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')"
+          "odataQuery": "GET users('opodolyako@example.com')"
         },
-        "odata_request": "GET users('avery.adams@example.com')"
+        "odata_request": "GET users('opodolyako@example.com')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -5444,7 +5444,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Get full profile card for Avery Adams"
+            "query": "Get full profile card for Olga Podolyako"
           },
           "elapsed_ms": 3.15,
           "is_error": false
@@ -5453,7 +5453,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')"
+            "odataQuery": "GET users('opodolyako@example.com')"
           },
           "elapsed_ms": 520.74,
           "is_error": false
@@ -5463,14 +5463,14 @@
     },
     {
       "query_id": 44,
-      "query": "Show contact card and office location for Morgan Reed",
+      "query": "Show contact card and office location for Vojtech Vondra",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "user_quick_lookup",
       "expected_tool": "get_users",
-      "expected_odata": "users('morgan.reed@example.com')",
+      "expected_odata": "users('vvondra@example.com')",
       "expected_params": {
-        "identifier": "morgan.reed@example.com"
+        "identifier": "vvondra@example.com"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -5510,9 +5510,9 @@
         "intent": "user_quick_lookup",
         "tool": "get_users",
         "parameters": {
-          "key_id": "morgan.reed@example.com"
+          "key_id": "vvondra@example.com"
         },
-        "odata_request": "users('morgan.reed@example.com')"
+        "odata_request": "users('vvondra@example.com')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -5539,7 +5539,7 @@
           "method": "tools/call",
           "name": "get_users",
           "arguments": {
-            "key_id": "morgan.reed@example.com"
+            "key_id": "vvondra@example.com"
           },
           "elapsed_ms": 557.77,
           "is_error": false
@@ -5550,9 +5550,9 @@
         "intent": "user_quick_lookup",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('morgan.reed@example.com')"
+          "odataQuery": "GET users('vvondra@example.com')"
         },
-        "odata_request": "GET users('morgan.reed@example.com')"
+        "odata_request": "GET users('vvondra@example.com')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -5567,7 +5567,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show contact card and office location for Morgan Reed"
+            "query": "Show contact card and office location for Vojtech Vondra"
           },
           "elapsed_ms": 16.24,
           "is_error": false
@@ -5576,7 +5576,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('morgan.reed@example.com')"
+            "odataQuery": "GET users('vvondra@example.com')"
           },
           "elapsed_ms": 597.04,
           "is_error": false
@@ -5709,7 +5709,7 @@
     },
     {
       "query_id": 46,
-      "query": "What projects is Avery currently leading?",
+      "query": "What projects is Olga currently leading?",
       "category": "edge_case",
       "workload": "users_groups",
       "expected_intent": "out_of_scope",
@@ -5759,7 +5759,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "What projects is Avery currently leading?"
+          "query": "What projects is Olga currently leading?"
         },
         "odata_request": "N/A"
       },
@@ -5776,7 +5776,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "What projects is Avery currently leading?"
+            "query": "What projects is Olga currently leading?"
           },
           "elapsed_ms": 16.4,
           "is_error": false
@@ -5786,7 +5786,7 @@
     },
     {
       "query_id": 47,
-      "query": "Check Example Directory Object 054 for open slots tomorrow",
+      "query": "Check Olga's calendar for open slots tomorrow",
       "category": "edge_case",
       "workload": "users_groups",
       "expected_intent": "out_of_scope",
@@ -5836,7 +5836,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Check Example Directory Object 054 for open slots tomorrow"
+          "query": "Check Olga's calendar for open slots tomorrow"
         },
         "odata_request": "N/A"
       },
@@ -5853,7 +5853,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Check Example Directory Object 054 for open slots tomorrow"
+            "query": "Check Olga's calendar for open slots tomorrow"
           },
           "elapsed_ms": 5.39,
           "is_error": false
@@ -5940,7 +5940,7 @@
     },
     {
       "query_id": 49,
-      "query": "List all security groups that Jordan Lee is a member of",
+      "query": "List all security groups that Joao Paiva is a member of",
       "category": "edge_case",
       "workload": "users_groups",
       "expected_intent": "out_of_scope",
@@ -6002,7 +6002,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "List all security groups that Jordan Lee is a member of"
+          "query": "List all security groups that Joao Paiva is a member of"
         },
         "odata_request": "N/A"
       },
@@ -6019,7 +6019,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "List all security groups that Jordan Lee is a member of"
+            "query": "List all security groups that Joao Paiva is a member of"
           },
           "elapsed_ms": 16.64,
           "is_error": false
@@ -6029,7 +6029,7 @@
     },
     {
       "query_id": 50,
-      "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+      "query": "Send a Teams message to Vojtech Vondra regarding API guidelines",
       "category": "edge_case",
       "workload": "users_groups",
       "expected_intent": "out_of_scope",
@@ -6079,7 +6079,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Send a Teams message to Morgan Reed regarding API guidelines"
+          "query": "Send a Teams message to Vojtech Vondra regarding API guidelines"
         },
         "odata_request": "N/A"
       },
@@ -6096,7 +6096,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Send a Teams message to Morgan Reed regarding API guidelines"
+            "query": "Send a Teams message to Vojtech Vondra regarding API guidelines"
           },
           "elapsed_ms": 16.79,
           "is_error": false
@@ -6106,20 +6106,20 @@
     },
     {
       "query_id": 51,
-      "query": "Find the Platform Engineering group",
+      "query": "Find the Identity Architecture group",
       "category": "canonical",
       "workload": "users_groups",
       "expected_intent": "find_group_by_name",
       "expected_tool": "list_groups",
       "expected_odata": "",
       "expected_params": {
-        "query": "Platform Engineering"
+        "query": "Identity Architecture"
       },
       "pred_no_examples": {
         "intent": "find_group_by_name",
         "tool": "list_groups",
         "parameters": {
-          "filter": "startswith(displayName,'Platform Engineering')"
+          "filter": "startswith(displayName,'Identity Architecture')"
         },
         "odata_request": ""
       },
@@ -6142,7 +6142,7 @@
           "method": "tools/call",
           "name": "list_groups",
           "arguments": {
-            "filter": "startswith(displayName,'Platform Engineering')"
+            "filter": "startswith(displayName,'Identity Architecture')"
           },
           "elapsed_ms": 123.82,
           "is_error": false
@@ -6153,7 +6153,7 @@
         "intent": "find_group_by_name",
         "tool": "list_groups",
         "parameters": {
-          "filter": "startswith(displayName,'Platform Engineering')"
+          "filter": "startswith(displayName,'Identity Architecture')"
         },
         "odata_request": ""
       },
@@ -6182,7 +6182,7 @@
           "method": "tools/call",
           "name": "list_groups",
           "arguments": {
-            "filter": "startswith(displayName,'Platform Engineering')"
+            "filter": "startswith(displayName,'Identity Architecture')"
           },
           "elapsed_ms": 137.74,
           "is_error": false
@@ -6210,7 +6210,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find the Platform Engineering group"
+            "query": "Find the Identity Architecture group"
           },
           "elapsed_ms": 21.5,
           "is_error": false
@@ -6352,7 +6352,7 @@
     },
     {
       "query_id": 53,
-      "query": "Who are the members of the Platform Engineering group?",
+      "query": "Who are the members of the Identity Architecture group?",
       "category": "canonical",
       "workload": "users_groups",
       "expected_intent": "list_group_members",
@@ -6456,7 +6456,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who are the members of the Platform Engineering group?"
+            "query": "Who are the members of the Identity Architecture group?"
           },
           "elapsed_ms": 16.26,
           "is_error": false
@@ -6475,7 +6475,7 @@
     },
     {
       "query_id": 54,
-      "query": "Show members of Platform Engineering",
+      "query": "Show members of Identity Architecture",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "list_group_members",
@@ -6579,7 +6579,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show members of Platform Engineering"
+            "query": "Show members of Identity Architecture"
           },
           "elapsed_ms": 21.45,
           "is_error": false
@@ -6598,7 +6598,7 @@
     },
     {
       "query_id": 55,
-      "query": "Who owns the Platform Engineering group?",
+      "query": "Who owns the Identity Architecture group?",
       "category": "canonical",
       "workload": "users_groups",
       "expected_intent": "who_owns_group",
@@ -6702,7 +6702,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who owns the Platform Engineering group?"
+            "query": "Who owns the Identity Architecture group?"
           },
           "elapsed_ms": 27.61,
           "is_error": false
@@ -6721,7 +6721,7 @@
     },
     {
       "query_id": 56,
-      "query": "Find owners of Platform Engineering",
+      "query": "Find owners of Identity Architecture",
       "category": "paraphrased",
       "workload": "users_groups",
       "expected_intent": "who_owns_group",
@@ -6825,7 +6825,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find owners of Platform Engineering"
+            "query": "Find owners of Identity Architecture"
           },
           "elapsed_ms": 15.26,
           "is_error": false
@@ -6844,7 +6844,7 @@
     },
     {
       "query_id": 57,
-      "query": "Get details for group Platform Engineering",
+      "query": "Get details for group Identity Architecture",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "group_quick_lookup",
@@ -6948,7 +6948,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Get details for group Platform Engineering"
+            "query": "Get details for group Identity Architecture"
           },
           "elapsed_ms": 28.11,
           "is_error": false
@@ -6967,7 +6967,7 @@
     },
     {
       "query_id": 58,
-      "query": "Delete the Platform Engineering group",
+      "query": "Delete the Identity Architecture group",
       "category": "edge_case",
       "workload": "users_groups",
       "expected_intent": "out_of_scope",
@@ -7017,7 +7017,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Delete the Platform Engineering group"
+          "query": "Delete the Identity Architecture group"
         },
         "odata_request": "N/A"
       },
@@ -7034,7 +7034,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Delete the Platform Engineering group"
+            "query": "Delete the Identity Architecture group"
           },
           "elapsed_ms": 18.82,
           "is_error": false
@@ -7044,7 +7044,7 @@
     },
     {
       "query_id": 59,
-      "query": "Which peers of Avery belong to Platform Engineering?",
+      "query": "Which peers of Olga belong to Identity Architecture?",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "user_peers_in_group",
@@ -7078,7 +7078,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 534.75,
           "is_error": false
@@ -7127,7 +7127,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 519.16,
           "is_error": false
@@ -7164,7 +7164,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Which peers of Avery belong to Platform Engineering?"
+            "query": "Which peers of Olga belong to Identity Architecture?"
           },
           "elapsed_ms": 14.97,
           "is_error": false
@@ -7192,7 +7192,7 @@
     },
     {
       "query_id": 60,
-      "query": "Which Platform Engineering members report to Morgan?",
+      "query": "Which Identity Architecture members report to Vojtech?",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "group_members_reporting_to_manager",
@@ -7226,7 +7226,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 507.71,
           "is_error": false
@@ -7275,7 +7275,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 518.19,
           "is_error": false
@@ -7312,7 +7312,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Which Platform Engineering members report to Morgan?"
+            "query": "Which Identity Architecture members report to Vojtech?"
           },
           "elapsed_ms": 13.16,
           "is_error": false
@@ -7340,7 +7340,7 @@
     },
     {
       "query_id": 61,
-      "query": "Does Avery share a manager with Platform Engineering owners?",
+      "query": "Does Olga share a manager with Identity Architecture owners?",
       "category": "complex",
       "workload": "users_groups",
       "expected_intent": "user_and_group_owners_common_manager",
@@ -7374,7 +7374,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 639.53,
           "is_error": false
@@ -7423,7 +7423,7 @@
           "method": "tools/call",
           "name": "get_users_directReports",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 521.86,
           "is_error": false
@@ -7460,7 +7460,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Does Avery share a manager with Platform Engineering owners?"
+            "query": "Does Olga share a manager with Identity Architecture owners?"
           },
           "elapsed_ms": 26.71,
           "is_error": false
@@ -7723,7 +7723,7 @@
       "workload": "files",
       "expected_intent": "my_onedrive_files",
       "expected_tool": "drives_Microsoft_Graph_recentDriveItems",
-      "expected_odata": "drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+      "expected_odata": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
       "expected_params": {
         "userId": "me"
       },
@@ -7731,7 +7731,7 @@
         "intent": "ambiguous_intent",
         "tool": "drives_Microsoft_Graph_recentDriveItems",
         "parameters": {
-          "key_id": "drive-avery"
+          "key_id": "20000000-0000-4000-8000-000000000030"
         },
         "odata_request": "users?$search=..."
       },
@@ -7754,7 +7754,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_recentDriveItems",
           "arguments": {
-            "key_id": "drive-avery"
+            "key_id": "20000000-0000-4000-8000-000000000030"
           },
           "elapsed_ms": 16.64,
           "is_error": false
@@ -7765,9 +7765,9 @@
         "intent": "my_onedrive_files",
         "tool": "drives_Microsoft_Graph_recentDriveItems",
         "parameters": {
-          "key_id": "drive-avery"
+          "key_id": "20000000-0000-4000-8000-000000000030"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -7794,7 +7794,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_recentDriveItems",
           "arguments": {
-            "key_id": "drive-avery"
+            "key_id": "20000000-0000-4000-8000-000000000030"
           },
           "elapsed_ms": 17.08,
           "is_error": false
@@ -7805,9 +7805,9 @@
         "intent": "my_onedrive_files",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+          "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
         },
-        "odata_request": "GET drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -7831,7 +7831,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+            "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.recentDriveItems()?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
           },
           "elapsed_ms": 1.73,
           "is_error": false
@@ -7841,22 +7841,22 @@
     },
     {
       "query_id": 65,
-      "query": "Who was the last user to modify Agent_Protocol_Demo.docx?",
+      "query": "Who was the last user to modify Script_MCP_POC.docx?",
       "category": "canonical",
       "workload": "files",
       "expected_intent": "last_user_to_modify_file",
       "expected_tool": "get_driveItems_lastModifiedByUser",
-      "expected_odata": "driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+      "expected_odata": "driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
       "expected_params": {
-        "fileName": "Agent_Protocol_Demo.docx"
+        "fileName": "Script_MCP_POC.docx"
       },
       "pred_no_examples": {
         "intent": "last_user_to_modify_file",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-mcp-poc-docx"
+          "key_id": "20000000-0000-4000-8000-000000000031"
         },
-        "odata_request": "driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -7877,7 +7877,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-mcp-poc-docx"
+            "key_id": "20000000-0000-4000-8000-000000000031"
           },
           "elapsed_ms": 19.07,
           "is_error": false
@@ -7888,9 +7888,9 @@
         "intent": "last_user_to_modify_file",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-mcp-poc-docx"
+          "key_id": "20000000-0000-4000-8000-000000000031"
         },
-        "odata_request": "driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -7917,7 +7917,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-mcp-poc-docx"
+            "key_id": "20000000-0000-4000-8000-000000000031"
           },
           "elapsed_ms": 16.37,
           "is_error": false
@@ -7928,9 +7928,9 @@
         "intent": "last_user_to_modify_file",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+          "odataQuery": "GET driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
         },
-        "odata_request": "GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -7945,7 +7945,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who was the last user to modify Agent_Protocol_Demo.docx?"
+            "query": "Who was the last user to modify Script_MCP_POC.docx?"
           },
           "elapsed_ms": 15.12,
           "is_error": false
@@ -7954,7 +7954,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET driveItems('file-mcp-poc-docx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET driveItems('20000000-0000-4000-8000-000000000031')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "elapsed_ms": 15.44,
           "is_error": false
@@ -7964,20 +7964,20 @@
     },
     {
       "query_id": 66,
-      "query": "Find the last person who edited Example_Document_007.pptx",
+      "query": "Find the last person who edited OData-v4.01-Agent-Prompts-Proposal.pptx",
       "category": "paraphrased",
       "workload": "files",
       "expected_intent": "last_user_to_modify_file",
       "expected_tool": "get_driveItems_lastModifiedByUser",
-      "expected_odata": "driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+      "expected_odata": "driveItems('20000000-0000-4000-8000-000000000032')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
       "expected_params": {
-        "fileName": "Example_Document_007.pptx"
+        "fileName": "OData-v4.01-Agent-Prompts-Proposal.pptx"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-odata-agent-prompts-pptx"
+          "key_id": "20000000-0000-4000-8000-000000000032"
         },
         "odata_request": "users?$search=..."
       },
@@ -8000,7 +8000,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-odata-agent-prompts-pptx"
+            "key_id": "20000000-0000-4000-8000-000000000032"
           },
           "elapsed_ms": 16.56,
           "is_error": false
@@ -8011,9 +8011,9 @@
         "intent": "last_user_to_modify_file",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-odata-agent-prompts-pptx"
+          "key_id": "20000000-0000-4000-8000-000000000032"
         },
-        "odata_request": "driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "driveItems('20000000-0000-4000-8000-000000000032')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -8040,7 +8040,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-odata-agent-prompts-pptx"
+            "key_id": "20000000-0000-4000-8000-000000000032"
           },
           "elapsed_ms": 2.08,
           "is_error": false
@@ -8051,9 +8051,9 @@
         "intent": "last_user_to_modify_file",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+          "odataQuery": "GET driveItems('20000000-0000-4000-8000-000000000032')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
         },
-        "odata_request": "GET driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET driveItems('20000000-0000-4000-8000-000000000032')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -8068,7 +8068,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find the last person who edited Example_Document_007.pptx"
+            "query": "Find the last person who edited OData-v4.01-Agent-Prompts-Proposal.pptx"
           },
           "elapsed_ms": 14.2,
           "is_error": false
@@ -8077,7 +8077,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET driveItems('file-odata-agent-prompts-pptx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET driveItems('20000000-0000-4000-8000-000000000032')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "elapsed_ms": 15.08,
           "is_error": false
@@ -8087,20 +8087,20 @@
     },
     {
       "query_id": 67,
-      "query": "Show the profile and job title of the last author who modified Example_Document_005.xlsx",
+      "query": "Show the profile and job title of the last author who modified Graph-CSDL-Consistency-Benchmark.xlsx",
       "category": "complex",
       "workload": "files",
       "expected_intent": "last_user_to_modify_file",
       "expected_tool": "get_driveItems_lastModifiedByUser",
-      "expected_odata": "driveItems('file-csdl-consistency-xlsx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
+      "expected_odata": "driveItems('20000000-0000-4000-8000-000000000033')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department",
       "expected_params": {
-        "fileName": "Example_Document_005.xlsx"
+        "fileName": "Graph-CSDL-Consistency-Benchmark.xlsx"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-csdl-consistency-xlsx"
+          "key_id": "20000000-0000-4000-8000-000000000033"
         },
         "odata_request": "users?$search=..."
       },
@@ -8123,7 +8123,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-csdl-consistency-xlsx"
+            "key_id": "20000000-0000-4000-8000-000000000033"
           },
           "elapsed_ms": 17.17,
           "is_error": false
@@ -8134,9 +8134,9 @@
         "intent": "last_user_to_modify_file",
         "tool": "get_driveItems_lastModifiedByUser",
         "parameters": {
-          "key_id": "file-csdl-consistency-xlsx"
+          "key_id": "20000000-0000-4000-8000-000000000033"
         },
-        "odata_request": "driveItems('file-csdl-consistency-xlsx')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "driveItems('20000000-0000-4000-8000-000000000033')/lastModifiedByUser?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -8163,7 +8163,7 @@
           "method": "tools/call",
           "name": "get_driveItems_lastModifiedByUser",
           "arguments": {
-            "key_id": "file-csdl-consistency-xlsx"
+            "key_id": "20000000-0000-4000-8000-000000000033"
           },
           "elapsed_ms": 17.1,
           "is_error": false
@@ -8191,7 +8191,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show the profile and job title of the last author who modified Example_Document_005.xlsx"
+            "query": "Show the profile and job title of the last author who modified Graph-CSDL-Consistency-Benchmark.xlsx"
           },
           "elapsed_ms": 15.57,
           "is_error": false
@@ -8215,7 +8215,7 @@
       "workload": "files",
       "expected_intent": "search_files_by_keyword",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+      "expected_odata": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
       "expected_params": {
         "query": "CSDL"
       },
@@ -8223,10 +8223,10 @@
         "intent": "search_files_by_keyword",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "CSDL"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -8247,7 +8247,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "CSDL"
           },
           "elapsed_ms": 18.15,
@@ -8259,10 +8259,10 @@
         "intent": "search_files_by_keyword",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "CSDL"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -8289,7 +8289,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "CSDL"
           },
           "elapsed_ms": 17.61,
@@ -8301,9 +8301,9 @@
         "intent": "search_files_by_keyword",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+          "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
         },
-        "odata_request": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -8327,7 +8327,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+            "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='CSDL')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
           },
           "elapsed_ms": 13.18,
           "is_error": false
@@ -8342,7 +8342,7 @@
       "workload": "files",
       "expected_intent": "search_files_by_keyword",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+      "expected_odata": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
       "expected_params": {
         "query": "Proposal"
       },
@@ -8350,7 +8350,7 @@
         "intent": "ambiguous_intent",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "Proposal"
         },
         "odata_request": "users?$search=..."
@@ -8374,7 +8374,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "Proposal"
           },
           "elapsed_ms": 16.84,
@@ -8386,10 +8386,10 @@
         "intent": "search_files_by_keyword",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "Proposal"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -8416,7 +8416,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "Proposal"
           },
           "elapsed_ms": 18.34,
@@ -8428,9 +8428,9 @@
         "intent": "search_files_by_keyword",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+          "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
         },
-        "odata_request": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -8454,7 +8454,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+            "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='Proposal')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
           },
           "elapsed_ms": 15.24,
           "is_error": false
@@ -8469,7 +8469,7 @@
       "workload": "files",
       "expected_intent": "search_files_by_keyword",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
+      "expected_odata": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName",
       "expected_params": {
         "query": "MCP"
       },
@@ -8477,7 +8477,7 @@
         "intent": "ambiguous_intent",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
         "odata_request": "users?$search=..."
@@ -8501,7 +8501,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 2.96,
@@ -8513,10 +8513,10 @@
         "intent": "search_files_by_keyword",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -8543,7 +8543,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 16.69,
@@ -8555,9 +8555,9 @@
         "intent": "search_files_by_keyword",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+          "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
         },
-        "odata_request": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+        "odata_request": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -8581,7 +8581,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
+            "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')?$select=id,name,size,webUrl,lastModifiedDateTime,lastModifiedByDisplayName"
           },
           "elapsed_ms": 11.58,
           "is_error": false
@@ -8706,7 +8706,7 @@
     },
     {
       "query_id": 72,
-      "query": "Permanently delete Agent_Protocol_Demo.docx from OneDrive",
+      "query": "Permanently delete Script_MCP_POC.docx from OneDrive",
       "category": "edge_case",
       "workload": "files",
       "expected_intent": "out_of_scope",
@@ -8764,7 +8764,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Permanently delete Agent_Protocol_Demo.docx from OneDrive"
+          "query": "Permanently delete Script_MCP_POC.docx from OneDrive"
         },
         "odata_request": "N/A"
       },
@@ -8781,7 +8781,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Permanently delete Agent_Protocol_Demo.docx from OneDrive"
+            "query": "Permanently delete Script_MCP_POC.docx from OneDrive"
           },
           "elapsed_ms": 20.57,
           "is_error": false
@@ -9144,12 +9144,12 @@
     },
     {
       "query_id": 76,
-      "query": "Show recent messages in the CSDL & TypeSpec channel of Platform Engineering",
+      "query": "Show recent messages in the CSDL & TypeSpec channel of Identity Architecture",
       "category": "canonical",
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "get_channels_messages",
-      "expected_odata": "channels('ch-csdl-typespec')/messages?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000027')/messages?$top=20",
       "expected_params": {
         "channelId": "CSDL & TypeSpec"
       },
@@ -9157,10 +9157,10 @@
         "intent": "team_channel_messages",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-csdl-typespec",
+          "key_id": "20000000-0000-4000-8000-000000000027",
           "top": 20
         },
-        "odata_request": "channels('ch-csdl-typespec')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -9181,7 +9181,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-csdl-typespec",
+            "key_id": "20000000-0000-4000-8000-000000000027",
             "top": 20
           },
           "elapsed_ms": 18.09,
@@ -9193,10 +9193,10 @@
         "intent": "team_channel_messages",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-csdl-typespec",
+          "key_id": "20000000-0000-4000-8000-000000000027",
           "top": 20
         },
-        "odata_request": "channels('ch-csdl-typespec')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9223,7 +9223,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-csdl-typespec",
+            "key_id": "20000000-0000-4000-8000-000000000027",
             "top": 20
           },
           "elapsed_ms": 16.11,
@@ -9235,9 +9235,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-csdl-typespec')/messages?$top=20"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
         },
-        "odata_request": "GET channels('ch-csdl-typespec')/messages?$top=20"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9252,7 +9252,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show recent messages in the CSDL & TypeSpec channel of Platform Engineering"
+            "query": "Show recent messages in the CSDL & TypeSpec channel of Identity Architecture"
           },
           "elapsed_ms": 16.92,
           "is_error": false
@@ -9261,7 +9261,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-csdl-typespec')/messages?$top=20"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
           },
           "elapsed_ms": 15.63,
           "is_error": false
@@ -9276,7 +9276,7 @@
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "channels_Microsoft_Graph_deltaChannelMessages",
-      "expected_odata": "channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000027')/Microsoft.Graph.deltaChannelMessages()?$top=20",
       "expected_params": {
         "channelId": "CSDL & TypeSpec"
       },
@@ -9284,7 +9284,7 @@
         "intent": "ambiguous_intent",
         "tool": "channels_Microsoft_Graph_deltaChannelMessages",
         "parameters": {
-          "key_id": "ch-csdl-typespec"
+          "key_id": "20000000-0000-4000-8000-000000000027"
         },
         "odata_request": "users?$search=..."
       },
@@ -9307,7 +9307,7 @@
           "method": "tools/call",
           "name": "channels_Microsoft_Graph_deltaChannelMessages",
           "arguments": {
-            "key_id": "ch-csdl-typespec"
+            "key_id": "20000000-0000-4000-8000-000000000027"
           },
           "elapsed_ms": 17.26,
           "is_error": false
@@ -9318,9 +9318,9 @@
         "intent": "team_channel_messages",
         "tool": "channels_Microsoft_Graph_deltaChannelMessages",
         "parameters": {
-          "key_id": "ch-csdl-typespec"
+          "key_id": "20000000-0000-4000-8000-000000000027"
         },
-        "odata_request": "channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000027')/Microsoft.Graph.deltaChannelMessages()?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9347,7 +9347,7 @@
           "method": "tools/call",
           "name": "channels_Microsoft_Graph_deltaChannelMessages",
           "arguments": {
-            "key_id": "ch-csdl-typespec"
+            "key_id": "20000000-0000-4000-8000-000000000027"
           },
           "elapsed_ms": 17.06,
           "is_error": false
@@ -9358,9 +9358,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/Microsoft.Graph.deltaChannelMessages()?$top=20"
         },
-        "odata_request": "GET channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000027')/Microsoft.Graph.deltaChannelMessages()?$top=20"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9384,7 +9384,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-csdl-typespec')/Microsoft.Graph.deltaChannelMessages()?$top=20"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/Microsoft.Graph.deltaChannelMessages()?$top=20"
           },
           "elapsed_ms": 12.42,
           "is_error": false
@@ -9399,7 +9399,7 @@
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "get_channels_messages",
-      "expected_odata": "channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000152')/messages?$filter=importance eq 'high'&$top=10",
       "expected_params": {
         "channelId": "MCP 2.0 Integration"
       },
@@ -9407,7 +9407,7 @@
         "intent": "ambiguous_intent",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-mcp-20",
+          "key_id": "20000000-0000-4000-8000-000000000152",
           "top": 20
         },
         "odata_request": "users?$search=..."
@@ -9431,7 +9431,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-mcp-20",
+            "key_id": "20000000-0000-4000-8000-000000000152",
             "top": 20
           },
           "elapsed_ms": 25.09,
@@ -9443,10 +9443,10 @@
         "intent": "team_channel_messages",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-mcp-20",
+          "key_id": "20000000-0000-4000-8000-000000000152",
           "top": 20
         },
-        "odata_request": "channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000152')/messages?$filter=importance eq 'high'&$top=10"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9473,7 +9473,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-mcp-20",
+            "key_id": "20000000-0000-4000-8000-000000000152",
             "top": 20
           },
           "elapsed_ms": 16.34,
@@ -9485,9 +9485,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000152')/messages?$filter=importance eq 'high'&$top=10"
         },
-        "odata_request": "GET channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000152')/messages?$filter=importance eq 'high'&$top=10"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9511,7 +9511,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-mcp-20')/messages?$filter=importance eq 'high'&$top=10"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000152')/messages?$filter=importance eq 'high'&$top=10"
           },
           "elapsed_ms": 15.48,
           "is_error": false
@@ -9526,7 +9526,7 @@
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "get_channels_messages",
-      "expected_odata": "channels('ch-odata-vocab')/messages?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000156')/messages?$top=20",
       "expected_params": {
         "channelId": "Agent-Ready Vocabularies"
       },
@@ -9534,7 +9534,7 @@
         "intent": "ambiguous_intent",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-odata-vocab",
+          "key_id": "20000000-0000-4000-8000-000000000156",
           "top": 20
         },
         "odata_request": "users?$search=..."
@@ -9558,7 +9558,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-odata-vocab",
+            "key_id": "20000000-0000-4000-8000-000000000156",
             "top": 20
           },
           "elapsed_ms": 16.37,
@@ -9570,10 +9570,10 @@
         "intent": "team_channel_messages",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-odata-vocab",
+          "key_id": "20000000-0000-4000-8000-000000000156",
           "top": 20
         },
-        "odata_request": "channels('ch-odata-vocab')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000156')/messages?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9600,7 +9600,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-odata-vocab",
+            "key_id": "20000000-0000-4000-8000-000000000156",
             "top": 20
           },
           "elapsed_ms": 16.37,
@@ -9612,9 +9612,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-odata-vocab')/messages?$top=20"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000156')/messages?$top=20"
         },
-        "odata_request": "GET channels('ch-odata-vocab')/messages?$top=20"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000156')/messages?$top=20"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9638,7 +9638,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-odata-vocab')/messages?$top=20"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000156')/messages?$top=20"
           },
           "elapsed_ms": 15.31,
           "is_error": false
@@ -9648,12 +9648,12 @@
     },
     {
       "query_id": 80,
-      "query": "Show announcements in the General channel of Platform Engineering",
+      "query": "Show announcements in the General channel of Identity Architecture",
       "category": "paraphrased",
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "get_channels_messages",
-      "expected_odata": "channels('ch-idarch-general')/messages?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000158')/messages?$top=20",
       "expected_params": {
         "channelId": "General"
       },
@@ -9661,7 +9661,7 @@
         "intent": "ambiguous_intent",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-idarch-general",
+          "key_id": "20000000-0000-4000-8000-000000000158",
           "top": 20
         },
         "odata_request": "users?$search=..."
@@ -9685,7 +9685,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-idarch-general",
+            "key_id": "20000000-0000-4000-8000-000000000158",
             "top": 20
           },
           "elapsed_ms": 16.64,
@@ -9697,10 +9697,10 @@
         "intent": "team_channel_messages",
         "tool": "get_channels_messages",
         "parameters": {
-          "key_id": "ch-idarch-general",
+          "key_id": "20000000-0000-4000-8000-000000000158",
           "top": 20
         },
-        "odata_request": "channels('ch-idarch-general')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000158')/messages?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9727,7 +9727,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-idarch-general",
+            "key_id": "20000000-0000-4000-8000-000000000158",
             "top": 20
           },
           "elapsed_ms": 16.25,
@@ -9739,9 +9739,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-idarch-general')/messages?$top=20"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000158')/messages?$top=20"
         },
-        "odata_request": "GET channels('ch-idarch-general')/messages?$top=20"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000158')/messages?$top=20"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9756,7 +9756,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show announcements in the General channel of Platform Engineering"
+            "query": "Show announcements in the General channel of Identity Architecture"
           },
           "elapsed_ms": 15.81,
           "is_error": false
@@ -9765,7 +9765,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-idarch-general')/messages?$top=20"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000158')/messages?$top=20"
           },
           "elapsed_ms": 14.78,
           "is_error": false
@@ -9780,7 +9780,7 @@
       "workload": "teams",
       "expected_intent": "team_channel_messages",
       "expected_tool": "channels_Microsoft_Graph_sendChannelMessage",
-      "expected_odata": "channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage",
       "expected_params": {
         "channelId": "MCP 2.0 Integration"
       },
@@ -9788,11 +9788,11 @@
         "intent": "team_channel_messages",
         "tool": "channels_Microsoft_Graph_sendChannelMessage",
         "parameters": {
-          "key_id": "ch-mcp-20",
+          "key_id": "20000000-0000-4000-8000-000000000152",
           "subject": "MCP 2.0 Status Update",
           "bodyContent": "Verified transformer-generated server on :3003."
         },
-        "odata_request": "channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -9813,7 +9813,7 @@
           "method": "tools/call",
           "name": "channels_Microsoft_Graph_sendChannelMessage",
           "arguments": {
-            "key_id": "ch-mcp-20",
+            "key_id": "20000000-0000-4000-8000-000000000152",
             "subject": "MCP 2.0 Status Update",
             "bodyContent": "Verified transformer-generated server on :3003."
           },
@@ -9826,11 +9826,11 @@
         "intent": "team_channel_messages",
         "tool": "channels_Microsoft_Graph_sendChannelMessage",
         "parameters": {
-          "key_id": "ch-mcp-20",
+          "key_id": "20000000-0000-4000-8000-000000000152",
           "subject": "MCP 2.0 Status Update",
           "bodyContent": "Verified transformer-generated server on :3003."
         },
-        "odata_request": "channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -9857,7 +9857,7 @@
           "method": "tools/call",
           "name": "channels_Microsoft_Graph_sendChannelMessage",
           "arguments": {
-            "key_id": "ch-mcp-20",
+            "key_id": "20000000-0000-4000-8000-000000000152",
             "subject": "MCP 2.0 Status Update",
             "bodyContent": "Verified transformer-generated server on :3003."
           },
@@ -9870,9 +9870,9 @@
         "intent": "team_channel_messages",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "POST channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage"
+          "odataQuery": "POST channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage"
         },
-        "odata_request": "POST channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage"
+        "odata_request": "POST channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -9896,7 +9896,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "POST channels('ch-mcp-20')/Microsoft.Graph.sendChannelMessage"
+            "odataQuery": "POST channels('20000000-0000-4000-8000-000000000152')/Microsoft.Graph.sendChannelMessage"
           },
           "elapsed_ms": 15.2,
           "is_error": false
@@ -9906,7 +9906,7 @@
     },
     {
       "query_id": 82,
-      "query": "Archive and delete the Platform Engineering Microsoft Team",
+      "query": "Archive and delete the Identity Architecture Microsoft Team",
       "category": "edge_case",
       "workload": "teams",
       "expected_intent": "out_of_scope",
@@ -9956,7 +9956,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Archive and delete the Platform Engineering Microsoft Team"
+          "query": "Archive and delete the Identity Architecture Microsoft Team"
         },
         "odata_request": "N/A"
       },
@@ -9973,7 +9973,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Archive and delete the Platform Engineering Microsoft Team"
+            "query": "Archive and delete the Identity Architecture Microsoft Team"
           },
           "elapsed_ms": 16.55,
           "is_error": false
@@ -10098,14 +10098,14 @@
     },
     {
       "query_id": 84,
-      "query": "Show my 1:1 chat thread with Jordan Lee",
+      "query": "Show my 1:1 chat thread with Joao Paiva",
       "category": "paraphrased",
       "workload": "chats",
       "expected_intent": "list_recent_chats",
       "expected_tool": "list_chats",
       "expected_odata": "chats?$filter=chatType eq 'oneOnOne'&$expand=members,messages",
       "expected_params": {
-        "filter": "Jordan Lee"
+        "filter": "Joao Paiva"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -10202,7 +10202,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show my 1:1 chat thread with Jordan Lee"
+            "query": "Show my 1:1 chat thread with Joao Paiva"
           },
           "elapsed_ms": 15.63,
           "is_error": false
@@ -10344,14 +10344,14 @@
     },
     {
       "query_id": 86,
-      "query": "What was the last chat message from Jordan Lee?",
+      "query": "What was the last chat message from Joao Paiva?",
       "category": "paraphrased",
       "workload": "chats",
       "expected_intent": "list_recent_chats",
       "expected_tool": "get_me_chats",
       "expected_odata": "me/chats?$expand=members,messages($top=5)",
       "expected_params": {
-        "filter": "Jordan"
+        "filter": "Joao"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -10440,7 +10440,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "What was the last chat message from Jordan Lee?"
+            "query": "What was the last chat message from Joao Paiva?"
           },
           "elapsed_ms": 15.05,
           "is_error": false
@@ -10574,7 +10574,7 @@
     },
     {
       "query_id": 88,
-      "query": "Start an audio call in Teams chat with Morgan",
+      "query": "Start an audio call in Teams chat with Vojtech",
       "category": "edge_case",
       "workload": "chats",
       "expected_intent": "out_of_scope",
@@ -10632,7 +10632,7 @@
         "intent": "out_of_scope",
         "tool": "search_intent",
         "parameters": {
-          "query": "Start an audio call in Teams chat with Morgan"
+          "query": "Start an audio call in Teams chat with Vojtech"
         },
         "odata_request": "N/A"
       },
@@ -10649,7 +10649,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Start an audio call in Teams chat with Morgan"
+            "query": "Start an audio call in Teams chat with Vojtech"
           },
           "elapsed_ms": 17.46,
           "is_error": false
@@ -11012,14 +11012,14 @@
     },
     {
       "query_id": 92,
-      "query": "Find incomplete To Do tasks assigned to Jordan Lee",
+      "query": "Find incomplete To Do tasks assigned to Joao Paiva",
       "category": "complex",
       "workload": "todo",
       "expected_intent": "my_pending_todo_tasks",
       "expected_tool": "list_todoTasks",
       "expected_odata": "todoTasks?$filter=status ne 'completed'",
       "expected_params": {
-        "filter": "jordan.lee@example.com"
+        "filter": "jpaiva@example.com"
       },
       "pred_no_examples": {
         "intent": "ambiguous_intent",
@@ -11116,7 +11116,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Find incomplete To Do tasks assigned to Jordan Lee"
+            "query": "Find incomplete To Do tasks assigned to Joao Paiva"
           },
           "elapsed_ms": 15.11,
           "is_error": false
@@ -11135,22 +11135,22 @@
     },
     {
       "query_id": 93,
-      "query": "Mark To Do task task-101 as completed",
+      "query": "Mark To Do task 20000000-0000-4000-8000-000000000161 as completed",
       "category": "canonical",
       "workload": "todo",
       "expected_intent": "my_pending_todo_tasks",
       "expected_tool": "todoTasks_Microsoft_Graph_completeTodoTask",
-      "expected_odata": "todoTasks('task-101')/Microsoft.Graph.completeTodoTask",
+      "expected_odata": "todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask",
       "expected_params": {
-        "taskId": "task-101"
+        "taskId": "20000000-0000-4000-8000-000000000161"
       },
       "pred_no_examples": {
         "intent": "my_pending_todo_tasks",
         "tool": "todoTasks_Microsoft_Graph_completeTodoTask",
         "parameters": {
-          "key_id": "task-101"
+          "key_id": "20000000-0000-4000-8000-000000000161"
         },
-        "odata_request": "todoTasks('task-101')/Microsoft.Graph.completeTodoTask"
+        "odata_request": "todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -11171,7 +11171,7 @@
           "method": "tools/call",
           "name": "todoTasks_Microsoft_Graph_completeTodoTask",
           "arguments": {
-            "key_id": "task-101"
+            "key_id": "20000000-0000-4000-8000-000000000161"
           },
           "elapsed_ms": 21.08,
           "is_error": false
@@ -11182,9 +11182,9 @@
         "intent": "my_pending_todo_tasks",
         "tool": "todoTasks_Microsoft_Graph_completeTodoTask",
         "parameters": {
-          "key_id": "task-101"
+          "key_id": "20000000-0000-4000-8000-000000000161"
         },
-        "odata_request": "todoTasks('task-101')/Microsoft.Graph.completeTodoTask"
+        "odata_request": "todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -11211,7 +11211,7 @@
           "method": "tools/call",
           "name": "todoTasks_Microsoft_Graph_completeTodoTask",
           "arguments": {
-            "key_id": "task-101"
+            "key_id": "20000000-0000-4000-8000-000000000161"
           },
           "elapsed_ms": 17.22,
           "is_error": false
@@ -11222,9 +11222,9 @@
         "intent": "my_pending_todo_tasks",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "POST todoTasks('task-101')/Microsoft.Graph.completeTodoTask"
+          "odataQuery": "POST todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask"
         },
-        "odata_request": "POST todoTasks('task-101')/Microsoft.Graph.completeTodoTask"
+        "odata_request": "POST todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -11239,7 +11239,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Mark To Do task task-101 as completed"
+            "query": "Mark To Do task 20000000-0000-4000-8000-000000000161 as completed"
           },
           "elapsed_ms": 15.23,
           "is_error": false
@@ -11248,7 +11248,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "POST todoTasks('task-101')/Microsoft.Graph.completeTodoTask"
+            "odataQuery": "POST todoTasks('20000000-0000-4000-8000-000000000161')/Microsoft.Graph.completeTodoTask"
           },
           "elapsed_ms": 15.24,
           "is_error": false
@@ -11450,20 +11450,20 @@
     },
     {
       "query_id": 96,
-      "query": "Prepare a 360 collaboration brief for Jordan Lee including his manager, modified OneDrive files, recent chats, and open To Do tasks",
+      "query": "Prepare a 360 collaboration brief for Joao Paiva including his manager, modified OneDrive files, recent chats, and open To Do tasks",
       "category": "complex",
       "workload": "cross_workload",
       "expected_intent": "meeting_attendee_collaboration_brief",
       "expected_tool": "list_users",
-      "expected_odata": "users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf",
+      "expected_odata": "users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf",
       "expected_params": {},
       "pred_no_examples": {
         "intent": "meeting_attendee_collaboration_brief",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Jordan Lee')"
+          "filter": "startswith(displayName,'Joao Paiva')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf"
+        "odata_request": "users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -11514,9 +11514,9 @@
         "intent": "meeting_attendee_collaboration_brief",
         "tool": "list_users",
         "parameters": {
-          "filter": "startswith(displayName,'Jordan Lee')"
+          "filter": "startswith(displayName,'Joao Paiva')"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf"
+        "odata_request": "users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -11573,9 +11573,9 @@
         "intent": "meeting_attendee_collaboration_brief",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf"
+          "odataQuery": "GET users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf"
         },
-        "odata_request": "GET users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf"
+        "odata_request": "GET users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -11590,7 +11590,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Prepare a 360 collaboration brief for Jordan Lee including his manager, modified OneDrive files, recent chats, and open To Do tasks"
+            "query": "Prepare a 360 collaboration brief for Joao Paiva including his manager, modified OneDrive files, recent chats, and open To Do tasks"
           },
           "elapsed_ms": 17.22,
           "is_error": false
@@ -11599,7 +11599,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=startswith(displayName,'Jordan Lee')&$expand=manager,memberOf"
+            "odataQuery": "GET users?$filter=startswith(displayName,'Joao Paiva')&$expand=manager,memberOf"
           },
           "elapsed_ms": 124.0,
           "is_error": false
@@ -11753,16 +11753,16 @@
       "workload": "cross_workload",
       "expected_intent": "team_channel_files_and_action_items",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')",
+      "expected_odata": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')",
       "expected_params": {},
       "pred_no_examples": {
         "intent": "team_channel_files_and_action_items",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -11783,7 +11783,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-csdl-typespec",
+            "key_id": "20000000-0000-4000-8000-000000000027",
             "top": 20
           },
           "elapsed_ms": 16.58,
@@ -11793,7 +11793,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 22.23,
@@ -11812,10 +11812,10 @@
         "intent": "team_channel_files_and_action_items",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
-        "odata_request": "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')"
+        "odata_request": "drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -11842,7 +11842,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-csdl-typespec",
+            "key_id": "20000000-0000-4000-8000-000000000027",
             "top": 20
           },
           "elapsed_ms": 21.92,
@@ -11852,7 +11852,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 15.79,
@@ -11871,9 +11871,9 @@
         "intent": "team_channel_files_and_action_items",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')"
+          "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')"
         },
-        "odata_request": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')"
+        "odata_request": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -11897,7 +11897,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='MCP')"
+            "odataQuery": "GET drives('20000000-0000-4000-8000-000000000030')/Microsoft.Graph.searchDriveItems(q='MCP')"
           },
           "elapsed_ms": 2.36,
           "is_error": false
@@ -11921,13 +11921,13 @@
       "workload": "cross_workload",
       "expected_intent": "team_channel_files_and_action_items",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "channels('ch-csdl-typespec')/messages?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000027')/messages?$top=20",
       "expected_params": {},
       "pred_no_examples": {
         "intent": "ambiguous_intent",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
         "odata_request": "users?$search=..."
@@ -11951,7 +11951,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 13.06,
@@ -11963,10 +11963,10 @@
         "intent": "team_channel_files_and_action_items",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
-        "odata_request": "channels('ch-csdl-typespec')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -11993,7 +11993,7 @@
           "method": "tools/call",
           "name": "get_channels_messages",
           "arguments": {
-            "key_id": "ch-csdl-typespec",
+            "key_id": "20000000-0000-4000-8000-000000000027",
             "top": 20
           },
           "elapsed_ms": 25.27,
@@ -12003,7 +12003,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 15.3,
@@ -12022,9 +12022,9 @@
         "intent": "team_channel_files_and_action_items",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET channels('ch-csdl-typespec')/messages?$top=20"
+          "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
         },
-        "odata_request": "GET channels('ch-csdl-typespec')/messages?$top=20"
+        "odata_request": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -12048,7 +12048,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET channels('ch-csdl-typespec')/messages?$top=20"
+            "odataQuery": "GET channels('20000000-0000-4000-8000-000000000027')/messages?$top=20"
           },
           "elapsed_ms": 24.22,
           "is_error": false
@@ -12072,13 +12072,13 @@
       "workload": "cross_workload",
       "expected_intent": "team_channel_files_and_action_items",
       "expected_tool": "drives_Microsoft_Graph_searchDriveItems",
-      "expected_odata": "channels('ch-odata-vocab')/messages?$top=20",
+      "expected_odata": "channels('20000000-0000-4000-8000-000000000156')/messages?$top=20",
       "expected_params": {},
       "pred_no_examples": {
         "intent": "ambiguous_intent",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
         "odata_request": "users?$search=..."
@@ -12102,7 +12102,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 17.97,
@@ -12114,10 +12114,10 @@
         "intent": "team_channel_files_and_action_items",
         "tool": "drives_Microsoft_Graph_searchDriveItems",
         "parameters": {
-          "key_id": "drive-avery",
+          "key_id": "20000000-0000-4000-8000-000000000030",
           "q": "MCP"
         },
-        "odata_request": "channels('ch-odata-vocab')/messages?$top=20"
+        "odata_request": "channels('20000000-0000-4000-8000-000000000156')/messages?$top=20"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -12144,7 +12144,7 @@
           "method": "tools/call",
           "name": "drives_Microsoft_Graph_searchDriveItems",
           "arguments": {
-            "key_id": "drive-avery",
+            "key_id": "20000000-0000-4000-8000-000000000030",
             "q": "MCP"
           },
           "elapsed_ms": 17.14,

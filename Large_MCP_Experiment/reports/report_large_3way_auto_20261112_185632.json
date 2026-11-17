@@ -114,24 +114,24 @@
   "results": [
     {
       "query_id": 1,
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Find Avery's manager",
+        "intent": "Find Olga's manager",
         "tool": "GraphMcp-list_users",
         "parameters": {
-          "filter": "displayName eq 'Avery'",
+          "filter": "displayName eq 'Olga'",
           "select": "id,displayName,userPrincipalName",
           "expand": "manager($select=displayName,userPrincipalName)"
         },
-        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)"
+        "odata_request": "users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)"
       },
       "eval_no_examples": {
         "intent_match": false,
@@ -148,7 +148,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -161,19 +161,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -182,7 +182,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -196,7 +196,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -210,7 +210,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -224,7 +224,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName",
             "expand": "manager($select=displayName,userPrincipalName)"
           },
@@ -238,19 +238,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -260,7 +260,7 @@
         {
           "timestamp": "2026-11-12T23:56:57.3225983+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -268,7 +268,7 @@
         {
           "timestamp": "2026-11-12T23:57:00.9897311+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -276,7 +276,7 @@
         {
           "timestamp": "2026-11-12T23:57:01.1386216+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -284,7 +284,7 @@
         {
           "timestamp": "2026-11-12T23:57:01.2465653+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -292,7 +292,7 @@
         {
           "timestamp": "2026-11-12T23:57:01.3485722+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -300,7 +300,7 @@
         {
           "timestamp": "2026-11-12T23:57:03.4375049+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -308,7 +308,7 @@
         {
           "timestamp": "2026-11-12T23:57:03.5386469+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -316,7 +316,7 @@
         {
           "timestamp": "2026-11-12T23:57:03.6720391+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -324,7 +324,7 @@
         {
           "timestamp": "2026-11-12T23:57:03.771558+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -332,7 +332,7 @@
         {
           "timestamp": "2026-11-12T23:57:05.3409665+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -340,7 +340,7 @@
         {
           "timestamp": "2026-11-12T23:57:05.4538872+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -348,7 +348,7 @@
         {
           "timestamp": "2026-11-12T23:57:05.555061+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -356,7 +356,7 @@
         {
           "timestamp": "2026-11-12T23:57:05.6633948+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -364,7 +364,7 @@
         {
           "timestamp": "2026-11-12T23:57:08.7853007+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$expand=manager($select=displayName,userPrincipalName)",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q1-1cc6e4af6b3a469ead9712d6fa6df116"
@@ -511,18 +511,18 @@
       },
       "error_no_examples": null,
       "session_no_examples": {
-        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "id": "3b5db1be-ac22-4a47-ad9e-a931e1560317",
         "chunk": "no_examples-chunk1",
         "promptIndex": 1
       },
       "latency_no_examples_ms": 38312.0,
       "pred_with_examples": {
-        "intent": "Find Avery's reporting manager",
+        "intent": "Find Olga's reporting manager",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
-          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc"
+          "key_id": "20000000-0000-4000-8000-000000000001"
         },
-        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=10; users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle; users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle"
+        "odata_request": "users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=10; users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,jobTitle; users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,jobTitle"
       },
       "eval_with_examples": {
         "intent_match": false,
@@ -539,7 +539,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName",
             "top": 10
           },
@@ -553,19 +553,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -574,7 +574,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -589,7 +589,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -605,7 +605,7 @@
         {
           "timestamp": "2026-11-12T23:58:56.5341957+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=10",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=10",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -613,7 +613,7 @@
         {
           "timestamp": "2026-11-12T23:59:00.4876247+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -621,7 +621,7 @@
         {
           "timestamp": "2026-11-12T23:59:00.6122098+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -629,7 +629,7 @@
         {
           "timestamp": "2026-11-12T23:59:00.728436+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -637,7 +637,7 @@
         {
           "timestamp": "2026-11-12T23:59:00.9204252+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -645,7 +645,7 @@
         {
           "timestamp": "2026-11-12T23:59:05.8539787+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -653,7 +653,7 @@
         {
           "timestamp": "2026-11-12T23:59:05.9722747+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -661,7 +661,7 @@
         {
           "timestamp": "2026-11-12T23:59:06.0755998+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -669,7 +669,7 @@
         {
           "timestamp": "2026-11-12T23:59:06.1732793+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q1-df9705e55c5d4fa683616893a89c1e5b"
@@ -816,7 +816,7 @@
       },
       "error_with_examples": null,
       "session_with_examples": {
-        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "id": "3e0d708d-6313-48c4-9ada-850477426a7b",
         "chunk": "with_examples-chunk1",
         "promptIndex": 1
       },
@@ -825,9 +825,9 @@
         "intent": "user_manager",
         "tool": "GraphMcp-execute_odata_query",
         "parameters": {
-          "user": "Avery Adams"
+          "user": "Olga Podolyako"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -844,7 +844,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Whom Avery reports to?"
+            "query": "Whom Olga reports to?"
           },
           "uri": null,
           "success": true,
@@ -859,19 +859,19 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "odata_query": "users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "search_query-q1-83b7423248384025b75941bed774e86e"
         }
@@ -880,7 +880,7 @@
         {
           "timestamp": "2026-11-13T00:01:49.2917748+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/opodolyako%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "search_query-q1-83b7423248384025b75941bed774e86e"
@@ -1051,7 +1051,7 @@
       },
       "error_search_query": null,
       "session_search_query": {
-        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "id": "df9fdb15-be43-41c1-9be3-5440150ddbb8",
         "chunk": "search_query-chunk1",
         "promptIndex": 1
       },
@@ -1059,23 +1059,23 @@
     },
     {
       "query_id": 2,
-      "query": "Who is Avery's manager?",
+      "query": "Who is Olga's manager?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Find Avery's manager",
+        "intent": "Find Olga's manager",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
           "key_id": [
-            "b90f30ed-2218-512d-87a3-e3738a5870bc",
-            "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-            "65d91890-8dec-591a-abcd-ef9efa247015"
+            "20000000-0000-4000-8000-000000000001",
+            "20000000-0000-4000-8000-000000000002",
+            "20000000-0000-4000-8000-000000000003"
           ],
           "select": "id,displayName,userPrincipalName"
         },
@@ -1096,7 +1096,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -1109,19 +1109,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1130,7 +1130,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -1144,7 +1144,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -1158,7 +1158,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -1172,7 +1172,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "expand": "manager",
             "select": "id,displayName,userPrincipalName"
           },
@@ -1186,19 +1186,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1208,7 +1208,7 @@
         {
           "timestamp": "2026-11-12T23:57:22.8042063+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1216,7 +1216,7 @@
         {
           "timestamp": "2026-11-12T23:57:28.398559+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1224,7 +1224,7 @@
         {
           "timestamp": "2026-11-12T23:57:28.5137825+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1232,7 +1232,7 @@
         {
           "timestamp": "2026-11-12T23:57:28.6286222+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1240,7 +1240,7 @@
         {
           "timestamp": "2026-11-12T23:57:28.7289463+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1248,7 +1248,7 @@
         {
           "timestamp": "2026-11-12T23:57:30.1296614+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1256,7 +1256,7 @@
         {
           "timestamp": "2026-11-12T23:57:30.2395401+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1264,7 +1264,7 @@
         {
           "timestamp": "2026-11-12T23:57:30.3490158+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1272,7 +1272,7 @@
         {
           "timestamp": "2026-11-12T23:57:30.4606031+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1280,7 +1280,7 @@
         {
           "timestamp": "2026-11-12T23:57:31.9366355+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1288,7 +1288,7 @@
         {
           "timestamp": "2026-11-12T23:57:32.0536254+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1296,7 +1296,7 @@
         {
           "timestamp": "2026-11-12T23:57:32.1500882+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1304,7 +1304,7 @@
         {
           "timestamp": "2026-11-12T23:57:32.2567285+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1312,7 +1312,7 @@
         {
           "timestamp": "2026-11-12T23:57:35.6339476+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$expand=manager",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$expand=manager",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q2-f3f64ca281df42b3bf914b464ed8443d"
@@ -1459,20 +1459,20 @@
       },
       "error_no_examples": null,
       "session_no_examples": {
-        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "id": "3b5db1be-ac22-4a47-ad9e-a931e1560317",
         "chunk": "no_examples-chunk1",
         "promptIndex": 2
       },
       "latency_no_examples_ms": 26047.0,
       "pred_with_examples": {
-        "intent": "Find Avery's manager",
+        "intent": "Find Olga's manager",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
-          "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+          "key_id": "20000000-0000-4000-8000-000000000003",
           "select": "id,displayName,userPrincipalName,jobTitle",
           "top": 1
         },
-        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20; users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle"
+        "odata_request": "users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=20; users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,jobTitle"
       },
       "eval_with_examples": {
         "intent_match": false,
@@ -1489,7 +1489,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName",
             "top": 20
           },
@@ -1503,19 +1503,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1524,7 +1524,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -1540,7 +1540,7 @@
         {
           "timestamp": "2026-11-12T23:59:16.0053989+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1548,7 +1548,7 @@
         {
           "timestamp": "2026-11-12T23:59:19.4770477+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1556,7 +1556,7 @@
         {
           "timestamp": "2026-11-12T23:59:19.5884469+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1564,7 +1564,7 @@
         {
           "timestamp": "2026-11-12T23:59:19.7378422+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1572,7 +1572,7 @@
         {
           "timestamp": "2026-11-12T23:59:19.8478694+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q2-a05171aac11c440aade0fc9227d7862a"
@@ -1719,18 +1719,18 @@
       },
       "error_with_examples": null,
       "session_with_examples": {
-        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "id": "3e0d708d-6313-48c4-9ada-850477426a7b",
         "chunk": "with_examples-chunk1",
         "promptIndex": 2
       },
       "latency_with_examples_ms": 21875.0,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "GraphMcp-execute_odata_query",
         "parameters": {
-          "userName": "Avery Adams"
+          "userName": "Olga Podolyako"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -1747,7 +1747,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's manager?"
+            "query": "Who is Olga's manager?"
           },
           "uri": null,
           "success": true,
@@ -1762,19 +1762,19 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "odata_query": "users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
         }
@@ -1783,7 +1783,7 @@
         {
           "timestamp": "2026-11-13T00:01:58.3492854+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/opodolyako%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "search_query-q2-d43d5f24f5b44d3590c27f0111c841b9"
@@ -1954,7 +1954,7 @@
       },
       "error_search_query": null,
       "session_search_query": {
-        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "id": "df9fdb15-be43-41c1-9be3-5440150ddbb8",
         "chunk": "search_query-chunk1",
         "promptIndex": 2
       },
@@ -1962,23 +1962,23 @@
     },
     {
       "query_id": 3,
-      "query": "Who is Avery's direct boss?",
+      "query": "Who is Olga's direct boss?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Find Avery's direct boss",
+        "intent": "Find Olga's direct boss",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
           "key_id": [
-            "b90f30ed-2218-512d-87a3-e3738a5870bc",
-            "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-            "65d91890-8dec-591a-abcd-ef9efa247015"
+            "20000000-0000-4000-8000-000000000001",
+            "20000000-0000-4000-8000-000000000002",
+            "20000000-0000-4000-8000-000000000003"
           ],
           "select": "id,displayName,userPrincipalName"
         },
@@ -1999,7 +1999,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -2012,19 +2012,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2033,7 +2033,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -2047,7 +2047,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -2061,7 +2061,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
@@ -2076,7 +2076,7 @@
         {
           "timestamp": "2026-11-12T23:57:46.998063+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2084,7 +2084,7 @@
         {
           "timestamp": "2026-11-12T23:57:54.7344753+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2092,7 +2092,7 @@
         {
           "timestamp": "2026-11-12T23:57:54.8611114+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2100,7 +2100,7 @@
         {
           "timestamp": "2026-11-12T23:57:54.9550057+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2108,7 +2108,7 @@
         {
           "timestamp": "2026-11-12T23:57:55.0616012+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2116,7 +2116,7 @@
         {
           "timestamp": "2026-11-12T23:57:56.3717575+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2124,7 +2124,7 @@
         {
           "timestamp": "2026-11-12T23:57:56.491404+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2132,7 +2132,7 @@
         {
           "timestamp": "2026-11-12T23:57:56.5897972+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2140,7 +2140,7 @@
         {
           "timestamp": "2026-11-12T23:57:56.7064801+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2148,7 +2148,7 @@
         {
           "timestamp": "2026-11-12T23:57:58.2033283+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2156,7 +2156,7 @@
         {
           "timestamp": "2026-11-12T23:57:58.3160393+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2164,7 +2164,7 @@
         {
           "timestamp": "2026-11-12T23:57:58.4338843+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2172,7 +2172,7 @@
         {
           "timestamp": "2026-11-12T23:57:58.5513657+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q3-fcf2a301060f42d6bf241d45c46fb15c"
@@ -2319,20 +2319,20 @@
       },
       "error_no_examples": null,
       "session_no_examples": {
-        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "id": "3b5db1be-ac22-4a47-ad9e-a931e1560317",
         "chunk": "no_examples-chunk1",
         "promptIndex": 3
       },
       "latency_no_examples_ms": 23500.0,
       "pred_with_examples": {
-        "intent": "Find Avery's direct manager",
+        "intent": "Find Olga's direct manager",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
-          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc; 33941ea8-52ee-5882-86e5-7a5c09b213a3; 65d91890-8dec-591a-abcd-ef9efa247015",
+          "key_id": "20000000-0000-4000-8000-000000000001; 20000000-0000-4000-8000-000000000002; 20000000-0000-4000-8000-000000000003",
           "select": "id,displayName,userPrincipalName,jobTitle",
           "top": 1
         },
-        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20; users/{each returned id}/manager?$select=id,displayName,userPrincipalName,jobTitle"
+        "odata_request": "users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=20; users/{each returned id}/manager?$select=id,displayName,userPrincipalName,jobTitle"
       },
       "eval_with_examples": {
         "intent_match": false,
@@ -2349,7 +2349,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName",
             "top": 20
           },
@@ -2363,19 +2363,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2384,7 +2384,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -2399,7 +2399,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -2414,7 +2414,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -2430,7 +2430,7 @@
         {
           "timestamp": "2026-11-12T23:59:50.9216921+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2438,7 +2438,7 @@
         {
           "timestamp": "2026-11-12T23:59:53.2437594+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2446,7 +2446,7 @@
         {
           "timestamp": "2026-11-12T23:59:53.3567932+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2454,7 +2454,7 @@
         {
           "timestamp": "2026-11-12T23:59:53.461561+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2462,7 +2462,7 @@
         {
           "timestamp": "2026-11-12T23:59:53.5659696+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2470,7 +2470,7 @@
         {
           "timestamp": "2026-11-12T23:59:55.3791356+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2478,7 +2478,7 @@
         {
           "timestamp": "2026-11-12T23:59:55.4904675+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2486,7 +2486,7 @@
         {
           "timestamp": "2026-11-12T23:59:55.5921385+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2494,7 +2494,7 @@
         {
           "timestamp": "2026-11-12T23:59:55.7015951+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2502,7 +2502,7 @@
         {
           "timestamp": "2026-11-12T23:59:58.9092964+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2510,7 +2510,7 @@
         {
           "timestamp": "2026-11-12T23:59:59.018014+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2518,7 +2518,7 @@
         {
           "timestamp": "2026-11-12T23:59:59.1186963+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2526,7 +2526,7 @@
         {
           "timestamp": "2026-11-12T23:59:59.3336028+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q3-16745f3e7c47428489b94568adfe1f77"
@@ -2673,18 +2673,18 @@
       },
       "error_with_examples": null,
       "session_with_examples": {
-        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "id": "3e0d708d-6313-48c4-9ada-850477426a7b",
         "chunk": "with_examples-chunk1",
         "promptIndex": 3
       },
       "latency_with_examples_ms": 29687.0,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "GraphMcp-execute_odata_query",
         "parameters": {
-          "userName": "Avery Adams"
+          "userName": "Olga Podolyako"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -2701,7 +2701,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's direct boss?"
+            "query": "Who is Olga's direct boss?"
           },
           "uri": null,
           "success": true,
@@ -2716,19 +2716,19 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "odata_query": "users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
         }
@@ -2737,7 +2737,7 @@
         {
           "timestamp": "2026-11-13T00:02:10.7202299+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/opodolyako%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "search_query-q3-3538eb0eeb0a41319310c682769f6dfa"
@@ -2908,7 +2908,7 @@
       },
       "error_search_query": null,
       "session_search_query": {
-        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "id": "df9fdb15-be43-41c1-9be3-5440150ddbb8",
         "chunk": "search_query-chunk1",
         "promptIndex": 3
       },
@@ -2916,17 +2916,17 @@
     },
     {
       "query_id": 4,
-      "query": "Show me the reporting line for Avery Adams",
+      "query": "Show me the reporting line for Olga Podolyako",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Show Avery Adams's reporting line",
+        "intent": "Show Olga Podolyako's reporting line",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
           "key_id": "10000000-0000-4000-8000-000000000001",
@@ -2949,13 +2949,13 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery Adams'",
+            "filter": "displayName eq 'Olga Podolyako'",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Podolyako%27&$select=id%2CdisplayName%2CuserPrincipalName",
           "examples_count": 0,
           "source": null,
           "resolved_identifier": null,
@@ -2963,8 +2963,8 @@
           "resolved_entities": [
             {
               "id": "10000000-0000-4000-8000-000000000001",
-              "userPrincipalName": "avery.adams@example.com",
-              "displayName": "Avery Adams"
+              "userPrincipalName": "opodolyako@example.com",
+              "displayName": "Olga Podolyako"
             }
           ],
           "correlation_id": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
@@ -2982,11 +2982,11 @@
           "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
         }
@@ -2995,7 +2995,7 @@
         {
           "timestamp": "2026-11-12T23:58:09.5633506+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga Podolyako'&$select=id,displayName,userPrincipalName",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q4-591cdb1290b94c5b8e5607c1bce6217c"
@@ -3150,18 +3150,18 @@
       },
       "error_no_examples": null,
       "session_no_examples": {
-        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "id": "3b5db1be-ac22-4a47-ad9e-a931e1560317",
         "chunk": "no_examples-chunk1",
         "promptIndex": 4
       },
       "latency_no_examples_ms": 11688.0,
       "pred_with_examples": {
-        "intent": "Show Avery Adams's reporting line",
+        "intent": "Show Olga Podolyako's reporting line",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
-          "key_id": "10000000-0000-4000-8000-000000000001; 10000000-0000-4000-8000-000000000002; e2e6e982-2c77-55f9-a54d-e4d1ead2216e; 114cbc48-26aa-55eb-80d9-3a299110667a; b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad"
+          "key_id": "10000000-0000-4000-8000-000000000001; 10000000-0000-4000-8000-000000000002; 20000000-0000-4000-8000-000000000022; 20000000-0000-4000-8000-000000000023; 20000000-0000-4000-8000-000000000024"
         },
-        "odata_request": "users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users(10000000-0000-4000-8000-000000000001)/manager; users(10000000-0000-4000-8000-000000000002)/manager; users(e2e6e982-2c77-55f9-a54d-e4d1ead2216e)/manager; users(114cbc48-26aa-55eb-80d9-3a299110667a)/manager; users(b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad)/manager"
+        "odata_request": "users?$filter=displayName eq 'Olga Podolyako'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users(10000000-0000-4000-8000-000000000001)/manager; users(10000000-0000-4000-8000-000000000002)/manager; users(20000000-0000-4000-8000-000000000022)/manager; users(20000000-0000-4000-8000-000000000023)/manager; users(20000000-0000-4000-8000-000000000024)/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -3178,14 +3178,14 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery Adams'",
+            "filter": "displayName eq 'Olga Podolyako'",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 20
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=20",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Podolyako%27&$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=20",
           "examples_count": 3,
           "source": null,
           "resolved_identifier": null,
@@ -3193,8 +3193,8 @@
           "resolved_entities": [
             {
               "id": "10000000-0000-4000-8000-000000000001",
-              "userPrincipalName": "avery.adams@example.com",
-              "displayName": "Avery Adams"
+              "userPrincipalName": "opodolyako@example.com",
+              "displayName": "Olga Podolyako"
             }
           ],
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
@@ -3213,11 +3213,11 @@
           "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
           "examples_count": 3,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
         },
@@ -3235,11 +3235,11 @@
           "odata_query": "users(%2710000000-0000-4000-8000-000000000002%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
           "examples_count": 3,
           "source": null,
-          "resolved_identifier": "example.directory.068@example.com",
+          "resolved_identifier": "example.directory.022@example.com",
           "resolved_entity": {
-            "id": "e2e6e982-2c77-55f9-a54d-e4d1ead2216e",
-            "userPrincipalName": "example.directory.068@example.com",
-            "displayName": "Example Directory Object 060"
+            "id": "20000000-0000-4000-8000-000000000022",
+            "userPrincipalName": "example.directory.022@example.com",
+            "displayName": "Example Directory Object 022"
           },
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
         },
@@ -3247,21 +3247,21 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "e2e6e982-2c77-55f9-a54d-e4d1ead2216e",
+            "key_id": "20000000-0000-4000-8000-000000000022",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users(%277a19ba9d-16e2-488d-9beb-92d77677a37b%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "odata_query": "users(%2720000000-0000-4000-8000-000000000022%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
           "examples_count": 3,
           "source": null,
-          "resolved_identifier": "example.directory.045@example.com",
+          "resolved_identifier": "example.directory.023@example.com",
           "resolved_entity": {
-            "id": "114cbc48-26aa-55eb-80d9-3a299110667a",
-            "userPrincipalName": "example.directory.045@example.com",
-            "displayName": "Example Directory Object 039"
+            "id": "20000000-0000-4000-8000-000000000023",
+            "userPrincipalName": "example.directory.023@example.com",
+            "displayName": "Example Directory Object 023"
           },
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
         },
@@ -3269,21 +3269,21 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "114cbc48-26aa-55eb-80d9-3a299110667a",
+            "key_id": "20000000-0000-4000-8000-000000000023",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users(%278d63c7a5-09b6-4547-95c1-d579846c25ef%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "odata_query": "users(%2720000000-0000-4000-8000-000000000023%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
           "examples_count": 3,
           "source": null,
-          "resolved_identifier": "example.directory.021@example.com",
+          "resolved_identifier": "example.directory.024@example.com",
           "resolved_entity": {
-            "id": "b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad",
-            "userPrincipalName": "example.directory.021@example.com",
-            "displayName": "Example Directory Object 018"
+            "id": "20000000-0000-4000-8000-000000000024",
+            "userPrincipalName": "example.directory.024@example.com",
+            "displayName": "Example Directory Object 024"
           },
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
         },
@@ -3291,21 +3291,21 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad",
+            "key_id": "20000000-0000-4000-8000-000000000024",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users(%279c4823c8-9d70-4345-94ca-3d1ef5ff77d0%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
+          "odata_query": "users(%2720000000-0000-4000-8000-000000000024%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName%2CjobTitle&$top=1",
           "examples_count": 3,
           "source": null,
-          "resolved_identifier": "example.directory.070@example.com",
+          "resolved_identifier": "example.directory.189@example.com",
           "resolved_entity": {
-            "id": "44a1dfbe-688e-5299-9c7b-3bb17ebb416f",
-            "userPrincipalName": "example.directory.070@example.com",
-            "displayName": "Example Directory Object 062"
+            "id": "20000000-0000-4000-8000-000000000189",
+            "userPrincipalName": "example.directory.189@example.com",
+            "displayName": "Example Directory Object 189"
           },
           "correlation_id": "with_examples-q4-d575377628984998af200f2593675e4c"
         }
@@ -3314,7 +3314,7 @@
         {
           "timestamp": "2026-11-13T00:00:11.7370396+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga Podolyako'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
@@ -3338,7 +3338,7 @@
         {
           "timestamp": "2026-11-13T00:00:24.1625239+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/e2e6e982-2c77-55f9-a54d-e4d1ead2216e/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000022/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
@@ -3346,7 +3346,7 @@
         {
           "timestamp": "2026-11-13T00:00:26.0120284+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/114cbc48-26aa-55eb-80d9-3a299110667a/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000023/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
@@ -3354,7 +3354,7 @@
         {
           "timestamp": "2026-11-13T00:00:29.9662458+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b1c05b9c-70e4-57d4-82a7-6fd6036bf3ad/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000024/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q4-d575377628984998af200f2593675e4c"
@@ -3501,16 +3501,16 @@
       },
       "error_with_examples": null,
       "session_with_examples": {
-        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "id": "3e0d708d-6313-48c4-9ada-850477426a7b",
         "chunk": "with_examples-chunk1",
         "promptIndex": 4
       },
       "latency_with_examples_ms": 33094.0,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "GraphMcp-execute_odata_query",
         "parameters": {
-          "userName": "Avery Adams",
+          "userName": "Olga Podolyako",
           "userId": "10000000-0000-4000-8000-000000000001"
         },
         "odata_request": "GET users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
@@ -3530,7 +3530,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show me the reporting line for Avery Adams"
+            "query": "Show me the reporting line for Olga Podolyako"
           },
           "uri": null,
           "success": true,
@@ -3545,12 +3545,12 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET users?$filter=startswith(displayName,'Olga Podolyako') or startswith(userPrincipalName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$filter=startswith(displayName,'Avery Adams') or startswith(userPrincipalName,'Avery Adams')&$select=id,displayName,userPrincipalName,jobTitle,department",
+          "odata_query": "users?$filter=startswith(displayName,'Olga Podolyako') or startswith(userPrincipalName,'Olga Podolyako')&$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
           "source": null,
           "resolved_identifier": null,
@@ -3558,13 +3558,13 @@
           "resolved_entities": [
             {
               "id": "10000000-0000-4000-8000-000000000001",
-              "userPrincipalName": "avery.adams@example.com",
-              "displayName": "Avery Adams"
+              "userPrincipalName": "opodolyako@example.com",
+              "displayName": "Olga Podolyako"
             },
             {
-              "id": "a0336cb4-76f2-5234-8c0a-5386442b5a92",
-              "userPrincipalName": "example.directory.071@example.com",
-              "displayName": "Example Directory Object 052"
+              "id": "20000000-0000-4000-8000-000000000021",
+              "userPrincipalName": "example.directory.021@example.com",
+              "displayName": "Example Directory Object 021"
             }
           ],
           "correlation_id": "search_query-q4-f13314748b27438990ec418639b0df66"
@@ -3581,11 +3581,11 @@
           "odata_query": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "search_query-q4-f13314748b27438990ec418639b0df66"
         }
@@ -3594,7 +3594,7 @@
         {
           "timestamp": "2026-11-13T00:02:27.7085555+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery%20Adams') or startswith(userPrincipalName,'Avery%20Adams') or startswith(mail,'Avery%20Adams')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga%20Podolyako') or startswith(userPrincipalName,'Olga%20Podolyako') or startswith(mail,'Olga%20Podolyako')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "search_query-q4-f13314748b27438990ec418639b0df66"
@@ -3773,7 +3773,7 @@
       },
       "error_search_query": null,
       "session_search_query": {
-        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "id": "df9fdb15-be43-41c1-9be3-5440150ddbb8",
         "chunk": "search_query-chunk1",
         "promptIndex": 4
       },
@@ -3781,17 +3781,17 @@
     },
     {
       "query_id": 5,
-      "query": "Who approves Avery's expenses and time off?",
+      "query": "Who approves Olga's expenses and time off?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Identify Avery Adams's expense and time-off approver",
+        "intent": "Identify Olga Podolyako's expense and time-off approver",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
           "key_id": "10000000-0000-4000-8000-000000000001",
@@ -3814,13 +3814,13 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery Adams'",
+            "filter": "displayName eq 'Olga Podolyako'",
             "select": "id,displayName,userPrincipalName"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Adams%27&$select=id%2CdisplayName%2CuserPrincipalName",
+          "odata_query": "users?$filter=displayName%20eq%20%27Olga%20Podolyako%27&$select=id%2CdisplayName%2CuserPrincipalName",
           "examples_count": 0,
           "source": null,
           "resolved_identifier": null,
@@ -3828,8 +3828,8 @@
           "resolved_entities": [
             {
               "id": "10000000-0000-4000-8000-000000000001",
-              "userPrincipalName": "avery.adams@example.com",
-              "displayName": "Avery Adams"
+              "userPrincipalName": "opodolyako@example.com",
+              "displayName": "Olga Podolyako"
             }
           ],
           "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3847,11 +3847,11 @@
           "odata_query": "users(%2710000000-0000-4000-8000-000000000001%27)/manager?$select=id%2CdisplayName%2CuserPrincipalName",
           "examples_count": 0,
           "source": null,
-          "resolved_identifier": "morgan.reed@example.com",
+          "resolved_identifier": "vvondra@example.com",
           "resolved_entity": {
             "id": "10000000-0000-4000-8000-000000000002",
-            "userPrincipalName": "morgan.reed@example.com",
-            "displayName": "Morgan Reed"
+            "userPrincipalName": "vvondra@example.com",
+            "displayName": "Vojtech Vondra"
           },
           "correlation_id": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
         },
@@ -3859,7 +3859,7 @@
           "method": "tools/call",
           "name": "list_chatMessages",
           "arguments": {
-            "search": "Avery expense approval",
+            "search": "Olga expense approval",
             "select": "id,body,createdDateTime,from",
             "top": 20
           },
@@ -3889,7 +3889,7 @@
         {
           "timestamp": "2026-11-12T23:58:29.1126672+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery Adams'&$select=id,displayName,userPrincipalName",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga Podolyako'&$select=id,displayName,userPrincipalName",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3913,7 +3913,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.104052+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/4496040c-45e7-5faf-beb9-db66288bec66/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/94eec48f-a521-4f31-a5ab-05ac249aff6d/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3921,7 +3921,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.103863+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/a2ddcaa2-f6c8-5c23-af37-26a8512d5a67/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/59dba7b3-c710-45b5-abc4-1bc852ece1f4/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3929,7 +3929,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.102447+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/6a406f49-feac-59ee-b193-cd234368d0e1/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/edbda64f-8b86-495c-a43f-1af091ce7a93/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3937,7 +3937,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.103596+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/00ad0752-c2ee-5e59-bf86-bef55f7f075f/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/3e22a33a-da77-4040-82c4-fe889c30e7fd/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3945,7 +3945,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.1037839+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/195fa1e8-cff4-5bd8-a46e-9ea874ea38d0/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/6ec86ad2-f219-42f7-b9fc-fa87096c38d8/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3953,7 +3953,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.1038892+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/9b83cb8f-3b41-5834-9398-ea310e9a24b1/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/5f134ecd-5789-499a-b782-1f6f2dec34de/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3961,7 +3961,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.10392+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/cd44c29f-c968-5e24-890b-1878bdd85904/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/e13efd82-8bdd-456e-bce7-51195d2c6b13/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3969,7 +3969,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.103755+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/2455fbf6-3f30-5882-851b-08a22f770dd3/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/0ef1db23-d55e-42ed-ad27-faafdc2fa4bf/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3977,7 +3977,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.1038287+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/a91f9fa8-c132-5914-a524-06140c252054/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/fddf1073-ff0f-4ae2-8579-83227d9edc6a/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -3985,7 +3985,7 @@
         {
           "timestamp": "2026-11-12T23:58:36.103934+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/teams/b8e1511e-aab4-555b-b479-0098c2d684c9/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
+          "url": "https://graph.microsoft.com/v1.0/teams/1979272c-6620-4e9a-83e8-d7010e1e42e6/channels?$select=id,displayName,description,membershipType,email,webUrl,createdDateTime",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "no_examples-q5-8bf726e8a957488bab5c0dbc110e51eb"
@@ -4148,20 +4148,20 @@
       },
       "error_no_examples": null,
       "session_no_examples": {
-        "id": "a93e8381-9640-5003-ba52-3d6e650391a9",
+        "id": "3b5db1be-ac22-4a47-ad9e-a931e1560317",
         "chunk": "no_examples-chunk1",
         "promptIndex": 5
       },
       "latency_no_examples_ms": 34968.0,
       "pred_with_examples": {
-        "intent": "Identify who approves Avery's expenses and time off",
+        "intent": "Identify who approves Olga's expenses and time off",
         "tool": "GraphMcp-get_users_manager",
         "parameters": {
-          "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc; 33941ea8-52ee-5882-86e5-7a5c09b213a3; 65d91890-8dec-591a-abcd-ef9efa247015",
+          "key_id": "20000000-0000-4000-8000-000000000001; 20000000-0000-4000-8000-000000000002; 20000000-0000-4000-8000-000000000003",
           "select": "id,displayName,userPrincipalName,jobTitle",
           "top": 1
         },
-        "odata_request": "users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20; users({each returned id})/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1"
+        "odata_request": "users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName,jobTitle&$top=20; users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20; users({each returned id})/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1"
       },
       "eval_with_examples": {
         "intent_match": false,
@@ -4178,7 +4178,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 20
           },
@@ -4192,19 +4192,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4213,7 +4213,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
+            "key_id": "20000000-0000-4000-8000-000000000001",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -4228,7 +4228,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
+            "key_id": "20000000-0000-4000-8000-000000000002",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -4243,7 +4243,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "65d91890-8dec-591a-abcd-ef9efa247015",
+            "key_id": "20000000-0000-4000-8000-000000000003",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "top": 1
           },
@@ -4258,7 +4258,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "displayName eq 'Avery'",
+            "filter": "displayName eq 'Olga'",
             "select": "id,displayName,userPrincipalName,jobTitle",
             "expand": "manager($select=id,displayName,userPrincipalName,jobTitle)",
             "top": 20
@@ -4273,19 +4273,19 @@
           "result_count": 3,
           "resolved_entities": [
             {
-              "id": "b90f30ed-2218-512d-87a3-e3738a5870bc",
-              "userPrincipalName": "example.directory.056@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000001",
+              "userPrincipalName": "example.directory.001@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "33941ea8-52ee-5882-86e5-7a5c09b213a3",
-              "userPrincipalName": "example.directory.053@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000002",
+              "userPrincipalName": "example.directory.002@example.com",
+              "displayName": "Example Directory Object 001"
             },
             {
-              "id": "65d91890-8dec-591a-abcd-ef9efa247015",
-              "userPrincipalName": "example.directory.055@example.com",
-              "displayName": "avery"
+              "id": "20000000-0000-4000-8000-000000000003",
+              "userPrincipalName": "example.directory.003@example.com",
+              "displayName": "Example Directory Object 001"
             }
           ],
           "correlation_id": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4295,7 +4295,7 @@
         {
           "timestamp": "2026-11-13T00:01:09.2120522+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName,jobTitle&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4303,7 +4303,7 @@
         {
           "timestamp": "2026-11-13T00:01:12.8230025+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4311,7 +4311,7 @@
         {
           "timestamp": "2026-11-13T00:01:12.9406387+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4319,7 +4319,7 @@
         {
           "timestamp": "2026-11-13T00:01:13.125016+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4327,7 +4327,7 @@
         {
           "timestamp": "2026-11-13T00:01:13.2349564+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/b90f30ed-2218-512d-87a3-e3738a5870bc/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000001/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4335,7 +4335,7 @@
         {
           "timestamp": "2026-11-13T00:01:26.2588044+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4343,7 +4343,7 @@
         {
           "timestamp": "2026-11-13T00:01:26.4063311+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4351,7 +4351,7 @@
         {
           "timestamp": "2026-11-13T00:01:26.5047776+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4359,7 +4359,7 @@
         {
           "timestamp": "2026-11-13T00:01:26.6123143+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/33941ea8-52ee-5882-86e5-7a5c09b213a3/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000002/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4367,7 +4367,7 @@
         {
           "timestamp": "2026-11-13T00:01:29.0460475+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,jobTitle&$top=1",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4375,7 +4375,7 @@
         {
           "timestamp": "2026-11-13T00:01:29.1604586+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4383,7 +4383,7 @@
         {
           "timestamp": "2026-11-13T00:01:29.2659034+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 404,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4391,7 +4391,7 @@
         {
           "timestamp": "2026-11-13T00:01:29.3792556+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/65d91890-8dec-591a-abcd-ef9efa247015/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
+          "url": "https://graph.microsoft.com/v1.0/users/20000000-0000-4000-8000-000000000003/directReports?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4399,7 +4399,7 @@
         {
           "timestamp": "2026-11-13T00:01:34.4253763+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Avery'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga'&$select=id,displayName,userPrincipalName,jobTitle&$expand=manager($select=id,displayName,userPrincipalName,jobTitle)&$top=20",
           "statusCode": 200,
           "isLive": true,
           "correlationId": "with_examples-q5-49c47f03fb894fca80b9a18c28ade9d0"
@@ -4546,7 +4546,7 @@
       },
       "error_with_examples": null,
       "session_with_examples": {
-        "id": "3cff3118-f5e3-59da-ac8d-8500c692fac5",
+        "id": "3e0d708d-6313-48c4-9ada-850477426a7b",
         "chunk": "with_examples-chunk1",
         "promptIndex": 5
       },
@@ -4572,7 +4572,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who approves Avery's expenses and time off?"
+            "query": "Who approves Olga's expenses and time off?"
           },
           "uri": null,
           "success": true,
@@ -4726,7 +4726,7 @@
       },
       "error_search_query": null,
       "session_search_query": {
-        "id": "d5d96dc3-220d-5591-818b-358998612366",
+        "id": "df9fdb15-be43-41c1-9be3-5440150ddbb8",
         "chunk": "search_query-chunk1",
         "promptIndex": 5
       },

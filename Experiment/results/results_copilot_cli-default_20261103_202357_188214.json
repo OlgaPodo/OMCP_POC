@@ -54,7 +54,7 @@
     {
       "query_id": 59,
       "category": "complex",
-      "query": "Which peers of Avery belong to Platform Engineering?",
+      "query": "Which peers of Olga belong to Identity Architecture?",
       "expected_intent": "user_peers_in_group",
       "expected_tool": "read_resource",
       "expected_params": {},
@@ -65,7 +65,7 @@
       "required_resources": [
         {
           "entitySet": "users",
-          "identifier": "avery.adams@example.com"
+          "identifier": "opodolyako@example.com"
         },
         {
           "entitySet": "groups",
@@ -76,8 +76,8 @@
         "intent": "user_peers_in_group",
         "tool": "read_resource",
         "parameters": {
-          "userName": "Avery Adams",
-          "groupName": "Platform Engineering"
+          "userName": "Olga Podolyako",
+          "groupName": "Identity Architecture"
         },
         "odata_request": "users('10000000-0000-4000-8000-000000000001')/manager/directReports; groups('11111111-2222-3333-4444-555555555555')/members"
       },
@@ -95,17 +95,17 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -122,7 +122,7 @@
           "source": "Microsoft Graph v1.0 (Live)",
           "resource_uri": "users://10000000-0000-4000-8000-000000000001",
           "entity_set": "users",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
@@ -282,8 +282,8 @@
         "intent": "user_peers_in_group",
         "tool": "read_resource",
         "parameters": {
-          "userName": "Avery Adams",
-          "groupName": "Platform Engineering"
+          "userName": "Olga Podolyako",
+          "groupName": "Identity Architecture"
         },
         "odata_request": "/users/10000000-0000-4000-8000-000000000001?$expand=manager($expand=directReports); /groups/11111111-2222-3333-4444-555555555555/members"
       },
@@ -301,17 +301,17 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery"
+            "userId": "Olga"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         },
         {
           "method": "tools/call",
           "name": "find_group",
           "arguments": {
-            "query": "Platform Engineering"
+            "query": "Identity Architecture"
           },
           "success": true,
           "source": "not reported",
@@ -340,7 +340,7 @@
           "source": "Microsoft Graph v1.0 (Live)",
           "resource_uri": "users://10000000-0000-4000-8000-000000000001",
           "entity_set": "users",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {

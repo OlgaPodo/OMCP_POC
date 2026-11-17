@@ -40,11 +40,11 @@
     {
       "query_id": 1,
       "category": "canonical",
-      "query": "Whom Avery reports to?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Whom Olga reports to?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_a": {
         "intent": "parse_error",
@@ -66,11 +66,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -234,11 +234,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {

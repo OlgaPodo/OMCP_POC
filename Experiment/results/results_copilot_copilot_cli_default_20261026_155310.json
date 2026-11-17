@@ -32,14 +32,14 @@
     {
       "query_id": 1,
       "category": "canonical",
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "avery.adams@example.com"
+          "userId": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -48,12 +48,12 @@
         "execution_success": true
       },
       "pred_b": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "find_user",
         "parameters": {
-          "query": "Avery"
+          "query": "Olga"
         },
-        "odata_request": "users?$filter=startswith(displayName,'Avery')&$expand=manager"
+        "odata_request": "users?$filter=startswith(displayName,'Olga')&$expand=manager"
       },
       "eval_b": {
         "intent_match": true,

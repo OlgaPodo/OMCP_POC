@@ -152,21 +152,21 @@
               <span class="cat-title">3. TOOLS</span>
             </div>
             <ul class="query-list">
-              <li class="query-item" data-query="tool-find-avery">
+              <li class="query-item" data-query="tool-find-olga">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Avery")</span>
+                <span class="query-label">find_user ("Olga")</span>
               </li>
-              <li class="query-item" data-query="tool-find-morgan">
+              <li class="query-item" data-query="tool-find-vojtech">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">find_user ("Morgan")</span>
+                <span class="query-label">find_user ("Vojtech")</span>
               </li>
               <li class="query-item" data-query="tool-profile-me">
                 <span class="http-badge mcp-badge">CALL</span>
                 <span class="query-label">user_profile ("me")</span>
               </li>
-              <li class="query-item" data-query="tool-profile-avery">
+              <li class="query-item" data-query="tool-profile-olga">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">user_profile ("avery.adams@example.com")</span>
+                <span class="query-label">user_profile ("opodolyako@example.com")</span>
               </li>
               <li class="query-item" data-query="tool-find-group">
                 <span class="http-badge mcp-badge">CALL</span>
@@ -174,7 +174,7 @@
               </li>
               <li class="query-item" data-query="tool-group-details">
                 <span class="http-badge mcp-badge">CALL</span>
-                <span class="query-label">group_details ("Platform Engineering")</span>
+                <span class="query-label">group_details ("Identity Architecture")</span>
               </li>
               <li class="query-item" data-query="tool-read-user-resource">
                 <span class="http-badge mcp-badge">CALL</span>
@@ -196,11 +196,11 @@
             <ul class="query-list" id="promptQueryList">
               <li class="query-item" data-query="prompt-reports-to">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Whom Avery reports to?</span>
+                <span class="query-label">Whom Olga reports to?</span>
               </li>
               <li class="query-item" data-query="prompt-peers">
                 <span class="http-badge prompt-badge">PROMPT</span>
-                <span class="query-label">Who are Avery's peers?</span>
+                <span class="query-label">Who are Olga's peers?</span>
               </li>
               <li class="query-item" data-query="prompt-direct-reports">
                 <span class="http-badge prompt-badge">PROMPT</span>
@@ -534,8 +534,8 @@
             </div>
             <p>In the official <a href="https://modelcontextprotocol.io/specification/2026-07-28" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600;">Model Context Protocol (MCP 2.0 / 2026-07-28)</a>, prompts are designed as user-controlled <strong>slash-command-style templates</strong>:</p>
             <ul>
-              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_avery_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
-              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Avery"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
+              <li><strong>Interactive workflows:</strong> Invoked when a user selects a template (e.g., <code>/whom_olga_reports_to</code>) with client-specific optional automation via <code class="prop-mcp">prompts/get</code>.</li>
+              <li><strong>Message Generators:</strong> Accept arguments (e.g., <code>userName="Olga"</code>) and expand into a sequence of structured prompt messages (<code>role: "user"</code>, <code>content: { text: "..." }</code>).</li>
               <li><strong>OData query steps:</strong> Container prompts express workflows using standard OData v4.01 queries against the service schema.</li>
             </ul>
             <div style="margin-top: 12px; padding: 8px 12px; background: #eef6fc; border-radius: 6px; font-size: 11.5px; border-left: 3px solid var(--primary);">
@@ -552,7 +552,7 @@
             <ul>
               <li><strong>Context Window Constraint:</strong> Large tool catalogs can consume context; this demo does not establish a universal tool-count limit.</li>
               <li><strong>Work IQ &amp; Graph Copilot Pattern:</strong> Instead of 1,000 tools, services use a catalog of curated natural-language prompt workflows to index API calls.</li>
-              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Avery's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
+              <li><strong>Search-then-Query:</strong> The agent matches user utterances (such as <em>"Who is Olga's manager?"</em>) against prompt descriptions and OData query templates to select the appropriate tool or API request.</li>
             </ul>
           </div>
         </div>
@@ -580,7 +580,7 @@
           <h3>Prompt catalog text search (illustrative)</h3>
           <p>Search the selected server's container prompts by word overlap. This is not embeddings, LLM routing, argument extraction, or tool execution. No match is a valid result:</p>
           <div class="matcher-input-bar">
-            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Avery's boss? or Who works on the same team as Avery?" value="Who is Avery's boss?">
+            <input type="text" id="matcherInput" class="matcher-input" placeholder="e.g. Who is Olga's boss? or Who works on the same team as Olga?" value="Who is Olga's boss?">
             <button id="testMatchBtn" class="ge-btn-primary">Test Semantic Match</button>
           </div>
           <div class="matcher-results" id="matcherResults">
@@ -606,7 +606,7 @@
           <h3 style="font-size: 14px; margin-bottom: 6px;">Local HTTP MCP + Graph Explorer Web App</h3>
           <ul style="font-size: 12px; margin-left: 18px;">
             <li><strong>HTTP MCP Server (<code>C:\MCP\Server</code>):</strong> Calls <code>https://graph.microsoft.com/v1.0/users</code> (extended with <code>/v1.0/groups</code>), exposes tools (<code>find_user</code>, <code>user_profile</code>, <code>find_group</code>, <code>group_details</code>, <code>read_resource</code>), resources (<code>users://me</code>, <code>users://{userId}</code>, <code>groups://all</code>, <code>groups://{groupId}</code>), and <code>prompts/list</code> + <code>prompts/get</code>.</li>
-            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Avery reports to?"</em>, <em>"Who are Avery's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
+            <li><strong>Required Prompt Workflows:</strong> <em>"Whom Olga reports to?"</em>, <em>"Who are Olga's peers?"</em>, additional user queries, group queries, and cross-resource <code>users</code> + <code>groups</code> joins.</li>
             <li><strong>Initial Concerns Addressed:</strong> (a) Reconcile MCP reusable prompt templates with semantic retrieval catalogs; (b) Show the exact end-to-end mapping from OData CSDL annotation &rarr; MCP prompt &rarr; tool/resource &rarr; Microsoft Graph API request.</li>
           </ul>
         </div>
@@ -616,7 +616,7 @@
           <ul style="font-size: 12px; margin-left: 18px;">
             <li><strong><code>prompts/list</code> vs <code>prompts/get</code>:</strong> <code>prompts/list</code> returns only prompt signatures and required arguments; <code>prompts/get</code> returns rendered <code>messages</code> after argument extraction.</li>
             <li><strong>Free-Text Utterance vs User Selection:</strong> Clients/LLMs map free-text questions to discovered prompts/tools, extract arguments, and reject out-of-domain queries (such as weather) with zero tool calls.</li>
-            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Avery"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
+            <li><strong>Deterministic Projection &amp; Multi-Turn Disambiguation:</strong> CSDL-to-MCP conversion uses deterministic C# code (no AI rewriting or non-standard <code>prompt_template</code> fields). Ambiguous names (multiple <em>"Olga"</em> matches) require <code>find_user</code> with Graph-valid <code>$filter=startswith(...)</code> (not unsupported <code>contains(...)</code>) before calling <code>user_profile</code> or <code>resources/read</code>.</li>
           </ul>
         </div>
       </div>
@@ -625,8 +625,8 @@
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <label class="selector-title" for="mappingPromptSelect">Workflow Scenario:</label>
           <select id="mappingPromptSelect" class="args-field-input" style="min-width: 280px; width: auto; font-weight: 600;"></select>
-          <button type="button" class="map-query-btn" data-map-prompt="whom_avery_reports_to">mcp-poc.docx: Whom Avery reports to?</button>
-          <button type="button" class="map-query-btn" data-map-prompt="who_are_averys_peers">mcp-poc.docx: Who are Avery's peers?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="whom_olga_reports_to">mcp-poc.docx: Whom Olga reports to?</button>
+          <button type="button" class="map-query-btn" data-map-prompt="who_are_olgas_peers">mcp-poc.docx: Who are Olga's peers?</button>
           <button type="button" class="map-query-btn active" data-map-prompt="user_peers_in_group">Composed: Peers in group</button>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -843,7 +843,7 @@
                 <span class="summary-card-num">Queries #1&ndash;#3, #11&ndash;#15, #18, #22, #25, #28</span>
               </div>
               <h3>First-Name Disambiguation Failures</h3>
-              <p>Without prompt defaults (<span class="kw-annot">userName="Avery"</span>, <span class="kw-annot">managerName="Morgan Reed"</span>), calling <code class="kw-mcp">find_user("Avery")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
+              <p>Without prompt defaults (<span class="kw-annot">userName="Olga"</span>, <span class="kw-annot">managerName="Vojtech Vondra"</span>), calling <code class="kw-mcp">find_user("Olga")</code> against a large directory returns 20 matches and aborts with <span class="kw-warn">needs_clarification</span> instead of resolving the target profile.</p>
             </div>
 
             <div class="summary-card accent-amber">
@@ -1406,7 +1406,7 @@
 
         <!-- Query Input Box with Run Button -->
         <div style="display: flex; gap: 10px; width: 100%; align-items: stretch;">
-          <input type="text" id="llmQueryInput" class="args-field-input" style="flex: 1; height: 42px; font-size: 14px; padding: 0 14px; border-radius: var(--radius); border: 2px solid var(--primary);" placeholder="Type a natural language query (e.g. 'Who is Avery\'s manager?', 'Find files modified by Megan', 'Show peers in Marketing')..." value="Who is Avery's manager?">
+          <input type="text" id="llmQueryInput" class="args-field-input" style="flex: 1; height: 42px; font-size: 14px; padding: 0 14px; border-radius: var(--radius); border: 2px solid var(--primary);" placeholder="Type a natural language query (e.g. 'Who is Olga\'s manager?', 'Find files modified by Megan', 'Show peers in Marketing')..." value="Who is Olga's manager?">
           <button type="button" id="btnRunLlmQuery" class="copy-btn" style="height: 42px; padding: 0 24px; font-size: 14px; font-weight: 700; background: var(--primary); color: #ffffff; border-color: var(--primary); display: flex; align-items: center; gap: 8px; cursor: pointer;">
             <span class="btn-icon" id="llmRunBtnIcon">🚀</span> Run Query
           </button>
@@ -1415,9 +1415,9 @@
         <!-- Quick Sample Queries Pills -->
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Suggested Queries:</span>
-          <button type="button" class="map-query-btn llm-sample-btn" data-query="Whom Avery reports to?">Whom Avery reports to?</button>
-          <button type="button" class="map-query-btn llm-sample-btn" data-query="Who are Avery's peers?">Who are Avery's peers?</button>
-          <button type="button" class="map-query-btn llm-sample-btn" data-query="Peers of Avery in Marketing group">Peers of Avery in Marketing group</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Whom Olga reports to?">Whom Olga reports to?</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Who are Olga's peers?">Who are Olga's peers?</button>
+          <button type="button" class="map-query-btn llm-sample-btn" data-query="Peers of Olga in Marketing group">Peers of Olga in Marketing group</button>
           <button type="button" class="map-query-btn llm-sample-btn" data-query="Search files matching 'POC proposal'">Search files for 'POC proposal'</button>
           <button type="button" class="map-query-btn llm-sample-btn" data-query="Who modified specification.docx?">Who modified specification.docx?</button>
           <button type="button" class="map-query-btn llm-sample-btn" data-query="What is the weather in Seattle?">Weather in Seattle (Out-of-Scope)</button>

@@ -111,14 +111,14 @@
   "results": [
     {
       "query_id": 1,
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "test",
@@ -186,14 +186,14 @@
     },
     {
       "query_id": 2,
-      "query": "Who is Avery's manager?",
+      "query": "Who is Olga's manager?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "test",
@@ -261,14 +261,14 @@
     },
     {
       "query_id": 3,
-      "query": "Who is Avery's direct boss?",
+      "query": "Who is Olga's direct boss?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "test",
@@ -336,14 +336,14 @@
     },
     {
       "query_id": 4,
-      "query": "Show me the reporting line for Avery Adams",
+      "query": "Show me the reporting line for Olga Podolyako",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "test",
@@ -411,14 +411,14 @@
     },
     {
       "query_id": 5,
-      "query": "Who approves Avery's expenses and time off?",
+      "query": "Who approves Olga's expenses and time off?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
         "intent": "test",

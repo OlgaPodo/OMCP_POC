@@ -1,75 +1,75 @@
 [
   {
     "id": 1,
-    "query": "Whom Avery reports to?",
+    "query": "Whom Olga reports to?",
     "category": "canonical",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 2,
-    "query": "Who is Avery's manager?",
+    "query": "Who is Olga's manager?",
     "category": "paraphrased",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 3,
-    "query": "Who is Avery's direct boss?",
+    "query": "Who is Olga's direct boss?",
     "category": "paraphrased",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 4,
-    "query": "Show me the reporting line for Avery Adams",
+    "query": "Show me the reporting line for Olga Podolyako",
     "category": "paraphrased",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 5,
-    "query": "Who approves Avery's expenses and time off?",
+    "query": "Who approves Olga's expenses and time off?",
     "category": "paraphrased",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 6,
-    "query": "Who is the manager of Jordan Lee?",
+    "query": "Who is the manager of Joao Paiva?",
     "category": "complex",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager",
+    "expectedGraphEndpoint": "users('jpaiva@example.com')/manager",
     "expectedParams": {
-      "userId": "jordan.lee@example.com"
+      "userId": "jpaiva@example.com"
     }
   },
   {
     "id": 7,
     "query": "Whom does Casey Chen report to?",
     "category": "complex",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('casey.chen@example.com')/manager",
     "expectedParams": {
@@ -80,7 +80,7 @@
     "id": 8,
     "query": "Who manages Taylor Morgan?",
     "category": "complex",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager",
     "expectedParams": {
@@ -91,7 +91,7 @@
     "id": 9,
     "query": "Find the supervisor of Riley Patel",
     "category": "complex",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('riley.patel@example.com')/manager",
     "expectedParams": {
@@ -102,7 +102,7 @@
     "id": 10,
     "query": "Who is my manager?",
     "category": "canonical",
-    "targetIntent": "whom_avery_reports_to",
+    "targetIntent": "whom_olga_reports_to",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "me/manager",
     "expectedParams": {
@@ -111,42 +111,42 @@
   },
   {
     "id": 11,
-    "query": "Who are Avery's peers?",
+    "query": "Who are Olga's peers?",
     "category": "canonical",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 12,
-    "query": "Who works on the same team as Avery?",
+    "query": "Who works on the same team as Olga?",
     "category": "paraphrased",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 13,
-    "query": "Find teammates who share a manager with Avery",
+    "query": "Find teammates who share a manager with Olga",
     "category": "paraphrased",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 14,
     "query": "Who are my peers?",
     "category": "canonical",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "me/manager/directReports",
     "expectedParams": {
@@ -155,31 +155,31 @@
   },
   {
     "id": 15,
-    "query": "List all colleagues reporting to the same director as Avery",
+    "query": "List all colleagues reporting to the same director as Olga",
     "category": "paraphrased",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 16,
-    "query": "Who are Jordan Lee's peer architects?",
+    "query": "Who are Joao Paiva's peer architects?",
     "category": "complex",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('jordan.lee@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('jpaiva@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "jordan.lee@example.com"
+      "userId": "jpaiva@example.com"
     }
   },
   {
     "id": 17,
     "query": "Show everyone on Taylor Morgan's peer team",
     "category": "complex",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('taylor.morgan@example.com')/manager/directReports",
     "expectedParams": {
@@ -188,35 +188,35 @@
   },
   {
     "id": 18,
-    "query": "Who are the other leads working under Morgan alongside Casey Chen?",
+    "query": "Who are the other leads working under Vojtech alongside Casey Chen?",
     "category": "complex",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('casey.chen@example.com')/manager/directReports",
     "expectedParams": {
       "userId": "casey.chen@example.com"
     },
     "acceptedIntents": [
-      "who_are_averys_peers",
+      "who_are_olgas_peers",
       "direct_reports_of_manager"
     ]
   },
   {
     "id": 19,
-    "query": "Who shares an organization level with Avery Adams?",
+    "query": "Who shares an organization level with Olga Podolyako?",
     "category": "paraphrased",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/manager/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/manager/directReports",
     "expectedParams": {
-      "userId": "avery.adams@example.com"
+      "userId": "opodolyako@example.com"
     }
   },
   {
     "id": 20,
     "query": "Find peer colleagues for Jamie Kim",
     "category": "complex",
-    "targetIntent": "who_are_averys_peers",
+    "targetIntent": "who_are_olgas_peers",
     "expectedTool": "user_profile",
     "expectedGraphEndpoint": "users('jamie.kim@example.com')/manager/directReports",
     "expectedParams": {
@@ -229,53 +229,53 @@
     "category": "canonical",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
     "id": 22,
-    "query": "Who reports to Morgan?",
+    "query": "Who reports to Vojtech?",
     "category": "paraphrased",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
     "id": 23,
-    "query": "List everyone reporting to Morgan Reed",
+    "query": "List everyone reporting to Vojtech Vondra",
     "category": "paraphrased",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
     "id": 24,
-    "query": "Show the direct team of Morgan Reed",
+    "query": "Show the direct team of Vojtech Vondra",
     "category": "paraphrased",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
     "id": 25,
-    "query": "Does Avery have any direct reports?",
+    "query": "Does Olga have any direct reports?",
     "category": "complex",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')/directReports",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Avery Adams"
+      "managerNameOrId": "Olga Podolyako"
     }
   },
   {
@@ -302,13 +302,13 @@
   },
   {
     "id": 28,
-    "query": "Who is currently supervised by Morgan?",
+    "query": "Who is currently supervised by Vojtech?",
     "category": "paraphrased",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
@@ -324,13 +324,13 @@
   },
   {
     "id": 30,
-    "query": "Enumerate staff under partner director Morgan Reed",
+    "query": "Enumerate staff under partner director Vojtech Vondra",
     "category": "paraphrased",
     "targetIntent": "direct_reports_of_manager",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')/directReports",
+    "expectedGraphEndpoint": "users('vvondra@example.com')/directReports",
     "expectedParams": {
-      "managerNameOrId": "Morgan Reed"
+      "managerNameOrId": "Vojtech Vondra"
     }
   },
   {
@@ -342,7 +342,7 @@
     "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
     "expectedParams": {
       "department": "Identity",
-      "jobTitle": "Architect"
+      "jobTitle": "Example Directory Object 089"
     }
   },
   {
@@ -354,31 +354,31 @@
     "expectedGraphEndpoint": "users?$filter=department eq 'Identity' and startswith(jobTitle,'Architect')",
     "expectedParams": {
       "department": "Identity",
-      "jobTitle": "Architect"
+      "jobTitle": "Example Directory Object 089"
     }
   },
   {
     "id": 33,
-    "query": "Find all Principal Architects in Platform Engineering",
+    "query": "Find all Principal Architects in IDM Services ENG",
     "category": "complex",
     "targetIntent": "search_users_by_dept_title",
     "expectedTool": "find_user",
-    "expectedGraphEndpoint": "users?$filter=department eq 'Platform Engineering' and startswith(jobTitle,'Principal')",
+    "expectedGraphEndpoint": "users?$filter=department eq 'IDM Services ENG' and startswith(jobTitle,'Principal')",
     "expectedParams": {
-      "department": "Platform Engineering",
+      "department": "IDM Services ENG",
       "jobTitle": "Principal"
     }
   },
   {
     "id": 34,
-    "query": "Show me product managers in the AI Platform department",
+    "query": "Show me product managers in the IDNA AI Innovations department",
     "category": "complex",
     "targetIntent": "search_users_by_dept_title",
     "expectedTool": "find_user",
-    "expectedGraphEndpoint": "users?$filter=department eq 'AI Platform' and startswith(jobTitle,'Principal Architect')",
+    "expectedGraphEndpoint": "users?$filter=department eq 'IDNA AI Innovations' and startswith(jobTitle,'Principal Product Manager')",
     "expectedParams": {
-      "department": "AI Platform",
-      "jobTitle": "Principal Architect"
+      "department": "IDNA AI Innovations",
+      "jobTitle": "Principal Product Manager"
     }
   },
   {
@@ -389,7 +389,7 @@
     "expectedTool": "find_user",
     "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Business Administrator') and officeLocation eq 'Prague'",
     "expectedParams": {
-      "department": "Platform Engineering",
+      "department": "IDM MAP COGS 1908 Prague",
       "jobTitle": "Business Administrator"
     },
     "acceptedIntents": [
@@ -432,7 +432,7 @@
     "expectedTool": "find_user",
     "expectedGraphEndpoint": "users?$filter=startswith(jobTitle,'Architect')",
     "expectedParams": {
-      "query": "Architect"
+      "query": "Example Directory Object 089"
     },
     "acceptedIntents": [
       "find_user",
@@ -441,35 +441,35 @@
   },
   {
     "id": 39,
-    "query": "Find all employees named Morgan",
+    "query": "Find all employees named Vojtech",
     "category": "ambiguous",
     "targetIntent": "find_user",
     "expectedTool": "find_user",
-    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Morgan')",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Vojtech')",
     "expectedParams": {
-      "query": "Morgan"
+      "query": "Vojtech"
     }
   },
   {
     "id": 40,
-    "query": "Search for Jordan in the directory",
+    "query": "Search for Joao in the directory",
     "category": "ambiguous",
     "targetIntent": "find_user",
     "expectedTool": "find_user",
-    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Jordan')",
+    "expectedGraphEndpoint": "users?$filter=startswith(displayName,'Joao')",
     "expectedParams": {
-      "query": "Jordan"
+      "query": "Joao"
     }
   },
   {
     "id": 41,
-    "query": "Find user with email avery.adams@example.com",
+    "query": "Find user with email opodolyako@example.com",
     "category": "ambiguous",
     "targetIntent": "find_user",
     "expectedTool": "find_user",
-    "expectedGraphEndpoint": "users?$filter=mail eq 'avery.adams@example.com'",
+    "expectedGraphEndpoint": "users?$filter=mail eq 'opodolyako@example.com'",
     "expectedParams": {
-      "query": "avery.adams@example.com"
+      "query": "opodolyako@example.com"
     }
   },
   {
@@ -485,24 +485,24 @@
   },
   {
     "id": 43,
-    "query": "Get full profile card for Avery Adams",
+    "query": "Get full profile card for Olga Podolyako",
     "category": "paraphrased",
     "targetIntent": "user_quick_lookup",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('avery.adams@example.com')",
+    "expectedGraphEndpoint": "users('opodolyako@example.com')",
     "expectedParams": {
-      "identifier": "avery.adams@example.com"
+      "identifier": "opodolyako@example.com"
     }
   },
   {
     "id": 44,
-    "query": "Show contact card and office location for Morgan Reed",
+    "query": "Show contact card and office location for Vojtech Vondra",
     "category": "paraphrased",
     "targetIntent": "user_quick_lookup",
     "expectedTool": "user_profile",
-    "expectedGraphEndpoint": "users('morgan.reed@example.com')",
+    "expectedGraphEndpoint": "users('vvondra@example.com')",
     "expectedParams": {
-      "identifier": "morgan.reed@example.com"
+      "identifier": "vvondra@example.com"
     }
   },
   {
@@ -518,7 +518,7 @@
   },
   {
     "id": 46,
-    "query": "What projects is Avery currently leading?",
+    "query": "What projects is Olga currently leading?",
     "category": "edge_case",
     "targetIntent": "out_of_scope",
     "expectedTool": "none",
@@ -527,7 +527,7 @@
   },
   {
     "id": 47,
-    "query": "Check Example Directory Object 054 for open slots tomorrow",
+    "query": "Check Olga's calendar for open slots tomorrow",
     "category": "edge_case",
     "targetIntent": "out_of_scope",
     "expectedTool": "none",
@@ -545,7 +545,7 @@
   },
   {
     "id": 49,
-    "query": "List all security groups that Jordan Lee is a member of",
+    "query": "List all security groups that Joao Paiva is a member of",
     "category": "edge_case",
     "targetIntent": "out_of_scope",
     "expectedTool": "none",
@@ -554,7 +554,7 @@
   },
   {
     "id": 50,
-    "query": "Send a Teams message to Morgan Reed regarding API guidelines",
+    "query": "Send a Teams message to Vojtech Vondra regarding API guidelines",
     "category": "edge_case",
     "targetIntent": "out_of_scope",
     "expectedTool": "none",
@@ -563,12 +563,12 @@
   },
   {
     "id": 51,
-    "query": "Find the Platform Engineering group",
+    "query": "Find the Identity Architecture group",
     "category": "canonical",
     "targetIntent": "find_group_by_name",
     "expectedTool": "find_group",
     "expectedParams": {
-      "query": "Platform Engineering"
+      "query": "Identity Architecture"
     }
   },
   {
@@ -583,7 +583,7 @@
   },
   {
     "id": 53,
-    "query": "Who are the members of the Platform Engineering group?",
+    "query": "Who are the members of the Identity Architecture group?",
     "category": "canonical",
     "targetIntent": "list_group_members",
     "expectedTool": "group_details",
@@ -593,7 +593,7 @@
   },
   {
     "id": 54,
-    "query": "Show members of Platform Engineering",
+    "query": "Show members of Identity Architecture",
     "category": "paraphrased",
     "targetIntent": "list_group_members",
     "expectedTool": "group_details",
@@ -603,7 +603,7 @@
   },
   {
     "id": 55,
-    "query": "Who owns the Platform Engineering group?",
+    "query": "Who owns the Identity Architecture group?",
     "category": "canonical",
     "targetIntent": "who_owns_group",
     "expectedTool": "group_details",
@@ -613,7 +613,7 @@
   },
   {
     "id": 56,
-    "query": "Find owners of Platform Engineering",
+    "query": "Find owners of Identity Architecture",
     "category": "paraphrased",
     "targetIntent": "who_owns_group",
     "expectedTool": "group_details",
@@ -623,7 +623,7 @@
   },
   {
     "id": 57,
-    "query": "Get details for group Platform Engineering",
+    "query": "Get details for group Identity Architecture",
     "category": "complex",
     "targetIntent": "group_quick_lookup",
     "expectedTool": "group_details",
@@ -633,7 +633,7 @@
   },
   {
     "id": 58,
-    "query": "Delete the Platform Engineering group",
+    "query": "Delete the Identity Architecture group",
     "category": "edge_case",
     "targetIntent": "out_of_scope",
     "expectedTool": "none",
@@ -641,7 +641,7 @@
   },
   {
     "id": 59,
-    "query": "Which peers of Avery belong to Platform Engineering?",
+    "query": "Which peers of Olga belong to Identity Architecture?",
     "category": "complex",
     "targetIntent": "user_peers_in_group",
     "expectedTool": "read_resource",
@@ -653,7 +653,7 @@
     "requiredResources": [
       {
         "entitySet": "users",
-        "identifier": "avery.adams@example.com"
+        "identifier": "opodolyako@example.com"
       },
       {
         "entitySet": "groups",
@@ -663,7 +663,7 @@
   },
   {
     "id": 60,
-    "query": "Which Platform Engineering members report to Morgan?",
+    "query": "Which Identity Architecture members report to Vojtech?",
     "category": "complex",
     "targetIntent": "group_members_reporting_to_manager",
     "expectedTool": "read_resource",
@@ -684,7 +684,7 @@
   },
   {
     "id": 61,
-    "query": "Does Avery share a manager with Platform Engineering owners?",
+    "query": "Does Olga share a manager with Identity Architecture owners?",
     "category": "complex",
     "targetIntent": "user_and_group_owners_common_manager",
     "expectedTool": "read_resource",
@@ -696,7 +696,7 @@
     "requiredResources": [
       {
         "entitySet": "users",
-        "identifier": "avery.adams@example.com"
+        "identifier": "opodolyako@example.com"
       },
       {
         "entitySet": "groups",

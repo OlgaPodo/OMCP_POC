@@ -538,7 +538,7 @@ const server = http.createServer(async (req, res) => {
       let payload = {};
       try { payload = JSON.parse(bodyData || '{}'); } catch (_) {}
 
-      const query = (payload.query || '').trim() || "Who is Avery's manager?";
+      const query = (payload.query || '').trim() || "Who is Olga's manager?";
       const serverUrl = (payload.serverUrl || 'http://localhost:3001').replace(/\/$/, '');
       const engine = payload.engine || 'fast';
 
@@ -684,11 +684,11 @@ const server = http.createServer(async (req, res) => {
           let odataQuery = parsedSearch.suggestedODataRequest || parsedSearch.matchedPrompts?.[0]?.suggestedODataRequest || '';
           if (!odataQuery) {
             if (qLower.includes('manager') || qLower.includes('report')) {
-              odataQuery = "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department";
+              odataQuery = "users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department";
             } else if (qLower.includes('peer')) {
-              odataQuery = "users('avery.adams@example.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle";
+              odataQuery = "users('opodolyako@example.com')/directReports?$select=id,displayName,userPrincipalName,jobTitle";
             } else if (qLower.includes('file') || qLower.includes('drive')) {
-              odataQuery = "drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='proposal')";
+              odataQuery = "drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='proposal')";
             } else {
               odataQuery = "users?$top=5";
             }
@@ -776,13 +776,13 @@ const server = http.createServer(async (req, res) => {
           if (serverUrl.includes('3003') || serverUrl.includes('3004')) {
             if (qLower.includes('manager') || qLower.includes('report')) {
               targetTool = 'get_users_manager';
-              toolArgs = { key_id: 'avery.adams@example.com' };
+              toolArgs = { key_id: 'opodolyako@example.com' };
             } else if (qLower.includes('peer')) {
               targetTool = 'get_users_directReports';
-              toolArgs = { key_id: 'avery.adams@example.com' };
+              toolArgs = { key_id: 'opodolyako@example.com' };
             } else if (qLower.includes('file') || qLower.includes('drive')) {
               targetTool = 'drives_Microsoft_Graph_searchDriveItems';
-              toolArgs = { key_id: 'drive-avery', q: 'proposal' };
+              toolArgs = { key_id: 'drive-olga', q: 'proposal' };
             } else {
               targetTool = tools[0]?.name || 'list_users';
               toolArgs = {};

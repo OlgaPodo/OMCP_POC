@@ -100,17 +100,17 @@
   "results": [
     {
       "query_id": 1,
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "Find Avery Adams's manager",
+        "intent": "Find Olga Podolyako's manager",
         "tool": "get_users_manager",
         "parameters": {
           "key_id": "10000000-0000-4000-8000-000000000001",
@@ -133,14 +133,14 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Avery')",
+            "filter": "startswith(displayName,'Olga')",
             "select": "id,displayName,userPrincipalName,mail",
             "top": 25
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$filter=startswith(displayName,'Avery')&$select=id,displayName,userPrincipalName,mail&$top=25",
+          "odata_query": "users?$filter=startswith(displayName,'Olga')&$select=id,displayName,userPrincipalName,mail&$top=25",
           "examples_count": 0,
           "resolved_identifier": null
         },
@@ -148,14 +148,14 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "search": "\"Avery\"",
+            "search": "\"Olga\"",
             "select": "id,displayName,userPrincipalName,mail,jobTitle,department",
             "top": 10
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users?$select=id,displayName,userPrincipalName,mail,jobTitle,department&$top=10&$search=\"Avery\"",
+          "odata_query": "users?$select=id,displayName,userPrincipalName,mail,jobTitle,department&$top=10&$search=\"Olga\"",
           "examples_count": 0,
           "resolved_identifier": null
         },
@@ -171,14 +171,14 @@
           "entity_set": "users",
           "odata_query": "users('10000000-0000-4000-8000-000000000001')/manager?$select=id,displayName,userPrincipalName,mail,jobTitle,department",
           "examples_count": 0,
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "graph_traces_no_examples": [
         {
           "timestamp": "2026-11-11T20:02:14.5088404+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery') or startswith(userPrincipalName,'Avery') or startswith(mail,'Avery')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga') or startswith(userPrincipalName,'Olga') or startswith(mail,'Olga')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
           "statusCode": 200,
           "isLive": true
         },
@@ -360,7 +360,7 @@
       "error_no_examples": null,
       "latency_no_examples_ms": 19953.0,
       "pred_with_examples": {
-        "intent": "Find Avery Adams's manager",
+        "intent": "Find Olga Podolyako's manager",
         "tool": "get_users_manager",
         "parameters": {
           "key_id": "10000000-0000-4000-8000-000000000001",
@@ -383,7 +383,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "filter": "startswith(displayName,'Avery')",
+            "filter": "startswith(displayName,'Olga')",
             "select": "id,displayName,userPrincipalName,mail",
             "top": 25
           },
@@ -398,7 +398,7 @@
           "method": "tools/call",
           "name": "list_users",
           "arguments": {
-            "search": "\"displayName:Avery\"",
+            "search": "\"displayName:Olga\"",
             "select": "id,displayName,userPrincipalName,mail,jobTitle,department",
             "top": 25
           },
@@ -428,7 +428,7 @@
         {
           "timestamp": "2026-11-11T20:02:33.921144+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Avery') or startswith(userPrincipalName,'Avery') or startswith(mail,'Avery')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
+          "url": "https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'Olga') or startswith(userPrincipalName,'Olga') or startswith(mail,'Olga')&$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation&$top=20",
           "statusCode": 200,
           "isLive": true
         },
@@ -610,12 +610,12 @@
       "error_with_examples": null,
       "latency_with_examples_ms": 17250.0,
       "pred_search_query": {
-        "intent": "retrieve Avery's manager",
+        "intent": "retrieve Olga's manager",
         "tool": "GraphMcp-execute_odata_query",
         "parameters": {
-          "user": "avery.adams@example.com"
+          "user": "opodolyako@example.com"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+        "odata_request": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -632,7 +632,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Whom Avery reports to?"
+            "query": "Whom Olga reports to?"
           },
           "uri": null,
           "success": true,
@@ -645,21 +645,21 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
+            "odataQuery": "GET users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department"
           },
           "uri": null,
           "success": true,
           "entity_set": "users",
-          "odata_query": "users('avery.adams@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
+          "odata_query": "users('opodolyako@example.com')/manager?$select=id,displayName,userPrincipalName,jobTitle,department",
           "examples_count": 0,
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "graph_traces_search_query": [
         {
           "timestamp": "2026-11-11T20:02:52.2084692+00:00",
           "method": "GET",
-          "url": "https://graph.microsoft.com/v1.0/users/avery.adams%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
+          "url": "https://graph.microsoft.com/v1.0/users/opodolyako%40example.com?$select=id,displayName,userPrincipalName,mail,jobTitle,department,officeLocation,mobilePhone,preferredLanguage",
           "statusCode": 200,
           "isLive": true
         },

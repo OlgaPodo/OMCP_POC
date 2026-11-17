@@ -40,19 +40,19 @@
     {
       "query_id": 1,
       "category": "canonical",
-      "query": "Whom Avery reports to?",
-      "expected_intent": "whom_avery_reports_to",
+      "query": "Whom Olga reports to?",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "user_profile",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_a": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_a": {
         "intent_match": true,
@@ -67,11 +67,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_a": {
@@ -216,10 +216,10 @@
       "error_a": null,
       "duration_sec_a": 7.28,
       "pred_b": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "user_profile",
         "parameters": {
-          "userId": "Avery Adams"
+          "userId": "Olga Podolyako"
         },
         "odata_request": "/users/{userId}/manager"
       },
@@ -236,11 +236,11 @@
           "method": "tools/call",
           "name": "user_profile",
           "arguments": {
-            "userId": "Avery Adams"
+            "userId": "Olga Podolyako"
           },
           "success": true,
           "source": "Microsoft Graph v1.0 (High-Fidelity Mock Fallback)",
-          "resolved_identifier": "avery.adams@example.com"
+          "resolved_identifier": "opodolyako@example.com"
         }
       ],
       "usage_b": {

@@ -104,22 +104,22 @@
   "results": [
     {
       "query_id": 1,
-      "query": "Whom Avery reports to?",
+      "query": "Whom Olga reports to?",
       "category": "canonical",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -132,7 +132,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 27.82,
           "is_error": false
         },
@@ -140,7 +140,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 499.33,
           "is_error": false
@@ -148,12 +148,12 @@
       ],
       "latency_no_examples_ms": 527.44,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -166,7 +166,7 @@
       "calls_with_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 49.56,
           "is_error": false
         },
@@ -174,7 +174,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 497.18,
           "is_error": false
@@ -182,12 +182,12 @@
       ],
       "latency_with_examples_ms": 547.75,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -202,7 +202,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Whom Avery reports to?"
+            "query": "Whom Olga reports to?"
           },
           "elapsed_ms": 19.37,
           "is_error": false
@@ -211,7 +211,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 587.96,
           "is_error": false
@@ -221,22 +221,22 @@
     },
     {
       "query_id": 2,
-      "query": "Who is Avery's manager?",
+      "query": "Who is Olga's manager?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -249,7 +249,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 17.62,
           "is_error": false
         },
@@ -257,7 +257,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 511.2,
           "is_error": false
@@ -265,12 +265,12 @@
       ],
       "latency_no_examples_ms": 529.24,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -283,7 +283,7 @@
       "calls_with_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 14.3,
           "is_error": false
         },
@@ -291,7 +291,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 515.88,
           "is_error": false
@@ -299,12 +299,12 @@
       ],
       "latency_with_examples_ms": 530.49,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -319,7 +319,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's manager?"
+            "query": "Who is Olga's manager?"
           },
           "elapsed_ms": 11.61,
           "is_error": false
@@ -328,7 +328,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 480.25,
           "is_error": false
@@ -338,22 +338,22 @@
     },
     {
       "query_id": 3,
-      "query": "Who is Avery's direct boss?",
+      "query": "Who is Olga's direct boss?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -366,7 +366,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 13.75,
           "is_error": false
         },
@@ -374,7 +374,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 599.67,
           "is_error": false
@@ -382,12 +382,12 @@
       ],
       "latency_no_examples_ms": 613.68,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -400,7 +400,7 @@
       "calls_with_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 5.79,
           "is_error": false
         },
@@ -408,7 +408,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 636.74,
           "is_error": false
@@ -416,12 +416,12 @@
       ],
       "latency_with_examples_ms": 642.99,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -436,7 +436,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who is Avery's direct boss?"
+            "query": "Who is Olga's direct boss?"
           },
           "elapsed_ms": 17.44,
           "is_error": false
@@ -445,7 +445,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 492.18,
           "is_error": false
@@ -455,22 +455,22 @@
     },
     {
       "query_id": 4,
-      "query": "Show me the reporting line for Avery Adams",
+      "query": "Show me the reporting line for Olga Podolyako",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -483,7 +483,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 22.75,
           "is_error": false
         },
@@ -491,7 +491,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 662.83,
           "is_error": false
@@ -499,12 +499,12 @@
       ],
       "latency_no_examples_ms": 686.06,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -517,7 +517,7 @@
       "calls_with_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 16.15,
           "is_error": false
         },
@@ -525,7 +525,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 503.54,
           "is_error": false
@@ -533,12 +533,12 @@
       ],
       "latency_with_examples_ms": 519.98,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -553,7 +553,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Show me the reporting line for Avery Adams"
+            "query": "Show me the reporting line for Olga Podolyako"
           },
           "elapsed_ms": 4.56,
           "is_error": false
@@ -562,7 +562,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 537.56,
           "is_error": false
@@ -572,22 +572,22 @@
     },
     {
       "query_id": 5,
-      "query": "Who approves Avery's expenses and time off?",
+      "query": "Who approves Olga's expenses and time off?",
       "category": "paraphrased",
       "workload": "users_groups",
-      "expected_intent": "whom_avery_reports_to",
+      "expected_intent": "whom_olga_reports_to",
       "expected_tool": "get_users_manager",
-      "expected_odata": "users('avery.adams@example.com')/manager",
+      "expected_odata": "users('opodolyako@example.com')/manager",
       "expected_params": {
-        "userId": "avery.adams@example.com"
+        "userId": "opodolyako@example.com"
       },
       "pred_no_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_no_examples": {
         "intent_match": true,
@@ -600,7 +600,7 @@
       "calls_no_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 13.86,
           "is_error": false
         },
@@ -608,7 +608,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 593.06,
           "is_error": false
@@ -616,12 +616,12 @@
       ],
       "latency_no_examples_ms": 607.2,
       "pred_with_examples": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "get_users_manager",
         "parameters": {
-          "key_id": "avery.adams@example.com"
+          "key_id": "opodolyako@example.com"
         },
-        "odata_request": "users('avery.adams@example.com')/manager"
+        "odata_request": "users('opodolyako@example.com')/manager"
       },
       "eval_with_examples": {
         "intent_match": true,
@@ -634,7 +634,7 @@
       "calls_with_examples": [
         {
           "method": "prompts/get",
-          "name": "whom_avery_reports_to",
+          "name": "whom_olga_reports_to",
           "elapsed_ms": 6.12,
           "is_error": false
         },
@@ -642,7 +642,7 @@
           "method": "tools/call",
           "name": "get_users_manager",
           "arguments": {
-            "key_id": "avery.adams@example.com"
+            "key_id": "opodolyako@example.com"
           },
           "elapsed_ms": 592.18,
           "is_error": false
@@ -650,12 +650,12 @@
       ],
       "latency_with_examples_ms": 598.82,
       "pred_search_query": {
-        "intent": "whom_avery_reports_to",
+        "intent": "whom_olga_reports_to",
         "tool": "execute_odata_query",
         "parameters": {
-          "odataQuery": "GET users('avery.adams@example.com')/manager"
+          "odataQuery": "GET users('opodolyako@example.com')/manager"
         },
-        "odata_request": "GET users('avery.adams@example.com')/manager"
+        "odata_request": "GET users('opodolyako@example.com')/manager"
       },
       "eval_search_query": {
         "intent_match": true,
@@ -670,7 +670,7 @@
           "method": "tools/call",
           "name": "search_intent",
           "arguments": {
-            "query": "Who approves Avery's expenses and time off?"
+            "query": "Who approves Olga's expenses and time off?"
           },
           "elapsed_ms": 12.8,
           "is_error": false
@@ -679,7 +679,7 @@
           "method": "tools/call",
           "name": "execute_odata_query",
           "arguments": {
-            "odataQuery": "GET users('avery.adams@example.com')/manager"
+            "odataQuery": "GET users('opodolyako@example.com')/manager"
           },
           "elapsed_ms": 501.39,
           "is_error": false

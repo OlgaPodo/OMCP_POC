@@ -46,7 +46,7 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
                         ["query"] = new JsonObject
                         {
                             ["type"] = "string",
-                            ["description"] = "Natural-language user question, intent keywords, or target entity/operation (e.g. 'Avery manager', 'last user to modify Agent_Protocol_Demo.docx', 'CSDL channel messages', 'open high importance todo tasks')"
+                            ["description"] = "Natural-language user question, intent keywords, or target entity/operation (e.g. 'Olga manager', 'last user to modify Script_MCP_POC.docx', 'CSDL channel messages', 'open high importance todo tasks')"
                         }
                     },
                     ["required"] = new JsonArray("query"),
@@ -57,7 +57,7 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
             {
                 Name = "execute_odata_query",
                 Title = "Execute Constructed OData v4.01 Query",
-                Description = "Step 2: Execute a canonical OData v4.01 query constructed from the CSDL prompt/example templates returned by search_intent (e.g. \"GET users('avery.adams@example.com')/manager\", \"GET drives('drive-avery')/Microsoft.Graph.searchDriveItems(q='CSDL')\", \"GET channels('ch-csdl-typespec')/messages?$top=20\", \"GET me/todoLists?$expand=tasks\").",
+                Description = "Step 2: Execute a canonical OData v4.01 query constructed from the CSDL prompt/example templates returned by search_intent (e.g. \"GET users('opodolyako@example.com')/manager\", \"GET drives('drive-olga')/Microsoft.Graph.searchDriveItems(q='CSDL')\", \"GET channels('ch-csdl-typespec')/messages?$top=20\", \"GET me/todoLists?$expand=tasks\").",
                 InputSchema = JsonSerializer.SerializeToElement(new JsonObject
                 {
                     ["type"] = "object",
@@ -66,7 +66,7 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
                         ["odataQuery"] = new JsonObject
                         {
                             ["type"] = "string",
-                            ["description"] = "Canonical OData v4.01 request path (with optional GET/POST prefix), e.g. \"GET users('avery.adams@example.com')/manager\" or \"GET me/drive/root/children\""
+                            ["description"] = "Canonical OData v4.01 request path (with optional GET/POST prefix), e.g. \"GET users('opodolyako@example.com')/manager\" or \"GET me/drive/root/children\""
                         }
                     },
                     ["required"] = new JsonArray("odataQuery"),
@@ -241,9 +241,9 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
             matchedExamples = scoredExamples,
             knownDirectoryDefaults = new
             {
-                averyUpn = "avery.adams@example.com",
-                morganUpn = "morgan.reed@example.com",
-                jordanUpn = "jordan.lee@example.com",
+                olgaUpn = "opodolyako@example.com",
+                vojtechUpn = "vvondra@example.com",
+                joaoUpn = "jpaiva@example.com",
                 taylorUpn = "taylor.morgan@example.com",
                 caseyUpn = "casey.chen@example.com",
                 rileyUpn = "riley.patel@example.com",
@@ -254,7 +254,7 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
                 securityReviewersGroupId = "22222222-3333-4444-5555-666666666666",
                 graphPartnersGroupId = "33333333-4444-5555-6666-777777777777",
                 odataTcGroupId = "44444444-5555-6666-7777-888888888888",
-                defaultDriveId = "drive-avery"
+                defaultDriveId = "drive-olga"
             },
             schemaEntities,
             boundOperations
@@ -313,7 +313,7 @@ public sealed class CsdlMcpProjection(GraphClientService graphService)
         if (q.Contains("lastModifiedByUser", StringComparison.OrdinalIgnoreCase) || q.StartsWith("driveItems(", StringComparison.OrdinalIgnoreCase))
         {
             var itemMatch = Regex.Match(q, @"driveItems\('([^']+)'\)", RegexOptions.IgnoreCase);
-            var itemId = itemMatch.Success ? itemMatch.Groups[1].Value : "Agent_Protocol_Demo.docx";
+            var itemId = itemMatch.Success ? itemMatch.Groups[1].Value : "Script_MCP_POC.docx";
             var item = await graphService.GetDriveItemWithModifierAsync(itemId, cancellationToken);
             return new { method, odataQuery = q, entitySet = "driveItems", data = item };
         }

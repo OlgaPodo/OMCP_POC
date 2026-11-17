@@ -82,7 +82,7 @@ class TransformParityTests(unittest.TestCase):
                     self.assertEqual(p_orig, p_trans, f"prompts/get({p['name']}) mismatch for {csdl_name}")
 
                 # 5. Resources read parity
-                uris = ["users://me", "users://avery.adams@example.com", "groups://all", "groups://11111111-2222-3333-4444-555555555555"]
+                uris = ["users://me", "users://opodolyako@example.com", "groups://all", "groups://11111111-2222-3333-4444-555555555555"]
                 if csdl_name == "Server_Large.csdl":
                     uris.extend(["drives://me", "files://recent", "files://file-mcp-poc-docx", "teams://all", "channels://ch-csdl-typespec/messages", "chats://all", "todo://lists", "todo://tasks"])
                 for uri in uris:
@@ -92,17 +92,17 @@ class TransformParityTests(unittest.TestCase):
 
                 # 6. Tools call parity
                 tool_calls = [
-                    ("find_user", {"query": "Avery"}),
-                    ("user_profile", {"userId": "avery.adams@example.com"}),
+                    ("find_user", {"query": "Olga"}),
+                    ("user_profile", {"userId": "opodolyako@example.com"}),
                     ("find_group", {"query": "Identity"}),
-                    ("group_details", {"groupId": "Platform Engineering"}),
-                    ("read_resource", {"uri": "users://avery.adams@example.com"}),
+                    ("group_details", {"groupId": "Identity Architecture"}),
+                    ("read_resource", {"uri": "users://opodolyako@example.com"}),
                 ]
                 if csdl_name == "Server_Large.csdl":
                     tool_calls.extend([
                         ("list_my_files", {"userId": "me"}),
                         ("search_files", {"query": "CSDL"}),
-                        ("file_last_modified_by", {"fileName": "Agent_Protocol_Demo.docx"}),
+                        ("file_last_modified_by", {"fileName": "Script_MCP_POC.docx"}),
                         ("list_teams", {"filter": "all"}),
                         ("channel_messages", {"channelId": "CSDL & TypeSpec"}),
                         ("list_chats", {"filter": "all"}),

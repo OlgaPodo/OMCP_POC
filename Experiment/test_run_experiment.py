@@ -116,8 +116,8 @@ class ExperimentTests(unittest.TestCase):
 
     def test_parameters_match_handles_manager_name_and_query_filters(self):
         # Case 1: managerNameOrId mapping to userId
-        truth_manager = {"expectedParams": {"managerNameOrId": "avery"}}
-        receipt_profile = {"arguments": {"userId": "avery"}}
+        truth_manager = {"expectedParams": {"managerNameOrId": "olga"}}
+        receipt_profile = {"arguments": {"userId": "olga"}}
         self.assertTrue(runner.parameters_match(receipt_profile, truth_manager))
 
         # Case 2: department / jobTitle matching in find_user query
