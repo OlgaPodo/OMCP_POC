@@ -455,16 +455,26 @@ function renderExperimentQueriesTable(categoryFilter = currentCategoryFilter(), 
       details.className = 'query-detail-row';
       const cell = document.createElement('td');
       cell.colSpan = 6;
-      const pre = document.createElement('pre');
-      pre.style.cssText = 'white-space:pre-wrap;overflow-wrap:anywhere;';
-      pre.textContent = result ? JSON.stringify({
-        expectedIntent: query.targetIntent,
-        requiredTools: result.required_tools || [],
-        requiredResources: result.required_resources || [],
-        baseline: { prediction: result.pred_b ?? null, evaluation: result.eval_b ?? null, actualCalls: result.calls_b ?? 'Not recorded in this historical run', error: result.error_b },
-        variant: { prediction: result.pred_a ?? null, evaluation: result.eval_a ?? null, actualCalls: result.calls_a ?? 'Not recorded in this historical run', error: result.error_a }
-      }, null, 2) : 'Not run. No predictions or execution evidence were recorded for this entry.';
-      cell.appendChild(pre);
+      if (result && typeof window.renderCollapsibleJsonContainer === 'function') {
+        cell.appendChild(window.renderCollapsibleJsonContainer({
+          expectedIntent: query.targetIntent,
+          requiredTools: result.required_tools || [],
+          requiredResources: result.required_resources || [],
+          baseline: { prediction: result.pred_b ?? null, evaluation: result.eval_b ?? null, actualCalls: result.calls_b ?? 'Not recorded in this historical run', error: result.error_b },
+          variant: { prediction: result.pred_a ?? null, evaluation: result.eval_a ?? null, actualCalls: result.calls_a ?? 'Not recorded in this historical run', error: result.error_a }
+        }));
+      } else {
+        const pre = document.createElement('pre');
+        pre.style.cssText = 'white-space:pre-wrap;overflow-wrap:anywhere;';
+        pre.textContent = result ? JSON.stringify({
+          expectedIntent: query.targetIntent,
+          requiredTools: result.required_tools || [],
+          requiredResources: result.required_resources || [],
+          baseline: { prediction: result.pred_b ?? null, evaluation: result.eval_b ?? null, actualCalls: result.calls_b ?? 'Not recorded in this historical run', error: result.error_b },
+          variant: { prediction: result.pred_a ?? null, evaluation: result.eval_a ?? null, actualCalls: result.calls_a ?? 'Not recorded in this historical run', error: result.error_a }
+        }, null, 2) : 'Not run. No predictions or execution evidence were recorded for this entry.';
+        cell.appendChild(pre);
+      }
       details.appendChild(cell);
       row.after(details);
       row.setAttribute('aria-expanded', 'true');

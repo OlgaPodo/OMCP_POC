@@ -60,6 +60,9 @@
       <button class="ge-nav-tab" data-view="intent-vs-large">
         <span class="tab-icon">🧭</span> Large MCP vs Intent + Query
       </button>
+      <button class="ge-nav-tab" data-view="class-diagram">
+        <span class="tab-icon">🏗️</span> Class Diagram &amp; Mapping
+      </button>
       <button class="ge-nav-tab" data-view="summary">
         <span class="tab-icon">📊</span> POC Summary
       </button>
@@ -1485,6 +1488,805 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 11: CLASS DIAGRAM & CSDL-TO-MCP TRANSFORMATION MAPPING -->
+  <main class="view-container" id="view-class-diagram">
+    <div class="doc-view-layout">
+      <div class="doc-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+        <div>
+          <h2>🏗️ C# Class Diagram &amp; CSDL-to-MCP Transformation Mapping</h2>
+          <p class="doc-sub">Complete architecture of <code>CsdlToMcpTransformer</code> and the generated static MCP 2.0 servers (<code>LargeServer</code> <code>:3003</code> &amp; <code>LargeServer_NoExamples</code> <code>:3004</code>), mapping every C# class, record, and method across all 5 transformation pipelines.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" id="btnClassDiagExpandAll" class="copy-btn" style="padding:6px 12px;font-weight:600;cursor:pointer;">📂 Expand All Details</button>
+          <button type="button" id="btnClassDiagCollapseAll" class="copy-btn" style="padding:6px 12px;font-weight:600;cursor:pointer;">📁 Collapse All Details</button>
+        </div>
+      </div>
+
+      <!-- Interactive Transformation Filter Bar -->
+      <div class="mapping-selector-bar" style="flex-direction:column;align-items:flex-start;gap:10px;background:#ffffff;border:1px solid var(--border-color);padding:14px 18px;border-radius:var(--radius);margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;width:100%;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:13px;font-weight:700;color:var(--text-primary);">Highlight Transformation Pipeline Across Classes &amp; Flows:</span>
+          <span class="pill-badge pill-annotation">3 Build-Time Classes &bull; 9 Runtime C# Files &bull; 5 Transformation Pipelines</span>
+        </div>
+        <div id="classDiagramFilterButtons" style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="map-query-btn active" data-tx-filter="all">All Transformations (5)</button>
+          <button type="button" class="map-query-btn" data-tx-filter="tx1">1. EntitySet / Singleton &rarr; Read Bindings &rarr; Tools + Resources</button>
+          <button type="button" class="map-query-btn" data-tx-filter="tx2">2. Function / Action &rarr; Typed Binding + JSON Schema &rarr; Tool</button>
+          <button type="button" class="map-query-btn" data-tx-filter="tx3">3. @Agent.Prompts &rarr; PromptDefinition &rarr; prompts/list &amp; get</button>
+          <button type="button" class="map-query-btn" data-tx-filter="tx4">4. @Agent.Examples &rarr; ExampleDefinition &rarr; Grounded Results</button>
+          <button type="button" class="map-query-btn" data-tx-filter="tx5">5. Runtime Execution: tools/call &amp; resources/read &rarr; OData &rarr; Graph</button>
+        </div>
+      </div>
+
+      <!-- Architectural Class Diagram (SVG + Layered Class Inventory) -->
+      <div class="mapping-table-section" style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+          <h3 style="margin:0;">1. End-to-End UML Class &amp; Record Architecture Diagram</h3>
+          <span style="font-size:12px;color:var(--text-secondary);">Click any transformation pill above to highlight participating classes</span>
+        </div>
+
+        <!-- SVG Class & Dataflow Diagram -->
+        <div style="background:#faf9f8;border:1px solid #e1dfdd;border-radius:8px;padding:16px;overflow-x:auto;margin-bottom:18px;">
+          <svg viewBox="0 0 1160 540" width="100%" style="min-width:960px;height:auto;font-family:Segoe UI, sans-serif;">
+            <defs>
+              <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#0078d4"/>
+              </marker>
+              <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#5c2d91"/>
+              </marker>
+              <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#107c41"/>
+              </marker>
+              <marker id="arrowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#d83b01"/>
+              </marker>
+            </defs>
+
+            <!-- Swimlane Backgrounds -->
+            <rect x="10" y="10" width="250" height="520" rx="8" fill="#f3f0f9" stroke="#d0bee8" stroke-width="1.5"/>
+            <text x="24" y="34" font-size="12" font-weight="700" fill="#5c2d91">BUILD-TIME: CsdlToMcpTransformer</text>
+
+            <rect x="280" y="10" width="310" height="520" rx="8" fill="#eef5fc" stroke="#b3d6f4" stroke-width="1.5"/>
+            <text x="294" y="34" font-size="12" font-weight="700" fill="#005a9e">GENERATED MODEL: GraphMcpServer.Csdl</text>
+
+            <rect x="610" y="10" width="265" height="520" rx="8" fill="#edf7f0" stroke="#a9dfc0" stroke-width="1.5"/>
+            <text x="624" y="34" font-size="12" font-weight="700" fill="#107c41">MCP PROJECTION: GraphMcpServer.Csdl</text>
+
+            <rect x="895" y="10" width="255" height="520" rx="8" fill="#fff8f0" stroke="#f5cfa6" stroke-width="1.5"/>
+            <text x="909" y="34" font-size="12" font-weight="700" fill="#b45309">EXECUTION: Services &amp; Models</text>
+
+            <!-- Column 1: Build-Time Classes -->
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4">
+              <rect x="24" y="50" width="222" height="72" rx="6" fill="#ffffff" stroke="#5c2d91" stroke-width="2"/>
+              <text x="34" y="70" font-size="12" font-weight="700" fill="#5c2d91">«static» TransformerCli</text>
+              <text x="34" y="86" font-size="10.5" fill="#605e5c">Program.cs (CsdlToMcpTransformer)</text>
+              <text x="34" y="104" font-size="10.5" fill="#323130">+ Main(args) : int</text>
+              <text x="34" y="117" font-size="10.5" fill="#323130">+ Run(inputCsdl, outputDir)</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4">
+              <rect x="24" y="148" width="222" height="225" rx="6" fill="#ffffff" stroke="#5c2d91" stroke-width="2"/>
+              <text x="34" y="168" font-size="12" font-weight="700" fill="#5c2d91">«static» StaticModelGenerator</text>
+              <text x="34" y="184" font-size="10.5" fill="#605e5c">StaticModelGenerator.cs</text>
+              <line x1="24" y1="192" x2="246" y2="192" stroke="#e1dfdd"/>
+              <text x="34" y="209" font-size="10.5" fill="#323130">+ Generate(csdlPath, xml, json, model)</text>
+              <text x="34" y="226" font-size="10.5" fill="#005a9e">- CollectBindings(model) [Tx 1 &amp; 2]</text>
+              <text x="34" y="243" font-size="10.5" fill="#005a9e">- DescribeType(edmType) [Tx 2]</text>
+              <text x="34" y="260" font-size="10.5" fill="#005a9e">- BuildSchemaJson(...) [Tx 1 &amp; 2]</text>
+              <text x="34" y="277" font-size="10.5" fill="#5c2d91">- ExtractPrompts(doc, model) [Tx 3]</text>
+              <text x="34" y="294" font-size="10.5" fill="#107c41">- ExtractExamples(doc) [Tx 4]</text>
+              <text x="34" y="311" font-size="10.5" fill="#107c41">- AttachExamples(bindings, ex) [Tx 4]</text>
+              <text x="34" y="328" font-size="10.5" fill="#b45309">- ClassifyExecution(name) [Tx 5]</text>
+              <text x="34" y="345" font-size="10.5" fill="#323130">- BuildCatalog / BuildProjection</text>
+              <text x="34" y="362" font-size="10.5" fill="#323130">- BuildAnalysis(prompts, bindings)</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4 tx5">
+              <rect x="24" y="400" width="222" height="106" rx="6" fill="#ffffff" stroke="#5c2d91" stroke-width="2"/>
+              <text x="34" y="420" font-size="12" font-weight="700" fill="#5c2d91">«static» RuntimeTemplateWriter</text>
+              <text x="34" y="436" font-size="10.5" fill="#605e5c">RuntimeTemplateWriter.cs</text>
+              <line x1="24" y1="444" x2="246" y2="444" stroke="#e1dfdd"/>
+              <text x="34" y="461" font-size="10.5" fill="#323130">+ WriteTo(outputDir, port, csdlName)</text>
+              <text x="34" y="478" font-size="10" fill="#605e5c">Emits Program.cs, CsdlProvider.cs,</text>
+              <text x="34" y="492" font-size="10" fill="#605e5c">CsdlMcpProjection.cs, Services/*</text>
+            </g>
+
+            <!-- Column 2: Generated Model & Records -->
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4 tx5">
+              <rect x="294" y="50" width="282" height="156" rx="6" fill="#ffffff" stroke="#0078d4" stroke-width="2"/>
+              <text x="304" y="70" font-size="12" font-weight="700" fill="#005a9e">«static» GeneratedModel</text>
+              <text x="304" y="85" font-size="10.5" fill="#605e5c">Csdl/GeneratedModel.cs (Emitted C#)</text>
+              <line x1="294" y1="93" x2="576" y2="93" stroke="#e1dfdd"/>
+              <text x="304" y="109" font-size="10.5" fill="#323130">+ RequestBindings : IReadOnlyList&lt;ODataRequestBinding&gt;</text>
+              <text x="304" y="124" font-size="10.5" fill="#323130">+ Resources : IReadOnlyList&lt;ResourceBinding&gt;</text>
+              <text x="304" y="139" font-size="10.5" fill="#323130">+ Prompts : IReadOnlyList&lt;PromptDefinition&gt;</text>
+              <text x="304" y="154" font-size="10.5" fill="#323130">+ Examples : IReadOnlyList&lt;ExampleDefinition&gt;</text>
+              <text x="304" y="169" font-size="10.5" fill="#005a9e">+ McpTools / McpResources / McpResourceTemplates</text>
+              <text x="304" y="184" font-size="10.5" fill="#5c2d91">+ McpPrompts / Catalog / Projection / Analysis</text>
+              <text x="304" y="199" font-size="10.5" fill="#605e5c">+ CsdlXmlBase64 / CsdlJsonBase64</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx4 tx5">
+              <rect x="294" y="220" width="282" height="128" rx="6" fill="#ffffff" stroke="#0078d4" stroke-width="2"/>
+              <text x="304" y="240" font-size="12" font-weight="700" fill="#005a9e">«record» ODataRequestBinding</text>
+              <text x="304" y="255" font-size="10.5" fill="#605e5c">Csdl/CsdlProvider.cs (Shared by Tool &amp; Resource)</text>
+              <line x1="294" y1="263" x2="576" y2="263" stroke="#e1dfdd"/>
+              <text x="304" y="279" font-size="10.5" fill="#323130">+ Name, Title, Description, Path : string</text>
+              <text x="304" y="294" font-size="10.5" fill="#323130">+ OperationKind : Read | Function | Action</text>
+              <text x="304" y="309" font-size="10.5" fill="#323130">+ Arguments : IReadOnlyList&lt;ParameterBinding&gt;</text>
+              <text x="304" y="324" font-size="10.5" fill="#323130">+ QueryOptions : bool, InputSchemaJson : string</text>
+              <text x="304" y="339" font-size="10.5" fill="#107c41">+ ExecutionKind : GraphExecutionKind, Examples : List</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx5">
+              <rect x="294" y="360" width="136" height="72" rx="6" fill="#ffffff" stroke="#0078d4" stroke-width="1.5"/>
+              <text x="302" y="378" font-size="11" font-weight="700" fill="#005a9e">«record» ResourceBinding</text>
+              <text x="302" y="394" font-size="10" fill="#323130">+ UriTemplate : string</text>
+              <text x="302" y="408" font-size="10" fill="#323130">+ RequestBinding</text>
+              <text x="302" y="422" font-size="10" fill="#323130">+ MatchPattern : Regex</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx5">
+              <rect x="440" y="360" width="136" height="72" rx="6" fill="#ffffff" stroke="#0078d4" stroke-width="1.5"/>
+              <text x="448" y="378" font-size="11" font-weight="700" fill="#005a9e">«record» ParameterBinding</text>
+              <text x="448" y="394" font-size="10" fill="#323130">+ Name : string, IsKey : bool</text>
+              <text x="448" y="408" font-size="10" fill="#323130">+ Required : bool</text>
+              <text x="448" y="422" font-size="10" fill="#323130">+ Type : StaticTypeDescriptor</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx3">
+              <rect x="294" y="444" width="136" height="72" rx="6" fill="#ffffff" stroke="#5c2d91" stroke-width="1.5"/>
+              <text x="302" y="462" font-size="11" font-weight="700" fill="#5c2d91">«record» PromptDefinition</text>
+              <text x="302" y="478" font-size="10" fill="#323130">+ Name, Title, Description</text>
+              <text x="302" y="492" font-size="10" fill="#323130">+ Arguments : PromptArg[]</text>
+              <text x="302" y="506" font-size="10" fill="#323130">+ Messages : PromptMsg[]</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx4 tx5">
+              <rect x="440" y="444" width="136" height="72" rx="6" fill="#ffffff" stroke="#107c41" stroke-width="1.5"/>
+              <text x="448" y="462" font-size="11" font-weight="700" fill="#107c41">«record» ExampleDefinition</text>
+              <text x="448" y="478" font-size="10" fill="#323130">+ TargetKind, TargetName</text>
+              <text x="448" y="492" font-size="10" fill="#323130">+ EntitySet, Utterance</text>
+              <text x="448" y="506" font-size="10" fill="#323130">+ Request, Description</text>
+            </g>
+
+            <!-- Column 3: MCP Projection & Runtime Validation -->
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4 tx5">
+              <rect x="624" y="50" width="237" height="106" rx="6" fill="#ffffff" stroke="#107c41" stroke-width="2"/>
+              <text x="634" y="70" font-size="12" font-weight="700" fill="#107c41">«static» CsdlProvider</text>
+              <text x="634" y="85" font-size="10.5" fill="#605e5c">Csdl/CsdlProvider.cs</text>
+              <line x1="624" y1="93" x2="861" y2="93" stroke="#e1dfdd"/>
+              <text x="634" y="109" font-size="10.5" fill="#323130">+ GetRequestBindings() / GetProjectedResources()</text>
+              <text x="634" y="124" font-size="10.5" fill="#107c41">+ GetExamplesFor(binding) [Tx 4 &amp; 5]</text>
+              <text x="634" y="139" font-size="10.5" fill="#5c2d91">+ ListPrompts() / GetPrompt(request) [Tx 3]</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx4 tx5">
+              <rect x="624" y="176" width="237" height="162" rx="6" fill="#ffffff" stroke="#107c41" stroke-width="2"/>
+              <text x="634" y="196" font-size="12" font-weight="700" fill="#107c41">«class» CsdlMcpProjection</text>
+              <text x="634" y="211" font-size="10.5" fill="#605e5c">Csdl/CsdlMcpProjection.cs</text>
+              <line x1="624" y1="219" x2="861" y2="219" stroke="#e1dfdd"/>
+              <text x="634" y="235" font-size="10.5" fill="#005a9e">+ ListTools() : ListToolsResult [Tx 1 &amp; 2]</text>
+              <text x="634" y="250" font-size="10.5" fill="#005a9e">+ ListResources() / ListResourceTemplates() [Tx 1]</text>
+              <text x="634" y="265" font-size="10.5" fill="#b45309">+ CallToolAsync(request, ct) [Tx 5]</text>
+              <text x="634" y="280" font-size="10.5" fill="#b45309">+ ReadResourceAsync(request, ct) [Tx 5]</text>
+              <text x="634" y="295" font-size="10.5" fill="#b45309">- ExecuteAsync(binding, args, ct) [Tx 5]</text>
+              <text x="634" y="310" font-size="10.5" fill="#107c41">- SerializeResponse(binding, exec) [Tx 4 &amp; 5]</text>
+              <text x="634" y="325" font-size="10" fill="#605e5c">«record» ODataExecution(Method, Query, Data)</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx5">
+              <rect x="624" y="356" width="237" height="96" rx="6" fill="#ffffff" stroke="#107c41" stroke-width="2"/>
+              <text x="634" y="376" font-size="12" font-weight="700" fill="#107c41">«static» EdmJsonSchema</text>
+              <text x="634" y="391" font-size="10.5" fill="#605e5c">Csdl/EdmJsonSchema.cs</text>
+              <line x1="624" y1="399" x2="861" y2="399" stroke="#e1dfdd"/>
+              <text x="634" y="415" font-size="10.5" fill="#323130">+ QueryOptions : Dictionary ($filter..$search)</text>
+              <text x="634" y="430" font-size="10.5" fill="#323130">+ Validate(type, value, name) / Literal(type, val)</text>
+              <text x="634" y="445" font-size="10.5" fill="#323130">+ ParseKey(type, text) : JsonElement</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx1 tx2 tx3 tx4 tx5">
+              <rect x="624" y="464" width="237" height="52" rx="6" fill="#ffffff" stroke="#323130" stroke-width="1.5"/>
+              <text x="634" y="482" font-size="11.5" font-weight="700" fill="#323130">Program.cs (ASP.NET Core + MCP Host)</text>
+              <text x="634" y="497" font-size="10" fill="#605e5c">Maps POST / (MCP 2.0) + GET /health, /api/*</text>
+            </g>
+
+            <!-- Column 4: In-Process OData & Graph Execution -->
+            <g class="diag-node" data-tx="tx5">
+              <rect x="909" y="50" width="227" height="96" rx="6" fill="#ffffff" stroke="#d83b01" stroke-width="2"/>
+              <text x="919" y="70" font-size="12" font-weight="700" fill="#b45309">ODataClientService : IODataClientService</text>
+              <text x="919" y="85" font-size="10.5" fill="#605e5c">Services/ODataClientService.cs</text>
+              <line x1="909" y1="93" x2="1136" y2="93" stroke="#e1dfdd"/>
+              <text x="919" y="109" font-size="10.5" fill="#323130">+ SendAsync(binding, args, method, path, body)</text>
+              <text x="919" y="124" font-size="10.5" fill="#323130">+ GetRecentTraces() : IReadOnlyList&lt;ODataTrace&gt;</text>
+              <text x="919" y="139" font-size="10" fill="#605e5c">Unwraps envelope.data &amp; logs latency</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx5">
+              <rect x="909" y="166" width="227" height="106" rx="6" fill="#ffffff" stroke="#d83b01" stroke-width="2"/>
+              <text x="919" y="186" font-size="12" font-weight="700" fill="#b45309">«class» GeneratedGraphExecutor</text>
+              <text x="919" y="201" font-size="10.5" fill="#605e5c">Services/GeneratedGraphExecutor.cs</text>
+              <line x1="909" y1="209" x2="1136" y2="209" stroke="#e1dfdd"/>
+              <text x="919" y="225" font-size="10.5" fill="#323130">+ ExecuteAsync(binding, args, method, path, body)</text>
+              <text x="919" y="241" font-size="10" fill="#605e5c">Switches on binding.ExecutionKind:</text>
+              <text x="919" y="255" font-size="10" fill="#b45309">Direct | Drive | DriveSearch | Teams | Channel |</text>
+              <text x="919" y="267" font-size="10" fill="#b45309">Chats | Todo | ChannelSend | TodoComplete</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx5">
+              <rect x="909" y="292" width="227" height="124" rx="6" fill="#ffffff" stroke="#d83b01" stroke-width="2"/>
+              <text x="919" y="312" font-size="12" font-weight="700" fill="#b45309">«class» GraphClientService</text>
+              <text x="919" y="327" font-size="10.5" fill="#605e5c">Services/GraphClientService.cs</text>
+              <line x1="909" y1="335" x2="1136" y2="335" stroke="#e1dfdd"/>
+              <text x="919" y="351" font-size="10.5" fill="#323130">+ ExecuteODataQueryAsync(path, ct)</text>
+              <text x="919" y="366" font-size="10.5" fill="#323130">+ SearchDriveItemsAsync / GetTeamsAsync ...</text>
+              <text x="919" y="381" font-size="10.5" fill="#323130">+ SendChannelMessageAsync / CompleteTodoTaskAsync</text>
+              <text x="919" y="396" font-size="10.5" fill="#323130">- ExecuteMockODataQueryAsync(path, ct)</text>
+              <text x="919" y="410" font-size="10" fill="#605e5c">Azure CLI live Graph v1.0 + Mock fallback</text>
+            </g>
+
+            <g class="diag-node" data-tx="tx5">
+              <rect x="909" y="432" width="227" height="84" rx="6" fill="#ffffff" stroke="#d83b01" stroke-width="1.5"/>
+              <text x="919" y="450" font-size="11.5" font-weight="700" fill="#b45309">Models/GraphModels.cs (DTOs)</text>
+              <text x="919" y="466" font-size="10" fill="#323130">GraphUser, UserProfileDetail, GraphGroup,</text>
+              <text x="919" y="480" font-size="10" fill="#323130">GraphDrive, GraphDriveItem, GraphTeam,</text>
+              <text x="919" y="494" font-size="10" fill="#323130">GraphChannel, GraphChat, GraphTodoTask,</text>
+              <text x="919" y="508" font-size="10" fill="#323130">GraphListResponse&lt;T&gt;, GraphTraceRecord</text>
+            </g>
+
+            <!-- Connectors -->
+            <line x1="135" y1="122" x2="135" y2="148" stroke="#5c2d91" stroke-width="1.8" marker-end="url(#arrowPurple)"/>
+            <line x1="246" y1="210" x2="294" y2="140" stroke="#5c2d91" stroke-width="2" marker-end="url(#arrowPurple)"/>
+            <line x1="435" y1="206" x2="435" y2="220" stroke="#0078d4" stroke-width="1.8" marker-end="url(#arrowBlue)"/>
+            <line x1="576" y1="115" x2="624" y2="105" stroke="#0078d4" stroke-width="1.8" marker-end="url(#arrowBlue)"/>
+            <line x1="576" y1="165" x2="624" y2="225" stroke="#0078d4" stroke-width="1.8" marker-end="url(#arrowBlue)"/>
+            <line x1="742" y1="156" x2="742" y2="176" stroke="#107c41" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+            <line x1="742" y1="338" x2="742" y2="356" stroke="#107c41" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+            <line x1="861" y1="255" x2="909" y2="105" stroke="#d83b01" stroke-width="2" marker-end="url(#arrowOrange)"/>
+            <line x1="1022" y1="146" x2="1022" y2="166" stroke="#d83b01" stroke-width="1.8" marker-end="url(#arrowOrange)"/>
+            <line x1="1022" y1="272" x2="1022" y2="292" stroke="#d83b01" stroke-width="1.8" marker-end="url(#arrowOrange)"/>
+            <line x1="1022" y1="416" x2="1022" y2="432" stroke="#d83b01" stroke-width="1.8" marker-end="url(#arrowOrange)"/>
+          </svg>
+        </div>
+
+        <!-- Complete 9-File Runtime + 3-File Build-Time Class Inventory Table -->
+        <details class="class-diag-details" open>
+          <summary style="cursor:pointer;font-weight:700;font-size:14px;padding:8px 12px;background:#f3f2f1;border-radius:6px;margin-bottom:10px;">
+            📋 Complete C# File &amp; Class Inventory (Build-Time Transformer + Generated Runtime Server)
+          </summary>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Layer &amp; File Path</th>
+                <th>C# Class / Record / Enum Types</th>
+                <th>Key Methods &amp; Properties</th>
+                <th>Mapped Transformations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4">
+                <td><strong>Build-Time</strong><br><code>CsdlToMcpTransformer/Program.cs</code></td>
+                <td><code>TransformerCli</code> (static)</td>
+                <td><code>Main()</code>, <code>Run(inputCsdl, outputDir)</code> &mdash; parses CSDL XML via <code>CsdlReader.TryParse</code>, builds CSDL v4.01 JSON, invokes <code>StaticModelGenerator</code> &amp; <code>RuntimeTemplateWriter</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-annotation">Tx 3</span> <span class="pill-badge pill-odata">Tx 4</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4">
+                <td><strong>Build-Time</strong><br><code>CsdlToMcpTransformer/StaticModelGenerator.cs</code></td>
+                <td><code>StaticModelGenerator</code> (static)</td>
+                <td><code>Generate()</code>, <code>CollectBindings()</code>, <code>DescribeType()</code>, <code>BuildSchemaJson()</code>, <code>ExtractPrompts()</code>, <code>ExtractExamples()</code>, <code>AttachExamples()</code>, <code>ClassifyExecution()</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-annotation">Tx 3</span> <span class="pill-badge pill-odata">Tx 4</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4 tx5">
+                <td><strong>Build-Time</strong><br><code>CsdlToMcpTransformer/RuntimeTemplateWriter.cs</code></td>
+                <td><code>RuntimeTemplateWriter</code> (static)</td>
+                <td><code>WriteTo(outputDir, port, csdlFileName)</code> &mdash; writes the self-contained ASP.NET Core MCP 2.0 project files into <code>LargeServer</code> and <code>LargeServer_NoExamples</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1&ndash;5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4 tx5">
+                <td><strong>Runtime Entry</strong><br><code>Program.cs</code></td>
+                <td>Top-level ASP.NET Core Host</td>
+                <td>Registers DI singletons (<code>GraphClientService</code>, <code>GeneratedGraphExecutor</code>, <code>ODataClientService</code>, <code>CsdlMcpProjection</code>) &amp; wires MCP handlers + <code>/health</code>, <code>/api/*</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1&ndash;5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4 tx5">
+                <td><strong>Generated Model</strong><br><code>Csdl/GeneratedModel.cs</code></td>
+                <td><code>GeneratedModel</code> (static)</td>
+                <td><code>RequestBindings</code>, <code>Resources</code>, <code>Prompts</code>, <code>Examples</code>, <code>McpTools</code>, <code>McpResources</code>, <code>McpResourceTemplates</code>, <code>McpPrompts</code>, <code>Catalog</code>, <code>Projection</code>, <code>Analysis</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-annotation">Tx 3</span> <span class="pill-badge pill-odata">Tx 4</span> <span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx3 tx4 tx5">
+                <td><strong>Runtime Metadata</strong><br><code>Csdl/CsdlProvider.cs</code></td>
+                <td><code>CsdlProvider</code> (static)<br><code>ODataRequestBinding</code>, <code>ResourceBinding</code>, <code>ParameterBinding</code>, <code>StaticTypeDescriptor</code>, <code>StaticProperty</code>, <code>PromptDefinition</code>, <code>PromptArgumentDefinition</code>, <code>PromptMessageDefinition</code>, <code>ExampleDefinition</code><br>Enums: <code>StaticTypeKind</code>, <code>OperationKind</code>, <code>GraphExecutionKind</code></td>
+                <td><code>GetRequestBindings()</code>, <code>GetProjectedResources()</code>, <code>GetExampleQueries()</code>, <code>GetExamplesFor(binding)</code>, <code>ListPrompts()</code>, <code>GetPrompt(request)</code> (renders <code>{arg}</code> placeholders).</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-annotation">Tx 3</span> <span class="pill-badge pill-odata">Tx 4</span> <span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx4 tx5">
+                <td><strong>Runtime MCP Projection</strong><br><code>Csdl/CsdlMcpProjection.cs</code></td>
+                <td><code>CsdlMcpProjection</code> (sealed)<br><code>ODataExecution</code> (private record)</td>
+                <td><code>ListTools()</code>, <code>ListResources()</code>, <code>ListResourceTemplates()</code>, <code>CallToolAsync()</code>, <code>ReadResourceAsync()</code>, <code>ExecuteAsync()</code>, <code>SerializeResponse()</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-odata">Tx 4</span> <span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx1 tx2 tx5">
+                <td><strong>Runtime Validation</strong><br><code>Csdl/EdmJsonSchema.cs</code></td>
+                <td><code>EdmJsonSchema</code> (static)</td>
+                <td><code>QueryOptions</code> (<code>$filter</code>..<code>$search</code>), <code>Validate(type, value, name)</code>, <code>Literal(type, value)</code>, <code>ParseKey(type, text)</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 1</span> <span class="pill-badge pill-mcp">Tx 2</span> <span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx5">
+                <td><strong>OData Execution Bridge</strong><br><code>Services/ODataClientService.cs</code></td>
+                <td><code>IODataClientService</code> (interface)<br><code>ODataClientService</code> (sealed)<br><code>ODataTrace</code> (record)</td>
+                <td><code>SendAsync(binding, arguments, method, path, body, ct)</code>, <code>GetRecentTraces()</code> &mdash; invokes <code>GeneratedGraphExecutor</code>, unwraps <code>data</code>, records latency.</td>
+                <td><span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx5">
+                <td><strong>Workload Dispatcher</strong><br><code>Services/GeneratedGraphExecutor.cs</code></td>
+                <td><code>GeneratedGraphExecutor</code> (sealed)</td>
+                <td><code>ExecuteAsync(binding, arguments, method, path, body, ct)</code> &mdash; switches on <code>binding.ExecutionKind</code> (<code>Direct</code> vs workload helpers).</td>
+                <td><span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx5">
+                <td><strong>Graph Client &amp; Fallback</strong><br><code>Services/GraphClientService.cs</code></td>
+                <td><code>GraphClientService</code></td>
+                <td><code>ExecuteODataQueryAsync(path)</code>, <code>ExecuteMockODataQueryAsync(path)</code>, <code>GetDriveAsync()</code>, <code>SearchDriveItemsAsync()</code>, <code>GetTeamsAsync()</code>, <code>SendChannelMessageAsync()</code>, <code>CompleteTodoTaskAsync()</code>, <code>GetRecentTraces()</code>.</td>
+                <td><span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+              <tr class="tx-row" data-tx="tx5">
+                <td><strong>Domain DTOs</strong><br><code>Models/GraphModels.cs</code></td>
+                <td><code>GraphUser</code>, <code>UserProfileDetail</code>, <code>GraphGroup</code>, <code>GroupDetail</code>, <code>GraphDrive</code>, <code>GraphDriveItem</code>, <code>GraphTeam</code>, <code>GraphChannel</code>, <code>GraphChat</code>, <code>GraphChatMessage</code>, <code>GraphTodoTaskList</code>, <code>GraphTodoTask</code>, <code>GraphListResponse&lt;T&gt;</code>, <code>GraphTraceRecord</code></td>
+                <td>Typed JSON serialization models for Microsoft Graph v1.0 payloads and live/mock trace diagnostics.</td>
+                <td><span class="pill-badge pill-mcp">Tx 5</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+
+      <!-- SECTION 2: THE 5 TRANSFORMATION PIPELINES MAPPED TO C# CLASSES -->
+      <div style="display:flex;flex-direction:column;gap:20px;" id="transformationPipelinesContainer">
+
+        <!-- TRANSFORMATION 1 -->
+        <div class="mapping-table-section tx-card" data-tx="tx1" style="border-left:5px solid #0078d4;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            <h3 style="margin:0;color:#005a9e;">Transformation 1: CSDL <code>EntitySet</code> / <code>Singleton</code> &rarr; OData Read Bindings &rarr; MCP Tools + Resources / Resource Templates</h3>
+            <span class="pill-badge pill-mcp">54 Read Tools + 11 Concrete Resources + 10 Resource Templates</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#eef5fc;border-radius:6px;margin-bottom:12px;font-family:var(--font-mono);font-size:12px;">
+            <strong>CSDL <code>EntitySet</code> / <code>Singleton</code> (+ <code>NavigationProperty</code>)</strong>
+            <span>&rarr;</span>
+            <span style="color:#5c2d91;font-weight:700;">StaticModelGenerator.CollectBindings()</span>
+            <span>&rarr;</span>
+            <span style="color:#005a9e;font-weight:700;">ODataRequestBinding + ResourceBinding</span>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">GeneratedModel.McpTools / McpResources / McpResourceTemplates</span>
+            <span>&rarr;</span>
+            <strong>CsdlMcpProjection.ListTools() / ListResources() / ListResourceTemplates()</strong>
+          </div>
+          <table class="matrix-table" style="margin-bottom:12px;">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>C# Class &amp; Method</th>
+                <th>Input Artifact / Type</th>
+                <th>Emitted / Returned C# Type</th>
+                <th>Transformation Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. CSDL Parse</strong></td>
+                <td><code>StaticModelGenerator.CollectBindings(IEdmModel)</code></td>
+                <td><code>IEdmEntitySet</code>, <code>IEdmSingleton</code>, <code>IEdmNavigationProperty</code></td>
+                <td><code>List&lt;BindingSpec&gt;</code> &amp; <code>List&lt;ResourceSpec&gt;</code></td>
+                <td>Emits <code>list_{set}</code> (collection GET), <code>get_{set}</code> (keyed entity GET), <code>get_{singleton}</code> (singleton GET), and <code>get_{source}_{nav}</code> (navigation GET), all with <code>OperationKind.Read</code> and <code>QueryOptions = true</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Read Binding &amp; Schema</strong></td>
+                <td><code>StaticModelGenerator.BuildSchemaJson()</code> &amp; <code>WriteBinding()</code></td>
+                <td><code>BindingSpec</code> (Key parameters + OData system query options)</td>
+                <td><code>ODataRequestBinding</code> + <code>ParameterBinding[]</code> in <code>GeneratedModel.RequestBindings</code></td>
+                <td>Generates JSON Schema (<code>filter</code>, <code>select</code>, <code>expand</code>, <code>orderby</code>, <code>top</code>, <code>skip</code>, <code>count</code>, <code>search</code> + <code>key_{name}</code>) and pre-parses <code>Tool.InputSchema</code> into <code>GeneratedModel.McpTools</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>3. Resource &amp; URI Template</strong></td>
+                <td><code>StaticModelGenerator.UriPattern(uriTemplate)</code> &amp; <code>WriteResource()</code></td>
+                <td><code>{set}://all</code>, <code>{set}://{{key}}</code>, <code>{singleton}://default</code></td>
+                <td><code>ResourceBinding</code> (with compiled <code>Regex MatchPattern</code>) in <code>GeneratedModel.Resources</code></td>
+                <td>Links each resource URI directly to its shared <code>ODataRequestBinding</code> (`RequestBindings[idx]`) and emits <code>GeneratedModel.McpResources</code> (concrete) and <code>GeneratedModel.McpResourceTemplates</code> (templated).</td>
+              </tr>
+              <tr>
+                <td><strong>4. MCP Discovery</strong></td>
+                <td><code>CsdlMcpProjection.ListTools()</code><br><code>CsdlMcpProjection.ListResources()</code><br><code>CsdlMcpProjection.ListResourceTemplates()</code></td>
+                <td>MCP <code>tools/list</code>, <code>resources/list</code>, <code>resources/templates/list</code></td>
+                <td><code>ListToolsResult</code>, <code>ListResourcesResult</code>, <code>ListResourceTemplatesResult</code></td>
+                <td>Serves pre-built protocol objects in O(1) memory without runtime XML parsing or schema generation.</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="class-diag-details">
+            <summary style="cursor:pointer;font-weight:600;font-size:12.5px;color:#005a9e;">🔍 View Code Trace: <code>EntitySet Name="users"</code> &rarr; <code>ODataRequestBinding</code> &amp; <code>ResourceBinding</code></summary>
+            <pre class="code-viewer" style="margin-top:8px;padding:12px;font-size:12px;max-height:260px;overflow:auto;"><code>// 1. CSDL Input (Server_Large.csdl)
+&lt;EntitySet Name="users" EntityType="Microsoft.Graph.User" /&gt;
+
+// 2. Emitted in Csdl/GeneratedModel.cs by StaticModelGenerator
+new ODataRequestBinding(
+    "list_users", "List Users", "List entities from the 'users' OData EntitySet.", "users",
+    OperationKind.Read, [], "Microsoft.Graph.GraphService/users", "users", "Microsoft.Graph.User",
+    true, "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",...}", GraphExecutionKind.Direct, [...]),
+new ODataRequestBinding(
+    "get_users", "Get User by key", "Read a single 'Microsoft.Graph.User' entity from 'users' by key.", "users",
+    OperationKind.Read, [new ParameterBinding("key_id", new StaticTypeDescriptor("Edm.String", StaticTypeKind.String), true, true, "Entity key id")],
+    "Microsoft.Graph.GraphService/users", "users", "Microsoft.Graph.User", true, "{...}", GraphExecutionKind.Direct, [...]),
+
+// 3. Shared ResourceBinding in GeneratedModel.Resources
+new ResourceBinding("users_collection", "Users collection", "...", "users://all", RequestBindings[0], new Regex("^users://all$", RegexOptions.Compiled)),
+new ResourceBinding("users_item", "User by key", "...", "users://{key_id}", RequestBindings[1], new Regex("^users://(?&lt;key_id&gt;[^/]+)$", RegexOptions.Compiled))</code></pre>
+          </details>
+        </div>
+
+        <!-- TRANSFORMATION 2 -->
+        <div class="mapping-table-section tx-card" data-tx="tx2" style="border-left:5px solid #5c2d91;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            <h3 style="margin:0;color:#5c2d91;">Transformation 2: CSDL <code>Function</code> / <code>Action</code> &rarr; Typed Operation Binding + Generated JSON Schema &rarr; MCP Tool</h3>
+            <span class="pill-badge pill-annotation">5 Bound Operations (3 Functions + 2 Actions)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#f3f0f9;border-radius:6px;margin-bottom:12px;font-family:var(--font-mono);font-size:12px;">
+            <strong>CSDL <code>&lt;Function&gt;</code> / <code>&lt;Action&gt;</code></strong>
+            <span>&rarr;</span>
+            <span style="color:#5c2d91;font-weight:700;">StaticModelGenerator.DescribeType() + BuildSchemaJson()</span>
+            <span>&rarr;</span>
+            <span style="color:#005a9e;font-weight:700;">ODataRequestBinding (Function | Action) + StaticTypeDescriptor</span>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">GeneratedModel.McpTools + EdmJsonSchema.Validate()</span>
+          </div>
+          <table class="matrix-table" style="margin-bottom:12px;">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>C# Class &amp; Method</th>
+                <th>Input Artifact / Type</th>
+                <th>Emitted / Returned C# Type</th>
+                <th>Transformation Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Operation Binding</strong></td>
+                <td><code>StaticModelGenerator.CollectBindings(IEdmModel)</code></td>
+                <td>Bound <code>IEdmFunction</code> / <code>IEdmAction</code> + binding <code>IEdmEntitySet</code> / <code>IEdmSingleton</code></td>
+                <td><code>BindingSpec</code> (<code>{set}_{ns}_{op}</code>)</td>
+                <td>Combines binding entity keys (<code>IsKey = true</code>) with non-binding <code>IEdmOperationParameter</code>s (<code>IsKey = false</code>); sets <code>OperationKind.Function</code> or <code>OperationKind.Action</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>2. EDM Type &amp; Facet Mapping</strong></td>
+                <td><code>StaticModelGenerator.DescribeType(IEdmTypeReference)</code></td>
+                <td><code>IEdmPrimitiveType</code>, <code>IEdmEnumType</code>, <code>IEdmComplexType</code>, <code>IEdmCollectionType</code></td>
+                <td><code>StaticTypeDescriptor</code> + <code>StaticProperty[]</code></td>
+                <td>Maps EDM types to <code>StaticTypeKind</code> (<code>String</code>, <code>Boolean</code>, <code>Integer</code>, <code>Number</code>, <code>Guid</code>, <code>Date</code>, <code>DateTimeOffset</code>, <code>Duration</code>, <code>Enum</code>, <code>Object</code>, <code>Array</code>) with integer bounds and enum members.</td>
+              </tr>
+              <tr>
+                <td><strong>3. JSON Schema Emission</strong></td>
+                <td><code>StaticModelGenerator.BuildSchemaJson()</code> &amp; <code>WriteTypeSchema()</code></td>
+                <td><code>IReadOnlyList&lt;ParamSpec&gt;</code> + <code>QueryOptions</code> flag</td>
+                <td>Draft 2020-12 <code>InputSchemaJson</code> string + <code>Tool.InputSchema</code></td>
+                <td>Composable collection-returning functions include OData read query options; actions set <code>QueryOptions = false</code> and require body parameters in <code>inputSchema.required</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>4. Runtime Enforcement</strong></td>
+                <td><code>EdmJsonSchema.Validate()</code> &amp; <code>EdmJsonSchema.Literal()</code></td>
+                <td><code>StaticTypeDescriptor</code> + <code>JsonElement</code> argument</td>
+                <td>Validated OData literal (<code>@param='...'</code>) or JSON POST body</td>
+                <td>Enforces nullability, integer ranges, enum sets, ISO-8601 dates, and complex object properties before executing the function or action.</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="class-diag-details">
+            <summary style="cursor:pointer;font-weight:600;font-size:12.5px;color:#5c2d91;">🔍 View Code Trace: Bound Function <code>searchDriveItems</code> &amp; Bound Action <code>sendChannelMessage</code></summary>
+            <pre class="code-viewer" style="margin-top:8px;padding:12px;font-size:12px;max-height:260px;overflow:auto;"><code>// 1. CSDL Bound Function &amp; Bound Action (Server_Large.csdl)
+&lt;Function Name="searchDriveItems" IsBound="true" IsComposable="true"&gt;
+  &lt;Parameter Name="bindingParameter" Type="Microsoft.Graph.Drive" /&gt;
+  &lt;Parameter Name="q" Type="Edm.String" Nullable="false" /&gt;
+  &lt;ReturnType Type="Collection(Microsoft.Graph.DriveItem)" /&gt;
+&lt;/Function&gt;
+&lt;Action Name="sendChannelMessage" IsBound="true"&gt;
+  &lt;Parameter Name="bindingParameter" Type="Microsoft.Graph.Channel" /&gt;
+  &lt;Parameter Name="subject" Type="Edm.String" /&gt;
+  &lt;Parameter Name="bodyContent" Type="Edm.String" Nullable="false" /&gt;
+  &lt;ReturnType Type="Microsoft.Graph.ChatMessage" /&gt;
+&lt;/Action&gt;
+
+// 2. Emitted ODataRequestBindings in Csdl/GeneratedModel.cs
+new ODataRequestBinding(
+    "drives_Microsoft_Graph_searchDriveItems", "Search Drive Items", "...",
+    "drives/Microsoft.Graph.searchDriveItems", OperationKind.Function,
+    [new ParameterBinding("key_id", ..., IsKey: true), new ParameterBinding("q", ..., Required: true, IsKey: false)],
+    "Microsoft.Graph.searchDriveItems", "drives", "Microsoft.Graph.DriveItem",
+    QueryOptions: true, InputSchemaJson: "{...}", GraphExecutionKind.DriveSearch, [...]),
+new ODataRequestBinding(
+    "channels_Microsoft_Graph_sendChannelMessage", "Send Channel Message", "...",
+    "channels/Microsoft.Graph.sendChannelMessage", OperationKind.Action,
+    [new ParameterBinding("key_id", ..., IsKey: true), new ParameterBinding("subject", ...), new ParameterBinding("bodyContent", ..., Required: true)],
+    "Microsoft.Graph.sendChannelMessage", "channels", "Microsoft.Graph.ChatMessage",
+    QueryOptions: false, InputSchemaJson: "{...}", GraphExecutionKind.ChannelSend, [...])</code></pre>
+          </details>
+        </div>
+
+        <!-- TRANSFORMATION 3 -->
+        <div class="mapping-table-section tx-card" data-tx="tx3" style="border-left:5px solid #8764b8;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            <h3 style="margin:0;color:#5c2d91;">Transformation 3: <code>@Agent.Prompts</code> &rarr; <code>PromptDefinition</code> + MCP <code>Prompt</code> &rarr; <code>prompts/list</code> + <code>prompts/get</code></h3>
+            <span class="pill-badge pill-annotation">22 Container Workflow Prompts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#f3f0f9;border-radius:6px;margin-bottom:12px;font-family:var(--font-mono);font-size:12px;">
+            <strong>CSDL <code>&lt;Annotation Term="Agent.Prompts"&gt;</code></strong>
+            <span>&rarr;</span>
+            <span style="color:#5c2d91;font-weight:700;">StaticModelGenerator.ExtractPrompts()</span>
+            <span>&rarr;</span>
+            <span style="color:#005a9e;font-weight:700;">GeneratedModel.Prompts + GeneratedModel.McpPrompts</span>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">CsdlProvider.ListPrompts() / CsdlProvider.GetPrompt()</span>
+          </div>
+          <table class="matrix-table" style="margin-bottom:12px;">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>C# Class &amp; Method</th>
+                <th>Input Artifact / Type</th>
+                <th>Emitted / Returned C# Type</th>
+                <th>Transformation Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Annotation Extraction</strong></td>
+                <td><code>StaticModelGenerator.ExtractPrompts(XDocument, IEdmModel)</code></td>
+                <td><code>EntityContainer</code> <code>&lt;Annotation Term="Agent.Prompts"&gt;</code> records</td>
+                <td><code>PromptSpec[]</code> &rarr; <code>GeneratedModel.Prompts</code> (<code>PromptDefinition[]</code>)</td>
+                <td>Extracts <code>Name</code>, <code>Title</code>, <code>Description</code>, <code>Arguments</code> (<code>PromptArgumentDefinition</code> with <code>Default</code>), and <code>Messages</code> (<code>PromptMessageDefinition</code> with <code>Role</code> &amp; template <code>Text</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>2. MCP Prompt Emission</strong></td>
+                <td><code>StaticModelGenerator.WriteMcpPrompt()</code></td>
+                <td><code>PromptSpec</code></td>
+                <td><code>ModelContextProtocol.Protocol.Prompt</code> in <code>GeneratedModel.McpPrompts</code></td>
+                <td>Emits pre-built MCP <code>Prompt</code> objects with <code>PromptArgument</code> lists (omitting internal message templates from <code>prompts/list</code> discovery).</td>
+              </tr>
+              <tr>
+                <td><strong>3. Prompt Discovery</strong></td>
+                <td><code>CsdlProvider.ListPrompts()</code></td>
+                <td>MCP <code>prompts/list</code> request</td>
+                <td><code>ListPromptsResult</code></td>
+                <td>Returns <code>new ListPromptsResult { Prompts = GeneratedModel.McpPrompts }</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>4. Template Rendering</strong></td>
+                <td><code>CsdlProvider.GetPrompt(GetPromptRequestParams)</code></td>
+                <td>MCP <code>prompts/get</code> with <code>name</code> &amp; <code>arguments</code></td>
+                <td><code>GetPromptResult</code> (<code>PromptMessage[]</code> with <code>TextContentBlock</code>)</td>
+                <td>Validates supplied argument keys/types, applies <code>argument.Default</code> when omitted, and substitutes <code>{argName}</code> placeholders via <code>Regex.Replace</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="class-diag-details">
+            <summary style="cursor:pointer;font-weight:600;font-size:12.5px;color:#5c2d91;">🔍 View Code Trace: <code>whom_olga_reports_to</code> Annotation &rarr; <code>PromptDefinition</code> &rarr; <code>CsdlProvider.GetPrompt()</code></summary>
+            <pre class="code-viewer" style="margin-top:8px;padding:12px;font-size:12px;max-height:260px;overflow:auto;"><code>// 1. Emitted in Csdl/GeneratedModel.cs
+new PromptDefinition(
+    "whom_olga_reports_to", "Whom User Reports To", "Single-Entity Navigation (Users): Resolve a user and retrieve their reporting manager.",
+    [new PromptArgumentDefinition("userName", "Display name or UPN of the user", true, "Olga Podolyako")],
+    [new PromptMessageDefinition(Role.User, "Find whom {userName} reports to by executing OData v4.01 queries against the Users entity set...")])
+
+// 2. Runtime rendering in Csdl/CsdlProvider.cs
+public static GetPromptResult GetPrompt(GetPromptRequestParams request)
+{
+    var prompt = GeneratedModel.Prompts.SingleOrDefault(p => p.Name == request.Name)
+        ?? throw new ArgumentException($"Unknown prompt: {request.Name}");
+    // Applies PromptArgumentDefinition.Default ("Olga Podolyako") when not supplied and replaces {userName}
+}</code></pre>
+          </details>
+        </div>
+
+        <!-- TRANSFORMATION 4 -->
+        <div class="mapping-table-section tx-card" data-tx="tx4" style="border-left:5px solid #107c41;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            <h3 style="margin:0;color:#107c41;">Transformation 4: <code>@Agent.Examples</code> &rarr; <code>ExampleDefinition</code> Attached to Matching Request Bindings &rarr; Targeted Grounding in <code>tools/call</code> &amp; <code>resources/read</code></h3>
+            <span class="pill-badge pill-odata">28 Curated @Agent.Examples on EntitySets, Singletons &amp; Operations</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#edf7f0;border-radius:6px;margin-bottom:12px;font-family:var(--font-mono);font-size:12px;">
+            <strong>CSDL <code>&lt;Annotation Term="Agent.Examples"&gt;</code></strong>
+            <span>&rarr;</span>
+            <span style="color:#5c2d91;font-weight:700;">StaticModelGenerator.ExtractExamples() + AttachExamples()</span>
+            <span>&rarr;</span>
+            <span style="color:#005a9e;font-weight:700;">ODataRequestBinding.Examples (ExampleDefinition[])</span>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">CsdlProvider.GetExamplesFor(binding)</span>
+            <span>&rarr;</span>
+            <strong>CsdlMcpProjection.SerializeResponse()</strong>
+          </div>
+          <table class="matrix-table" style="margin-bottom:12px;">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>C# Class &amp; Method</th>
+                <th>Input Artifact / Type</th>
+                <th>Emitted / Returned C# Type</th>
+                <th>Transformation Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Example Extraction</strong></td>
+                <td><code>StaticModelGenerator.ExtractExamples(XDocument)</code></td>
+                <td><code>&lt;Annotation Term="Agent.Examples"&gt;</code> on <code>EntitySet</code>, <code>Singleton</code>, <code>Function</code>, <code>Action</code></td>
+                <td><code>ExampleSpec[]</code> &rarr; <code>GeneratedModel.Examples</code> (<code>ExampleDefinition[]</code>)</td>
+                <td>Captures <code>TargetKind</code>, <code>TargetName</code>, <code>EntitySet</code>, <code>Utterance</code>, <code>Request</code> (verified OData query), and <code>Description</code>. (0 in <code>LargeServer_NoExamples</code>; 28 in <code>LargeServer</code>.)</td>
+              </tr>
+              <tr>
+                <td><strong>2. Build-Time Pre-Linking</strong></td>
+                <td><code>StaticModelGenerator.AttachExamples()</code> &amp; <code>MatchesExample()</code></td>
+                <td><code>BindingSpec[]</code> + <code>ExampleSpec[]</code></td>
+                <td><code>ODataRequestBinding.Examples</code></td>
+                <td>Attaches matching <code>ExampleDefinition</code> records directly onto each <code>ODataRequestBinding</code> at build time (by operation name or owning <code>EntitySet</code> / <code>Singleton</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>3. Runtime Lookup</strong></td>
+                <td><code>CsdlProvider.GetExamplesFor(ODataRequestBinding)</code></td>
+                <td>Executed <code>ODataRequestBinding</code></td>
+                <td><code>IReadOnlyList&lt;ExampleDefinition&gt;</code></td>
+                <td>Returns <code>binding.Examples</code> directly in O(1) without scanning all examples at runtime.</td>
+              </tr>
+              <tr>
+                <td><strong>4. Grounded Response</strong></td>
+                <td><code>CsdlMcpProjection.SerializeResponse(binding, execution)</code></td>
+                <td><code>ODataRequestBinding</code> + <code>ODataExecution</code></td>
+                <td>JSON envelope with <code>examples</code> array in <code>CallToolResult</code> / <code>ReadResourceResult</code></td>
+                <td>Embeds target-scoped <code>examples</code> alongside <code>data</code> in every <code>tools/call</code> and <code>resources/read</code> result to guide follow-up filter/navigation construction.</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="class-diag-details">
+            <summary style="cursor:pointer;font-weight:600;font-size:12.5px;color:#107c41;">🔍 View Code Trace: <code>@Agent.Examples</code> on <code>users</code> &rarr; <code>ODataRequestBinding.Examples</code> &rarr; <code>SerializeResponse()</code></summary>
+            <pre class="code-viewer" style="margin-top:8px;padding:12px;font-size:12px;max-height:260px;overflow:auto;"><code>// 1. Pre-linked on ODataRequestBinding("list_users", ...) in LargeServer/Csdl/GeneratedModel.cs
+[
+    new ExampleDefinition("EntitySet", "users", "users", "Find user Olga Podolyako by exact display name",
+        "GET https://graph.microsoft.com/v1.0/users?$filter=displayName eq 'Olga Podolyako'&$select=id,displayName,userPrincipalName,jobTitle,department",
+        "Resolves a person to their Graph user id and UPN before calling relationship navigations."),
+    ...
+]
+
+// 2. Attached to tools/call &amp; resources/read output in Csdl/CsdlMcpProjection.cs
+private static string SerializeResponse(ODataRequestBinding binding, ODataExecution execution)
+{
+    var examples = CsdlProvider.GetExamplesFor(binding).Select(example =&gt; new {
+        targetKind = example.TargetKind, targetName = example.TargetName, entitySet = example.EntitySet,
+        utterance = example.Utterance, request = example.Request, description = example.Description
+    });
+    return JsonSerializer.Serialize(new {
+        method = execution.Method.Method, odataQuery = execution.ODataQuery,
+        entitySet = binding.EntitySet, data = execution.Data, examples
+    }, new JsonSerializerOptions { WriteIndented = true });
+}</code></pre>
+          </details>
+        </div>
+
+        <!-- TRANSFORMATION 5 -->
+        <div class="mapping-table-section tx-card" data-tx="tx5" style="border-left:5px solid #d83b01;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+            <h3 style="margin:0;color:#b45309;">Transformation 5: MCP <code>tools/call</code> or <code>resources/read</code> &rarr; Generated OData Path/Body &rarr; In-Process OData Service Execution &rarr; JSON Response with Matching Examples</h3>
+            <span class="pill-badge pill-amber">End-to-End Runtime Request Execution Pipeline</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#fff8f0;border-radius:6px;margin-bottom:12px;font-family:var(--font-mono);font-size:12px;">
+            <strong>HTTP <code>POST /</code> &rarr; <code>Program.cs</code> (<code>app.MapMcp()</code>)</strong>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">CsdlMcpProjection.CallToolAsync() / ReadResourceAsync()</span>
+            <span>&rarr;</span>
+            <span style="color:#107c41;font-weight:700;">ExecuteAsync() + EdmJsonSchema</span>
+            <span>&rarr;</span>
+            <span style="color:#b45309;font-weight:700;">ODataClientService.SendAsync()</span>
+            <span>&rarr;</span>
+            <span style="color:#b45309;font-weight:700;">GeneratedGraphExecutor.ExecuteAsync()</span>
+            <span>&rarr;</span>
+            <span style="color:#005a9e;font-weight:700;">GraphClientService</span>
+            <span>&rarr;</span>
+            <strong>SerializeResponse() &rarr; HTTP 200 JSON-RPC</strong>
+          </div>
+          <table class="matrix-table" style="margin-bottom:12px;">
+            <thead>
+              <tr>
+                <th>Runtime Step</th>
+                <th>C# Class &amp; Method</th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Execution Responsibility</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. HTTP Transport &amp; Route Entry</strong></td>
+                <td><code>Program.cs</code>: <code>app.MapMcp()</code> &rarr;<br><code>WithCallToolHandler</code> / <code>WithReadResourceHandler</code></td>
+                <td>HTTP <code>POST /</code> with JSON-RPC 2.0 request body</td>
+                <td><code>RequestContext&lt;CallToolRequestParams&gt;</code> or <code>RequestContext&lt;ReadResourceRequestParams&gt;</code></td>
+                <td>ASP.NET Core stateless Streamable HTTP endpoint (<code>ModelContextProtocol.AspNetCore</code>) parses the JSON-RPC envelope, resolves <code>CsdlMcpProjection</code> from DI, and dispatches by MCP method.</td>
+              </tr>
+              <tr>
+                <td><strong>2. MCP Handler Entry</strong></td>
+                <td><code>CsdlMcpProjection.CallToolAsync()</code><br><code>CsdlMcpProjection.ReadResourceAsync()</code></td>
+                <td><code>CallToolRequestParams</code> or <code>ReadResourceRequestParams</code></td>
+                <td>Resolved <code>ODataRequestBinding</code> + <code>IDictionary&lt;string, JsonElement&gt;</code></td>
+                <td>Looks up tool by name in <code>CsdlProvider.GetRequestBindings()</code> or matches URI via <code>ResourceBinding.MatchPattern</code> + <code>EdmJsonSchema.ParseKey()</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>3. OData Path &amp; Body Construction</strong></td>
+                <td><code>CsdlMcpProjection.ExecuteAsync()</code> + <code>EdmJsonSchema.Validate()</code> / <code>Literal()</code></td>
+                <td><code>ODataRequestBinding</code> + runtime arguments</td>
+                <td><code>HttpMethod</code> (<code>GET</code>/<code>POST</code>), OData <code>path</code>, optional JSON <code>body</code></td>
+                <td>Validates arguments against <code>StaticTypeDescriptor</code>, formats key predicates (<code>users('...')</code>), function aliases (<code>(@q=@q)&amp;@q='...'</code>), and query options (<code>?$filter=...&amp;$select=...</code>), or serializes action POST body.</td>
+              </tr>
+              <tr>
+                <td><strong>4. In-Process OData Service</strong></td>
+                <td><code>ODataClientService.SendAsync()</code></td>
+                <td><code>ODataRequestBinding</code>, <code>arguments</code>, <code>method</code>, <code>path</code>, <code>body</code></td>
+                <td><code>JsonElement</code> payload + recorded <code>ODataTrace</code></td>
+                <td>Measures execution duration via <code>Stopwatch</code>, calls <code>GeneratedGraphExecutor.ExecuteAsync()</code>, unwraps <code>envelope.data</code>, and appends an <code>ODataTrace</code> record.</td>
+              </tr>
+              <tr>
+                <td><strong>5. Workload Dispatch &amp; Graph Call</strong></td>
+                <td><code>GeneratedGraphExecutor.ExecuteAsync()</code> &rarr; <code>GraphClientService</code></td>
+                <td><code>binding.ExecutionKind</code> + decoded OData path</td>
+                <td>Live Microsoft Graph v1.0 JSON or typed <code>GraphModels</code> DTO + <code>GraphTraceRecord</code></td>
+                <td>Dispatches <code>GraphExecutionKind.Direct</code> to <code>GraphClientService.ExecuteODataQueryAsync(decodedPath)</code> (live Graph v1.0 with Azure CLI token or <code>ExecuteMockODataQueryAsync</code> fallback) and specialized kinds to workload helpers.</td>
+              </tr>
+              <tr>
+                <td><strong>6. Grounded MCP Result &amp; HTTP Response</strong></td>
+                <td><code>CsdlMcpProjection.SerializeResponse()</code> &rarr; <code>app.MapMcp()</code></td>
+                <td><code>ODataRequestBinding</code> + <code>ODataExecution</code></td>
+                <td><code>CallToolResult</code> / <code>ReadResourceResult</code> &rarr; HTTP <code>200 OK</code> JSON-RPC response</td>
+                <td>Serializes <code>{ method, odataQuery, entitySet, data, examples }</code> into the MCP content block and writes the HTTP 200 JSON-RPC response.</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="class-diag-details">
+            <summary style="cursor:pointer;font-weight:600;font-size:12.5px;color:#b45309;">🔍 View Code Trace: <code>Program.cs (app.MapMcp)</code> &rarr; <code>CallToolAsync / ReadResourceAsync</code> &rarr; <code>ExecuteAsync</code> &rarr; <code>ODataClientService</code> &rarr; <code>GeneratedGraphExecutor</code> &rarr; <code>GraphClientService</code></summary>
+            <pre class="code-viewer" style="margin-top:8px;padding:12px;font-size:12px;max-height:320px;overflow:auto;"><code>// 1. HTTP Transport &amp; MCP Handler Registration (Program.cs)
+builder.Services.AddMcpServer()
+    .WithHttpTransport(options =&gt; { options.Stateless = true; })
+    .WithCallToolHandler((request, cancellationToken) =&gt; request.Services!.GetRequiredService&lt;CsdlMcpProjection&gt;()
+        .CallToolAsync(request.Params ?? throw new ArgumentException("Tool parameters are required."), cancellationToken))
+    .WithReadResourceHandler((request, cancellationToken) =&gt; request.Services!.GetRequiredService&lt;CsdlMcpProjection&gt;()
+        .ReadResourceAsync(request.Params ?? throw new ArgumentException("Resource parameters are required."), cancellationToken));
+app.MapMcp(); // Handles HTTP POST / JSON-RPC 2.0 requests and writes HTTP 200 JSON-RPC responses
+
+// 2. MCP Handler Entry (Csdl/CsdlMcpProjection.cs)
+var binding = CsdlProvider.GetRequestBindings().SingleOrDefault(b =&gt; b.Name == request.Name)
+    ?? throw new ArgumentException($"Unknown CSDL tool: {request.Name}");
+var execution = await ExecuteAsync(binding, request.Arguments ?? new Dictionary&lt;string, JsonElement&gt;(), cancellationToken);
+return new CallToolResult { Content = [new TextContentBlock { Text = SerializeResponse(binding, execution) }] };
+
+// 3. CsdlMcpProjection.ExecuteAsync (Csdl/CsdlMcpProjection.cs)
+var data = await client.SendAsync(binding, new Dictionary&lt;string, JsonElement&gt;(arguments), method, path, body, cancellationToken);
+return new ODataExecution(method, path, data);
+
+// 4. ODataClientService.SendAsync (Services/ODataClientService.cs)
+var result = await executor.ExecuteAsync(binding, arguments, method, path, body, cancellationToken);
+var envelope = JsonSerializer.SerializeToElement(result);
+return envelope.ValueKind == JsonValueKind.Object &amp;&amp; envelope.TryGetProperty("data", out var data) ? data.Clone() : envelope;
+
+// 5. GeneratedGraphExecutor.ExecuteAsync (Services/GeneratedGraphExecutor.cs)
+switch (binding.ExecutionKind)
+{
+    case GraphExecutionKind.Direct:
+        return await graphService.ExecuteODataQueryAsync(decodedPath, cancellationToken);
+    case GraphExecutionKind.DriveSearch:
+        var items = await graphService.SearchDriveItemsAsync(query, cancellationToken);
+        return new { method = method.Method, odataQuery = decodedPath, entitySet = "driveItems", data = new { query, total = items.Count, items } };
+    ...
+}</code></pre>
+          </details>
+        </div>
+
       </div>
     </div>
   </main>

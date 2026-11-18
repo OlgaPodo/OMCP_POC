@@ -79,6 +79,12 @@ test('startup, tabs, global MCP selection, equivalent metadata and unknown text'
     assert.equal(window.getComputedStyle(document.getElementById('exp-panel-inspector')).display, 'block');
     document.querySelector('[data-view="csdl"]').click();
     assert.equal(document.querySelectorAll('#view-csdl .subtab-panel.active').length, 1);
+    document.querySelector('[data-view="class-diagram"]').click();
+    assert.ok(document.getElementById('view-class-diagram').classList.contains('active'));
+    assert.equal(document.querySelectorAll('#view-class-diagram .tx-card').length, 5);
+    document.querySelector('#classDiagramFilterButtons [data-tx-filter="tx5"]').click();
+    assert.equal([...document.querySelectorAll('#view-class-diagram .tx-card')].filter(c => c.style.display !== 'none').length, 1);
+    document.querySelector('#classDiagramFilterButtons [data-tx-filter="all"]').click();
     const select = document.getElementById('targetUrlInput');
     select.value = 'http://localhost:3002/';
     select.dispatchEvent(new window.Event('change'));

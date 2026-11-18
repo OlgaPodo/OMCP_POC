@@ -440,10 +440,56 @@ document.addEventListener('DOMContentLoaded', () => {
   initSemanticMatcher();
   initMappingVisualizer();
   initExperimentView();
+  initClassDiagramView();
 
   // Load default query
   selectQuery('tool-profile-me');
 });
+
+function initClassDiagramView() {
+  const view = document.getElementById('view-class-diagram');
+  if (!view) return;
+
+  const filterButtons = view.querySelectorAll('#classDiagramFilterButtons [data-tx-filter]');
+  const svgNodes = view.querySelectorAll('.diag-node');
+  const tableRows = view.querySelectorAll('.tx-row');
+  const txCards = view.querySelectorAll('.tx-card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.txFilter || 'all';
+
+      svgNodes.forEach(node => {
+        const txList = (node.dataset.tx || '').split(/\s+/);
+        const match = filter === 'all' || txList.includes(filter);
+        node.style.opacity = match ? '1' : '0.22';
+        node.style.transition = 'opacity 0.2s ease';
+      });
+
+      tableRows.forEach(row => {
+        const txList = (row.dataset.tx || '').split(/\s+/);
+        const match = filter === 'all' || txList.includes(filter);
+        row.style.display = match ? '' : 'none';
+      });
+
+      txCards.forEach(card => {
+        const txList = (card.dataset.tx || '').split(/\s+/);
+        const match = filter === 'all' || txList.includes(filter);
+        card.style.display = match ? '' : 'none';
+      });
+    });
+  });
+
+  document.getElementById('btnClassDiagExpandAll')?.addEventListener('click', () => {
+    view.querySelectorAll('details.class-diag-details').forEach(d => { d.open = true; });
+  });
+
+  document.getElementById('btnClassDiagCollapseAll')?.addEventListener('click', () => {
+    view.querySelectorAll('details.class-diag-details').forEach(d => { d.open = false; });
+  });
+}
 
 // View Navigation Switcher
 function initViewSwitcher() {

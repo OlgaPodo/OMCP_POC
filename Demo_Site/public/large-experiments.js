@@ -16,6 +16,124 @@ function escExp(str) {
     .replace(/"/g, '&quot;');
 }
 
+function buildCollapsibleJsonNode(key, value, depth = 0) {
+  const indentStyle = `margin-left:${depth * 14}px;`;
+  if (value === null || typeof value !== 'object') {
+    const row = document.createElement('div');
+    row.style.cssText = `${indentStyle}padding:2px 0;font-family:var(--font-mono, Consolas, monospace);font-size:12px;line-height:1.45;word-break:break-word;`;
+    const keyHtml = key !== null ? `<span style="color:#005a9e;font-weight:600;">"${escExp(key)}"</span>: ` : '';
+    let valHtml;
+    if (value === null) {
+      valHtml = `<span style="color:#8a8886;font-style:italic;">null</span>`;
+    } else if (typeof value === 'boolean') {
+      const color = value ? '#107c41' : '#a4262c';
+      valHtml = `<span style="color:${color};font-weight:700;">${value}</span>`;
+    } else if (typeof value === 'number') {
+      valHtml = `<span style="color:#5c2d91;font-weight:600;">${value}</span>`;
+    } else {
+      valHtml = `<span style="color:#107c41;">"${escExp(value)}"</span>`;
+    }
+    row.innerHTML = `${keyHtml}${valHtml}`;
+    return row;
+  }
+
+  const isArray = Array.isArray(value);
+  const entries = isArray ? value.map((v, i) => [i, v]) : Object.entries(value);
+  if (entries.length === 0) {
+    const emptyRow = document.createElement('div');
+    emptyRow.style.cssText = `${indentStyle}padding:2px 0;font-family:var(--font-mono, Consolas, monospace);font-size:12px;`;
+    const keyHtml = key !== null ? `<span style="color:#005a9e;font-weight:600;">"${escExp(key)}"</span>: ` : '';
+    emptyRow.innerHTML = `${keyHtml}<span style="color:#605e5c;">${isArray ? '[]' : '{}'}</span>`;
+    return emptyRow;
+  }
+
+  const details = document.createElement('details');
+  details.className = 'json-tree-node';
+  const collapseByDefault = key === 'resolved_entities' || key === 'graphTraces' || (isArray && entries.length > 5);
+  details.open = depth <= 2 && !collapseByDefault;
+  details.style.cssText = `${indentStyle}margin-top:2px;margin-bottom:2px;font-family:var(--font-mono, Consolas, monospace);font-size:12px;`;
+
+  const summary = document.createElement('summary');
+  summary.style.cssText = 'cursor:pointer;padding:3px 6px;border-radius:4px;background:#f8f9fa;border:1px solid #edebe9;user-select:none;display:inline-flex;align-items:center;gap:6px;';
+  let labelHtml = '';
+  if (key !== null) {
+    labelHtml = typeof key === 'number'
+      ? `<span style="color:#5c2d91;font-weight:600;">[${key}]</span>`
+      : `<span style="color:#005a9e;font-weight:700;">"${escExp(key)}"</span>`;
+  } else {
+    labelHtml = `<span style="color:#323130;font-weight:700;">root</span>`;
+  }
+
+  let preview = isArray ? `[ ${entries.length} item${entries.length === 1 ? '' : 's'} ]` : `{ ${entries.length} key${entries.length === 1 ? '' : 's'} }`;
+  if (!isArray && value.method && value.name) {
+    preview = `${value.method} → ${value.name}${value.odata_query ? ` (${value.odata_query})` : ''}`;
+  } else if (!isArray && value.evaluation && typeof value.evaluation.execution_success === 'boolean') {
+    preview = value.evaluation.execution_success ? '✅ PASS' : `❌ FAIL (${value.evaluation.failure_reason || 'mismatch'})`;
+  } else if (!isArray && value.displayName) {
+    preview = `${value.displayName}${value.userPrincipalName ? ` <${value.userPrincipalName}>` : ''}`;
+  }
+
+  summary.innerHTML = `${labelHtml} <span style="color:#605e5c;font-size:11px;">${escExp(preview)}</span>`;
+  details.appendChild(summary);
+
+  const body = document.createElement('div');
+  body.style.cssText = 'border-left:2px solid #e1dfdd;margin-left:8px;padding-left:6px;margin-top:3px;';
+  for (const [k, v] of entries) {
+    body.appendChild(buildCollapsibleJsonNode(isArray ? Number(k) : k, v, depth + 1));
+  }
+  details.appendChild(body);
+  return details;
+}
+
+function renderCollapsibleJsonContainer(payload) {
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'padding:10px 14px;background:#ffffff;border:1px solid #e1dfdd;border-radius:6px;';
+
+  const toolbar = document.createElement('div');
+  toolbar.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #edebe9;';
+
+  const btnExpand = document.createElement('button');
+  btnExpand.type = 'button';
+  btnExpand.className = 'copy-btn';
+  btnExpand.style.cssText = 'padding:3px 10px;font-size:11px;font-weight:600;';
+  btnExpand.textContent = '📂 Expand All';
+
+  const btnCollapse = document.createElement('button');
+  btnCollapse.type = 'button';
+  btnCollapse.className = 'copy-btn';
+  btnCollapse.style.cssText = 'padding:3px 10px;font-size:11px;font-weight:600;';
+  btnCollapse.textContent = '📁 Collapse All';
+
+  const btnCopy = document.createElement('button');
+  btnCopy.type = 'button';
+  btnCopy.className = 'copy-btn';
+  btnCopy.style.cssText = 'padding:3px 10px;font-size:11px;font-weight:600;';
+  btnCopy.textContent = '📋 Copy Raw JSON';
+
+  const treeRoot = buildCollapsibleJsonNode(null, payload, 0);
+  treeRoot.open = true;
+
+  btnExpand.addEventListener('click', e => {
+    e.stopPropagation();
+    wrapper.querySelectorAll('details.json-tree-node').forEach(d => { d.open = true; });
+  });
+  btnCollapse.addEventListener('click', e => {
+    e.stopPropagation();
+    wrapper.querySelectorAll('details.json-tree-node').forEach((d, idx) => { d.open = idx === 0; });
+  });
+  btnCopy.addEventListener('click', async e => {
+    e.stopPropagation();
+    await navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
+    btnCopy.textContent = '✓ Copied';
+    setTimeout(() => { btnCopy.textContent = '📋 Copy Raw JSON'; }, 1500);
+  });
+
+  toolbar.append(btnExpand, btnCollapse, btnCopy);
+  wrapper.append(toolbar, treeRoot);
+  return wrapper;
+}
+window.renderCollapsibleJsonContainer = renderCollapsibleJsonContainer;
+
 async function initLargeExperimentTabs() {
   try {
     const [reportsRes, summaryRes, mdRes] = await Promise.all([
@@ -444,9 +562,7 @@ function renderExamplesImpactView() {
         detailTr.className = 'query-detail-row';
         const td = document.createElement('td');
         td.colSpan = 6;
-        const pre = document.createElement('pre');
-        pre.style.cssText = 'white-space:pre-wrap;overflow-wrap:anywhere;';
-        pre.textContent = JSON.stringify({
+        td.appendChild(renderCollapsibleJsonContainer({
           queryId: r.query_id,
           workload: r.workload,
           expectedIntent: r.expected_intent,
@@ -455,15 +571,16 @@ function renderExamplesImpactView() {
           option1_noExamples_3004: {
             prediction: r.pred_no_examples,
             evaluation: r.eval_no_examples,
-            actualCalls: r.calls_no_examples
+            actualCalls: r.calls_no_examples,
+            graphTraces: r.graph_traces_no_examples
           },
           option2_withExamples_3003: {
             prediction: r.pred_with_examples,
             evaluation: r.eval_with_examples,
-            actualCalls: r.calls_with_examples
+            actualCalls: r.calls_with_examples,
+            graphTraces: r.graph_traces_with_examples
           }
-        }, null, 2);
-        td.appendChild(pre);
+        }));
         detailTr.appendChild(td);
         tr.after(detailTr);
       });
@@ -785,24 +902,23 @@ function renderIntentVsLargeView() {
         detailTr.className = 'query-detail-row';
         const td = document.createElement('td');
         td.colSpan = 6;
-        const pre = document.createElement('pre');
-        pre.style.cssText = 'white-space:pre-wrap;overflow-wrap:anywhere;';
-        pre.textContent = JSON.stringify({
+        td.appendChild(renderCollapsibleJsonContainer({
           queryId: r.query_id,
           workload: r.workload,
           expectedIntent: r.expected_intent,
           option2_directLargeMcp_3003: {
             prediction: r.pred_with_examples,
             evaluation: r.eval_with_examples,
-            actualCalls: r.calls_with_examples
+            actualCalls: r.calls_with_examples,
+            graphTraces: r.graph_traces_with_examples
           },
           option3_intentPlusODataQuery_3005: {
             prediction: r.pred_search_query,
             evaluation: r.eval_search_query,
-            actualCalls: r.calls_search_query
+            actualCalls: r.calls_search_query,
+            graphTraces: r.graph_traces_search_query
           }
-        }, null, 2);
-        td.appendChild(pre);
+        }));
         detailTr.appendChild(td);
         tr.after(detailTr);
       });
